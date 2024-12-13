@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- Custom CSS --%>
-<link rel="stylesheet" href="<%= request.getContextPath()%>/css/admin/adminpage_header.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/adminpage/adminpage_header.css">
 
 
 
@@ -19,6 +19,4 @@
             <a href="#">주문내역조회</a>
             <a href="#">관심상품</a>
             <a href="#">배송주소록관리</a>
-            <a href="#">게시물관리</a>
-            <a href="#">최근본상품</a>
     </div>
