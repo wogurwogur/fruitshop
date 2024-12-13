@@ -9,7 +9,7 @@ public class Admincontroller extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		super.setViewPage(request.getContextPath()+"/admin_page/adminpage_header.jsp");
+		super.setViewPage(request.getContextPath()+"/WEB-INF/admin_page/admin_page.jsp");
 
 	}
 
