@@ -64,6 +64,14 @@ div.container > div.ec-base-button.gColumn > a.btnremove{
 }
 
 
+div.container > div.ec-base-button.gColumn > a.btnpick:hover,
+div.container > div.ec-base-button.gColumn > a.btnSubmit:hover,
+div.container > div.ec-base-button.gColumn > a.btnremove:hover{
+	text-decoration: none;
+}
+
+
+
 div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help{
 	font: var(--wt-font-size) 'Pretendard',Verdana,Dotum,AppleGothic,sans-serif;
     color: var(--wt-font-color-sub);

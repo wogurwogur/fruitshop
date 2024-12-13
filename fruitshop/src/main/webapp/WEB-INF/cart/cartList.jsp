@@ -5,7 +5,7 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<div class="container" style="margin-top: 50px;">
+<div class="container" style="margin-top: 2%;">
 
     <div class="titleArea">
         <h3>Cart</h3>
