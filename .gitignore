@@ -97,3 +97,4 @@ replay_pid*
 /fruitshop/src/main/webapp/WEB-INF/Command.properties
 /fruitshop/src/main/java/common/controller/
 .DS_Store
+.classpath
