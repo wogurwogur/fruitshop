@@ -183,13 +183,7 @@
 
 				</table>
 			</div>
-			<%--    
-          <div>
-              <button onclick="goGaib()">type이 없으면 submit 임</button>&nbsp; 
-              <button type="button" onclick="goGaib()">type이 button 인것</button>&nbsp;
-              <button type="submit">type이 submit 인 것</button>
-          </div>
-       --%>
+
 		</div>
 	</form>
 </div>
