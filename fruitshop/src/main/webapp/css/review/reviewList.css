@@ -1,0 +1,152 @@
+
+/* 상단 메뉴 슬라이드바 시작 */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: whitesmoke;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #ccc;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  /* 상단 메뉴 슬라이드바 끝  */
+
+/* 푸터 시작 */
+div#footer {
+	background-color: black;
+	color: white;
+
+}
+
+div#company_info {
+	display: flex;
+}
+
+div#company_info > div {
+	margin: 0 auto;
+}
+
+div#company_info > div:last-child {
+	text-align: right;
+}
+
+
+div#company_info > div > p {
+	font-family: Arial;
+	/* font-weight: bold; */
+}
+
+div#company_info > div:last-child > p {
+	font-weight: bold;
+}
+
+/* 푸터 끝 */
+
+
+
+/* 컨테이너 시작 */
+
+div#container {
+	border: solid 0px red;
+	width : 83%;
+	margin : auto;
+}
+
+div#container > h2{
+	border: solid 0px red;
+}
+
+div#container > div:nth-child(2) > ul {
+	border: solid 0px red;
+	width: 70%;
+	margin: auto;
+	padding: auto;
+}
+
+div#container > div:nth-child(2) > ul > li {
+
+	margin: 2% auto auto auto;
+	
+	text-align: center;
+}
+
+.nav-link {
+  color: black;
+}
+
+.page-link {
+  color: black;
+}
+
+
+#container > div:nth-child(3) > div > div > div:nth-child(5) > select {
+	width:7%;
+	height:37px;
+}
+
+#container > div:nth-child(3) > div > div > div:nth-child(5) > input[type=text]{
+	height:37px;
+}
+
+
+/*글번호 제목 작성자 작성일자 조회수 css */
+
+#container > div:nth-child(3) > div > div > table > tbody > tr{
+	text-align:center;
+}
+#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(1){
+	width: 10%;
+	border: solid 0px red;
+}
+
+#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(2){
+	width: 50%;
+	border: solid 0px red;
+}
+
+
+#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(3){
+	width: 10%;
+	border: solid 0px red;
+}
+
+#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(4){
+	width: 15%;
+	border: solid 0px red;
+}
+
+#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(5){
+	width: 10%;
+	border: solid 0px red;
+}
+
+/* 컨테이너 끝 */
