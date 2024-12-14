@@ -42,14 +42,14 @@
         <!-- 슬라이드 메뉴 시작 -->
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#">Fruit Shop</a>
+            <a href="<%= request.getContextPath()%>/product/productList.ddg">Fruit Shop</a>
             <a href="#">Brand Story</a>
-            <a href="#">Community</a>
+            <a href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
             <br>
-            <a href="#">Login</a>
+            <a href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
             <a href="#">My Page</a>
             <a href="#">Order List</a>
-            <a href="#">Cart</a>
+            <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
         </div>
         <!-- 슬라이드 메뉴 끝 -->
         
@@ -75,7 +75,7 @@
         </div> 
 
         <div class="collapse navbar-collapse" style="margin-left: 1%;">
-            <img src="<%= request.getContextPath() %>/images/index/logo_header.png">
+            <a href="<%= request.getContextPath()%>"><img src="<%= request.getContextPath() %>/images/index/logo_header.png"></a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">

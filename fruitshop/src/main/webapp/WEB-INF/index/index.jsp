@@ -1,15 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/javascript">
-function wishToggle() {
-	
-	alert($(e.target).parent().html());
-}
-</script>
 
 <jsp:include page="../common/header.jsp"></jsp:include>
+
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 	
@@ -68,25 +64,25 @@ function wishToggle() {
     <div style="display: flex;">
     	<%-- 반복문 돌려야 함 --%>
         <div class="mx-auto">
-        	<a href="#" class="product">
+        	<a href="<%= request.getContextPath() %>/product/springProduct.ddg" class="product">
 	            <img src="<%= request.getContextPath() %>/images/index/tomato.png" style="border-radius: 50%;">
 	            <span style="display: block;" class="text-center h4 mt-3">봄</span>
             </a>
         </div>
         <div class="mx-auto">
-	        <a href="#" class="product">
+	        <a href="<%= request.getContextPath() %>/product/summerProduct.ddg" class="product">
 	            <img src="<%= request.getContextPath() %>/images/index/banana.png" style="border-radius: 50%;">
 	            <span style="display: block;" class="text-center h4 mt-3">여름</span>
             </a>
         </div>
         <div class="mx-auto">
-        	<a href="#" class="product">
+        	<a href="<%= request.getContextPath() %>/product/autumnProduct.ddg" class="product">
 	            <img src="<%= request.getContextPath() %>/images/index/melon.png" style="border-radius: 50%;">
 	            <span style="display: block;" class="text-center h4 mt-3">가을</span>
 	        </a>
         </div>
         <div class="mx-auto">
-	        <a href="#" class="product">
+	        <a href="<%= request.getContextPath() %>/product/winterProduct.ddg" class="product">
 	            <img src="<%= request.getContextPath() %>/images/index/orange.png" style="border-radius: 50%;">
 	            <span style="display: block;" class="text-center h4 mt-3">겨울</span>
 	        </a>
@@ -99,9 +95,9 @@ function wishToggle() {
 <%-- 베스트셀러 메뉴 시작 --%>
 <div class="container my-5">
 	<div class="mb-5" style="display: flex;">
-    	<div class="h2">Best Seller</div>
+    	<div class="h2">New Arrivals</div>
     	<div style="margin-left: auto;">
-      		<span class="btn btn-outline-secondary">상품보러가기&nbsp;&gt;</span>
+      		<a href="<%= request.getContextPath() %>/product/newArrivals.ddg"><span class="btn btn-outline-secondary">상품보러가기&nbsp;&gt;</span></a>
       	</div>
 	</div>
       <div style="display: flex;">
