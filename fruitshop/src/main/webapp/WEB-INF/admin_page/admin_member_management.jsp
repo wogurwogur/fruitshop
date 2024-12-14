@@ -47,11 +47,12 @@ div#admin_top_nav_center{
   z-index: 1;
 }
 
-.dropdown-content a {
+.dropdown-content button {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+  border: none;
 }
 
 .dropdown-content a:hover {background-color: #ddd;}
@@ -83,19 +84,21 @@ form.example button {
   border-left: none;
   cursor: pointer;
 }
+
+
 /* search end  */
 </style>
 
 <%-- div top nav start --%>
-<div class="container" id="admin_top_nav">
+<div class="container-fluid " id="admin_top_nav">
 
 	<%-- dropdown div start --%>
 	<div class="dropdown">
-	  <button class="dropbtn">Dropdown</button>
+	  <button class="dropbtn">정렬</button>
 	  <div class="dropdown-content">
-	    <a href="#">Link 1</a>
-	    <a href="#">Link 2</a>
-	    <a href="#">Link 3</a>
+	    <button type="button">징계받은 회원</button>
+	    <button type="button">----</button>
+	    <button type="button">----</button>
 	  </div>
 	</div>
 	<%-- dropdown div end --%>
@@ -120,8 +123,27 @@ form.example button {
 </div>
 <%-- div top nav end --%>
 
-<div class="container">
+<div class="container-fluid ">
 	
-	회원리스트
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
 	
 </div>

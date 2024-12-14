@@ -11,6 +11,7 @@ public class ManagementController extends AbstractController {
 		
 		String ctxPath = request.getContextPath();
 		
+		
 		request.setAttribute("adminpage_val", "admin_member_management");
 		
 		super.setRedirect(false);
