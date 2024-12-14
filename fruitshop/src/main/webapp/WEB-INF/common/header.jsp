@@ -23,9 +23,19 @@
 <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
 
 <%-- Custom CSS --%>
-<link rel="stylesheet" href="<%= request.getContextPath()%>/css/index/index.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/index/header.css">
 
 <script type="text/javascript">
+
+	$(document).ready(()=> {
+		$("a.menu").hover(function(e) {
+			//alert("야야호");
+			$(e.target).css({"color": "red", "transition": '0.75s'});
+		}, function(e) {
+			$(e.target).css({"color": "black", "transition": '0.75s'});
+		})
+	});
+
 	function openNav() {
 		document.getElementById("mySidenav").style.width = "15%";
 	}
@@ -43,12 +53,12 @@
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="<%= request.getContextPath()%>/product/productList.ddg">Fruit Shop</a>
-            <a href="#">Brand Story</a>
+            <a href="#">Team Story</a>
             <a href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
             <br>
             <a href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
             <a href="#">My Page</a>
-            <a href="#">Order List</a>
+            <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
             <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
         </div>
         <!-- 슬라이드 메뉴 끝 -->
@@ -59,7 +69,7 @@
         
         
         
-        <div style="margin-left: 11%;" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div style="margin-left: 10%;" class="collapse navbar-collapse" id="navbarSupportedContent">
         	<span style="font-size:20px;cursor:pointer;" onclick="openNav()">&#9776;</span>
             <ul class="navbar-nav mr-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
                 <li class="nav-item active ml-4">
@@ -74,11 +84,11 @@
             </ul>
         </div> 
 
-        <div class="collapse navbar-collapse" style="margin-left: 1%;">
+        <div class="collapse navbar-collapse" style="margin-left: 6%;">
             <a href="<%= request.getContextPath()%>"><img src="<%= request.getContextPath() %>/images/index/logo_header.png"></a>
         </div>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div style="margin-left: 5%;" class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
                 <li class="nav-item active mr-3">
                     <a class="nav-link menu" href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
@@ -87,10 +97,10 @@
                     <a class="nav-link menu" href="#">My Page</a>
                 </li>
                 <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="#">Order List</a>
+                    <a class="nav-link menu" href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
                 </li>
-                <li class="nav-item active" style="margin-top: 2%;">
-                    <a class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
+                <li class="nav-item active">
+                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
                     	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
                         <i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
                     </a>

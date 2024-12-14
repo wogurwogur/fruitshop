@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+/* 주문내역 메뉴바 */
+div#order_filter {
+	border: solid 0px blue;
+	display: flex;
+	width: 70%;
+	margin: 0 auto;
+}
+
+div.order_title {
+	width: 18%;
+}
+
+
+/* 주문내역 메뉴바 */
+div#order_filter div {
+	display: inline-block;
+  	color: black;
+  	text-align: center;
+  	padding: 15px;
+  	text-decoration: none;
+  	font-size: 12pt;
+  	font-family: 'Noto Sans KR', sans-serif;
+}
+
+div.order_title {
+	border-top: solid 0.5px #c0c0c0;
+	
+}
+div.order_title:nth-child(1), div.order_title:nth-child(2), div.order_title:nth-child(3) {
+	border-left: solid 0.5px #c0c0c0;
+}
+
+div#order_title_nbsp {
+	border: solid 0.5px #c0c0c0;
+	width: 46%;
+	background-color: #eee;
+}
+
+
+div#order_filter div.order_title:hover {
+  	cursor: pointer;
+}
+
+div#order_filter div.active {
+  	background-color: black;
+  	color: white;
+	font-weight: bold;
+}
+/* 주문내역 메뉴바 끝 */
+
+
+
+/* 기간설정구역 시작 */
+div#order_time {
+	border: solid 1px black;
+	width: 70%;
+	margin: 0 auto;
+	display: flex;
+}
+
+/* 기간설정구역 끝 */

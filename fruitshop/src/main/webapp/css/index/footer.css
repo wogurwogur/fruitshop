@@ -19,7 +19,7 @@ div#company_info > div:last-child {
 
 div#company_info {
 	
-	width: 86%;
+	width: 92%;
 	/* margin-left: 5%; */
 	margin:0 auto;
 	margin-bottom:2.3%;
@@ -27,8 +27,7 @@ div#company_info {
 }
 
 div#team_info {
-	
-	padding-right: 3%;
+	padding-right: 5%;
 }
 
 div#company_info > div  p {
@@ -39,4 +38,8 @@ div#company_info > div  p {
 
 div#company_info > div:last-child > p {
 	font-weight: bold;
+}
+
+p.info:hover {
+	cursor: pointer;
 }
