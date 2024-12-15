@@ -2,26 +2,109 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
 
 <jsp:include page="../common/header.jsp"></jsp:include>
+
+<%-- <script type="text/javascript" src="<%= request.getContextPath() %>/js/login/login.js"></script> --%>
 
 <script type="text/javascript">
 	$(()=>{
 		
 		$("button#btnRegister").click(()=>{
-			
-			location.href="<%= request.getContextPath()%>/member/memberRegister.ddg";
+			location.href="<%=request.getContextPath()%>/member/memberRegister.ddg";
 		});
+
+	    $("button#btnLogin").click( e => {
+	        goLogin();
+	    });
+
+	    $("input#loginPasswd").bind("keyup", e => {
+	        if(e.keyCode == 13) { 
+	            goLogin();
+	        } 
+	    });
+		
+		
+		
+		
+		
+		if( ${!empty sessionScope.loginuser} ) { 
+			
+			location.href="<%=request.getContextPath()%>/index.ddg";
+		}
+		
+		
+		if( ${empty sessionScope.loginuser} ) {
+			
+			const loginUserid = localStorage.getItem('saveid');
+			
+			if(loginUserid != null) { 
+				$("input#loginUserid").val(loginUserid);
+				$("input:checkbox[id='saveid']").prop("checked", true);
+				$("input#loginPasswd").focus();
+			}
+		}
 		
 	});
+	
+	
+	
+	// 로그인을 처리하는 함수
+	function goLogin() {
+
+	    const userid = $("input#loginUserid");
+	    if(userid.val().trim() == "") {
+	        alert("아이디를 입력하세요");
+	        return;
+	    }
+
+	    const pwd = $("input#loginPasswd");
+	    if(pwd.val().trim() == "") {
+	        alert("암호를 입력하세요");
+	        return;
+	    }
+
+		if($("input:checkbox[id='saveid']").prop("checked")) {
+			alert("아이디 저장 체크");
+			localStorage.setItem('saveid', userid.val());
+			
+		}
+		else {
+			localStorage.removeItem("saveid");
+		}
+		
+	    const frm = document.loginFrm;
+	    frm.method="post";
+	    frm.submit();
+	}
 
 
+	// 로그아웃을 처리하는 함수
+	function goLogOut(ctx_Path) {
+
+	    // 로그아웃을 처리해주는 페이지로 이동
+	    location.href=`${ctx_Path}/login/logout.ddg`;
+	    
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 
 <div class="container">
 
-	<form class="loginFrm" action="" method="post">
+	<form name="loginFrm" action="<%=request.getContextPath()%>/login/login.ddg" method="post">
 	
 		<div style="width:450px; margin : 10px auto;">
 		
@@ -39,7 +122,7 @@
 						</tr>
 						<tr>
 							<td>
-								<input type="password" name="pwd" id="loginPwd" placeholder="비밀번호" style="width:450px; height:50px; line-height:50px; margin:5px 0; padding-left:10px; font-size: 16px;"/>	
+								<input type="password" name="passwd" id="loginPasswd" placeholder="비밀번호" style="width:450px; height:50px; line-height:50px; margin:5px 0; padding-left:10px; font-size: 16px;"/>	
 							</td>
 						</tr>
 					</tbody>
@@ -48,11 +131,12 @@
 			
 			<div style="margin : 10px auto;">
 				<span class="" style="height:50px; line-height:50px;">
-	        		&nbsp;<img src="//img.echosting.cafe24.com/design/skin/default/member/ico_access.gif" alt="보안접속"> 보안접속       
+					<input type="checkbox" id="saveid" />&nbsp;<label for="saveid">아이디 저장</label>&nbsp;&nbsp;
+	        		<img src="//img.echosting.cafe24.com/design/skin/default/member/ico_access.gif" alt="보안접속"> 보안접속       
 	        	</span>     
 	        	<span class="btn float-right"  style="height:50px; line-height:40px;">
 	            	<a href="" id="idFind" class="">아이디찾기</a> / 
-	            	<a href="" id="pwdFind" class="">비밀번호찾기</a>
+	            	<a href="" id="passwdFind" class="">비밀번호찾기</a>
 	            </span>
 	        </div>
 			<div class="text-center" style="margin-bottom:100px;" >

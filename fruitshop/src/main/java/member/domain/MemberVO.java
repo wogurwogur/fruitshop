@@ -23,9 +23,14 @@ public class MemberVO {
 	private int status; 				// 회원가입상태(0:탈퇴 / 1:가입중)
 	private int role;					// 회원권한(1:일반유저 / 2: 관리자)
 	
+	private int cart_cnt;               // 장바구니에 담긴 상품 갯수
+	
+	
 	private boolean requirePwdChange = false;
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false
+	
+	             
 	
 	/////////////////////////////////////////////////////////////////////
 	
@@ -173,6 +178,14 @@ public class MemberVO {
 
 	public void setRole(int role) {
 		this.role = role;
+	}
+	
+	public int getCart_cnt() {
+		return cart_cnt;
+	}
+
+	public void setCart_cnt(int cart_cnt) {
+		this.cart_cnt = cart_cnt;
 	}
 	
 	//////////////////////////////////////////////////////////////
