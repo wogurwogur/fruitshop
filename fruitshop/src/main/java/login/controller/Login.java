@@ -25,7 +25,7 @@ public class Login extends AbstractController {
 		if("get".equalsIgnoreCase(request.getMethod())) {
 
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/login/login.jsp");
+			super.setViewPage("/WEB-INF/login/idFind.jsp");
 		}
 		
 		if("post".equalsIgnoreCase(request.getMethod())) {
@@ -41,81 +41,91 @@ public class Login extends AbstractController {
 			paraMap.put("clientip",clientip);
 			
 			try {
-				MemberVO loginuser = mdao.login(paraMap);
+				boolean isExistUser = mdao.isExistUser(userid);
 				
-				if(loginuser != null) { 
-			        	
-			        if(loginuser.getIdle() == 0) { 
-			        		
-			        	message =  "로그인을 한지 1년이 지나서 휴면상태로 되었습니다.";
-				        loc = request.getContextPath()+"/index.ddg";
-			        		
-				        request.setAttribute("message", message);
-				        request.setAttribute("loc", loc);
+				if(isExistUser) { //존재하는 아이디인 경우
+					
+					
+					MemberVO loginuser = mdao.login(paraMap);
+					
+					if(loginuser != null) { // 비밀번호가 맞을때
+				        	
+				        if(loginuser.getIdle() == 0) { 
+				        		
+				        	message = "로그인을 한지 1년이 지나서 휴면상태로 되었습니다.";
+					        loc = request.getContextPath()+"/index.ddg";
+				        		
+					        request.setAttribute("message", message);
+					        request.setAttribute("loc", loc);
+					        
+					        super.setRedirect(false);
+					        super.setViewPage("/WEB-INF/common/msg.jsp");
+					            
+					        return;
+				        }
 				        
-				        super.setRedirect(false);
-				        super.setViewPage("/WEB-INF/common/msg.jsp");
-				            
-				        return;
-			        }
-			        
-			        HttpSession session = request.getSession();
-		        	
-		        	session.setAttribute("loginuser", loginuser);
-  
-		        	if(loginuser.isRequirePwdChange()) { 
-		        		
-		        		message = "비밀번호를 변경하신지 3개월이 지났습니다."; 
-		                loc = request.getContextPath()+"/index.ddg";
-
-		                request.setAttribute("message", message);
-		                request.setAttribute("loc", loc);
-		                
-		                super.setRedirect(false); 
-		                super.setViewPage("/WEB-INF/common/msg.jsp");
-		                
-		                return;
-			        
-		        	}
-		        	else { 
-		        		super.setRedirect(true);
-		                super.setViewPage(request.getContextPath()+"/index.ddg");
-
-		                return;
-		        	}
-			        
+				        HttpSession session = request.getSession();
 			        	
-			    }
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+			        	session.setAttribute("loginuser", loginuser);
+	  
+			        	if(loginuser.isRequirePwdChange()) { 
+			        		
+			        		message = "비밀번호를 변경하신지 3개월이 지났습니다."; 
+			                loc = request.getContextPath()+"/index.ddg";
+
+			                request.setAttribute("message", message);
+			                request.setAttribute("loc", loc);
+			                
+			                super.setRedirect(false); 
+			                super.setViewPage("/WEB-INF/common/msg.jsp");
+			                
+			                return;
+				        
+			        	}
+			        	else { 
+			        		super.setRedirect(true);
+			                super.setViewPage(request.getContextPath()+"/index.ddg");
+
+			                return;
+			        	}
+				        	
+				    }
+					else { // 비밀번호가 틀렸을때
+					      
+						message = "비밀번호가 틀렸습니다.";
+			            loc = "javascript:history.back()";
+			            
+			            request.setAttribute("message", message);
+			            request.setAttribute("loc", loc);
+			            
+			            super.setRedirect(false); 
+			            super.setViewPage("/WEB-INF/common/msg.jsp");
+			        }
+					
+				}
+				else { // 존재하지 않는 아이디 일때
+					
+					message = "회원에 없는 아이디입니다.";
+		            loc = "javascript:history.back()";
+		            
+		            request.setAttribute("message", message);
+		            request.setAttribute("loc", loc);
+		            
+		            super.setRedirect(false); 
+		            super.setViewPage("/WEB-INF/common/msg.jsp");
+				}
 				
 				
 			} catch (SQLException e) { // SQL 에러
 				e.printStackTrace();
 				message = "로그인 오류";
 				
-				// 자바 스크립트를 이용한 이전페이지로 이동하는것
 				loc = "javascript:history.back()";
-			} 			
-		}	
+				super.setRedirect(false); 
+                super.setViewPage("/WEB-INF/common/msg.jsp");
+			} 		
+			
+			
+		} // post
 	}
 }
