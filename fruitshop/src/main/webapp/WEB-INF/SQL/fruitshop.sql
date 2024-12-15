@@ -1,21 +1,21 @@
----- **** fruitshop ì„¸ë¯¸ì›¹í”„ë¡œì íŠ¸ ì—ì„œ ì‘ì—…í•œ ê²ƒ **** ----
+---- **** fruitshop ?„¸ë¯¸ì›¹?”„ë¡œì ?Š¸ ?—?„œ ?‘?—…?•œ ê²? **** ----
 
--- ì˜¤ë¼í´ ê³„ì • ìƒì„±ì„ ìœ„í•´ì„œëŠ” SYS ë˜ëŠ” SYSTEM ìœ¼ë¡œ ì—°ê²°í•˜ì—¬ ì‘ì—…ì„ í•´ì•¼ í•©ë‹ˆë‹¤. [SYS ì‹œì‘] --
+-- ?˜¤?¼?´ ê³„ì • ?ƒ?„±?„ ?œ„?•´?„œ?Š” SYS ?˜?Š” SYSTEM ?œ¼ë¡? ?—°ê²°í•˜?—¬ ?‘?—…?„ ?•´?•¼ ?•©?‹ˆ?‹¤. [SYS ?‹œ?‘] --
 show user;
--- USERì´(ê°€) "SYS"ì…ë‹ˆë‹¤.
+-- USER?´(ê°?) "SYS"?…?‹ˆ?‹¤.
 
--- ì˜¤ë¼í´ ê³„ì • ìƒì„±ì‹œ ê³„ì •ëª… ì•ì— c## ë¶™ì´ì§€ ì•Šê³  ìƒì„±í•˜ë„ë¡ í•˜ê² ìŠµë‹ˆë‹¤.
+-- ?˜¤?¼?´ ê³„ì • ?ƒ?„±?‹œ ê³„ì •ëª? ?•?— c## ë¶™ì´ì§? ?•Šê³? ?ƒ?„±?•˜?„ë¡? ?•˜ê² ìŠµ?‹ˆ?‹¤.
 alter session set "_ORACLE_SCRIPT"=true;
--- Sessionì´(ê°€) ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤.
+-- Session?´(ê°?) ë³?ê²½ë˜?—ˆ?Šµ?‹ˆ?‹¤.
 
--- ì˜¤ë¼í´ ê³„ì •ëª…ì€ MYMVC_USER ì´ê³  ì•”í˜¸ëŠ” gclass ì¸ ì‚¬ìš©ì ê³„ì •ì„ ìƒì„±í•©ë‹ˆë‹¤.
+-- ?˜¤?¼?´ ê³„ì •ëª…ì? MYMVC_USER ?´ê³? ?•”?˜¸?Š” gclass ?¸ ?‚¬?š©? ê³„ì •?„ ?ƒ?„±?•©?‹ˆ?‹¤.
 create user fruitshop_user identified by gclass default tablespace users;
--- User MYMVC_USERì´(ê°€) ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.
+-- User MYMVC_USER?´(ê°?) ?ƒ?„±?˜?—ˆ?Šµ?‹ˆ?‹¤.
 
--- ìœ„ì—ì„œ ìƒì„±ë˜ì–´ì§„ MYMVC_USER ì´ë¼ëŠ” ì˜¤ë¼í´ ì¼ë°˜ì‚¬ìš©ì ê³„ì •ì—ê²Œ ì˜¤ë¼í´ ì„œë²„ì— ì ‘ì†ì´ ë˜ì–´ì§€ê³ ,
--- í…Œì´ë¸” ìƒì„± ë“±ë“±ì„ í•  ìˆ˜ ìˆë„ë¡ ì—¬ëŸ¬ê°€ì§€ ê¶Œí•œì„ ë¶€ì—¬í•´ì£¼ê² ìŠµë‹ˆë‹¤.
+-- ?œ„?—?„œ ?ƒ?„±?˜?–´ì§? MYMVC_USER ?´?¼?Š” ?˜¤?¼?´ ?¼ë°˜ì‚¬?š©? ê³„ì •?—ê²? ?˜¤?¼?´ ?„œë²„ì— ? ‘?†?´ ?˜?–´ì§?ê³?,
+-- ?…Œ?´ë¸? ?ƒ?„± ?“±?“±?„ ?•  ?ˆ˜ ?ˆ?„ë¡? ?—¬?Ÿ¬ê°?ì§? ê¶Œí•œ?„ ë¶??—¬?•´ì£¼ê² ?Šµ?‹ˆ?‹¤.
 grant connect, resource, create view, unlimited tablespace to fruitshop_user;
--- Grantì„(ë¥¼) ì„±ê³µí–ˆìŠµë‹ˆë‹¤.
+-- Grant?„(ë¥?) ?„±ê³µí–ˆ?Šµ?‹ˆ?‹¤.
 
 -----------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ grant connect, resource, create view, unlimited tablespace to fruitshop_user;
 show user;
 
 
-/* ë©”ì¸í˜ì´ì§€ ë°°ë„ˆ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ë©”ì¸?˜?´ì§? ë°°ë„ˆ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_main_page
 (
   imgno         NUMBER          NOT NULL
@@ -46,33 +46,33 @@ INSERT INTO tbl_main_page(imgno, imgname, imgfilename) VALUES (seq_main_image.NE
 INSERT INTO tbl_main_page(imgno, imgname, imgfilename) VALUES (seq_main_image.NEXTVAL, 'delivery', 'main_delivery.png');
 
 COMMIT;
-/* ë©”ì¸í˜ì´ì§€ ë°°ë„ˆ í…Œì´ë¸” ë */
+/* ë©”ì¸?˜?´ì§? ë°°ë„ˆ ?…Œ?´ë¸? ? */
 
 
 
-/* íšŒì› í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ?šŒ?› ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_member
-( user_no           NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, userid            VARCHAR2(20)    NOT NULL        /* íšŒì›ì•„ì´ë”” */
-, passwd            VARCHAR2(200)   NOT NULL        /* íšŒì›ë¹„ë°€ë²ˆí˜¸ */
-, name              NVARCHAR2(10)   NOT NULL        /* íšŒì›ì´ë¦„ */
-, birthday          VARCHAR2(20)    NOT NULL        /* ìƒë…„ì›”ì¼ */
-, email             VARCHAR2(200)   NOT NULL        /* ì´ë©”ì¼ */
-, tel               VARCHAR2(15)                    /* ì—°ë½ì²˜ */
-, postcode          VARCHAR2(5)                     /* ìš°í¸ë²ˆí˜¸ */
+( user_no           NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, userid            VARCHAR2(20)    NOT NULL        /* ?šŒ?›?•„?´?”” */
+, passwd            VARCHAR2(200)   NOT NULL        /* ?šŒ?›ë¹„ë?ë²ˆí˜¸ */
+, name              NVARCHAR2(10)   NOT NULL        /* ?šŒ?›?´ë¦? */
+, birthday          VARCHAR2(20)    NOT NULL        /* ?ƒ?…„?›”?¼ */
+, email             VARCHAR2(200)   NOT NULL        /* ?´ë©”ì¼ */
+, tel               VARCHAR2(15)                    /* ?—°?½ì²? */
+, postcode          VARCHAR2(5)                     /* ?š°?¸ë²ˆí˜¸ */
 , address           VARCHAR2(200)                   /* ì£¼ì†Œ */
-, detailaddress     VARCHAR2(200)                   /* ìƒì„¸ì£¼ì†Œ */
-, extraadress       VARCHAR2(200)                   /* ì°¸ê³ ì‚¬í•­ */
-, gender            NVARCHAR2(2)                    /* ì„±ë³„(ë‚¨/ì—¬) */
-, point             NUMBER    DEFAULT 0             /* ì ë¦½ê¸ˆ */
-, registerday       DATE DEFAULT SYSDATE NOT NULL   /* ê°€ì…ì¼ */
-, lastpwdchangedate DATE DEFAULT SYSDATE NOT NULL   /* ë§ˆì§€ë§‰ ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì¼ */
-, idle              NUMBER(1) DEFAULT 1  NOT NULL   /* íœ´ë©´ìƒíƒœ(0:íœ´ë©´ì¤‘, 1:í™œë™ì¤‘) */
-, status            NUMBER(1) DEFAULT 1  NOT NULL   /* ê°€ì…ìƒíƒœ(0:íƒˆí‡´, 1:ê°€ì…ì¤‘) */
-, role              NUMBER(1) DEFAULT 1  NOT NULL   /* ìœ ì €ê¶Œí•œ(1:ì¼ë°˜ìœ ì €, 2:ê´€ë¦¬ì) */
+, detailaddress     VARCHAR2(200)                   /* ?ƒ?„¸ì£¼ì†Œ */
+, extraadress       VARCHAR2(200)                   /* ì°¸ê³ ?‚¬?•­ */
+, gender            NVARCHAR2(2)                    /* ?„±ë³?(?‚¨/?—¬) */
+, point             NUMBER    DEFAULT 0             /* ? ë¦½ê¸ˆ */
+, registerday       DATE DEFAULT SYSDATE NOT NULL   /* ê°??…?¼ */
+, lastpwdchangedate DATE DEFAULT SYSDATE NOT NULL   /* ë§ˆì?ë§? ë¹„ë?ë²ˆí˜¸ ë³?ê²½ì¼ */
+, idle              NUMBER(1) DEFAULT 1  NOT NULL   /* ?œ´ë©´ìƒ?ƒœ(0:?œ´ë©´ì¤‘, 1:?™œ?™ì¤?) */
+, status            NUMBER(1) DEFAULT 1  NOT NULL   /* ê°??…?ƒ?ƒœ(0:?ƒˆ?‡´, 1:ê°??…ì¤?) */
+, role              NUMBER(1) DEFAULT 1  NOT NULL   /* ?œ ??ê¶Œí•œ(1:?¼ë°˜ìœ ??, 2:ê´?ë¦¬ì) */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_member_user_no PRIMARY KEY (user_no)
 , CONSTRAINT UQ_tbl_member_userid  UNIQUE (userid)
 , CONSTRAINT UQ_tbl_member_email   UNIQUE (email)
@@ -83,43 +83,43 @@ CREATE TABLE tbl_member
 -- Table TBL_MEMBER created.
 
 
-COMMENT ON TABLE tbl_member IS 'íšŒì› ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_member IS '?šŒ?› ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_member.user_no IS 'íšŒì›ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_member.user_no IS '?šŒ?›ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_member.userid IS 'íšŒì›ì•„ì´ë””';
+COMMENT ON COLUMN tbl_member.userid IS '?šŒ?›?•„?´?””';
 
-COMMENT ON COLUMN tbl_member.passwd IS 'íšŒì›ë¹„ë°€ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_member.passwd IS '?šŒ?›ë¹„ë?ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_member.name IS 'íšŒì›ì´ë¦„';
+COMMENT ON COLUMN tbl_member.name IS '?šŒ?›?´ë¦?';
 
-COMMENT ON COLUMN tbl_member.birthday IS 'ìƒë…„ì›”ì¼';
+COMMENT ON COLUMN tbl_member.birthday IS '?ƒ?…„?›”?¼';
 
-COMMENT ON COLUMN tbl_member.email IS 'ì´ë©”ì¼';
+COMMENT ON COLUMN tbl_member.email IS '?´ë©”ì¼';
 
-COMMENT ON COLUMN tbl_member.tel IS 'ì—°ë½ì²˜';
+COMMENT ON COLUMN tbl_member.tel IS '?—°?½ì²?';
 
-COMMENT ON COLUMN tbl_member.postcode IS 'ìš°í¸ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_member.postcode IS '?š°?¸ë²ˆí˜¸';
 
 COMMENT ON COLUMN tbl_member.address IS 'ì£¼ì†Œ';
 
-COMMENT ON COLUMN tbl_member.detailaddress IS 'ìƒì„¸ì£¼ì†Œ';
+COMMENT ON COLUMN tbl_member.detailaddress IS '?ƒ?„¸ì£¼ì†Œ';
 
-COMMENT ON COLUMN tbl_member.extraadress IS 'ì°¸ê³ ì‚¬í•­';
+COMMENT ON COLUMN tbl_member.extraadress IS 'ì°¸ê³ ?‚¬?•­';
 
-COMMENT ON COLUMN tbl_member.gender IS 'ì„±ë³„(ë‚¨/ì—¬)';
+COMMENT ON COLUMN tbl_member.gender IS '?„±ë³?(?‚¨/?—¬)';
 
-COMMENT ON COLUMN tbl_member.point IS 'ì ë¦½ê¸ˆ';
+COMMENT ON COLUMN tbl_member.point IS '? ë¦½ê¸ˆ';
 
-COMMENT ON COLUMN tbl_member.registerday IS 'ê°€ì…ì¼';
+COMMENT ON COLUMN tbl_member.registerday IS 'ê°??…?¼';
 
-COMMENT ON COLUMN tbl_member.lastpwdchangedate IS 'ë§ˆì§€ë§‰ ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì¼';
+COMMENT ON COLUMN tbl_member.lastpwdchangedate IS 'ë§ˆì?ë§? ë¹„ë?ë²ˆí˜¸ ë³?ê²½ì¼';
 
-COMMENT ON COLUMN tbl_member.idle IS 'íœ´ë©´ìƒíƒœ(0:íœ´ë©´ì¤‘, 1:í™œë™ì¤‘)';
+COMMENT ON COLUMN tbl_member.idle IS '?œ´ë©´ìƒ?ƒœ(0:?œ´ë©´ì¤‘, 1:?™œ?™ì¤?)';
 
-COMMENT ON COLUMN tbl_member.status IS 'ê°€ì…ìƒíƒœ(0:íƒˆí‡´, 1:ê°€ì…ì¤‘)';
+COMMENT ON COLUMN tbl_member.status IS 'ê°??…?ƒ?ƒœ(0:?ƒˆ?‡´, 1:ê°??…ì¤?)';
 
-COMMENT ON COLUMN tbl_member.role IS 'ìœ ì €ê¶Œí•œ(1:ì¼ë°˜ìœ ì €, 2:ê´€ë¦¬ì)';
+COMMENT ON COLUMN tbl_member.role IS '?œ ??ê¶Œí•œ(1:?¼ë°˜ìœ ??, 2:ê´?ë¦¬ì)';
 
 
 CREATE SEQUENCE user_seq
@@ -135,7 +135,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_MEMBER';
-/* íšŒì› í…Œì´ë¸” ë */
+/* ?šŒ?› ?…Œ?´ë¸? ? */
 
 
 
@@ -144,30 +144,30 @@ SELECT column_name, comments
 
 
 
-/* ë¡œê·¸ì¸ ê¸°ë¡ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ë¡œê·¸?¸ ê¸°ë¡ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_loginhistory
-( loghis_no         NUMBER          NOT NULL        /* ë¡œê·¸ì¸ê¸°ë¡ ë²ˆí˜¸ */
-, fk_user_no        NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, login_date        DATE DEFAULT SYSDATE NOT NULL   /* ë¡œê·¸ì¸ì¼ì */
-, clinetip          VARCHAR2(20)    NOT NULL        /* ì ‘ì†ì IPì£¼ì†Œ */
+( loghis_no         NUMBER          NOT NULL        /* ë¡œê·¸?¸ê¸°ë¡ ë²ˆí˜¸ */
+, fk_user_no        NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, login_date        DATE DEFAULT SYSDATE NOT NULL   /* ë¡œê·¸?¸?¼? */
+, clinetip          VARCHAR2(20)    NOT NULL        /* ? ‘?†? IPì£¼ì†Œ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_history_loghis_no   PRIMARY KEY (loghis_no)
 , CONSTRAINT FK_tbl_history_fk_user_no  FOREIGN KEY (fk_user_no) REFERENCES tbl_member(user_no)
 );
 -- Table TBL_LOGINHISTORY created.
 
 
-COMMENT ON TABLE tbl_loginhistory IS 'ë¡œê·¸ì¸ ê¸°ë¡ì´ ë‹´ê¸°ëŠ” í…Œì´ë¸”';
+COMMENT ON TABLE tbl_loginhistory IS 'ë¡œê·¸?¸ ê¸°ë¡?´ ?‹´ê¸°ëŠ” ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_loginhistory.loghis_no IS 'ë¡œê·¸ì¸ ê¸°ë¡ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_loginhistory.loghis_no IS 'ë¡œê·¸?¸ ê¸°ë¡ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_loginhistory.fk_user_no IS 'íšŒì›ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_loginhistory.fk_user_no IS '?šŒ?›ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_loginhistory.login_date IS 'ë¡œê·¸ì¸ ì¼ì';
+COMMENT ON COLUMN tbl_loginhistory.login_date IS 'ë¡œê·¸?¸ ?¼?';
 
-COMMENT ON COLUMN tbl_loginhistory.clinetip IS 'ì ‘ì†ì IPì£¼ì†Œ';
+COMMENT ON COLUMN tbl_loginhistory.clinetip IS '? ‘?†? IPì£¼ì†Œ';
 
 
 
@@ -184,7 +184,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_LOGINHISTORY';
-/* ë¡œê·¸ì¸ ê¸°ë¡ í…Œì´ë¸” ë */
+/* ë¡œê·¸?¸ ê¸°ë¡ ?…Œ?´ë¸? ? */
 
 
 
@@ -193,31 +193,31 @@ SELECT column_name, comments
 
 
 
-/* ê³„ì ˆ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ê³„ì ˆ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_seasons
 ( season_no         NUMBER          NOT NULL        /* ê³„ì ˆë²ˆí˜¸ */
-, season_name       NVARCHAR2(5)    NOT NULL        /* ê³„ì ˆëª…(ë´„/ì—¬ë¦„/ê°€ì„/ê²¨ìš¸) */
-, season_image      VARCHAR2(50)    NOT NULL        /* ê³„ì ˆëŒ€í‘œì´ë¯¸ì§€ */
+, season_name       NVARCHAR2(5)    NOT NULL        /* ê³„ì ˆëª?(ë´?/?—¬ë¦?/ê°??„/ê²¨ìš¸) */
+, season_image      VARCHAR2(50)    NOT NULL        /* ê³„ì ˆ???‘œ?´ë¯¸ì? */
 
 , CONSTRAINT PK_tbl_seasons_season_no   PRIMARY KEY (season_no)
 );
 -- Table TBL_SEASONS created.
 
 
-COMMENT ON TABLE tbl_seasons IS 'ê³„ì ˆ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_seasons IS 'ê³„ì ˆ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
 COMMENT ON COLUMN tbl_seasons.season_no IS 'ê³„ì ˆë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_seasons.season_name IS 'ê³„ì ˆëª…(ë´„/ì—¬ë¦„/ê°€ì„/ê²¨ìš¸)';
+COMMENT ON COLUMN tbl_seasons.season_name IS 'ê³„ì ˆëª?(ë´?/?—¬ë¦?/ê°??„/ê²¨ìš¸)';
 
-COMMENT ON COLUMN tbl_seasons.season_image IS 'ê³„ì ˆëŒ€í‘œì´ë¯¸ì§€';
+COMMENT ON COLUMN tbl_seasons.season_image IS 'ê³„ì ˆ???‘œ?´ë¯¸ì?';
 
 
---INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (1, 'ë´„', 'sping.png');
+--INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (1, 'ë´?', 'sping.png');
 
---INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (2, 'ì—¬ë¦„', 'summer.png');
+--INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (2, '?—¬ë¦?', 'summer.png');
 
---INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (3, 'ê°€ì„', 'autumn.png');
+--INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (3, 'ê°??„', 'autumn.png');
 
 --INSERT INTO tbl_seasons(season_no, season_name, season_image) VALUES (4, 'ê²¨ìš¸', 'winter.png');
 
@@ -227,7 +227,7 @@ COMMENT ON COLUMN tbl_seasons.season_image IS 'ê³„ì ˆëŒ€í‘œì´ë¯¸ì§€';
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_SEASONS';
-/* ê³„ì ˆ í…Œì´ë¸” ë */
+/* ê³„ì ˆ ?…Œ?´ë¸? ? */
 
 
 
@@ -236,40 +236,40 @@ SELECT column_name, comments
 
 
 
-/* ìƒí’ˆ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ?ƒ?’ˆ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_products
-( prod_no           NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
-, prod_name         NVARCHAR2(20)   NOT NULL        /* ìƒí’ˆëª… */
-, prod_cost         NUMBER          NOT NULL        /* ìƒí’ˆì›ê°€ */
-, prod_price        NUMBER          NOT NULL        /* ìƒí’ˆê°€ê²© */
-, prod_thumnail     VARCHAR2(100)                   /* ìƒí’ˆì¸ë„¤ì¼ */
-, prod_descript     VARCHAR2(100)                   /* ìƒí’ˆ ì„¤ëª… ìƒì„¸ë‚´ìš© */
-, prod_inventory    NUMBER(1)       DEFAULT 0       /* ìƒí’ˆì¬ê³ ëŸ‰ */
+( prod_no           NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
+, prod_name         NVARCHAR2(20)   NOT NULL        /* ?ƒ?’ˆëª? */
+, prod_cost         NUMBER          NOT NULL        /* ?ƒ?’ˆ?›ê°? */
+, prod_price        NUMBER          NOT NULL        /* ?ƒ?’ˆê°?ê²? */
+, prod_thumnail     VARCHAR2(100)                   /* ?ƒ?’ˆ?¸?„¤?¼ */
+, prod_descript     VARCHAR2(100)                   /* ?ƒ?’ˆ ?„¤ëª? ?ƒ?„¸?‚´?š© */
+, prod_inventory    NUMBER(1)       DEFAULT 0       /* ?ƒ?’ˆ?¬ê³ ëŸ‰ */
 , fk_season_no      NUMBER          NOT NULL        /* ê³„ì ˆë²ˆí˜¸ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_products_prod_no        PRIMARY KEY (prod_no)
 , CONSTRAINT FK_tbl_products_fk_season_no   FOREIGN KEY (fk_season_no) REFERENCES tbl_seasons(season_no)
 );
 -- Table TBL_PRODUCTS created.
 
 
-COMMENT ON TABLE tbl_products IS 'ìƒí’ˆ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_products IS '?ƒ?’ˆ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_products.prod_no IS 'ìƒí’ˆë²ˆí˜¸';
+COMMENT ON COLUMN tbl_products.prod_no IS '?ƒ?’ˆë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_products.prod_name IS 'ìƒí’ˆëª…';
+COMMENT ON COLUMN tbl_products.prod_name IS '?ƒ?’ˆëª?';
 
-COMMENT ON COLUMN tbl_products.prod_cost IS 'ìƒí’ˆì›ê°€';
+COMMENT ON COLUMN tbl_products.prod_cost IS '?ƒ?’ˆ?›ê°?';
 
-COMMENT ON COLUMN tbl_products.prod_price IS 'ìƒí’ˆê°€ê²©';
+COMMENT ON COLUMN tbl_products.prod_price IS '?ƒ?’ˆê°?ê²?';
 
-COMMENT ON COLUMN tbl_products.prod_thumnail IS 'ìƒí’ˆì¸ë„¤ì¼';
+COMMENT ON COLUMN tbl_products.prod_thumnail IS '?ƒ?’ˆ?¸?„¤?¼';
 
-COMMENT ON COLUMN tbl_products.prod_descript IS 'ìƒí’ˆ ì„¤ëª… ìƒì„¸ë‚´ìš©';
+COMMENT ON COLUMN tbl_products.prod_descript IS '?ƒ?’ˆ ?„¤ëª? ?ƒ?„¸?‚´?š©';
 
-COMMENT ON COLUMN tbl_products.prod_inventory IS 'ìƒí’ˆì¬ê³ ëŸ‰';
+COMMENT ON COLUMN tbl_products.prod_inventory IS '?ƒ?’ˆ?¬ê³ ëŸ‰';
 
 COMMENT ON COLUMN tbl_products.fk_season_no IS 'ê³„ì ˆë²ˆí˜¸';
 
@@ -288,7 +288,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_PRODUCTS';
-/* ìƒí’ˆ í…Œì´ë¸” ë */
+/* ?ƒ?’ˆ ?…Œ?´ë¸? ? */
 
 
 
@@ -297,42 +297,42 @@ SELECT column_name, comments
 
 
 
-/* ë°°ì†¡ì§€ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ë°°ì†¡ì§? ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_ship
-( ship_no            NUMBER          NOT NULL        /* ë°°ì†¡ì§€ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, ship_name          NVARCHAR2(10)   NOT NULL        /* ë°°ì†¡ì§€ëª… */
-, ship_postcode      VARCHAR2(5)                     /* ìš°í¸ë²ˆí˜¸ */
+( ship_no            NUMBER          NOT NULL        /* ë°°ì†¡ì§?ë²ˆí˜¸ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, ship_name          NVARCHAR2(10)   NOT NULL        /* ë°°ì†¡ì§?ëª? */
+, ship_postcode      VARCHAR2(5)                     /* ?š°?¸ë²ˆí˜¸ */
 , ship_address       VARCHAR2(200)                   /* ì£¼ì†Œ */
-, ship_detailaddress VARCHAR2(200)                   /* ìƒì„¸ì£¼ì†Œ */
-, ship_extraadress   VARCHAR2(200)                   /* ì°¸ê³ ì‚¬í•­ */
-, ship_default       NUMBER(1)     DEFAULT 0         /* ê¸°ë³¸ë°°ì†¡ì§€ì„¤ì •ì—¬ë¶€(0:ê·¸ì™¸, 1:ê¸°ë³¸) */
+, ship_detailaddress VARCHAR2(200)                   /* ?ƒ?„¸ì£¼ì†Œ */
+, ship_extraadress   VARCHAR2(200)                   /* ì°¸ê³ ?‚¬?•­ */
+, ship_default       NUMBER(1)     DEFAULT 0         /* ê¸°ë³¸ë°°ì†¡ì§??„¤? •?—¬ë¶?(0:ê·¸ì™¸, 1:ê¸°ë³¸) */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_ship_ship_no      PRIMARY KEY (ship_no)
 , CONSTRAINT FK_tbl_ship_fk_user_no   FOREIGN KEY (fk_user_no) REFERENCES tbl_member(user_no)
 );
 -- Table TBL_SHIP created.
 
 
-COMMENT ON TABLE tbl_ship IS 'ë°°ì†¡ì§€ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_ship IS 'ë°°ì†¡ì§? ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_ship.ship_no IS 'ë°°ì†¡ì§€ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_ship.ship_no IS 'ë°°ì†¡ì§?ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_ship.fk_user_no IS 'íšŒì›ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_ship.fk_user_no IS '?šŒ?›ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_ship.ship_name IS 'ë°°ì†¡ì§€ëª…';
+COMMENT ON COLUMN tbl_ship.ship_name IS 'ë°°ì†¡ì§?ëª?';
 
-COMMENT ON COLUMN tbl_ship.ship_postcode IS 'ë°°ì†¡ì§€ìš°í¸ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_ship.ship_postcode IS 'ë°°ì†¡ì§??š°?¸ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_ship.ship_address IS 'ë°°ì†¡ì§€ì£¼ì†Œ';
+COMMENT ON COLUMN tbl_ship.ship_address IS 'ë°°ì†¡ì§?ì£¼ì†Œ';
 
-COMMENT ON COLUMN tbl_ship.ship_detailaddress IS 'ë°°ì†¡ì§€ ìƒì„¸ì£¼ì†Œ';
+COMMENT ON COLUMN tbl_ship.ship_detailaddress IS 'ë°°ì†¡ì§? ?ƒ?„¸ì£¼ì†Œ';
 
-COMMENT ON COLUMN tbl_ship.ship_extraadress IS 'ë°°ì†¡ì§€ ì°¸ê³ ì‚¬í•­';
+COMMENT ON COLUMN tbl_ship.ship_extraadress IS 'ë°°ì†¡ì§? ì°¸ê³ ?‚¬?•­';
 
-COMMENT ON COLUMN tbl_ship.ship_default IS 'ê¸°ë³¸ë°°ì†¡ì§€ì„¤ì •ì—¬ë¶€(0:ê·¸ì™¸, 1:ê¸°ë³¸)';
+COMMENT ON COLUMN tbl_ship.ship_default IS 'ê¸°ë³¸ë°°ì†¡ì§??„¤? •?—¬ë¶?(0:ê·¸ì™¸, 1:ê¸°ë³¸)';
 
 
 
@@ -349,7 +349,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_SHIP';
-/* ë°°ì†¡ì§€ í…Œì´ë¸” ë */
+/* ë°°ì†¡ì§? ?…Œ?´ë¸? ? */
 
 
 
@@ -357,14 +357,14 @@ SELECT column_name, comments
 
 
 
-/* ì°œëª©ë¡ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ì°œëª©ë¡? ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_wish
-( wish_no            NUMBER          NOT NULL        /* ì°œë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, fk_prod_no         NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
+( wish_no            NUMBER          NOT NULL        /* ì°œë²ˆ?˜¸ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, fk_prod_no         NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_wish_wish_no      PRIMARY KEY (wish_no)
 , CONSTRAINT FK_tbl_wish_fk_user_no   FOREIGN KEY (fk_user_no) REFERENCES tbl_member(user_no)
 , CONSTRAINT FK_tbl_wish_fk_prod_no   FOREIGN KEY (fk_prod_no) REFERENCES tbl_products(prod_no)
@@ -372,13 +372,13 @@ CREATE TABLE tbl_wish
 -- Table TBL_WISH created.
 
 
-COMMENT ON TABLE tbl_wish IS 'ì°œëª©ë¡ ì •ë³´ë¥¼ ë‹´ê³  êº¼ë‚´ëŠ” í…Œì´ë¸”';
+COMMENT ON TABLE tbl_wish IS 'ì°œëª©ë¡? ? •ë³´ë?? ?‹´ê³? êº¼ë‚´?Š” ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_wish.wish_no IS 'ë°°ì†¡ì§€ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_wish.wish_no IS 'ë°°ì†¡ì§?ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_wish.fk_user_no IS 'íšŒì›ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_wish.fk_user_no IS '?šŒ?›ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_wish.fk_prod_no IS 'ìƒí’ˆë²ˆí˜¸';
+COMMENT ON COLUMN tbl_wish.fk_prod_no IS '?ƒ?’ˆë²ˆí˜¸';
 
 
 CREATE SEQUENCE wish_seq
@@ -394,7 +394,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_WISH';
-/* ì°œëª©ë¡ í…Œì´ë¸” ë */
+/* ì°œëª©ë¡? ?…Œ?´ë¸? ? */
 
 
 
@@ -403,19 +403,19 @@ SELECT column_name, comments
 
 
 
-/* êµ¬ë§¤í›„ê¸° í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* êµ¬ë§¤?›„ê¸? ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_reviews
-( review_no          NUMBER          NOT NULL        /* êµ¬ë§¤í›„ê¸°ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, fk_prod_no         NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
-, review_title       NVARCHAR2(100)  NOT NULL        /* êµ¬ë§¤í›„ê¸°ì œëª© */
-, review_contents    NVARCHAR2(200)  NOT NULL        /* êµ¬ë§¤í›„ê¸°ë‚´ìš© */
-, review_status      NUMBER(1)  DEFAULT 1            /* êµ¬ë§¤í›„ê¸°ìƒíƒœ (0:ì‚­ì œ, 1:ê²Œì‹œì¤‘) */
-, review_viewcount   NUMBER     DEFAULT 0            /* êµ¬ë§¤í›„ê¸° ì¡°íšŒìˆ˜ */
-, review_image       VARCHAR2(100)                   /* êµ¬ë§¤í›„ê¸° ì´ë¯¸ì§€ */
+( review_no          NUMBER          NOT NULL        /* êµ¬ë§¤?›„ê¸°ë²ˆ?˜¸ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, fk_prod_no         NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
+, review_title       NVARCHAR2(100)  NOT NULL        /* êµ¬ë§¤?›„ê¸°ì œëª? */
+, review_contents    NVARCHAR2(200)  NOT NULL        /* êµ¬ë§¤?›„ê¸°ë‚´?š© */
+, review_status      NUMBER(1)  DEFAULT 1            /* êµ¬ë§¤?›„ê¸°ìƒ?ƒœ (0:?‚­? œ, 1:ê²Œì‹œì¤?) */
+, review_viewcount   NUMBER     DEFAULT 0            /* êµ¬ë§¤?›„ê¸? ì¡°íšŒ?ˆ˜ */
+, review_image       VARCHAR2(100)                   /* êµ¬ë§¤?›„ê¸? ?´ë¯¸ì? */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_reviews_review_no    PRIMARY KEY (review_no)
 , CONSTRAINT FK_tbl_reviews_fk_user_no   FOREIGN KEY (fk_user_no) REFERENCES tbl_member(user_no)
 , CONSTRAINT FK_tbl_reviews_fk_prod_no   FOREIGN KEY (fk_prod_no) REFERENCES tbl_products(prod_no)
@@ -423,23 +423,23 @@ CREATE TABLE tbl_reviews
 -- Table TBL_REVIEWS created.
 
 
-COMMENT ON TABLE tbl_reviews IS 'êµ¬ë§¤í›„ê¸°ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_reviews IS 'êµ¬ë§¤?›„ê¸°ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_reviews.review_no IS 'í›„ê¸° ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_reviews.review_no IS '?›„ê¸? ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_reviews.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_reviews.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_reviews.fk_prod_no IS 'ìƒí’ˆ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_reviews.fk_prod_no IS '?ƒ?’ˆ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_reviews.review_title IS 'êµ¬ë§¤í›„ê¸°ì œëª©';
+COMMENT ON COLUMN tbl_reviews.review_title IS 'êµ¬ë§¤?›„ê¸°ì œëª?';
 
-COMMENT ON COLUMN tbl_reviews.review_contents IS 'êµ¬ë§¤í›„ê¸°ë‚´ìš©';
+COMMENT ON COLUMN tbl_reviews.review_contents IS 'êµ¬ë§¤?›„ê¸°ë‚´?š©';
 
-COMMENT ON COLUMN tbl_reviews.review_status IS 'êµ¬ë§¤í›„ê¸°ìƒíƒœ (0:ì‚­ì œ, 1:ê²Œì‹œì¤‘)';
+COMMENT ON COLUMN tbl_reviews.review_status IS 'êµ¬ë§¤?›„ê¸°ìƒ?ƒœ (0:?‚­? œ, 1:ê²Œì‹œì¤?)';
 
-COMMENT ON COLUMN tbl_reviews.review_viewcount IS 'êµ¬ë§¤í›„ê¸° ì¡°íšŒìˆ˜';
+COMMENT ON COLUMN tbl_reviews.review_viewcount IS 'êµ¬ë§¤?›„ê¸? ì¡°íšŒ?ˆ˜';
 
-COMMENT ON COLUMN tbl_reviews.review_image IS 'êµ¬ë§¤í›„ê¸° ì´ë¯¸ì§€';
+COMMENT ON COLUMN tbl_reviews.review_image IS 'êµ¬ë§¤?›„ê¸? ?´ë¯¸ì?';
 
 
 
@@ -456,7 +456,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_REVIEWS';
-/* êµ¬ë§¤í›„ê¸° í…Œì´ë¸” ë */
+/* êµ¬ë§¤?›„ê¸? ?…Œ?´ë¸? ? */
 
 
 
@@ -464,16 +464,16 @@ SELECT column_name, comments
 
 
 
-/* êµ¬ë§¤í›„ê¸°ëŒ“ê¸€ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* êµ¬ë§¤?›„ê¸°ëŒ“ê¸? ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_comments
-( comment_no         NUMBER          NOT NULL        /* êµ¬ë§¤í›„ê¸°ëŒ“ê¸€ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, fk_review_no       NUMBER          NOT NULL        /* í›„ê¸°ë²ˆí˜¸ */
-, comment_contents   NVARCHAR2(100)  NOT NULL        /* í›„ê¸°ëŒ“ê¸€ ë‚´ìš© */
-, comments_pwd       VARCHAR2(200)   NOT NULL        /* í›„ê¸°ëŒ“ê¸€ ë¹„ë°€ë²ˆí˜¸ */
+( comment_no         NUMBER          NOT NULL        /* êµ¬ë§¤?›„ê¸°ëŒ“ê¸?ë²ˆí˜¸ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, fk_review_no       NUMBER          NOT NULL        /* ?›„ê¸°ë²ˆ?˜¸ */
+, comment_contents   NVARCHAR2(100)  NOT NULL        /* ?›„ê¸°ëŒ“ê¸? ?‚´?š© */
+, comments_pwd       VARCHAR2(200)   NOT NULL        /* ?›„ê¸°ëŒ“ê¸? ë¹„ë?ë²ˆí˜¸ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_comments_comment_no    PRIMARY KEY (comment_no)
 , CONSTRAINT FK_tbl_comments_fk_user_no    FOREIGN KEY (fk_user_no)   REFERENCES tbl_member(user_no)
 , CONSTRAINT FK_tbl_comments_fk_review_no  FOREIGN KEY (fk_review_no) REFERENCES tbl_reviews(review_no)
@@ -481,17 +481,17 @@ CREATE TABLE tbl_comments
 -- Table TBL_COMMENTS created.
 
 
-COMMENT ON TABLE tbl_comments IS 'êµ¬ë§¤í›„ê¸°ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_comments IS 'êµ¬ë§¤?›„ê¸°ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_comments.comment_no IS 'í›„ê¸°ëŒ“ê¸€ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_comments.comment_no IS '?›„ê¸°ëŒ“ê¸? ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_comments.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_comments.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_comments.fk_review_no IS 'í›„ê¸° ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_comments.fk_review_no IS '?›„ê¸? ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_comments.comment_contents IS 'í›„ê¸°ëŒ“ê¸€ ë‚´ìš©';
+COMMENT ON COLUMN tbl_comments.comment_contents IS '?›„ê¸°ëŒ“ê¸? ?‚´?š©';
 
-COMMENT ON COLUMN tbl_comments.comments_pwd IS 'í›„ê¸°ëŒ“ê¸€ ë¹„ë°€ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_comments.comments_pwd IS '?›„ê¸°ëŒ“ê¸? ë¹„ë?ë²ˆí˜¸';
 
 
 CREATE SEQUENCE comment_seq
@@ -507,7 +507,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_COMMENTS';
-/* êµ¬ë§¤í›„ê¸°ëŒ“ê¸€ í…Œì´ë¸” ë */
+/* êµ¬ë§¤?›„ê¸°ëŒ“ê¸? ?…Œ?´ë¸? ? */
 
 
 
@@ -518,19 +518,19 @@ SELECT column_name, comments
 
 
 
-/* ë¬¸ì˜ê²Œì‹œíŒ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ë¬¸ì˜ê²Œì‹œ?Œ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_qna
 ( qna_no             NUMBER          NOT NULL        /* ë¬¸ì˜ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, fk_prod_no         NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
-, qna_title          NVARCHAR2(100)  NOT NULL        /* ë¬¸ì˜ì œëª© */
-, qna_contents       NVARCHAR2(200)  NOT NULL        /* ë¬¸ì˜ë‚´ìš© */
-, qna_regidate       DATE DEFAULT SYSDATE            /* ë¬¸ì˜ë“±ë¡ì¼ì */
-, qna_status         NUMBER     DEFAULT 1            /* ë¬¸ì˜ê¸€ìƒíƒœ(0:ì‚­ì œ, 1:ê²Œì‹œì¤‘) */
-, qna_viewcount      NUMBER     DEFAULT 0            /* ë¬¸ì˜ê¸€ ì¡°íšŒìˆ˜ */
-, qna_answer         NVARCHAR2(200)                  /* ë‹µë³€ë‚´ìš© */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, fk_prod_no         NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
+, qna_title          NVARCHAR2(100)  NOT NULL        /* ë¬¸ì˜? œëª? */
+, qna_contents       NVARCHAR2(200)  NOT NULL        /* ë¬¸ì˜?‚´?š© */
+, qna_regidate       DATE DEFAULT SYSDATE            /* ë¬¸ì˜?“±ë¡ì¼? */
+, qna_status         NUMBER     DEFAULT 1            /* ë¬¸ì˜ê¸??ƒ?ƒœ(0:?‚­? œ, 1:ê²Œì‹œì¤?) */
+, qna_viewcount      NUMBER     DEFAULT 0            /* ë¬¸ì˜ê¸? ì¡°íšŒ?ˆ˜ */
+, qna_answer         NVARCHAR2(200)                  /* ?‹µë³??‚´?š© */
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_qna_qna_no        PRIMARY KEY (qna_no)
 , CONSTRAINT FK_tbl_qna_fk_user_no    FOREIGN KEY (fk_user_no)   REFERENCES tbl_member(user_no)
 , CONSTRAINT FK_tbl_qna_fk_prod_no    FOREIGN KEY (fk_prod_no)   REFERENCES tbl_products(prod_no)
@@ -539,25 +539,25 @@ CREATE TABLE tbl_qna
 -- Table TBL_QNA created.
 
 
-COMMENT ON TABLE tbl_qna IS 'ë¬¸ì˜ê²Œì‹œíŒ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_qna IS 'ë¬¸ì˜ê²Œì‹œ?Œ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
 COMMENT ON COLUMN tbl_qna.qna_no IS 'ë¬¸ì˜ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_qna.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_qna.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_qna.fk_prod_no IS 'ìƒí’ˆ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_qna.fk_prod_no IS '?ƒ?’ˆ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_qna.qna_title IS 'ë¬¸ì˜ ì œëª©';
+COMMENT ON COLUMN tbl_qna.qna_title IS 'ë¬¸ì˜ ? œëª?';
 
-COMMENT ON COLUMN tbl_qna.qna_contents IS 'ë¬¸ì˜ ë‚´ìš©';
+COMMENT ON COLUMN tbl_qna.qna_contents IS 'ë¬¸ì˜ ?‚´?š©';
 
-COMMENT ON COLUMN tbl_qna.qna_regidate IS 'ë¬¸ì˜ ë“±ë¡ì¼ì';
+COMMENT ON COLUMN tbl_qna.qna_regidate IS 'ë¬¸ì˜ ?“±ë¡ì¼?';
 
-COMMENT ON COLUMN tbl_qna.qna_status IS 'ë¬¸ì˜ê¸€ìƒíƒœ(0:ì‚­ì œ, 1:ê²Œì‹œì¤‘)';
+COMMENT ON COLUMN tbl_qna.qna_status IS 'ë¬¸ì˜ê¸??ƒ?ƒœ(0:?‚­? œ, 1:ê²Œì‹œì¤?)';
 
-COMMENT ON COLUMN tbl_qna.qna_viewcount IS 'ë¬¸ì˜ê¸€ ì¡°íšŒìˆ˜';
+COMMENT ON COLUMN tbl_qna.qna_viewcount IS 'ë¬¸ì˜ê¸? ì¡°íšŒ?ˆ˜';
 
-COMMENT ON COLUMN tbl_qna.qna_answer IS 'ë‹µë³€ ë‚´ìš©';
+COMMENT ON COLUMN tbl_qna.qna_answer IS '?‹µë³? ?‚´?š©';
 
 
 CREATE SEQUENCE qna_answer
@@ -573,7 +573,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_QNA';
-/* ë¬¸ì˜ê²Œì‹œíŒ í…Œì´ë¸” ë */
+/* ë¬¸ì˜ê²Œì‹œ?Œ ?…Œ?´ë¸? ? */
 
 
 
@@ -584,18 +584,18 @@ SELECT column_name, comments
 
 
 
-/* ì£¼ë¬¸ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ì£¼ë¬¸ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_order
 ( order_no           NUMBER          NOT NULL        /* ì£¼ë¬¸ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, order_date         DATE   DEFAULT SYSDATE          /* ì£¼ë¬¸ì¼ì */
-, order_request      NVARCHAR2(50)                   /* ìš”ì²­ì‚¬í•­ */
-, order_tprice       NUMBER                          /* ì´ì£¼ë¬¸ê¸ˆì•¡ */
-, order_status       NUMBER(1)    DEFAULT 1          /* ì£¼ë¬¸ ìƒíƒœ (1: ì£¼ë¬¸ / 2: êµí™˜/ë°˜í’ˆ / 3: í™˜ë¶ˆ / 4: ì·¨ì†Œ / 5: êµ¬ë§¤í™•ì •) */
-, order_changedate   DATE   DEFAULT SYSDATE          /* ì£¼ë¬¸ ìƒíƒœ ë³€ê²½ì¼ì */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, order_date         DATE   DEFAULT SYSDATE          /* ì£¼ë¬¸?¼? */
+, order_request      NVARCHAR2(50)                   /* ?š”ì²??‚¬?•­ */
+, order_tprice       NUMBER                          /* ì´ì£¼ë¬¸ê¸ˆ?•¡ */
+, order_status       NUMBER(1)    DEFAULT 1          /* ì£¼ë¬¸ ?ƒ?ƒœ (1: ì£¼ë¬¸ / 2: êµí™˜/ë°˜í’ˆ / 3: ?™˜ë¶? / 4: ì·¨ì†Œ / 5: êµ¬ë§¤?™•? •) */
+, order_changedate   DATE   DEFAULT SYSDATE          /* ì£¼ë¬¸ ?ƒ?ƒœ ë³?ê²½ì¼? */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_order_order_no      PRIMARY KEY (order_no)
 , CONSTRAINT FK_tbl_order_fk_user_no    FOREIGN KEY (fk_user_no)   REFERENCES tbl_member(user_no)
 , CONSTRAINT CK_tbl_order_order_status  CHECK (order_status IN (1, 2, 3, 4, 5))
@@ -603,21 +603,21 @@ CREATE TABLE tbl_order
 -- Table TBL_ORDER created.
 
 
-COMMENT ON TABLE tbl_order IS 'ì£¼ë¬¸ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_order IS 'ì£¼ë¬¸ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
 COMMENT ON COLUMN tbl_order.order_no IS 'ì£¼ë¬¸ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_order.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_order.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_order.order_date IS 'ì£¼ë¬¸ ì¼ì';
+COMMENT ON COLUMN tbl_order.order_date IS 'ì£¼ë¬¸ ?¼?';
 
-COMMENT ON COLUMN tbl_order.order_request IS 'ìš”ì²­ ì‚¬í•­';
+COMMENT ON COLUMN tbl_order.order_request IS '?š”ì²? ?‚¬?•­';
 
-COMMENT ON COLUMN tbl_order.order_tprice IS 'ì´ ì£¼ë¬¸ê¸ˆì•¡';
+COMMENT ON COLUMN tbl_order.order_tprice IS 'ì´? ì£¼ë¬¸ê¸ˆì•¡';
 
-COMMENT ON COLUMN tbl_order.order_status IS 'ì£¼ë¬¸ ìƒíƒœ (1: ì£¼ë¬¸ / 2: êµí™˜/ë°˜í’ˆ / 3: í™˜ë¶ˆ / 4: ì·¨ì†Œ / 5: êµ¬ë§¤í™•ì •)';
+COMMENT ON COLUMN tbl_order.order_status IS 'ì£¼ë¬¸ ?ƒ?ƒœ (1: ì£¼ë¬¸ / 2: êµí™˜/ë°˜í’ˆ / 3: ?™˜ë¶? / 4: ì·¨ì†Œ / 5: êµ¬ë§¤?™•? •)';
 
-COMMENT ON COLUMN tbl_order.order_changedate IS 'ì£¼ë¬¸ ìƒíƒœ ë³€ê²½ì¼ì';
+COMMENT ON COLUMN tbl_order.order_changedate IS 'ì£¼ë¬¸ ?ƒ?ƒœ ë³?ê²½ì¼?';
 
 
 CREATE SEQUENCE order_seq
@@ -633,7 +633,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_ORDER';
-/* ì£¼ë¬¸ í…Œì´ë¸” ë */
+/* ì£¼ë¬¸ ?…Œ?´ë¸? ? */
 
 
 
@@ -642,16 +642,16 @@ SELECT column_name, comments
 
 
 
-/* ì£¼ë¬¸ìƒì„¸ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ì£¼ë¬¸?ƒ?„¸ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_orderdetail
-( ordetail_no        NUMBER          NOT NULL        /* ì£¼ë¬¸ìƒì„¸ë²ˆí˜¸ */
+( ordetail_no        NUMBER          NOT NULL        /* ì£¼ë¬¸?ƒ?„¸ë²ˆí˜¸ */
 , fk_order_no        NUMBER          NOT NULL        /* ì£¼ë¬¸ë²ˆí˜¸ */
-, fk_prod_no         NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
-, ordetail_count     NUMBER                          /* ìƒí’ˆìˆ˜ëŸ‰ */
-, ordetail_price     NUMBER                          /* ê°œë³„ ìƒí’ˆ ê¸ˆì•¡ */
+, fk_prod_no         NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
+, ordetail_count     NUMBER                          /* ?ƒ?’ˆ?ˆ˜?Ÿ‰ */
+, ordetail_price     NUMBER                          /* ê°œë³„ ?ƒ?’ˆ ê¸ˆì•¡ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_ordetail_ordetail_no   PRIMARY KEY (ordetail_no)
 , CONSTRAINT FK_tbl_ordetail_fk_order_no   FOREIGN KEY (fk_order_no)  REFERENCES tbl_order(order_no)
 , CONSTRAINT FK_tbl_ordetail_fk_prod_no    FOREIGN KEY (fk_prod_no)   REFERENCES tbl_products(prod_no)
@@ -659,17 +659,17 @@ CREATE TABLE tbl_orderdetail
 -- Table TBL_ORDERDETAIL created.
 
 
-COMMENT ON TABLE tbl_orderdetail IS 'ì£¼ë¬¸ ìƒì„¸ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_orderdetail IS 'ì£¼ë¬¸ ?ƒ?„¸ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_orderdetail.ordetail_no IS 'ì£¼ë¬¸ ìƒì„¸ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_orderdetail.ordetail_no IS 'ì£¼ë¬¸ ?ƒ?„¸ ë²ˆí˜¸';
 
 COMMENT ON COLUMN tbl_orderdetail.fk_order_no IS 'ì£¼ë¬¸ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_orderdetail.fk_prod_no IS 'ìƒí’ˆ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_orderdetail.fk_prod_no IS '?ƒ?’ˆ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_orderdetail.ordetail_count IS 'ìƒí’ˆ ìˆ˜ëŸ‰';
+COMMENT ON COLUMN tbl_orderdetail.ordetail_count IS '?ƒ?’ˆ ?ˆ˜?Ÿ‰';
 
-COMMENT ON COLUMN tbl_orderdetail.ordetail_price IS 'ê°œë³„ ìƒí’ˆ ê¸ˆì•¡';
+COMMENT ON COLUMN tbl_orderdetail.ordetail_price IS 'ê°œë³„ ?ƒ?’ˆ ê¸ˆì•¡';
 
 
 CREATE SEQUENCE orderdetail_seq
@@ -685,7 +685,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_ORDERDETAIL';
-/* ì£¼ë¬¸ìƒì„¸ í…Œì´ë¸” ë */
+/* ì£¼ë¬¸?ƒ?„¸ ?…Œ?´ë¸? ? */
 
 
 
@@ -695,16 +695,16 @@ SELECT column_name, comments
 
 
 
-/* ê²°ì œ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ê²°ì œ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_payments
 ( pay_no             NUMBER          NOT NULL        /* ê²°ì œë²ˆí˜¸ */
 , fk_order_no        NUMBER          NOT NULL        /* ì£¼ë¬¸ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, pay_date           DATE       DEFAULT SYSDATE      /* ê²°ì œì¼ì */
-, pay_refund         NUMBER(1)  DEFAULT 0            /* í™˜ë¶ˆ ì—¬ë¶€(0: ë¯¸í™˜ë¶ˆ, 1: í™˜ë¶ˆ) */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, pay_date           DATE       DEFAULT SYSDATE      /* ê²°ì œ?¼? */
+, pay_refund         NUMBER(1)  DEFAULT 0            /* ?™˜ë¶? ?—¬ë¶?(0: ë¯¸í™˜ë¶?, 1: ?™˜ë¶?) */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_payments_pay_no        PRIMARY KEY (pay_no)
 , CONSTRAINT FK_tbl_payments_fk_order_no   FOREIGN KEY (fk_order_no)  REFERENCES tbl_order(order_no)
 , CONSTRAINT FK_tbl_payments_fk_user_no    FOREIGN KEY (fk_user_no)   REFERENCES tbl_member(user_no)
@@ -713,17 +713,17 @@ CREATE TABLE tbl_payments
 -- Table TBL_PAYMENTS created.
 
 
-COMMENT ON TABLE tbl_payments IS 'ê²°ì œ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_payments IS 'ê²°ì œ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
 COMMENT ON COLUMN tbl_payments.pay_no IS 'ê²°ì œ ë²ˆí˜¸';
 
 COMMENT ON COLUMN tbl_payments.fk_order_no IS 'ì£¼ë¬¸ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_payments.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_payments.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_payments.pay_date IS 'ê²°ì œì¼ì';
+COMMENT ON COLUMN tbl_payments.pay_date IS 'ê²°ì œ?¼?';
 
-COMMENT ON COLUMN tbl_payments.pay_refund IS 'í™˜ë¶ˆ ì—¬ë¶€(0: ë¯¸í™˜ë¶ˆ, 1: í™˜ë¶ˆ)';
+COMMENT ON COLUMN tbl_payments.pay_refund IS '?™˜ë¶? ?—¬ë¶?(0: ë¯¸í™˜ë¶?, 1: ?™˜ë¶?)';
 
 
 CREATE SEQUENCE payments_seq
@@ -739,7 +739,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_PAYMENTS';
-/* ê²°ì œ í…Œì´ë¸” ë */
+/* ê²°ì œ ?…Œ?´ë¸? ? */
 
 
 
@@ -748,16 +748,16 @@ SELECT column_name, comments
 
 
 
-/* ì¥ë°”êµ¬ë‹ˆëŠ” ì£¼ë¬¸ ì™„ë£Œ ì‹œ í•´ë‹¹ íšŒì›ì´ ë‹´ì€ ìƒí’ˆë“¤ì„ delete í•´ì•¼ í•¨ */
-/* ì¥ë°”êµ¬ë‹ˆ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ?¥ë°”êµ¬?‹ˆ?Š” ì£¼ë¬¸ ?™„ë£? ?‹œ ?•´?‹¹ ?šŒ?›?´ ?‹´?? ?ƒ?’ˆ?“¤?„ delete ?•´?•¼ ?•¨ */
+/* ?¥ë°”êµ¬?‹ˆ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_cart
-( cart_no            NUMBER          NOT NULL        /* ì¥ë°”êµ¬ë‹ˆë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, fk_prod_no         NUMBER          NOT NULL        /* ìƒí’ˆë²ˆí˜¸ */
-, cart_prodcount     NUMBER          NOT NULL        /* ìƒí’ˆ ìˆ˜ëŸ‰ */
+( cart_no            NUMBER          NOT NULL        /* ?¥ë°”êµ¬?‹ˆë²ˆí˜¸ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, fk_prod_no         NUMBER          NOT NULL        /* ?ƒ?’ˆë²ˆí˜¸ */
+, cart_prodcount     NUMBER          NOT NULL        /* ?ƒ?’ˆ ?ˆ˜?Ÿ‰ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_cart_cart_no      PRIMARY KEY (cart_no)
 , CONSTRAINT FK_tbl_cart_fk_user_no   FOREIGN KEY (fk_user_no)   REFERENCES tbl_member(user_no)
 , CONSTRAINT FK_tbl_cart_fk_prod_no   FOREIGN KEY (fk_prod_no)   REFERENCES tbl_products(prod_no)
@@ -765,15 +765,15 @@ CREATE TABLE tbl_cart
 -- Table TBL_CART created.
 
 
-COMMENT ON TABLE tbl_cart IS 'ì¥ë°”êµ¬ë‹ˆì— ë‹´ì€ ìƒí’ˆ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_cart IS '?¥ë°”êµ¬?‹ˆ?— ?‹´?? ?ƒ?’ˆ ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_cart.cart_no IS 'ì¥ë°”êµ¬ë‹ˆ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_cart.cart_no IS '?¥ë°”êµ¬?‹ˆ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_cart.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_cart.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_cart.fk_prod_no IS 'ìƒí’ˆ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_cart.fk_prod_no IS '?ƒ?’ˆ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_cart.cart_prodcount IS 'ìƒí’ˆ ìˆ˜ëŸ‰';
+COMMENT ON COLUMN tbl_cart.cart_prodcount IS '?ƒ?’ˆ ?ˆ˜?Ÿ‰';
 
 
 
@@ -790,7 +790,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_CART';
-/* ì¥ë°”êµ¬ë‹ˆ í…Œì´ë¸” ë */
+/* ?¥ë°”êµ¬?‹ˆ ?…Œ?´ë¸? ? */
 
 
 
@@ -801,36 +801,36 @@ SELECT column_name, comments
 
 
 
-/* ê³µì§€ì‚¬í•­ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ê³µì??‚¬?•­ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_notice
-( notice_no          NUMBER          NOT NULL        /* ê³µì§€ì‚¬í•­ë²ˆí˜¸ */
-, notice_title       NVARCHAR2(100)  NOT NULL        /* ê³µì§€ì‚¬í•­ì œëª© */
-, notice_contents    NVARCHAR2(200)  NOT NULL        /* ê³µì§€ì‚¬í•­ë‚´ìš© */
-, notice_regidate    DATE   DEFAULT SYSDATE          /* ê³µì§€ì‚¬í•­ ì‘ì„±ì¼ì */
-, notice_status      NUMBER(1)     DEFAULT 1         /* ê²Œì‹œê¸€ ìƒíƒœ (0: ì‚­ì œ, 1:ê²Œì‹œì¤‘) */
-, notice_viewcount   NUMBER        DEFAULT 0         /* ê³µì§€ì‚¬í•­ ì¡°íšŒìˆ˜ */
+( notice_no          NUMBER          NOT NULL        /* ê³µì??‚¬?•­ë²ˆí˜¸ */
+, notice_title       NVARCHAR2(100)  NOT NULL        /* ê³µì??‚¬?•­? œëª? */
+, notice_contents    NVARCHAR2(200)  NOT NULL        /* ê³µì??‚¬?•­?‚´?š© */
+, notice_regidate    DATE   DEFAULT SYSDATE          /* ê³µì??‚¬?•­ ?‘?„±?¼? */
+, notice_status      NUMBER(1)     DEFAULT 1         /* ê²Œì‹œê¸? ?ƒ?ƒœ (0: ?‚­? œ, 1:ê²Œì‹œì¤?) */
+, notice_viewcount   NUMBER        DEFAULT 0         /* ê³µì??‚¬?•­ ì¡°íšŒ?ˆ˜ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_notice_notice_no      PRIMARY KEY (notice_no)
 , CONSTRAINT CK_tbl_notice_notice_status  CHECK (notice_status IN (0, 1))
 );
 -- Table TBL_NOTICE created.
 
 
-COMMENT ON TABLE tbl_notice IS 'ê³µì§€ì‚¬í•­ ê¸€ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_notice IS 'ê³µì??‚¬?•­ ê¸? ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_notice.notice_no IS 'ê³µì§€ì‚¬í•­ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_notice.notice_no IS 'ê³µì??‚¬?•­ ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_notice.notice_title IS 'ê³µì§€ì‚¬í•­ ì œëª©';
+COMMENT ON COLUMN tbl_notice.notice_title IS 'ê³µì??‚¬?•­ ? œëª?';
 
-COMMENT ON COLUMN tbl_notice.notice_contents IS 'ê³µì§€ì‚¬í•­ ë‚´ìš©';
+COMMENT ON COLUMN tbl_notice.notice_contents IS 'ê³µì??‚¬?•­ ?‚´?š©';
 
-COMMENT ON COLUMN tbl_notice.notice_regidate IS 'ê³µì§€ì‚¬í•­ ë“±ë¡ì¼ì';
+COMMENT ON COLUMN tbl_notice.notice_regidate IS 'ê³µì??‚¬?•­ ?“±ë¡ì¼?';
 
-COMMENT ON COLUMN tbl_notice.notice_status IS 'ê³µì§€ì‚¬í•­ ê¸€ ìƒíƒœ (0: ì‚­ì œ, 1:ê²Œì‹œì¤‘)';
+COMMENT ON COLUMN tbl_notice.notice_status IS 'ê³µì??‚¬?•­ ê¸? ?ƒ?ƒœ (0: ?‚­? œ, 1:ê²Œì‹œì¤?)';
 
-COMMENT ON COLUMN tbl_notice.notice_viewcount IS 'ê³µì§€ì‚¬í•­ ì¡°íšŒìˆ˜';
+COMMENT ON COLUMN tbl_notice.notice_viewcount IS 'ê³µì??‚¬?•­ ì¡°íšŒ?ˆ˜';
 
 
 CREATE SEQUENCE notice_seq
@@ -846,7 +846,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_NOTICE';
-/* ê³µì§€ì‚¬í•­ í…Œì´ë¸” ë */
+/* ê³µì??‚¬?•­ ?…Œ?´ë¸? ? */
 
 
 
@@ -857,36 +857,36 @@ SELECT column_name, comments
 
 
 
-/* ìì£¼í•˜ëŠ”ì§ˆë¬¸ í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ?ì£¼í•˜?Š”ì§ˆë¬¸ ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_faq
-( faq_no             NUMBER          NOT NULL        /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ë²ˆí˜¸ */
-, faq_title          NVARCHAR2(100)  NOT NULL        /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ì œëª© */
-, faq_contents       NVARCHAR2(200)  NOT NULL        /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ë‚´ìš© */
-, faq_regidate       DATE   DEFAULT SYSDATE          /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ì‘ì„±ì¼ì */
-, faq_status         NUMBER(1)     DEFAULT 1         /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ìƒíƒœ (0: ì‚­ì œ, 1:ê²Œì‹œì¤‘) */
-, faq_viewcount      NUMBER        DEFAULT 0         /* ìì£¼í•˜ëŠ”ì§ˆë¬¸ ì¡°íšŒìˆ˜ */
+( faq_no             NUMBER          NOT NULL        /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ë²ˆí˜¸ */
+, faq_title          NVARCHAR2(100)  NOT NULL        /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ? œëª? */
+, faq_contents       NVARCHAR2(200)  NOT NULL        /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ?‚´?š© */
+, faq_regidate       DATE   DEFAULT SYSDATE          /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ?‘?„±?¼? */
+, faq_status         NUMBER(1)     DEFAULT 1         /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ?ƒ?ƒœ (0: ?‚­? œ, 1:ê²Œì‹œì¤?) */
+, faq_viewcount      NUMBER        DEFAULT 0         /* ?ì£¼í•˜?Š”ì§ˆë¬¸ ì¡°íšŒ?ˆ˜ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_faqe_faq_no     PRIMARY KEY (faq_no)
 , CONSTRAINT CK_tbl_faq_faq_status  CHECK (faq_status IN (0, 1))
 );
 -- Table TBL_FAQ created.
 
 
-COMMENT ON TABLE tbl_faq IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_faq IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
-COMMENT ON COLUMN tbl_faq.faq_no IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_faq.faq_no IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_faq.faq_title IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ì œëª©';
+COMMENT ON COLUMN tbl_faq.faq_title IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ? œëª?';
 
-COMMENT ON COLUMN tbl_faq.faq_contents IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ë‚´ìš©';
+COMMENT ON COLUMN tbl_faq.faq_contents IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ?‚´?š©';
 
-COMMENT ON COLUMN tbl_faq.faq_regidate IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ë“±ë¡ì¼ì';
+COMMENT ON COLUMN tbl_faq.faq_regidate IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ?“±ë¡ì¼?';
 
-COMMENT ON COLUMN tbl_faq.faq_status IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ìƒíƒœ (0: ì‚­ì œ, 1:ê²Œì‹œì¤‘)';
+COMMENT ON COLUMN tbl_faq.faq_status IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ?ƒ?ƒœ (0: ?‚­? œ, 1:ê²Œì‹œì¤?)';
 
-COMMENT ON COLUMN tbl_faq.faq_viewcount IS 'ìì£¼í•˜ëŠ”ì§ˆë¬¸ ê¸€ ì¡°íšŒìˆ˜';
+COMMENT ON COLUMN tbl_faq.faq_viewcount IS '?ì£¼í•˜?Š”ì§ˆë¬¸ ê¸? ì¡°íšŒ?ˆ˜';
 
 
 CREATE SEQUENCE faq_seq
@@ -902,7 +902,7 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_FAQ';
-/* ìì£¼í•˜ëŠ”ì§ˆë¬¸ í…Œì´ë¸” ë */
+/* ?ì£¼í•˜?Š”ì§ˆë¬¸ ?…Œ?´ë¸? ? */
 
 
 
@@ -912,36 +912,36 @@ SELECT column_name, comments
 
 
 
-/* ì¿ í° í…Œì´ë¸” ìƒì„± ì‹œì‘ */
+/* ì¿ í° ?…Œ?´ë¸? ?ƒ?„± ?‹œ?‘ */
 CREATE TABLE tbl_coupons
 ( coupon_no          NUMBER          NOT NULL        /* ì¿ í°ë²ˆí˜¸ */
-, fk_user_no         NUMBER          NOT NULL        /* íšŒì›ë²ˆí˜¸ */
-, coupon_name        VARCHAR2(50)    NOT NULL        /* ì¿ í°ëª… */
-, coupon_descript    VARCHAR2(50)    NOT NULL        /* ì¿ í°ì„¤ëª… */
-, coupon_expire      DATE            NOT NULL        /* ì¿ í° ë§Œë£Œì¼ì */
-, coupon_discount    NUMBER          NOT NULL        /* í• ì¸ê¸ˆì•¡ */
+, fk_user_no         NUMBER          NOT NULL        /* ?šŒ?›ë²ˆí˜¸ */
+, coupon_name        VARCHAR2(50)    NOT NULL        /* ì¿ í°ëª? */
+, coupon_descript    VARCHAR2(50)    NOT NULL        /* ì¿ í°?„¤ëª? */
+, coupon_expire      DATE            NOT NULL        /* ì¿ í° ë§Œë£Œ?¼? */
+, coupon_discount    NUMBER          NOT NULL        /* ?• ?¸ê¸ˆì•¡ */
 
 
-/* ì œì•½ì¡°ê±´ */
+/* ? œ?•½ì¡°ê±´ */
 , CONSTRAINT PK_tbl_coupons_coupon_no   PRIMARY KEY (coupon_no)
 , CONSTRAINT FK_tbl_coupons_fk_user_no  FOREIGN KEY (fk_user_no)  REFERENCES tbl_member(user_no)
 );
 -- Table TBL_COUPONS created.
 
 
-COMMENT ON TABLE tbl_coupons IS 'ì¿ í° ì •ë³´ê°€ ë‹´ê¸´ í…Œì´ë¸”';
+COMMENT ON TABLE tbl_coupons IS 'ì¿ í° ? •ë³´ê? ?‹´ê¸? ?…Œ?´ë¸?';
 
 COMMENT ON COLUMN tbl_coupons.coupon_no IS 'ì¿ í° ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_coupons.fk_user_no IS 'íšŒì› ë²ˆí˜¸';
+COMMENT ON COLUMN tbl_coupons.fk_user_no IS '?šŒ?› ë²ˆí˜¸';
 
-COMMENT ON COLUMN tbl_coupons.coupon_name IS 'ì¿ í°ëª…';
+COMMENT ON COLUMN tbl_coupons.coupon_name IS 'ì¿ í°ëª?';
 
-COMMENT ON COLUMN tbl_coupons.coupon_descript IS 'ì¿ í° ì„¤ëª…';
+COMMENT ON COLUMN tbl_coupons.coupon_descript IS 'ì¿ í° ?„¤ëª?';
 
-COMMENT ON COLUMN tbl_coupons.coupon_expire IS 'ì¿ í° ë§Œë£Œ ì¼ì';
+COMMENT ON COLUMN tbl_coupons.coupon_expire IS 'ì¿ í° ë§Œë£Œ ?¼?';
 
-COMMENT ON COLUMN tbl_coupons.coupon_discount IS 'í• ì¸ ê¸ˆì•¡';
+COMMENT ON COLUMN tbl_coupons.coupon_discount IS '?• ?¸ ê¸ˆì•¡';
 
 
 CREATE SEQUENCE coupon_seq
@@ -957,9 +957,15 @@ NOCACHE;
 SELECT column_name, comments
   FROM user_col_comments
  WHERE table_name = 'TBL_COUPONS';
-/* ì¿ í° í…Œì´ë¸” ë */
+/* ì¿ í° ?…Œ?´ë¸? ? */
 
+select *
+from tbl_member;
 
+select user_no, userid, passwd, name, birthday, email, tel,
+                postcode, address, detailaddress, extraaddress, gender, point,
+				   registerday, lastpwdchangedate, idle, status, role 
+				   from tbl_member;
 
 SELECT * FROM tab;
 
@@ -967,3 +973,7 @@ SELECT * FROM tab;
 select * from user_recyclebin;
 
 purge recyclebin;
+
+tbl_member
+
+SELECT * FROM tbl_member;

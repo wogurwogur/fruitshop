@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="admin.model.AdminDAO, admin.model.AdminDAO_imple" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <% 
 	String ctxPath = request.getContextPath();
 %>
-
-<script type="text/javascript">
-
-
-</script>
 
 <script src="<%=ctxPath %>/js/admin/admin_member_management.js"></script>
 <style>
@@ -125,25 +121,31 @@ form.example button {
 
 <div class="container-fluid ">
 	
-	<table>
-		<thead>
-			<tr>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-	
+	<c:if test="${!empty requestScope.member_allList}">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>회원번호</th>
+					<th>회원이름</th>
+					<th>주소</th>
+					<th>성별</th>
+					<th>전화번호</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="memberinfo" items="${member_allList}">
+					<tr>
+						<td>${memberinfo.user_no}</td>
+						<td>${memberinfo.name}</td>
+						<td>${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
+						<td>${memberinfo.gender}</td>
+						<td>${memberinfo.tel}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</c:if>
+	<c:if test="${empty requestScope.member_allList}">
+		<span>등록된 회원이 없습니다.</span>
+	</c:if>
 </div>
