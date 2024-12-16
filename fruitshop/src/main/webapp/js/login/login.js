@@ -72,8 +72,6 @@ function goLogin() {
 				}		
 			}
 			else {
-				alert("로그인실패");
-				location.href="/fruitshop/index.ddg";
 				$("div#error").html("아이디 혹은 비밀번호가 틀렸습니다.");
 			}
 		},
