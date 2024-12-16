@@ -2,10 +2,23 @@
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/index/footer.css">
 
+<script type="text/javascript">
+
+	$(document).ready(()=> {
+		$("p.info").hover(function(e) {
+			//alert("야야호");
+			$(e.target).css({"color": "red", "transition": '0.75s'});
+		}, function(e) {
+			$(e.target).css({"color": "white", "transition": '0.75s'});
+		})
+	});
+
+</script>
+
 <br/>
 <div id="footer">
 
-	<div style="padding-top: 1.5%; margin-left: 12%; margin-bottom: 1.5%;">
+	<div style="padding-top: 1.5%; margin-left: 7.5%; margin-bottom: 1.5%;">
 		<img style="top:20px;" id="footer_img" src="<%= request.getContextPath() %>/images/index/logo_footer.png">
 	</div>
 
@@ -31,10 +44,10 @@
 			<p>예금주 : 쌍용강북교육센터 gclass</p>
 		</div>
 		<div id="team_info">
-			<p>팀원소개</p>
-			<p>팀 규칙</p>
-			<p>개인정보취급방침</p>
-			<p>이용안내</p>
+			<p class="info">팀원소개</p>
+			<p class="info">팀 규칙</p>
+			<p class="info">개인정보취급방침</p>
+			<p class="info">이용안내</p>
 		</div>
 	</div>
 	

@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+div.container > div.titleArea{
+	text-align: center;
+	
+}
+
+
+div.title > h2{
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 20pt;
+	/* font-style: regular; */
+	font-weight: 500;
+}
+
+div.container-fluid > div.jumbotron{
+	width: 75%;
+	height: 30%;
+}
+
+
+
+
+div.container-fluid > div.ec-base-button.gColumn{
+	font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    width: 50%;
+    padding: calc(var(--wt-re-size)*1.5) 0;
+    text-align: center;
+    font-size: var(--wt-re-size);
+    box-sizing: border-box;
+    margin: 5% auto;
+    display: flex;
+    justify-content: center;
+}
+
+div.container-fluid > div.ec-base-button.gColumn > a.btnpick{
+	color: #fff;
+    background-color: black;
+    padding: 0.8em 0;
+    margin: 0 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    word-break: keep-all;
+    word-wrap: break-word;
+    white-space: normal;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 8%;
+}
+
+
+div.container-fluid > div.ec-base-button.gColumn > a.btnremove{
+	border: 1px solid #000;
+    color: #555;
+    background-color: #fff;
+    padding: 0.8em 0;
+    margin: 0 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    word-break: keep-all;
+    word-wrap: break-word;
+    white-space: normal;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+
+
+
+div.container-fluid > div.ec-base-button.gColumn > a.btnpick:hover,
+div.container-fluid > div.ec-base-button.gColumn > a.btnremove:hover{
+	text-decoration: none;
+}
+
+
