@@ -27,7 +27,7 @@
 	});
 </script>
 
-<div style="border: solid 1px red; margin-top: 2%;" class="container-fluid">
+<div style="border: solid 1px red; margin-top: 2%;" id="container">
 
 <%-- 페이지 도착 시 기본 조회 기간은 3개월 --%>
 	<%-- 주문내역조회 메뉴 바 시작 --%>
@@ -47,6 +47,7 @@
 	</div>
 	<%-- 주문내역조회 메뉴 바 끝 --%>
 	
+	<%-- 기간 필터 시작 --%>
 	<div id="order_time">
 		<div style="padding: 2%;" class="btn-group" role="group" aria-label="Date Select Filter">
 			<button type="button" class="btn btn-outline-dark">오늘</button>
@@ -70,8 +71,109 @@
 			<button style="width: 80px; height: 40px;" type="button" class="btn btn-secondary">조회</button>
 		</div>
 	</div>
+	<div id="filter_desc">
+		<ul>
+			<li>기본적으로 최근 3개월간의 자료가 조회되며, 기간 검색시 주문처리완료 후 36개월 이내의 주문내역을 조회하실 수 있습니다.</li>
+			<li>완료 후 36개월 이상 경과한 주문은 [과거주문내역]에서 확인할 수 있습니다.</li>
+			<li>주문번호를 클릭하시면 해당 주문에 대한 상세내역을 확인하실 수 있습니다.</li>
+		</ul>
+	</div>
+	<%-- 기간 필터 끝 --%>
 	
+	<%-- 주문 상품 내역 보여주기 시작 --%>
+	<div style="margin-left: 1%;" class="h6">주문 상품 정보</div>
+	<hr style="border: solid 1px black;">	
+	<div>
+		<table class="table table-hover text-center">
+			<thead>
+				<tr>
+					<th>주문번호</th>
+					<th>이미지<br></th>
+					<th style="padding:1%; width: 30%">상품명</th>
+					<th>수량</th>
+					<th>가격</th>
+					<th>주문처리상태</th>
+					<th>취소/교환/반품</th>
+				</tr>
+			</thead>
+			<tbody>
+			<%-- 상품리스트 반복문 들어와야 함 --%>
+				<tr>
+					<td>123</td>
+					<td>이미지</td>
+					<td>딸기 5kg</td>
+					<td>1</td>
+					<td>51,000</td>
+					<td>주문완료</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>123</td>
+					<td>이미지</td>
+					<td>딸기 5kg</td>
+					<td>1</td>
+					<td>51,000</td>
+					<td>주문완료</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>123</td>
+					<td>이미지</td>
+					<td>딸기 5kg</td>
+					<td>1</td>
+					<td>51,000</td>
+					<td>주문완료</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>123</td>
+					<td>이미지</td>
+					<td>딸기 5kg</td>
+					<td>1</td>
+					<td>51,000</td>
+					<td>주문완료</td>
+					<td></td>
+				</tr>
+				<%-- 상품리스트 반복문 들어와야 함 --%>
+			</tbody>
+		</table>
+	</div>
+	<%-- 주문 상품 내역 보여주기 끝 --%>
 	
+	<%-- 페이징 처리 부분 --%>
+	<%--
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item">
+				<a class="page-link" href="#" tabindex="-1">Previous</a>
+			</li>
+			<li class="page-item active"><a class="page-link" href="#">1</a></li>
+			<li class="page-item"><a class="page-link" href="#">2</a></li>
+			<li class="page-item"><a class="page-link" href="#">3</a></li>
+			<li class="page-item">
+				<a class="page-link" href="#">Next</a>
+			</li>
+		</ul>
+	</nav>
+	--%>
+	<div style="margin-top: 3%; display: flex;">
+		<div class="pagination">
+			<a href="#">&laquo;</a>
+			<a href="#">&lsaquo;</a>
+			<%-- 페이지 수만큼 반복문 --%>
+			<a href="#">1</a>
+			<a href="#" class="active">2</a>
+			<a href="#">3</a>
+			<a href="#">4</a>
+			<a href="#">5</a>
+			<%-- 페이지 수만큼 반복문 --%>
+			<a href="#">&rsaquo;</a>
+			<a href="#">&raquo;</a>
+		</div>
+	</div>
+
+
+	<%-- 페이징 처리 부분 --%>
 </div>
 
 

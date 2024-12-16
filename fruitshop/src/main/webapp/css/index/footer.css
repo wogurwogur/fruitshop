@@ -19,7 +19,7 @@ div#company_info > div:last-child {
 
 div#company_info {
 	
-	width: 92%;
+	width: 95%;
 	/* margin-left: 5%; */
 	margin:0 auto;
 	margin-bottom:2.3%;
@@ -27,7 +27,7 @@ div#company_info {
 }
 
 div#team_info {
-	padding-right: 5%;
+	padding-right: 4%;
 }
 
 div#company_info > div  p {

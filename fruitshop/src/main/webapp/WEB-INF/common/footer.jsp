@@ -18,7 +18,7 @@
 <br/>
 <div id="footer">
 
-	<div style="padding-top: 1.5%; margin-left: 10.5%; margin-bottom: 1.5%;">
+	<div style="padding-top: 1.5%; margin-left: 7.5%; margin-bottom: 1.5%;">
 		<img style="top:20px;" id="footer_img" src="<%= request.getContextPath() %>/images/index/logo_footer.png">
 	</div>
 
