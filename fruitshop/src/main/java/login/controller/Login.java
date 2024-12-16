@@ -25,7 +25,7 @@ public class Login extends AbstractController {
 		if("get".equalsIgnoreCase(request.getMethod())) {
 
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/login/idFind.jsp");
+			super.setViewPage("/WEB-INF/login/login.jsp");
 		}
 		
 		if("post".equalsIgnoreCase(request.getMethod())) {

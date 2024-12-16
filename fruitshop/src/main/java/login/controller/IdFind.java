@@ -22,7 +22,7 @@ public class IdFind extends AbstractController {
 		if("get".equalsIgnoreCase(request.getMethod())) {
 
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/login/login.jsp");
+			super.setViewPage("/WEB-INF/login/IdFind.jsp");
 		}
 		
 

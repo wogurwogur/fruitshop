@@ -24,28 +24,37 @@ $(()=>{
             $(e.target).parent().find("span.error").html("아이디를 입력하세요.").addClass("red").removeClass("blue");
         }
         else {
+			
+			const regExp_userid = new RegExp(/^[a-z0-9][a-z0-9_]{4,15}$/);
 
+			const bool = regExp_userid.test(userid);
 
-            $.ajax({
-                url : "idDuplicateCheck.ddg",
-                data : {"userid":$("input#userid").val()}, 
-                type : "post", 
-                dataType : "JSON",  
-                success : function(json) { 
-                        if(json.isExists) {
-                            $("input#userid").parent().find("span.error").html($("input#userid").val()+" 은 이미 사용중입니다.").addClass("red").removeClass("blue");
-                        }
-                        else {
-                            $("input#userid").parent().find("span.error").html($("input#userid").val()+" 은 사용가능합니다.").addClass("blue").removeClass("red");
-                            b_idcheck_click = true;
-                        }
-                    },
-                error: function(request, status, error) {
-                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                    }
-            });
+			if(!bool) {
+				$(e.target).parent().find("span.error").html("올바른 아이디가 아닙니다.").addClass("red").removeClass("blue");
+			
+			}
+			else {
 
+	            $.ajax({
+	                url : "idDuplicateCheck.ddg",
+	                data : {"userid":$("input#userid").val()}, 
+	                type : "post", 
+	                dataType : "JSON",  
+	                success : function(json) { 
+	                        if(json.isExists) {
+	                            $("input#userid").parent().find("span.error").html($("input#userid").val()+" 은 이미 사용중입니다.").addClass("red").removeClass("blue");
+	                        }
+	                        else {
+	                            $("input#userid").parent().find("span.error").html($("input#userid").val()+" 은 사용가능합니다.").addClass("blue").removeClass("red");
+	                            b_idcheck_click = true;
+	                        }
+	                    },
+	                error: function(request, status, error) {
+	                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	                    }
+	            });
 
+			}
 
         }
     });
