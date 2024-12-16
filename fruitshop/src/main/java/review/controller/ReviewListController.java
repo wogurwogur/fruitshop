@@ -12,25 +12,42 @@ import review.model.ReviewListDAO_imple;
 
 public class ReviewListController extends AbstractController {
 
-	private ReviewListDAO revdao;
+	private ReviewListDAO revdao = new ReviewListDAO_imple();
 	
 	public ReviewListController() {
 		// System.out.println("### 확인용 ReviewListController 클래스 생성자 호출함 ###");
-		revdao = new ReviewListDAO_imple();	// WAS 가 구동 될 때 (기본생성자가 생성될 때) 객체를 생성하여 넣어 줌
+		
+		// revdao = new ReviewListDAO_imple();	// WAS 가 구동 될 때 (기본생성자가 생성될 때) 객체를 생성하여 넣어 줌
+		
 	}
 
 			
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		//System.out.println("ReviewListController 실행됨");
+
 		
-		// List<ReviewListVO> revList = revdao.reviewListall();
+		try {
+			List<ReviewListVO> revList = revdao.reviewListall();
 			
+			if(revList.size() > 0) {
+				request.setAttribute("revList", revList);
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/review/reviewList.jsp");
+			}
+						
+		} catch(SQLException e) {
+			e.printStackTrace();
+			
+			super.setRedirect(true);
+			super.setViewPage(request.getContextPath()+"/error.ddg"); // 아직없음
+		  }
+			
+			
+	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/review/reviewList.jsp");
-		
+			
+} // end of public class ReviewListController extends AbstractController {
 
-	}
 
-}

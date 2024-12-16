@@ -12,11 +12,13 @@ public class ReviewListVO {
 	private String 	review_status;
 	private String 	review_viewcount;
 	private String 	review_image;
+	private String	review_regidate;
 	
 	
 	
 	
 	
+
 	public int getReview_no() {
 		return review_no;
 	}
@@ -64,6 +66,12 @@ public class ReviewListVO {
 	}
 	public void setReview_image(String review_image) {
 		this.review_image = review_image;
+	}
+	public String getReview_regidate() {
+		return review_regidate;
+	}
+	public void setReview_regidate(String review_regidate) {
+		this.review_regidate = review_regidate;
 	}
 	
 } // end of public class ReviewListVO {
