@@ -60,7 +60,7 @@ $(()=>{
     });
 
     // 비밀번호
-    $("input:password[name='passwd']").bind('blur', e => { 
+    $("input#passwd").bind('blur', e => { 
 
         const passwd = $(e.target).val(); 
 
@@ -70,34 +70,48 @@ $(()=>{
 
         if(!bool) {
 
-            $(e.target).parent().find("span.error").html("비밀번호를 입력하세요.").addClass("red");
+            $("span#pwdError").html("올바른 비밀번호가 아닙니다.").addClass("red");
+
         }
         else {
 
-            $(e.target).parent().find("span.error").html("").removeClass("red");
+            $("span#pwdError").html("").removeClass("red");
         }
     });
 
 
     // 비밀번호 확인
     $("input#passwdcheck").bind('blur', e => { 
+		
+		
+		const passwd_1 = $("input#passwd").val(); 
 
-        const passwd_1 = $("input#passwd").val(); 
+		const passwd_2 = $(e.target).val();
 
-        const passwd_2 = $(e.target).val(); 
+		const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=-]).*$/g); 
 
-        if(passwd_1 != passwd_2) {
+		const bool = regExp_passwd.test(passwd_1);
 
-            $("input#passwd").val("").focus(); 
+		if(!bool) {
 
-            $(e.target).val(""); 
+			$("span#pwdError").html("올바른 비밀번호가 아닙니다.").addClass("red");
+					
+		}
+		else {
+			if(passwd_1 != passwd_2) {
 
-            $(e.target).parent().find("span.error").html("비밀번호가 일치하지 않습니다.").addClass("red");
-        }
-        else {
-            
-            $(e.target).parent().find("span.error").html("").removeClass("red");
-        }
+				$("input#passwd").val("").focus(); 
+
+			    $(e.target).val(""); 
+
+			    $("span#pwdError").html("비밀번호가 일치하지 않습니다.").addClass("red");
+			}
+			else {
+			            
+			    $("span#pwdError").html("").removeClass("red");
+
+			}
+		}
     });
 
 
