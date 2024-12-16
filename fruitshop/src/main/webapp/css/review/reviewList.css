@@ -38,6 +38,8 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+  
+  
   /* 상단 메뉴 슬라이드바 끝  */
 
 /* 푸터 시작 */
@@ -75,78 +77,25 @@ div#company_info > div:last-child > p {
 
 /* 컨테이너 시작 */
 
-div#container {
-	border: solid 0px red;
-	width : 83%;
-	margin : auto;
-}
-
-div#container > h2{
-	border: solid 0px red;
-}
-
-div#container > div:nth-child(2) > ul {
-	border: solid 0px red;
-	width: 70%;
-	margin: auto;
-	padding: auto;
-}
-
-div#container > div:nth-child(2) > ul > li {
-
-	margin: 2% auto auto auto;
-	
-	text-align: center;
-}
-
-.nav-link {
-  color: black;
-}
-
-.page-link {
-  color: black;
-}
-
-
-#container > div:nth-child(3) > div > div > div:nth-child(5) > select {
-	width:7%;
-	height:37px;
-}
-
-#container > div:nth-child(3) > div > div > div:nth-child(5) > input[type=text]{
-	height:37px;
-}
 
 
 /*글번호 제목 작성자 작성일자 조회수 css */
 
-#container > div:nth-child(3) > div > div > table > tbody > tr{
-	text-align:center;
-}
-#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(1){
-	width: 10%;
-	border: solid 0px red;
+
+/*글번호 제목 작성자 작성일자 조회수 css 끝*/
+
+#container > div:nth-child(2) > ul {
+	
+font-family: 'Noto Sans KR', sans-serif;
+	font-size: 14pt;
+	/* font-style: regular; */
+	font-weight: 400;
 }
 
-#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(2){
-	width: 50%;
-	border: solid 0px red;
-}
+/* 실제 게시판 글 css */
 
 
-#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(3){
-	width: 10%;
-	border: solid 0px red;
-}
 
-#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(4){
-	width: 15%;
-	border: solid 0px red;
-}
 
-#container > div:nth-child(3) > div > div > table > tbody > tr > th:nth-child(5){
-	width: 10%;
-	border: solid 0px red;
-}
 
 /* 컨테이너 끝 */
