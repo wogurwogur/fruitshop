@@ -3,11 +3,9 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/member/memberRegister.css" />
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/login/idFind.css" />
 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/login/idFind.js"></script>
 
 <div class="container">
 
