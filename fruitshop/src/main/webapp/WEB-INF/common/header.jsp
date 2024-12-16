@@ -58,13 +58,12 @@
             <a href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
             <br>
             
-            <c:if test="${empty requestScope.loginuser}"><a href="<%= request.getContextPath() %>/login/login.ddg">Login</a></c:if>
-            <c:if test="${!empty requestScope.loginuser}"><a href="<%= request.getContextPath() %>/login/logout.ddg">LogOut</a></c:if>
+            <c:if test="${empty sessionScope.loginuser}"><a href="<%= request.getContextPath() %>/login/login.ddg">Login</a></c:if>
+            <c:if test="${!empty sessionScope.loginuser}"><a href="<%= request.getContextPath() %>/login/logout.ddg">LogOut</a></c:if>
             
             
-            <c:if test="${(requestScope.loginuser).role == 1}"><a href="asdf@!$#">My Page</a></c:if>
-            <c:if test="${(requestScope.loginuser).role == 2}"><a href="<%=request.getContextPath()%>/admin/admin.ddg">Admin Page</a></c:if>
-            <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
+            <c:if test="${sessionScope.loginuser.role == 1 or empty sessionScope.loginuser}"><a href="asdf@!$#">My Page</a></c:if>
+            <c:if test="${sessionScope.loginuser.role == 2}"><a href="<%=request.getContextPath()%>/admin/admin.ddg">Admin Page</a></c:if>
             <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
             <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
         </div>
@@ -98,10 +97,12 @@
         <div style="margin-left: 5%;" class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
                 <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
+                    <c:if test="${empty sessionScope.loginuser}"><a class="nav-link menu" href="<%= request.getContextPath() %>/login/login.ddg">Login</a></c:if>
+            		<c:if test="${!empty sessionScope.loginuser}"><a class="nav-link menu" href="<%= request.getContextPath() %>/login/logout.ddg">LogOut</a></c:if>
                 </li>
                 <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="#">My Page</a>
+                    <c:if test="${sessionScope.loginuser.role == 1 or empty sessionScope.loginuser}"><a class="nav-link menu" href="#">My Page</a></c:if>
+            		<c:if test="${sessionScope.loginuser.role == 2}"><a class="nav-link menu" href="<%=request.getContextPath()%>/admin/adminManagement.ddg">Admin Page</a></c:if>
                 </li>
                 <li class="nav-item active mr-3">
                     <a class="nav-link menu" href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
@@ -110,6 +111,7 @@
                     <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
                     	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
                         <i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
+                        
                     </a>
                 </li>
             </ul>

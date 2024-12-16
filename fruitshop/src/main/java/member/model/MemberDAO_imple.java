@@ -186,12 +186,12 @@ public class MemberDAO_imple implements MemberDAO {
 				member.setUser_no(rs.getInt("user_no"));
 				int user_no = rs.getInt("user_no");
 					
-					sql = " SELECT userid, name, point, pwdchangegap, "
+					sql = " SELECT userid, name, point, pwdchangegap, role, "
 						+ " NVL( lastlogingap, TRUNC( months_between(sysdate, registerday)) ) AS lastlogingap, "
 						+ " idle, email, tel, postcode, address, detailaddress, extraaddress "
 						+ " FROM "
 						+ " ( "
-						+ " SELECT userid, name, point, "
+						+ " SELECT userid, name, point, role, "
 						+ " trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
 						+ " registerday, idle, email, tel, postcode, address, detailaddress, extraaddress "
 						+ " FROM tbl_member "
@@ -224,6 +224,7 @@ public class MemberDAO_imple implements MemberDAO {
 						member.setAddress(rs.getString("address"));
 						member.setDetailaddress(rs.getString("detailaddress"));
 						member.setExtraaddress(rs.getString("extraaddress"));
+						member.setRole(rs.getInt("role"));
 
 						
 						if (rs.getInt("lastlogingap") >= 12) {
