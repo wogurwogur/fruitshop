@@ -14,20 +14,14 @@ import member.domain.MemberVO;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 
-public class Login extends AbstractController {
+public class Login_check extends AbstractController {
 
 	MemberDAO mdao = new MemberDAO_imple();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		
 		Boolean isExists = false;
-
-		if ("get".equalsIgnoreCase(request.getMethod())) {
-
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/login/login.jsp");
-		}
 
 		if ("post".equalsIgnoreCase(request.getMethod())) {
 

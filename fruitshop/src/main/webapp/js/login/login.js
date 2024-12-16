@@ -4,7 +4,15 @@
 
 $(()=>{
 	
-	
+	$("button#btnLogin").click( e => {
+		goLogin();
+	});
+
+	$("input#loginPasswd").bind("keyup", e => {
+		if(e.keyCode == 13) { 
+			goLogin();
+		} 
+	});
 
 
 
@@ -29,7 +37,6 @@ function goLogin() {
     }
 
 	if($("input:checkbox[id='saveid']").prop("checked")) {
-		alert("아이디 저장 체크");
 		localStorage.setItem('saveid', userid.val());
 		
 	}
@@ -37,15 +44,45 @@ function goLogin() {
 		localStorage.removeItem("saveid");
 	}
 	
-	
-	
-    const frm = document.loginFrm;
-    frm.method="post";
-    frm.submit();
+	$.ajax({
+		url: "login.ddg",
+		data: { "userid": $("input#loginUserid").val(), "passwd": $("input#loginPasswd").val() },
+		type: "post",
+		async: true,
+		dataType: "JSON",
+		success: function(json) {
+			
+			if(json.isExists) {
+				
+				if(json.idle == 0) {
+					alert("휴면 계정입니다. 복구 페이지로 이동합니다.");
+					
+					location.href="/fruitshop/index.ddg";
+				}
+				else {
+					if(json.requirePwdChange) {
+						alert("비밀번호를 변경한지 3개월이 지났습니다. 비밀번호 변경 페이지로 이동합니다.");
+						
+						location.href="/fruitshop/index.ddg";
+					}
+					else { 
+						
+						location.href="/fruitshop/index.ddg";
+					}
+				}		
+			}
+			else {
+				alert("로그인실패");
+				location.href="/fruitshop/index.ddg";
+				$("div#error").html("아이디 혹은 비밀번호가 틀렸습니다.");
+			}
+		},
+		error: function(request, status, error) {
+			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		}
+	});
+
 }
-
-
-
 
 
 // 로그아웃을 처리하는 함수

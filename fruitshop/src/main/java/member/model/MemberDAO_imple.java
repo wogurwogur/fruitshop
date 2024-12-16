@@ -166,26 +166,25 @@ public class MemberDAO_imple implements MemberDAO {
 
 		MemberVO member = null;
 
-		int user_no = 0;
-
 		try {
-
-			String sql = " SELECT user_no " + " FROM tbl_member " + " WHERE status = 1 and userid = ? and passwd = ? ";
+			conn = ds.getConnection();
+			String sql = " SELECT user_no " 
+					   + " FROM tbl_member " 
+					   + " WHERE status = 1 and userid = ? and passwd = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, paraMap.get("userid"));
+			
 			pstmt.setString(2, Sha256.encrypt(paraMap.get("passwd")));
 
 			rs = pstmt.executeQuery();
-				
-				
-				
-				if (rs.next()) {
-	
-					member = new MemberVO();
-					member.setUser_no(rs.getInt("user_no"));
-					user_no = rs.getInt("user_no");
+
+			if (rs.next()) {
+
+				member = new MemberVO();
+				member.setUser_no(rs.getInt("user_no"));
+				int user_no = rs.getInt("user_no");
 					
 					sql = " SELECT userid, name, point, pwdchangegap, "
 						+ " NVL( lastlogingap, TRUNC( months_between(sysdate, registerday)) ) AS lastlogingap, "
@@ -207,114 +206,93 @@ public class MemberDAO_imple implements MemberDAO {
 					
 					
 					pstmt = conn.prepareStatement(sql);
-					
+
 					pstmt.setInt(1, member.getUser_no());
 					pstmt.setInt(2, member.getUser_no());
-	
+
 					rs = pstmt.executeQuery();
-					
-					if(rs.next()) {
-							 
+
+					if (rs.next()) {
+
 						member.setUserid(rs.getString("userid"));
 						member.setName(rs.getString("name"));
 						member.setPoint(rs.getInt("point"));
 						member.setIdle(rs.getInt("idle"));
+						member.setEmail(aes.decrypt(rs.getString("email")));
+						member.setTel(aes.decrypt(rs.getString("tel")));
+						member.setPostcode(rs.getString("postcode"));
+						member.setAddress(rs.getString("address"));
+						member.setDetailaddress(rs.getString("detailaddress"));
+						member.setExtraaddress(rs.getString("extraaddress"));
+
 						
-						if( rs.getInt("lastlogingap") >= 12 ) {
-								 
+						if (rs.getInt("lastlogingap") >= 12) {
+
 							member.setIdle(0);
-								 
-							if(rs.getInt("idle") == 1) {
-						
-									 
-								sql = " update tbl_member set idle = 0 "
-									+ " where userid = ? ";
-									 
+
+							if (rs.getInt("idle") == 1) {
+
+								sql = " update tbl_member set idle = 0 " + " where userid = ? ";
+
 								pstmt = conn.prepareStatement(sql);
 								pstmt.setString(1, paraMap.get("userid"));
-									 
+
 								pstmt.executeUpdate();
-							} 
+							}
 						}
 
-						if( rs.getInt("lastlogingap") < 12 ) {
+						if (rs.getInt("lastlogingap") < 12) {
 							
+							
+
 							sql = " insert into tbl_loginhistory(loghis_no, fk_user_no, CLIENTIP) "
-								+ " values(login_seq.nextval, ?, ?) ";
-								 
+									+ " values(login_seq.nextval, ?, ?) ";
+
 							pstmt = conn.prepareStatement(sql);
-							
+
 							pstmt.setInt(1, member.getUser_no());
 							pstmt.setString(2, paraMap.get("clientip"));
-								 
+
 							pstmt.executeUpdate();
-								 
-							if( rs.getInt("pwdchangegap") >= 3 ) {
-									 
+							
+							
+							if (rs.getInt("pwdchangegap") >= 3) {
+
 								member.setRequirePwdChange(true);
-							} 
+							}
 						}
-						
-						member.setEmail( aes.decrypt(rs.getString("email")) );
-						member.setTel( aes.decrypt(rs.getString("tel")) );
-						member.setPostcode( rs.getString("postcode") );
-						member.setAddress( rs.getString("address") );
-						member.setDetailaddress( rs.getString("detailaddress") );
-						member.setExtraaddress( rs.getString("extraaddress") );
-							 
+
 						// 장바구니 갯수 //
-						sql = " select cart_no "
-							+ " from tbl_cart "
+						sql = " select cart_no " 
+							+ " from tbl_cart " 
 							+ " where fk_user_no = ? ";
-						
+
 						pstmt = conn.prepareStatement(sql);
-		
+
 						pstmt.setInt(1, member.getUser_no());
-						
+
 						rs = pstmt.executeQuery();
-						
-						int cart_cnt=0;
-						while(rs.next()) {
+
+						int cart_cnt = 0;
+						while (rs.next()) {
 							cart_cnt++;
 						}
-						
+
 						member.setCart_cnt(cart_cnt);
 
 					}
-					
+
 				} // end of if(rs.next())--------------------
 
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+			} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
 
-		return member;
-	} //
+			return member;
+		} //
 
-	// 활동이 가능한 아이디인지 확인하는 메소드
-	@Override
-	public boolean isExistUser(String userid) throws SQLException {
-		
-		boolean bool = false;
-
-		conn = ds.getConnection();
-
-		String sql = " SELECT user_no "
-				   + " FROM tbl_member "
-				   + " WHERE status = 1 and userid = ? ";
-		
-		pstmt = conn.prepareStatement(sql);
-
-		pstmt.setString(1, userid);
-
-		rs = pstmt.executeQuery();
-		
-		bool = rs.next();
-		
-		return bool;
-	}
 
 	// 아이디 찾기
 	@Override

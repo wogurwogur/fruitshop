@@ -6,7 +6,7 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<%-- <script type="text/javascript" src="<%= request.getContextPath() %>/js/login/login.js"></script> --%>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/login/login.js"></script>
 
 <script type="text/javascript">
 	$(()=>{
@@ -15,20 +15,6 @@
 			location.href="<%=request.getContextPath()%>/member/memberRegister.ddg";
 		});
 
-	    $("button#btnLogin").click( e => {
-	        goLogin();
-	    });
-
-	    $("input#loginPasswd").bind("keyup", e => {
-	        if(e.keyCode == 13) { 
-	            goLogin();
-	        } 
-	    });
-		
-		
-		
-		
-		
 		if( ${!empty sessionScope.loginuser} ) { 
 			
 			location.href="<%=request.getContextPath()%>/index.ddg";
@@ -47,57 +33,7 @@
 		}
 		
 	});
-	
-	
-	
-	// 로그인을 처리하는 함수
-	function goLogin() {
 
-	    const userid = $("input#loginUserid");
-	    if(userid.val().trim() == "") {
-	        alert("아이디를 입력하세요");
-	        return;
-	    }
-
-	    const pwd = $("input#loginPasswd");
-	    if(pwd.val().trim() == "") {
-	        alert("암호를 입력하세요");
-	        return;
-	    }
-
-		if($("input:checkbox[id='saveid']").prop("checked")) {
-			alert("아이디 저장 체크");
-			localStorage.setItem('saveid', userid.val());
-			
-		}
-		else {
-			localStorage.removeItem("saveid");
-		}
-		
-	    const frm = document.loginFrm;
-	    frm.method="post";
-	    frm.submit();
-	}
-
-
-	// 로그아웃을 처리하는 함수
-	function goLogOut(ctx_Path) {
-
-	    // 로그아웃을 처리해주는 페이지로 이동
-	    location.href=`${ctx_Path}/login/logout.ddg`;
-	    
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 </script>
@@ -128,8 +64,8 @@
 					</tbody>
 				</table>
 			</div>
-			
-			<div style="margin : 10px auto;">
+			<div class="error" id="error" style="color:red;"></div>
+			<div style="margin : 0 auto;">
 				<span class="" style="height:50px; line-height:50px;">
 					<input type="checkbox" id="saveid" />&nbsp;<label for="saveid">아이디 저장</label>&nbsp;&nbsp;
 	        		<img src="//img.echosting.cafe24.com/design/skin/default/member/ico_access.gif" alt="보안접속"> 보안접속       
