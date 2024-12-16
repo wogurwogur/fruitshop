@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+
+@import url(https://fonts.googleapis.com/earlyaccess/hanna.css);
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+
+}
