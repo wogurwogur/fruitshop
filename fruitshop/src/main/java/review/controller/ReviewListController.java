@@ -24,12 +24,8 @@ public class ReviewListController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		//System.out.println("ReviewListController 실행됨");
 		
-		List<ReviewListVO> revList = revdao.reviewListall();
-		
-		
-		
-		
-		
+		// List<ReviewListVO> revList = revdao.reviewListall();
+			
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/review/reviewList.jsp");
