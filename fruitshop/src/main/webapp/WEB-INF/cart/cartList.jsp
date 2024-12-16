@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/cart/cart.css">
 
 <jsp:include page="../common/header.jsp"></jsp:include>
@@ -27,9 +29,10 @@
                     <div style="flex: 1; text-align: center;">
                         <img src="${item.image}" style="width: 80px; height: auto;">
                     </div>
-                    <!-- 상품 정보 -->
+                    <!-- 상품 정보(상품명,상품가격) -->
                     <div style="flex: 4;">
                         <p>${item.name} </p>
+                        <p>${item.price} </p>
                     </div>
                     <!-- 수량 변경 -->
                     <div style="flex: 2; display: flex; align-items: center; justify-content: center;">
@@ -62,7 +65,7 @@
 
         <!-- 장바구니에 상품이 없는 경우 -->
         <c:otherwise> --%>
-            <div class="jumbotron" style="border: solid 1px #cccccc; background-color: white; margin-top: 60px; font-weight: bold;">
+            <div class="jumbotron" style="border: solid 1px #cccccc; background-color: white; margin-top: 5%; font-weight: bold;">
                 <p align="center">장바구니가 비어 있습니다.</p>
             </div>
             
@@ -75,7 +78,7 @@
 	<div class="ec-base-button gColumn">
     <a href="#" class="btnpick">선택상품 주문하기</a>  
     <a href="#" class="btnSubmit">전체상품 주문하기</a>
-    <a href="#" class="btnremove ">장바구니 비우기</a>       
+    <a href="./cartList.ddg" class="btnremove">장바구니 비우기</a>       
     </div>
 	
     <%-- 이용 안내  --%>

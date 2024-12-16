@@ -6,13 +6,16 @@
 <%-- Custom CSS --%>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/mypage/mypage_header.css">
 
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/bootstrap-4.6.2-dist/css/bootstrap.min.css" >
 
 
-<div class="title">
+
+<div class="title container" style="margin-top: 3.5%;">
         <h2>My page</h2> 
     </div>
     
-    <div class="container" style="margin-top: 2%;">
+    <div class="container" style="margin-top: 4%;">
 
     <div id="mypage" class="menu">
             <a href="#">마이페이지</a>

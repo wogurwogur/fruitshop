@@ -2,19 +2,22 @@
 
 div.container > div.titleArea{
 	text-align: center;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
 div.container > div.titleArea > h3{
-	font: italic;
     text-align: center;
     display: inline-block;
-    font-size: 20pt;
     font-weight: bold;
     margin-top: 3%;
+    font-family: 'Noto Sans KR', sans-serif;
+	font-size: 20pt;
+	/* font-style: regular; */
+	font-weight: 500;
 }
 
 div.container > div.ec-base-button.gColumn{
-	font: var(--wt-font-size) 'Pretendard',Verdana,Dotum,AppleGothic,sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
     color: var(--wt-font-color-sub);
     width: 100%;
     padding: calc(var(--wt-re-size)*1.5) 0;
@@ -73,7 +76,7 @@ div.container > div.ec-base-button.gColumn > a.btnremove:hover{
 
 
 div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help{
-	font: var(--wt-font-size) 'Pretendard',Verdana,Dotum,AppleGothic,sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
     color: var(--wt-font-color-sub);
     text-align: left;
     margin: 5% 0;
@@ -83,7 +86,7 @@ div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help
 
 
 div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help > div{
-    font: var(--wt-font-size) 'Pretendard',Verdana,Dotum,AppleGothic,sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     color: var(--wt-font-color-sub);
     text-align: left;
     display: inline-block;
@@ -106,3 +109,5 @@ div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help
 	margin-top: 2%;
 	margin-left: -2%;
 }
+
+
