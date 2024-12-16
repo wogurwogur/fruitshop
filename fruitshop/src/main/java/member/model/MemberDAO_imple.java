@@ -207,9 +207,6 @@ public class MemberDAO_imple implements MemberDAO {
 					
 					
 					pstmt = conn.prepareStatement(sql);
-	
-					
-					System.out.println(member.getUser_no());
 					
 					pstmt.setInt(1, member.getUser_no());
 					pstmt.setInt(2, member.getUser_no());
@@ -239,21 +236,13 @@ public class MemberDAO_imple implements MemberDAO {
 								pstmt.executeUpdate();
 							} 
 						}
-							 
-						
+
 						if( rs.getInt("lastlogingap") < 12 ) {
-							
-			
 							
 							sql = " insert into tbl_loginhistory(loghis_no, fk_user_no, CLIENTIP) "
 								+ " values(login_seq.nextval, ?, ?) ";
 								 
-				
-							
 							pstmt = conn.prepareStatement(sql);
-							
-							System.out.println(user_no);
-							System.out.println(member.getUser_no());
 							
 							pstmt.setInt(1, member.getUser_no());
 							pstmt.setString(2, paraMap.get("clientip"));
@@ -263,9 +252,9 @@ public class MemberDAO_imple implements MemberDAO {
 							if( rs.getInt("pwdchangegap") >= 3 ) {
 									 
 								member.setRequirePwdChange(true);
-							}
-								 
+							} 
 						}
+						
 						member.setEmail( aes.decrypt(rs.getString("email")) );
 						member.setTel( aes.decrypt(rs.getString("tel")) );
 						member.setPostcode( rs.getString("postcode") );
@@ -273,8 +262,6 @@ public class MemberDAO_imple implements MemberDAO {
 						member.setDetailaddress( rs.getString("detailaddress") );
 						member.setExtraaddress( rs.getString("extraaddress") );
 							 
-							
-					
 						// 장바구니 갯수 //
 						sql = " select cart_no "
 							+ " from tbl_cart "
@@ -292,8 +279,7 @@ public class MemberDAO_imple implements MemberDAO {
 						}
 						
 						member.setCart_cnt(cart_cnt);
-						
-						System.out.println(cart_cnt);
+
 					}
 					
 				} // end of if(rs.next())--------------------

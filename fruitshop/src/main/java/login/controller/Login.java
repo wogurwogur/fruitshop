@@ -105,7 +105,7 @@ public class Login extends AbstractController {
 				}
 				else { // 존재하지 않는 아이디 일때
 					
-					message = "회원에 없는 아이디입니다.";
+					message = "존재하지않는 아이디입니다.";
 		            loc = "javascript:history.back()";
 		            
 		            request.setAttribute("message", message);
