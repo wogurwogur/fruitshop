@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,8 +57,14 @@
             <a href="#">Team Story</a>
             <a href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
             <br>
-            <a href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
-            <a href="#">My Page</a>
+            
+            <c:if test="${empty requestScope.loginuser}"><a href="<%= request.getContextPath() %>/login/login.ddg">Login</a></c:if>
+            <c:if test="${!empty requestScope.loginuser}"><a href="<%= request.getContextPath() %>/login/logout.ddg">LogOut</a></c:if>
+            
+            
+            <c:if test="${(requestScope.loginuser).role == 1}"><a href="asdf@!$#">My Page</a></c:if>
+            <c:if test="${(requestScope.loginuser).role == 2}"><a href="<%=request.getContextPath()%>/admin/admin.ddg">Admin Page</a></c:if>
+            <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
             <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
             <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
         </div>
