@@ -13,72 +13,93 @@
         <h3>Cart</h3>
     </div>
     
-<%--
-    <!-- 장바구니안에 상품 있는지 없는지 -->
+    <%-- 장바구니 상품 목록 --%>
     <c:choose>
-    
-    	
-         장바구니안에 상품이 있는 경우 
-        <c:when test="${not empty cartItems}">
-        
-            <!-- 상품 리스트 반복 출력 -->
-            
-            <c:forEach var="item" items="${requestScope.cartItems}">
-                <div class="cart_item" style="border-bottom: 1px solid #cccccc; padding: 20px 0; display: flex; align-items: center;">
-                    <!-- 상품 이미지 -->
-                    <div style="flex: 1; text-align: center;">
-                        <img src="${item.image}" style="width: 80px; height: auto;">
-                    </div>
-                    <!-- 상품 정보(상품명,상품가격) -->
-                    <div style="flex: 4;">
-                        <p>${item.name} </p>
-                        <p>${item.price} </p>
-                    </div>
-                    <!-- 수량 변경 -->
-                    <div style="flex: 2; display: flex; align-items: center; justify-content: center;">
-                        <button class="btn btn-light" style="width: 30px; height: 30px;">-</button>
-                        <span style="margin: 0 10px; font-size: 16px;">${item.count}</span>
-                        <button class="btn btn-light" style="width: 30px; height: 30px;">+</button>
-                    </div>
-                    <!-- 주문 버튼 -->
-                    <div style="flex: 2; text-align: center;">
-                        <button class="btn btn-dark" style="width: 100%; padding: 5px 10px;">주문하기(${item.price}원)</button>
-                    </div>
-                    <!-- 삭제 -->
-                    <div style="flex: 1; text-align: center;">
-                        <button class="btn btn-danger" style="width: 30px; height: 30px;">X</button>
-                    </div>
-                </div>
-            </c:forEach>
+        <c:when test="${not empty cartList}">
+            <div class="cart-items">
+                <c:forEach var="item" items="${cartList}">
+                <c:set var="itemTotalPrice" value="${item.product.prod_price * item.cart_prodcount}" />
+                <c:set var="totalPrice" value="${totalPrice + itemTotalPrice}"/>
+                    <div class="cart_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: 1px solid #ccc;">
+                          <%-- 각각의 상품 체크박스 --%>
+				        <div style="flex: 0.1; text-align: center;">
+				            <input type="checkbox" name="selectedItems" value="${item.cart_no}">
+				        </div>
+                        
+                        <%-- 상품 이미지 --%>
+                        <div style="flex: 1; text-align: center;">
+                            <img src="<%= request.getContextPath()%>/images/product/${item.product.prod_thumnail}" style="width: 100px; height: auto;">
+                            
+                        </div>
+                        
+                        <%-- 상품 정보 --%>
+                        <div style="flex: 1;">
+                            <p style="font-size: 18pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_price} 원</p>
+                        </div>
 
-            <!-- 총 금액 및 버튼 -->
-            <div class="cartsum" style="margin-top: 20px; padding: 20px 0; text-align: center; border-top: 1px solid #cccccc;">
-                <p style="font-size: 16px;">
-                    <span style="font-weight: bold;">총 상품 금액:</span> ${requestScope.totalPrice}원 +
-                    <span style="font-weight: bold;">배송비:</span> ${requestScope.배송비}원 =
-                    <span style="font-weight: bold;">결제 금액:</span> ${requestScope.totalPrice + requestScope.배송비}원
-                </p>
-                
+                        <%-- 수량 조절 --%>
+                         <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
+                            <button onclick="updateCount(${item.cart_no}, 'decrease')" style="width: 8%; font-size: 23pt; background-color: white; border: white;">-</button>
+                            <span style="margin: 0 5%; font-size: 18pt;">${item.cart_prodcount}</span>  <%-- keyup input 생각해야함 --%>
+                            <button onclick="updateCount(${item.cart_no}, 'increase')" style="width: 8%; font-size: 23pt; background-color: white; border: white;">+</button>
+                        </div>
+
+                        <%-- 상품의 총액 --%>
+                        <div style="flex: 1.6; text-align: center;">
+                        <button style=" background-color: white; border: 1px solid white; color: black; padding: 4% 30%; font-family: 'Noto Sans KR', sans-serif; font-size: 16pt;">
+                                ${item.product.prod_price * item.cart_prodcount}원
+                         </button>
+                        </div>
+
+                        <%-- 삭제 버튼 --%>
+                        <div style="flex: 0.5; text-align: center;">
+                            <button onclick="deleteItem(${item.cart_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%;">X</button>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
+
+            <%-- 총 금액 계산 --%>
+           <div class="cartsum" style="text-align: center; margin: 5% auto;">
+    <table style="margin: 5% auto; text-align: center; font-size: 20pt; width: 80%; border-collapse: collapse; font-family: 'Noto Sans KR', sans-serif;">
+        <tr>
+            <td style="padding: 2% 5%;">총 상품금액</td>
+            <td style="padding: 2%;"></td>
+            <td style="padding: 2% 5%;">배송비</td>
+            <td style="padding: 2%;"></td>
+            <td style="padding: 2% 5%;">총 결제금액</td>
+        </tr>
+        <tr>
+            <td style="padding: 2% 5%; font-size: 18pt;">${totalPrice}원</td>
+            <td style="padding: 2% -20%; ">+</td>
+            <td style="padding: 2% 5%; font-size: 18pt;">2500원</td>
+            <td style="padding: 2%;">=</td>
+            <td style="padding: 2% 5%; font-size: 18pt;">${totalPrice + 2500}원</td>
+        </tr>
+    </table>
+</div>
+
         </c:when>
 		
-
-        <!-- 장바구니에 상품이 없는 경우 -->
-        <c:otherwise> --%>
+        <%-- 장바구니에 상품이 없는 경우 --%>
+        <c:otherwise> 
             <div class="jumbotron" style="border: solid 1px #cccccc; background-color: white; margin-top: 5%; font-weight: bold;">
                 <p align="center">장바구니가 비어 있습니다.</p>
             </div>
             
-            <%-- 
+            
         </c:otherwise>
     </c:choose>
-    --%>
+    
+    
+    
 	
 	
 	<div class="ec-base-button gColumn">
     <a href="#" class="btnpick">선택상품 주문하기</a>  
     <a href="#" class="btnSubmit">전체상품 주문하기</a>
-    <a href="./cartList.ddg" class="btnremove">장바구니 비우기</a>       
+    <a href="#" class="btnremove">장바구니 비우기</a>       
     </div>
 	
     <%-- 이용 안내  --%>

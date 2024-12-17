@@ -3,6 +3,7 @@
 div.container > div.titleArea{
 	text-align: center;
 	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 20pt;
 }
 
 div.container > div.titleArea > h3{
@@ -111,3 +112,11 @@ div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help
 }
 
 
+div.container > div.cart-items > div:nth-child(1){
+	margin-top: 5%;
+}
+
+
+div.container > div.cartsum > table > tbody > tr:nth-child(1) > td:nth-child(1){
+	margin-right: 10%;
+}

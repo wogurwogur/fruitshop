@@ -20,7 +20,6 @@ div.container-fluid > div.jumbotron{
 
 
 
-
 div.container-fluid > div.ec-base-button.gColumn{
 	font-family: 'Noto Sans KR', sans-serif;
     color: var(--wt-font-color-sub);
@@ -80,3 +79,59 @@ div.container-fluid > div.ec-base-button.gColumn > a.btnremove:hover{
 }
 
 
+
+
+#list_wrap{
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    display: flex;
+    width: 100%;
+    list-style: none;
+    
+}
+
+div.xans-element-.xans-myshop.xans-myshop-wishlistpaging.ec-base-paginate{
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: var(--wt-margin) 0;
+    font-size: calc(var(--wt-re-size)*1.2);
+    text-align: center;
+    background: var(--wt-main-color);
+	list-style: none;
+}
+
+
+
+
+#list_wrap > div > div > li.chk{
+	text-align: left;
+	margin: 40% 30%; 
+}
+
+
+#list_wrap > div > div > li.thumb{
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    display: table-cell;
+    box-sizing: border-box;
+    width: 5%;
+    text-align: center;
+    margin: 20% 3%;
+
+}
+
+#list_wrap > div > div > li.info{
+	margin-left: 70%;
+	display: flex;
+}
+
+#list_wrap > div > div > li.info > span.name > a{
+	margin-top: 200%;
+}
+
+#list_wrap > div > div > li.info > span:nth-child(2){
+	margin-top: 200%;
+}
