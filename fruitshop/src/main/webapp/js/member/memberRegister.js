@@ -356,8 +356,8 @@ function goRegister() {
 	
 
     // 성명을 입력했는지 검사   
-	const name = $("input#name").val(); 
-	const nameReg = /^[가-힣]{2,6}$/; 
+	const name = $("input:text[name='name']").val(); 
+	const nameReg = /^[가-힣]{2,6}$/;
 	regbool = nameReg.test(name);
 	if(!regbool) {
 		$("input#name").parent().find("span.error").html("올바른 성명이 아닙니다.").addClass("red");
@@ -396,7 +396,6 @@ function goRegister() {
     }
 	else {
 		$("input:radio[name='gender']").parent().find("span.error").html("").removeClass("red");
-		bool = true;
 	}
 
     // 생년월일 입력했는지 검사
@@ -415,13 +414,12 @@ function goRegister() {
     }
 	else {
 		$("span#agreecheck").html("").removeClass("red");
-		bool = true;
 	}
 
 
     // 조건중 하나라도 만족하지 않는다면 함수를 빠져나간다.
     if(!bool) {
-        return;
+        return false;
     }
 
     const frm = document.registerFrm
