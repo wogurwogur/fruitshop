@@ -20,13 +20,13 @@
 	<div>
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-3">
 		  <li class="nav-item">
-		    <a class="nav-link mr-5 href="#" style="color: black;">공지사항</a>
+		    <a class="nav-link mr-5" href="#" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/WEB-INF/review_reviewList.jsp" style="color: black;">구매후기</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/WEB-INF/qna/qnaList.jsp" style="color: black;">QnA</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
 		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>

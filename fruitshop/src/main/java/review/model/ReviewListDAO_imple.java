@@ -1,6 +1,6 @@
 package review.model;
 
-import java.io.UnsupportedEncodingException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,10 +63,12 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select review_no, review_title, review_viewcount, review_regidate"
-						+ " from tbl_reviews "
-						+ " where review_status = 1 "
-						+ " order by review_no ";
+			String sql = " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, m.user_no, m.userid, p.prod_name "
+					+ " from tbl_reviews r INNER JOIN tbl_member m "
+					+ " on r.fk_user_no = m.user_no "
+					+ " INNER JOIN tbl_products p "
+					+ " on r.fk_prod_no = p.prod_no "
+					+ " order by review_no desc ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -79,7 +81,9 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 				revvo.setReview_title(rs.getString("review_title"));
 				revvo.setReview_viewcount(rs.getString("review_viewcount"));
 				revvo.setReview_regidate(rs.getString("review_regidate"));
-				
+				revvo.setFk_user_no(rs.getInt("Fk_user_no"));
+				revvo.setUserid(rs.getString("userid"));
+				revvo.setProd_name(rs.getString("prod_name"));
 				revList.add(revvo);
 								
 				
