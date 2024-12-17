@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +60,7 @@
             <a href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
             <br>
             <a href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
-            <a href="#">My Page</a>
+            <a href="<%= request.getContextPath() %>/mypage.ddg">My Page">My Page</a>
             <a href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
             <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
         </div>
@@ -68,44 +71,68 @@
         </button>
         
         
-        
-        <div style="margin-left: 5%;" class="collapse navbar-collapse" id="navbarSupportedContent">
-        	<span style="font-size:20px;cursor:pointer;" onclick="openNav()">&#9776;</span>
-            <ul class="navbar-nav mr-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
-                <li class="nav-item active ml-4">
-                    <a class="nav-link menu" href="<%= request.getContextPath()%>/product/productList.ddg">Fruit shop</a>
-                </li>
-                <li class="nav-item active ml-3">
-                    <a class="nav-link menu" href="#">Team Story</a>
-                </li>
-                <li class="nav-item active ml-3">
-                    <a class="nav-link menu" href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
-                </li>
-            </ul>
-        </div> 
-
-        <div class="collapse navbar-collapse" style="margin-left: 6%;">
-            <a href="<%= request.getContextPath()%>"><img src="<%= request.getContextPath() %>/images/index/logo_header.png"></a>
-        </div>
-
-        <div style="margin-left: 5%;" class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
-                <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
-                </li>
-                <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="#">My Page</a>
-                </li>
-                <li class="nav-item active mr-3">
-                    <a class="nav-link menu" href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
-                </li>
-                <li class="nav-item active">
-                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
-                    	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
-                        <i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
-                    </a>
-                </li>
-            </ul>
+        <%-- 메뉴 좌상단 시작 --%>
+        <div style="margin-left: 0.22%;" class="container-fluid row">
+	        <div class="col-md-5 collapse navbar-collapse text-center" id="navbarSupportedContent" style="border: solid 1px red; padding-right: 2%;">
+	        	
+	            <ul class="navbar-nav mx-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
+	            	<span style="font-size:20px;cursor:pointer; margin-top:1.25%" onclick="openNav()">&#9776;</span>
+	                <li class="nav-item active ml-4">
+	                    <a class="nav-link menu" href="<%= request.getContextPath()%>/product/productList.ddg">Fruit shop</a>
+	                </li>
+	                <li class="nav-item active ml-3">
+	                    <a class="nav-link menu" href="#">Team Story</a>
+	                </li>
+	                <li class="nav-item active ml-3">
+	                    <a class="nav-link menu" href="<%= request.getContextPath() %>/notice/noticeList.ddg">Community</a>
+	                </li>
+	            </ul>
+	        </div>
+	        <%-- 메뉴 좌상단 끝 --%>
+	
+			<%-- 로고 이미지 --%>
+	        <div class="col-md-2 collapse navbar-collapse" style="border: solid 1px blue;">
+	        	<div class="mx-auto">
+	            	<a href="<%= request.getContextPath()%>"><img style="text-align: center;" src="<%= request.getContextPath() %>/images/index/logo_header.png"></a>
+	            </div>
+	        </div>
+	
+	        <div style="border: solid 1px green;" class="col-md-5 collapse navbar-collapse" id="navbarSupportedContent">
+	            <ul class="navbar-nav mx-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
+	            	
+	            	<c:if test="${empty sessionScope.loginuser}">
+		                <li class="nav-item active mr-3">
+		                    <a class="nav-link menu" href="<%= request.getContextPath() %>/login/login.ddg">Login</a>
+		                </li>
+	                </c:if>
+	                <c:if test="${!empty sessionScope.loginuser}">
+		                <li class="nav-item active mr-3">
+		                    <a class="nav-link menu" href="<%= request.getContextPath() %>/login/logout.ddg">Logout</a>
+		                </li>
+	                </c:if>
+	                
+	                <c:if test="${empty sessionScope.loginuser or sessionScope.loginuser.role == 1}">
+		                <li class="nav-item active mr-3">
+		                    <a class="nav-link menu" href="<%= request.getContextPath() %>/mypage/mypageIndex.ddg">My Page</a>
+		                </li>
+	                </c:if>
+	                <c:if test="${sessionScope.loginuser.role == 2}">
+		                <li class="nav-item active mr-3">
+		                    <a class="nav-link menu" href="<%= request.getContextPath() %>/admin/adminManagement.ddg">Admin Page</a>
+		                </li>
+	                </c:if>
+	                
+	                <li class="nav-item active mr-3">
+	                    <a class="nav-link menu" href="<%= request.getContextPath() %>/order/orderList.ddg">Order List</a>
+	                </li>
+	                <li class="nav-item active">
+	                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
+	                    	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
+	                        <i class="fa-solid fa-basket-shopping"></i><span class="badge">${sessionScope.loginuser.cart_cnt}</span>
+	                    </a>
+	                </li>
+	            </ul>
+	        </div>
         </div>
     </nav>
     <!-- 상단 메뉴 끝 -->

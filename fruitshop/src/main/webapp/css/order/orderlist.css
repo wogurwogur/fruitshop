@@ -107,7 +107,8 @@ div.pagination a {
 }
 
 div.pagination a.active {
-  background-color: #4CAF50;
+  /*background-color: #4CAF50;*/
+  background-color: black;
   color: white;
   border-radius: 5px;
 }
