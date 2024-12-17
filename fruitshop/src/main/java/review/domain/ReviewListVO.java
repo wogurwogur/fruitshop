@@ -15,11 +15,13 @@ public class ReviewListVO {
 	private String	review_regidate;
 	private String 	userid;
 	private String 	prod_name;
+	private int 	comment_count;
 	
 	
 	
 	
-// 외부키 가져오는데 VO 추가해야하나 ???
+
+	// 외부키 가져오는데 VO 추가해야하나 ???
 	public String getUserid() {
 		return userid;
 	}
@@ -32,6 +34,12 @@ public class ReviewListVO {
 	}
 	public void setProd_name(String prod_name) {
 		this.prod_name = prod_name;
+	}
+	public int getComment_count() {
+		return comment_count;
+	}
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
 	}
 
 /////////////////////////////////////////////////

@@ -63,12 +63,24 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, m.user_no, m.userid, p.prod_name "
+			String sql = " select A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+					+ " FROM  "
+					+ " ( "
+					+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
+					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
 					+ " from tbl_reviews r INNER JOIN tbl_member m "
 					+ " on r.fk_user_no = m.user_no "
 					+ " INNER JOIN tbl_products p "
 					+ " on r.fk_prod_no = p.prod_no "
-					+ " order by review_no desc ";
+					+ " order by review_no desc "
+					+ " ) A "
+					+ " LEFT OUTER JOIN "
+					+ " ( "
+					+ " select count(comment_no) as com_count, fk_review_no "
+					+ " from tbl_comments "
+					+ " group by fk_review_no "
+					+ " ) B "
+					+ " ON A.review_no = B.fk_review_no ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -81,9 +93,11 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 				revvo.setReview_title(rs.getString("review_title"));
 				revvo.setReview_viewcount(rs.getString("review_viewcount"));
 				revvo.setReview_regidate(rs.getString("review_regidate"));
-				revvo.setFk_user_no(rs.getInt("Fk_user_no"));
+				revvo.setFk_user_no(rs.getInt("user_no"));
 				revvo.setUserid(rs.getString("userid"));
 				revvo.setProd_name(rs.getString("prod_name"));
+				revvo.setComment_count(rs.getInt("comment_count"));
+				
 				revList.add(revvo);
 								
 				
