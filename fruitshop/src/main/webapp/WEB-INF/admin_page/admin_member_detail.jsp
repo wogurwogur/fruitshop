@@ -9,6 +9,25 @@
 <% 
 	String ctxPath = request.getContextPath();
 %>
+
+<script type="text/javascript">
+
+function adminRoleAddandRemove(role, user_no){
+	
+	const frm = document.roleAddRemove;
+	
+	frm.role.value = role;
+	frm.user_no.value = user_no;
+	
+	frm.action = "<%=ctxPath%>/admin/adminMemberRole.ddg";
+	frm.method = "post";
+	
+	frm.submit();
+	
+}
+
+</script>
+
 <style>
 
 tbody > tr:nth:child(1){
@@ -90,8 +109,8 @@ tbody > tr:nth:child(1){
 			</tr>
 			<tr>
 				<td colspan="2">회원 권한</td>
-				<c:if test="${requestScope.detailMember.status eq '1'}"><td>일반회원</td></c:if>
-				<c:if test="${requestScope.detailMember.status eq '2'}"><td>관리자</td></c:if>
+				<c:if test="${requestScope.detailMember.role eq '1'}"><td>일반회원</td></c:if>
+				<c:if test="${requestScope.detailMember.role eq '2'}"><td>관리자</td></c:if>
 			</tr>
 		</tbody>
 	
@@ -99,13 +118,18 @@ tbody > tr:nth:child(1){
 	<table class="table" style="text-align:center;">
 		<tbody>
 			<tr>
-				<td><button type="button" class="btn btn-outline-success">쿠폰수령</button></td>
-				<td><button type="button" class="btn btn-outline-success">징계처분</button></td>
-				<c:if test="${requestScope.detailMember.status eq '1'}"><td><button type="button" class="btn btn-outline-success">관리자권한부여</button></td></c:if>
-				<c:if test="${requestScope.detailMember.status eq '2'}"><td><button type="button" class="btn btn-outline-danger">관리자권한박탈</button></td></c:if>
-				<td><button type="button" class="btn btn-outline-secondary">돌아가기</button></td>
+				<td><button type="button" class="btn btn-outline-success" id="couponModal">쿠폰수령</button></td>
+				<!-- <td><button type="button" class="btn btn-outline-success" id="couponModal">징계처분</button></td> -->
+				<c:if test="${requestScope.detailMember.status eq '1'}"><td><button type="button" class="btn btn-outline-success" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no}')">관리자권한부여</button></td></c:if>
+				<c:if test="${requestScope.detailMember.status eq '2'}"><td><button type="button" class="btn btn-outline-danger" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no})">관리자권한박탈</button></td></c:if>
+				<td><button type="button" class="btn btn-outline-secondary" onclick="javascript:location.href='<%=ctxPath%>/admin/adminManagement.ddg'">돌아가기</button></td>
 			</tr>
 		</tbody>
 	</table>
+	
+	<form name="roleAddRemove">
+		<input type="hidden" name="role"/>
+		<input type="hidden" name="user_no"/>
+	</form>
 	
 </div>

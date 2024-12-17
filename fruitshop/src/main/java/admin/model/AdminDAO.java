@@ -14,4 +14,7 @@ public interface AdminDAO {
 	// 한 회원의 상세정보를 확인하는 메소드
 	MemberVO memberDetailInfo(String detail_user_no) throws SQLException;
 	
+	// 관리자가 권한 부여 및 박탈하는 메소드
+	int roleAddandRemove(String role, String user_no) throws SQLException;
+	
 }

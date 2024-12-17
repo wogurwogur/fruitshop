@@ -18,13 +18,13 @@ public class AdminMemberDetail extends AbstractController {
 		String method = request.getMethod();
 		
 		if("POST".equals(method)) {
-			String detail_user_no = request.getParameter("detail_user_no");
+			String user_no = request.getParameter("user_no");
 			
-			MemberVO detailMember = adao.memberDetailInfo(detail_user_no);
+			MemberVO detailMember = adao.memberDetailInfo(user_no);
 			
-			System.out.println(detail_user_no);
+			System.out.println(user_no);
 			
-			request.setAttribute("detail_user_no", detail_user_no );
+			request.setAttribute("user_no", user_no);
 			
 			request.setAttribute("detailMember", detailMember);
 			

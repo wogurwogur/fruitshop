@@ -180,6 +180,45 @@ public class AdminDAO_imple implements AdminDAO {
 	}
 
 	
+	// 관리자가 권한 부여 및 박탈하는 메소드
+	@Override
+	public int roleAddandRemove(String role, String user_no) throws SQLException{
+		int n = 0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " update tbl_member "
+				   + " set role = ? "
+				   + " where user_no = ? ";
+		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			int result_role = Integer.parseInt(role);
+			
+			if(result_role == 1) {
+				result_role = 2;
+			}else {
+				result_role = 1;
+			}
+			
+			pstmt.setInt(1, result_role);
+			pstmt.setInt(2, Integer.parseInt(user_no));
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		
+		
+		return n;
+	}
+
+	
 	
 	
 }
