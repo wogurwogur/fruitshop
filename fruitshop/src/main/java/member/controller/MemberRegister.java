@@ -24,10 +24,10 @@ public class MemberRegister extends AbstractController {
 		} else {
 			
 			
-			String userid = request.getParameter("userid").trim();
+			String userid = request.getParameter("userid");
 			String passwd = request.getParameter("passwd");
-			String name = request.getParameter("name").trim();
-	        String email = request.getParameter("email").trim();
+			String name = request.getParameter("name");
+	        String email = request.getParameter("email");
 	        
 	        String tel1 = request.getParameter("tel1");
 	        String tel2 = request.getParameter("tel2");
