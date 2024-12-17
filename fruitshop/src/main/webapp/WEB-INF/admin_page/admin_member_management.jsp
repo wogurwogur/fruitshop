@@ -9,6 +9,9 @@
 %>
 
 <script src="<%=ctxPath %>/js/admin/admin_member_management.js"></script>
+<script type="text/javascript">
+
+</script>
 <style>
 
 div#admin_top_nav{
@@ -134,18 +137,47 @@ form.example button {
 			</thead>
 			<tbody>
 				<c:forEach var="memberinfo" items="${member_allList}">
-					<tr>
-						<td>${memberinfo.user_no}</td>
-						<td>${memberinfo.name}</td>
-						<td>${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
-						<td>${memberinfo.gender}</td>
-						<td>${memberinfo.tel}</td>
+					<tr data-toggle="modal" data-target="#userdetail" data-dismiss="modal">
+						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.user_no}</td>
+						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.name}</td>
+						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
+						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.gender}</td>
+						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.tel}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+		
 	</c:if>
 	<c:if test="${empty requestScope.member_allList}">
 		<span>등록된 회원이 없습니다.</span>
 	</c:if>
 </div>
+
+<%-- <div class="modal fade" id="userIdfind"> --%> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%> 
+  <div class="modal fade" id="userdetail" data-backdrop="static"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>  
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal header -->
+        <div class="modal-header">
+          <h4 class="modal-title">회원 상세정보</h4>
+          <button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="idFind">
+             <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="admin_member_detail.jsp"> 
+             </iframe>
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger idFindClose" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>

@@ -88,12 +88,12 @@ public class AdminDAO_imple implements AdminDAO {
 				mvo.setPasswd(rs.getString("passwd"));
 				mvo.setName(rs.getString("name"));
 				mvo.setBirthday(rs.getString("birthday"));
-				mvo.setEmail(rs.getString("email"));
+				mvo.setEmail(aes.decrypt(rs.getString("email")));
 				mvo.setTel(aes.decrypt(rs.getString("tel")));
 				mvo.setPostcode(rs.getString("postcode"));
 				mvo.setAddress(rs.getString("address"));
 				mvo.setDetailaddress(rs.getString("detailaddress"));
-				mvo.setExtraaddress(aes.decrypt(rs.getString("extraaddress")));
+				mvo.setExtraaddress(rs.getString("extraaddress"));
 				mvo.setGender(rs.getString("gender")); 
 				mvo.setPoint(rs.getInt("point")); 
 				mvo.setRegisterday(rs.getString("registerday"));
