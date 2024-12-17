@@ -1,27 +1,69 @@
 @charset "UTF-8";
 
-/* Noto Sans KR (korean) */
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 100;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');}
-
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 300;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');}
-
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 400;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');}
-
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 500;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');}
-
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 700;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');}
-
-@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 900;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');}
 
 
-a.menu {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 14pt;
-	/* font-style: regular; */
-	font-weight: 400;
-/*     src: url('../fonts/NotoSansKR-Medium.otf') format('opentype'),
-        url('../fonts/NotoSansKR-Medium.ttf') format('truetype'),
-        url('../fonts/NotoSansKR-Medium.woff') format('woff'),
-        url('../fonts/NotoSansKR-Medium.woff2') format('woff2'); */
-    
+/* 상품페이지 타이틀 화면 */
+div#title {
+	margin-top: 0%;
+	margin-bottom: 2%;
 }
+
+/* 상품 이미지 전체 틀 */
+div#container {
+	width: 80%;
+	margin: 0 auto;
+/* 	border: solid 1px red; */
+}
+
+/* 그리드 전체 */
+div.product-list { 
+	gap: 50px; /* 그리드 항목 간 간격을 일정하게 설정 */
+    margin: 0 auto;
+/*     border: solid 2px blue; */
+}
+
+/* 각 그리드 */
+div.product-item { 
+	margin: 0 auto;
+/* 	border:solid 1px red;  */
+}
+
+
+
+/* 상품페이지 제목명 */
+span.title {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 24pt;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+
+/* 상품페이지 상품명 */
+span.product {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 18pt;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+/* 상품페이지 상품 가격 */
+span.price {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+}
+
+
+
+
+
+/* 상품페이지 a태그 */
+a.product {
+  color: black;
+}
+a.product:hover {
+  color: black;
+  text-decoration-line: none;
+}
+
+
