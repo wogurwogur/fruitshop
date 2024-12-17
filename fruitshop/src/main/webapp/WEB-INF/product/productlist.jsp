@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
+
 <%-- Custom CSS --%>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/product/productlist.css">
 
@@ -14,59 +15,59 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
+ 
 
-<%-- 상품 리스트 시작 --%>
-<div class="container-fulid">
-	<div style="text-align:center;">
-		<h2>SING SING FRUIT</h2>
-	</div>
-	
-	<c:if test="${not empty requestScope.prdList}">
-		<c:forEach var="prdvo" items="${requestScope.prdList}" varStatus="status">
-			<div class="justify-content-center" style="display: flex;">	
-			<c:if test="${status.index < 16 }"> <%-- 한 페이지에 상품 16개 씩 보이게 처리 --%>
-				<c:if test="${status.index % 4 == 0}">  <%-- 한 줄에 4개씩 출력 --%>
-					<div class="row">
-				</c:if>
-					<%-- 상품 시작 --%>
-					<div class="col mt-5" data-aos="fade-up" data-aos-delay="0"> <%-- AOS 이미지 위로 올라오게 딜레이 0초 --%>
-						<div class="my-2 mx-4" style="position: relative;">
-							<a href="#"> <%-- 이미지 클릭 시 상세페이지 열기 --%>
-								<img src="<%=request.getContextPath()%>/images/product/${prdvo.prod_thumnail}" style="width: 350px; height: 350px;">
-							</a>
-							
-							<%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 시작 --%>
-							<c:if test="${prdvo.prod_inventory == 0}">   
-								<img src="<%=request.getContextPath()%>/images/product/soldout.png" style="position: absolute; top: 0; left: 0; width: 37px; height: 20px; opacity: 1.0;">
-							</c:if>
-							<%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 끝 --%>
+<div id="container">
+    <div id="title" style="text-align:center;">
+        <a href="javascript:location.reload()" class="product">
+            <span class="title">SING SING FRUIT</span>
+        </a>
+    </div>
+    
+    <c:if test="${not empty requestScope.prdList}">
+        <div class="product-list" style="display: grid; grid-template-columns: repeat(4, 1fr);"> <%-- 한 줄에 4개씩 출력 --%>
+            <c:forEach var="prdvo" items="${requestScope.prdList}" varStatus="status">
+            	<%-- 한 페이지에 상품 16개 씩 보이게 처리 시작 --%>
+                <c:if test="${status.index < 17 }">
+                    
+                    <%-- 상품 시작 --%>
+                    <div class="product-item" data-aos="fade-up" data-aos-delay="0">
+                        <div class="my-5" style="position: relative;">
+                            <a href="#"> <%-- 이미지 클릭 시 상세페이지 열기 --%>
+                                <img src="<%=request.getContextPath()%>/images/product/${prdvo.prod_thumnail}" style="width: 100%; height: auto;">
+                            </a>
+                            
+                            <%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 시작 --%>
+                            <c:if test="${prdvo.prod_inventory == 0}">   
+                                <img src="<%=request.getContextPath()%>/images/product/soldout.png" style="position: absolute; top: 0; left: 0; width: 37px; height: 20px; opacity: 1.0;">
+                            </c:if>
+                            <%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 끝 --%>
 
-							<div style="display: flex;">
-							<div class="mt-3">
-								<a href="#" class="product"> <%-- 상품 이름 클릭 시 상세페이지 열기 --%>
-									<span class="h4 mt-3 product">${prdvo.prod_name}</span>
-								</a>
-							</div>
-							<div style="margin-left: auto; margin-top: 11%;">
-								<span><i onclick="wishToggle()" class="fa-solid fa-heart fa-lg heart"></i></span>
-							</div>
-						</div>
-						<span style="display: block;" class="mt-3">
-							<fmt:formatNumber value="${prdvo.prod_price}" pattern="###,###" /> 원
-						</span>
-						</div>
-					</div>
-					<%-- 상품 끝 --%>
-				<c:if test="${status.index % 4 == 3 || status.last}"> <%-- 한 줄에 4개씩 출력 닫기 --%>
-					</div>
-				</c:if>
-			</c:if>	
-			</div>	
-		</c:forEach>
-	</c:if>	
-	
+                            <div style="display: flex;">
+                                <div>
+                                    <a href="#" class="product">
+                                        <span class="mt-3 product">${prdvo.prod_name}</span>
+                                    </a>
+                                </div>
+                                <div class="ml-auto">
+                                    <span><i onclick="wishToggle()" class="fa-solid fa-heart fa-lg heart mt-3"></i></span>
+                                </div>
+                            </div>
+                            <span style="display: block;" class="mt-3 price">
+                                <fmt:formatNumber value="${prdvo.prod_price}" pattern="###,###" /> 원
+                            </span>
+                        </div>
+                    </div>
+                    <%-- 상품 끝 --%>
+                    
+                </c:if>
+                 <%-- 한 페이지에 상품 16개 씩 보이게 처리 끝 --%>
+            </c:forEach>
+        </div>
+    </c:if>    
+    
 </div>
-<%-- 상품 리스트 끝 --%>
+
 
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
