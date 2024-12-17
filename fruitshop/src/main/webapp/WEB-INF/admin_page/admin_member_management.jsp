@@ -8,8 +8,22 @@
 	String ctxPath = request.getContextPath();
 %>
 
-<script src="<%=ctxPath %>/js/admin/admin_member_management.js"></script>
+<script src="<%=ctxPath %>/js/admin/admin_member_detail.js"></script>
 <script type="text/javascript">
+
+function memberDetail(user_no){
+	
+	const memberfrm = document.member_management_frm;
+	
+	
+	memberfrm.method = "post";
+	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
+	
+	memberfrm.detail_user_no.value = user_no;
+	
+	memberfrm.submit();
+	
+}
 
 </script>
 <style>
@@ -112,10 +126,11 @@ form.example button {
 		
 	<%-- search div start --%>
 	<div>
-		<form class="example" id="member_management_frm" style="margin:auto;max-width:300px">
+		<form class="example" id="member_management_frm" name = "member_management_frm" style="margin:auto;max-width:300px">
 		  <input type="text" placeholder="Search.." name="search2">
 		  <button type="submit"><i class="fa fa-search"></i></button>
-		</form>
+		  <input type="hidden" name="detail_user_no">
+		</form> 
 	</div>
 	<%-- search div end --%>
 	
@@ -137,12 +152,12 @@ form.example button {
 			</thead>
 			<tbody>
 				<c:forEach var="memberinfo" items="${member_allList}">
-					<tr data-toggle="modal" data-target="#userdetail" data-dismiss="modal">
-						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.user_no}</td>
-						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.name}</td>
-						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
-						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.gender}</td>
-						<td onclick="memberDetail('${memberinfo.user_no}')">${memberinfo.tel}</td>
+					<tr onclick="memberDetail('${memberinfo.user_no}')">
+						<td>${memberinfo.user_no}</td>
+						<td>${memberinfo.name}</td>
+						<td>${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
+						<td>${memberinfo.gender}</td>
+						<td>${memberinfo.tel}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -154,30 +169,4 @@ form.example button {
 	</c:if>
 </div>
 
-<%-- <div class="modal fade" id="userIdfind"> --%> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%> 
-  <div class="modal fade" id="userdetail" data-backdrop="static"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>  
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-      
-        <!-- Modal header -->
-        <div class="modal-header">
-          <h4 class="modal-title">회원 상세정보</h4>
-          <button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          <div id="idFind">
-             <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="/admin/adminMemberDetail.ddg"> 
-             </iframe>
-          </div>
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger idFindClose" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
+

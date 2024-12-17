@@ -24,19 +24,33 @@ public class ManagementController extends AbstractController {
 
 	
 		if(null == loginuser) {
-			System.out.println("비정상적인 접근입니다.");
+			String message = "관리자만 접근이 가능합니다.";
+	        String loc = "javascript:history.back()";
+	        
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/common/msg.jsp");
+			
 		}else if(loginuser.getRole() == 1){ 
-			System.out.println("비정상적인 접근입니다."); 
+			
+			String message = "관리자만 접근이 가능합니다.";
+	        String loc = "javascript:history.back()";
+	        
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/common/msg.jsp"); 
+			
 		}else {
-			String ctxPath = request.getContextPath();
 
 			List<MemberVO> member_allList = adao.MemberSelectAll();
 
 			request.setAttribute("member_allList", member_allList);
 
 			request.setAttribute("adminpage_val", "admin_member_management");
-
-			System.out.println(member_allList.size());
 
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");

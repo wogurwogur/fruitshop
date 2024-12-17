@@ -121,6 +121,14 @@ public class AdminDAO_imple implements AdminDAO {
 	} // 회원의 모든 정보를 가져오는 메소드 끝-----------------------
 
 	
+	// 한 회원의 상세정보를 확인하는 메소드
+	@Override
+	public MemberVO memberDetailInfo(String detail_user_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 	
 }
