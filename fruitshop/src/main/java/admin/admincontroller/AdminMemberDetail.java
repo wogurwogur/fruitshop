@@ -12,10 +12,12 @@ public class AdminMemberDetail extends AbstractController {
 		String method = request.getMethod();
 		if("POST".equals(method)) {
 			
+			
+			
 		}else {
 			
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/admin_page/admin_member_detail.jsp");
+			super.setViewPage(request.getContextPath()+"/WEB-INF/admin_page/admin_member_detail.jsp");
 			
 		}
 		

@@ -168,7 +168,7 @@ form.example button {
         <!-- Modal body -->
         <div class="modal-body">
           <div id="idFind">
-             <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="admin_member_detail.jsp"> 
+             <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="/admin/adminMemberDetail.ddg"> 
              </iframe>
           </div>
         </div>
