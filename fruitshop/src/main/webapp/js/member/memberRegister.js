@@ -2,10 +2,10 @@
  * 
  */
 
-let b_idcheck_click = false;
-let b_emailcheck_click = false;
+let idcheck = false;
+let emailcheck = false;
 
-let name_check = false;
+
 
 
 
@@ -46,7 +46,7 @@ $(()=>{
 	                        }
 	                        else {
 	                            $("input#userid").parent().find("span.error").html($("input#userid").val()+" 은 사용가능합니다.").addClass("blue").removeClass("red");
-	                            b_idcheck_click = true;
+	                            idcheck = true;
 	                        }
 	                    },
 	                error: function(request, status, error) {
@@ -64,7 +64,7 @@ $(()=>{
 
         const passwd = $(e.target).val(); 
 
-        const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=-]).*$/g); 
+        const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-]).*$/g);
 
         const bool = regExp_passwd.test(passwd);
 
@@ -88,7 +88,7 @@ $(()=>{
 
 		const passwd_2 = $(e.target).val();
 
-		const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=-]).*$/g); 
+		const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-]).*$/g); 
 
 		const bool = regExp_passwd.test(passwd_1);
 
@@ -119,7 +119,7 @@ $(()=>{
     // 성명
     $("input:text[name='name']").bind('blur', e => { 
 
-        const name = $(e.target).val().trim(); 
+        const name = $(e.target).val(); 
 
         const nameReg = /^[가-힣]{2,6}$/; 
 
@@ -163,7 +163,7 @@ $(()=>{
                     }
                     else { 
                         $(e.target).parent().find("span.error").html($(e.target).val()+" 은 사용가능합니다.").addClass("blue").removeClass("red");
-                        b_emailcheck_click = true;
+                        emailcheck = true;
                     }
                 },
                 error: function(request, status, error) {
@@ -333,39 +333,54 @@ function goRegister() {
     let bool = true;
 
     // 아이디를 입력했는지 검사
-    if($("input#userid").val().trim() == "") {
-
-        $("input#userid").parent().find("span.error").html("아이디를 입력하세요.").addClass("red");
+    if( $("span#useridError").html() != $("input#userid").val()+" 은 사용가능합니다.") {
+		$("span#useridError").html("올바른 아이디가 아닙니다.").addClass("red").removeClass("blue");
         bool = false;
     }
 
     // 비밀번호를 입력했는지 검사
-    if($("input#passwd").val().trim() == "" ) {
-
-        $("input#passwd").parent().find("span.error").html("비밀번호를 입력하세요.").addClass("red");
-        bool = false;
+	const passwd = $("input#passwd").val(); 
+	const passwd2 = $("input#passwdcheck").val(); 
+	const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-]).*$/g);
+	let regbool = regExp_passwd.test(passwd);
+	if(!regbool) {
+		$("span#pwdError").html("올바른 비밀번호가 아닙니다.").addClass("red");
+		bool = false;
     }
+	else {
+		if(passwd != passwd2) {
+			$("span#pwdError").html("비밀번호가 일치하지 않습니다.").addClass("red");
+			bool = false;
+		}
+	}
+	
 
     // 성명을 입력했는지 검사   
-    if($("input#name").val().trim() == "") {
-
-        $("input#name").parent().find("span.error").html("성명을 입력하세요.").addClass("red");
-        bool = false;
-    }
+	const name = $("input#name").val(); 
+	const nameReg = /^[가-힣]{2,6}$/; 
+	regbool = nameReg.test(name);
+	if(!regbool) {
+		$("input#name").parent().find("span.error").html("올바른 성명이 아닙니다.").addClass("red");
+		bool = false;
+	}
 
     // 이메일을 입력했는지 검사
-    if($("input#email").val().trim() == "") {
-
-        $("input#email").parent().find("span.error").html("이메일을 입력하세요.").addClass("red");
-        bool = false;
-    }
+	if( $("span#emailError").html() != $("input#email").val()+" 은 사용가능합니다.") {
+	$("span#emailError").html("올바른 이메일이 아닙니다.").addClass("red").removeClass("blue");
+		bool = false;
+	}
 
     // 연락처를 입력했는지 검사
-    if($("input#tel2").val().trim() == "" || $("input#tel3").val().trim() == "" ) {
-
-        $("input#tel3").parent().find("span.error").html("연락처를 입력하세요.").addClass("red");
-        bool = false;
-    }
+	const tel2 = $("input:text[name='tel2']").val(); 
+	const regExp_tel2 = new RegExp(/^[1-9][0-9]{3}$/); 
+	const regbool2 = regExp_tel2.test(tel2);
+	const tel3 = $("input:text[name='tel3']").val(); 
+	const regExp_tel3 = new RegExp(/^\d{4}$/); 
+	const regbool3 = regExp_tel3.test(tel3);
+	if(!regbool2 || !regbool3) {
+		$("input:text[name='tel3']").parent().find("span.error").html("올바른 연락처가 아닙니다.").addClass("red");
+		bool = false;
+	}
 
     // 주소 입력했는지 검사
     if($("input#postcode").val().trim() == "" || $("input#address").val().trim() == "") {
@@ -375,30 +390,34 @@ function goRegister() {
 
     // 성별 입력했는지 검사
     const gender_check = $("input:radio[name='gender']:checked").length;
-
     if(gender_check == 0) {
-        $("input:radio[name='gender']").parent().find("span.error").html("주소를 입력하세요.").addClass("red");
+        $("input:radio[name='gender']").parent().find("span.error").html("성별을 선택하세요.").addClass("red");
         bool = false;
     }
 
     // 생년월일 입력했는지 검사
-    if($("input#datepicker").val().trim() == "") {
+	const birthday =  $("input#datepicker").val();
+	const regExp_birthday = new RegExp(/^\d{4}-\d{2}-\d{2}$/); 
+	regbool = regExp_birthday.test(birthday);
+	if(!regbool) {
         $("input#datepicker").parent().find("span.error").html("생년월일을 입력하세요.").addClass("red");
         bool = false;
     }
 
     // 약관 동의 했는지 검사
     if($("input:checkbox[id='agree']:checked").length == 0) {
-        $("input:checkbox[id='agree']").parent().find("span.error").html("약관 동의는 필수사항입니다.").addClass("red");
+        $("span#agreecheck").html("약관 동의는 필수사항입니다.").addClass("red");
         bool = false;
     }
+	else {
+		$("span#agreecheck").html("").removeClass("red");
+	}
 
 
     // 조건중 하나라도 만족하지 않는다면 함수를 빠져나간다.
     if(!bool) {
         return;
     }
-
 
     const frm = document.registerFrm
 

@@ -51,6 +51,8 @@ public class Login extends AbstractController {
 
 					isExists = true;
 
+					System.out.println(loginuser.getRole());
+					
 					HttpSession session = request.getSession();
 
 					session.setAttribute("loginuser", loginuser);
