@@ -181,32 +181,33 @@ public class MemberDAO_imple implements MemberDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-
+				System.out.println(" no : " + rs.getInt("user_no"));
 				member = new MemberVO();
 				member.setUser_no(rs.getInt("user_no"));
-				int user_no = rs.getInt("user_no");
+				
 					
-					sql = " SELECT userid, name, point, pwdchangegap, role, "
-						+ " NVL( lastlogingap, TRUNC( months_between(sysdate, registerday)) ) AS lastlogingap, "
-						+ " idle, email, tel, postcode, address, detailaddress, extraaddress, role "
-						+ " FROM "
-						+ " ( "
-						+ " SELECT userid, name, point, role, "
-						+ " trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
-						+ " registerday, idle, email, tel, postcode, address, detailaddress, extraaddress, role "
-						+ " FROM tbl_member "
-						+ " WHERE status = 1 AND user_no = ? "
-						+ " ) M "
-						+ " CROSS JOIN "
-						+ " ( "
-						+ " SELECT TRUNC( months_between(sysdate, MAX(login_date))) AS lastlogingap "
-						+ " FROM tbl_loginhistory "
-						+ " WHERE fk_user_no = ? "
-						+ " ) H ";
+					sql = " SELECT userid, name, point, pwdchangegap, "
+						+ "		NVL( lastlogingap, TRUNC( months_between(sysdate, registerday)) ) AS lastlogingap, "
+						+ "		idle, email, tel, postcode, address, detailaddress, extraaddress, role "
+						+ "	FROM "
+						+ "	( "
+						+ "	SELECT userid, name, point, "
+						+ "		trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
+						+ "		registerday, idle, email, tel, postcode, address, detailaddress, extraaddress, role "
+						+ "	FROM tbl_member "
+						+ "	WHERE status = 1 AND user_no = ? "
+						+ "	) M "
+						+ "	CROSS JOIN "
+						+ "	( "
+						+ "	SELECT TRUNC( months_between(sysdate, MAX(login_date))) AS lastlogingap "
+						+ "	FROM tbl_loginhistory "
+						+ "	WHERE fk_user_no = ? "
+						+ "	) H ";
 					
 					
 					pstmt = conn.prepareStatement(sql);
 
+					System.out.println(" no : " + member.getUser_no());
 					pstmt.setInt(1, member.getUser_no());
 					pstmt.setInt(2, member.getUser_no());
 
@@ -226,19 +227,20 @@ public class MemberDAO_imple implements MemberDAO {
 						member.setExtraaddress(rs.getString("extraaddress"));
 						member.setRole(rs.getInt("role"));
 
-						
 						if (rs.getInt("lastlogingap") >= 12) {
 
 							member.setIdle(0);
 
 							if (rs.getInt("idle") == 1) {
 
-								sql = " update tbl_member set idle = 0 " + " where userid = ? ";
+								sql = " update tbl_member set idle = 0 " 
+									+ " where userid = ? ";
 
 								pstmt = conn.prepareStatement(sql);
 								pstmt.setString(1, paraMap.get("userid"));
 
 								pstmt.executeUpdate();
+								
 							}
 						}
 
@@ -280,7 +282,6 @@ public class MemberDAO_imple implements MemberDAO {
 						}
 
 						member.setCart_cnt(cart_cnt);
-
 					}
 
 				} // end of if(rs.next())--------------------
@@ -357,6 +358,8 @@ public class MemberDAO_imple implements MemberDAO {
 
 		return isUserExist;
 	} ////////////////////
+	
+	
 	
 	// 비밀번호 변경하기
 	@Override

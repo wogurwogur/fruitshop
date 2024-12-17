@@ -38,7 +38,7 @@ public class IdFind extends AbstractController {
 			
 			String userid = mdao.findUserid(paraMap);
 			
-			if(userid != null) { // 조회된 아이디가 있다면
+			if(userid != null) {
 				request.setAttribute("userid", userid);
 				
 			}

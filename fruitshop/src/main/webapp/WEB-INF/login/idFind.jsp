@@ -32,6 +32,13 @@ $(()=>{
 		}
 	});
 	
+	// 취소 클릭시
+	$("button#back").click( e=>{
+		
+		location.href="<%=request.getContextPath() %>/login/login.ddg";
+		
+	});
+	
  
 }); // end of window.onload ~
 
@@ -99,9 +106,15 @@ function goFind() {
 					</tbody>
 				</table>
 			</div>
+			<div style="vertical-align:top; height:100px;">
+			<%-- 결과가 출력되는 곳 --%>
+			<div class="my-3 text-center" id="div_findResult">
+	   			ID : <span style="color: red; font-size: 16pt; font-weight: bold;">${requestScope.userid}</span>
+			</div>
+			</div>
 
 			<div class="text-center" style="margin-bottom:100px;" >
-	        	<button type="button" id="findUserid" class="h5" onlick="" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">찾기</button>
+	        	<button type="button" id="findUserid" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">찾기</button>
 	        
 				<button type="button" id="back" class="h5" onlick="" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">취소</button>
 			</div>
@@ -110,10 +123,7 @@ function goFind() {
 		
 	</form>
 	
-	<%-- 결과가 출력되는 곳 --%>
-	<div class="my-3 text-center" id="div_findResult">
-	   ID : <span style="color: red; font-size: 16pt; font-weight: bold;">${requestScope.userid}</span>
-	</div>
+	
 		
 </div>
 
