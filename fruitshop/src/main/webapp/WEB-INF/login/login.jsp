@@ -10,6 +10,13 @@
 
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/login/login.js"></script>
 
+<style type="text/css">
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+</style>
+
 <script type="text/javascript">
 	$(()=>{
 		
@@ -39,6 +46,8 @@
 	
 	
 </script>
+
+
 
 <div class="container">
 

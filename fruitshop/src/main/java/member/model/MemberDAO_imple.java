@@ -340,7 +340,9 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 
-			String sql = " select userid " + " from tbl_member " + " where status = 1 and userid = ? and email = ? ";
+			String sql = " select userid " 
+					   + " from tbl_member " 
+					   + " where status = 1 and userid = ? and email = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("userid"));
@@ -370,10 +372,11 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 
-			String sql = " update tbl_member set pwd = ?, lastpwdchangedate = sysdate " + " where userid = ? ";
+			String sql = " update tbl_member set passwd = ?, lastpwdchangedate = sysdate " 
+					   + " where userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_passwd"))); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
 			pstmt.setString(2, paraMap.get("userid"));
 
 			result = pstmt.executeUpdate();
