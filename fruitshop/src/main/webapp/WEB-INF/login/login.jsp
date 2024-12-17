@@ -73,8 +73,8 @@
 	        		<img src="//img.echosting.cafe24.com/design/skin/default/member/ico_access.gif" alt="보안접속"> 보안접속       
 	        	</span>     
 	        	<span class="btn float-right"  style="height:50px; line-height:40px;">
-	            	<a href="" id="idFind" class="">아이디찾기</a> / 
-	            	<a href="" id="passwdFind" class="">비밀번호찾기</a>
+	            	<a href="<%=request.getContextPath()%>/login/idFind.ddg" id="idFind" class="">아이디찾기</a> / 
+	            	<a href="<%=request.getContextPath()%>/login/passwdFind.ddg" id="passwdFind" class="">비밀번호찾기</a>
 	            </span>
 	        </div>
 			<div class="text-center" style="margin-bottom:100px;" >

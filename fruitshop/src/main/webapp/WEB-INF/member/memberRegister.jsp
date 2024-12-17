@@ -9,7 +9,13 @@
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-
+<script type="text/javascript">
+	$(()=>{
+		if( ${!empty sessionScope.loginuser} ) { 	
+			location.href="<%=request.getContextPath()%>/index.ddg";
+		}
+	});
+</script>
 
 <div class="container">
 
@@ -76,7 +82,7 @@
 							</td>
 							<td style="height: 80px; vertical-align:top;">
 								<input type="text" name="email" id="email" maxlength="60" class="requiredInfo info" placeholder="이메일" /><br>
-								<span class="error"></span>
+								<span id="emailError" class="error"></span>
 							</td>
 						</tr>
 
@@ -154,7 +160,7 @@
 							<td>
 								<label for="agree">이용약관에 동의합니다</label>&nbsp;&nbsp;
 								<input type="checkbox" id="agree" /><br>
-								<span class="error"></span>
+								<span id="agreecheck" class="error"></span>
 							</td>
 						</tr>
 
