@@ -15,7 +15,7 @@
         <h2>My page</h2> 
     </div>
     
-    <div class="container" style="margin-top: 4%;">
+    <div class="container" style="margin-top: 2.5%;">
 
     <div id="mypage" class="menu">
             <a href="#">마이페이지</a>
