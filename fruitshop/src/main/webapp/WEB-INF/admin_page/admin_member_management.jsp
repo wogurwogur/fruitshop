@@ -156,12 +156,12 @@ form.example button {
 
 <%-- <div class="modal fade" id="userIdfind"> --%> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%> 
   <div class="modal fade" id="userdetail" data-backdrop="static"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>  
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
       
         <!-- Modal header -->
         <div class="modal-header">
-          <h4 class="modal-title">아이디 찾기</h4>
+          <h4 class="modal-title">회원 상세정보</h4>
           <button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
         </div>
         
@@ -181,5 +181,3 @@ form.example button {
       
     </div>
   </div>
-
-<%-- ****** 아이디 찾기 Modal 끝 ****** --%>
