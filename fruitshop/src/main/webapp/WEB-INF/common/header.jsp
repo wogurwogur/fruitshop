@@ -73,7 +73,7 @@
         
         <%-- 메뉴 좌상단 시작 --%>
         <div style="margin-left: 0.22%;" class="container-fluid row">
-	        <div class="col-md-5 collapse navbar-collapse text-center" id="navbarSupportedContent" style="border: solid 1px red; padding-right: 2%;">
+	        <div class="col-md-5 collapse navbar-collapse text-center" id="navbarSupportedContent" style="padding-right: 2%;">
 	        	
 	            <ul class="navbar-nav mx-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
 	            	<span style="font-size:20px;cursor:pointer; margin-top:1.25%" onclick="openNav()">&#9776;</span>
@@ -91,13 +91,13 @@
 	        <%-- 메뉴 좌상단 끝 --%>
 	
 			<%-- 로고 이미지 --%>
-	        <div class="col-md-2 collapse navbar-collapse" style="border: solid 1px blue;">
+	        <div class="col-md-2 collapse navbar-collapse">
 	        	<div class="mx-auto">
 	            	<a href="<%= request.getContextPath()%>"><img style="text-align: center;" src="<%= request.getContextPath() %>/images/index/logo_header.png"></a>
 	            </div>
 	        </div>
 	
-	        <div style="border: solid 1px green;" class="col-md-5 collapse navbar-collapse" id="navbarSupportedContent">
+	        <div class="col-md-5 collapse navbar-collapse" id="navbarSupportedContent">
 	            <ul class="navbar-nav mx-auto"> <!-- .mr-auto 는 css 의  margin-right: auto; 임. 즉, 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당한다는 의미임. -->
 	            	
 	            	<c:if test="${empty sessionScope.loginuser}">
@@ -128,7 +128,12 @@
 	                <li class="nav-item active">
 	                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
 	                    	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
-	                        <i class="fa-solid fa-basket-shopping"></i><span class="badge">${sessionScope.loginuser.cart_cnt}</span>
+	                    	<c:if test="${!empty sessionScope.loginuser}">
+	                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">${sessionScope.loginuser.cart_cnt}</span>
+	                        </c:if>
+	                        <c:if test="${empty sessionScope.loginuser}">
+	                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
+	                        </c:if>
 	                    </a>
 	                </li>
 	            </ul>
