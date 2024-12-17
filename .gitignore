@@ -98,3 +98,4 @@ replay_pid*
 /fruitshop/src/main/java/common/controller/
 .DS_Store
 .classpath
+*.sql
