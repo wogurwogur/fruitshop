@@ -12,11 +12,31 @@ public class ReviewListVO {
 	private String 	review_status;
 	private String 	review_viewcount;
 	private String 	review_image;
+	private String	review_regidate;
+	private String 	userid;
+	private String 	prod_name;
 	
 	
 	
 	
+// 외부키 가져오는데 VO 추가해야하나 ???
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
 	
+	public String getProd_name() {
+		return prod_name;
+	}
+	public void setProd_name(String prod_name) {
+		this.prod_name = prod_name;
+	}
+
+/////////////////////////////////////////////////
+	
+
 	public int getReview_no() {
 		return review_no;
 	}
@@ -64,6 +84,12 @@ public class ReviewListVO {
 	}
 	public void setReview_image(String review_image) {
 		this.review_image = review_image;
+	}
+	public String getReview_regidate() {
+		return review_regidate;
+	}
+	public void setReview_regidate(String review_regidate) {
+		this.review_regidate = review_regidate;
 	}
 	
 } // end of public class ReviewListVO {

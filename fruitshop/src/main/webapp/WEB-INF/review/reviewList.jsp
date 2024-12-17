@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String ctxPath = request.getContextPath();
 %>   
@@ -10,23 +11,24 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<div class="container">
+<div class="container-fluid">
+
 	<div>
 	<h1 class="text-center" style="margin-top: 4%;">Community</h1>
-	<div class="font-weight-lighter text-center my-1">우리함께 나누는 싱싱한 이야기</div>
+	<div class="font-weight-lighter text-center my-3">우리함께 나누는 싱싱한 이야기</div>
 	</div>
 	<div>
-		<ul class="nav nav-pills navbar-light nav justify-content-center ">
+		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
-		    <a class="nav-link" href="#" style="color: black;">공지사항</a>
+		    <a class="nav-link mr-5" href="#" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#" style="color: black;">구매후기</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#" style="color: black;">QnA</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
 		  </li>
-		  <li class="nav-item">	
+		  <li class="nav-item ml-5">	
 		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
 		  </li>
 		</ul>
@@ -37,22 +39,30 @@
 <div class="col-md-11 mx-auto my-5">
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
-			<hr> 
-				<table class="table text-center">
+			 
+				<table class="table text-center table-hover">
 					<tr>
+						
 						<th>글 번호</th>
-						<th>제목</th>
+						<th class="w-50">제목</th>
 						<th>작성자</th>
 						<th>작성일자</th>
 						<th>조회수</th>
-					</tr>																			
-					<tr>
-						<td>1</td>
-						<td>제목입니다제목입니다제목입니다제목입니다제목입니다제목입니다</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
 					</tr>
+					<%-- 글 리스트 --%>	
+			<c:if test="${not empty requestScope.revList}">
+				<c:forEach var="revvo" items="${requestScope.revList}" varStatus="status">
+					<tr>						
+						<td>${revvo.review_no}</td>						
+						<td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a> 
+																		 		  ${revvo.review_title}</td>						
+						<td>${revvo.userid}</td>
+						<td>${revvo.review_regidate}</td>
+						<td>${revvo.review_viewcount}</td>
+					</tr>				
+				</c:forEach>			
+			</c:if>																	
+
 				</table>
 				
 		<div id ="Listsearch">
@@ -69,7 +79,7 @@
 								
 			<!-- 페이지네이션 -->
 			<nav>
-			  <ul class="pagination justify-content-center text-center pagination-sm">
+			  <ul class="pagination justify-content-center text-center pagination-sm mt-3">
 			    <li class="page-item"><a class="page-link text-body" href="#">이전</a></li>
 			    <li class="page-item"><a class="page-link text-body font-weight-bold" href="#">1</a></li>
 			    <li class="page-item"><a class="page-link text-body" href="#">2</a></li>
@@ -84,4 +94,4 @@
 </div>
 </div>
 
-<jsp:include page="../common/footer.jsp"></jsp:include>
+
