@@ -12,7 +12,11 @@ public class ShipVO {
 	private String ship_extraadress;		// 참고항목
 	private int ship_default;				// 기본배송지여부 (0: 그외 / 1: 기본배송지)
 	
+	
+	
 	////////////////////////////////////////////////////////////////////////
+	
+	// Getter & Setter //
 	
 	public int getShip_no() {
 		return ship_no;
