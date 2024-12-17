@@ -1,6 +1,8 @@
 package admin.model;
 
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -123,9 +125,58 @@ public class AdminDAO_imple implements AdminDAO {
 	
 	// 한 회원의 상세정보를 확인하는 메소드
 	@Override
-	public MemberVO memberDetailInfo(String detail_user_no) {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberVO memberDetailInfo(String detail_user_no) throws SQLException {
+		
+		MemberVO detailMember = new MemberVO();
+		
+		conn = ds.getConnection();
+		
+		try {
+			
+			String sql = " select user_no, userid, passwd, name, birthday, email, tel,"
+					+ " postcode, address, detailaddress, extraaddress, gender, point, registerday,"
+					+ " lastpwdchangedate, idle, status, role"
+					+ " from tbl_member ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			detailMember.setUser_no(rs.getInt("user_no"));
+			detailMember.setUserid(rs.getString("userid"));
+			detailMember.setName(rs.getString("name"));
+			detailMember.setBirthday(rs.getString("birthday"));
+			detailMember.setEmail(aes.decrypt(rs.getString("email")));
+			detailMember.setTel(aes.decrypt(rs.getString("tel")));
+			detailMember.setPostcode(rs.getString("postcode"));
+			detailMember.setAddress(rs.getString("address"));
+			detailMember.setDetailaddress(rs.getString("detailaddress"));
+			detailMember.setExtraaddress(rs.getString("extraaddress"));
+			detailMember.setGender(rs.getString("gender"));
+			detailMember.setPoint(rs.getInt("point"));
+			detailMember.setRegisterday(rs.getString("registerday"));
+			detailMember.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+			detailMember.setIdle(rs.getInt("idle"));
+			detailMember.setStatus(rs.getInt("status"));
+			detailMember.setRole(rs.getInt("role"));
+			
+			
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return detailMember;
 	}
 
 	

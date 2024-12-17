@@ -12,6 +12,6 @@ public interface AdminDAO {
 	List<MemberVO> MemberSelectAll() throws SQLException;
 
 	// 한 회원의 상세정보를 확인하는 메소드
-	MemberVO memberDetailInfo(String detail_user_no);
+	MemberVO memberDetailInfo(String detail_user_no) throws SQLException;
 	
 }
