@@ -394,6 +394,10 @@ function goRegister() {
         $("input:radio[name='gender']").parent().find("span.error").html("성별을 선택하세요.").addClass("red");
         bool = false;
     }
+	else {
+		$("input:radio[name='gender']").parent().find("span.error").html("").removeClass("red");
+		bool = true;
+	}
 
     // 생년월일 입력했는지 검사
 	const birthday =  $("input#datepicker").val();
@@ -411,6 +415,7 @@ function goRegister() {
     }
 	else {
 		$("span#agreecheck").html("").removeClass("red");
+		bool = true;
 	}
 
 

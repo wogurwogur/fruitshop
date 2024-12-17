@@ -9,7 +9,13 @@
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-
+<script type="text/javascript">
+	$(()=>{
+		if( ${!empty sessionScope.loginuser} ) { 	
+			location.href="<%=request.getContextPath()%>/index.ddg";
+		}
+	});
+</script>
 
 <div class="container">
 
