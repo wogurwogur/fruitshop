@@ -20,11 +20,11 @@
     
     	
          관심상품안에 상품이 있는 경우 
-        <c:when test="${not empty cartItems}">
+        <c:when test="${not empty wishItems}">
         
             <!-- 상품 리스트 반복 출력 -->
             
-            <c:forEach var="item" items="${requestScope.cartItems}">
+            <c:forEach var="item" items="${requestScope.wishItems}">
                 <div class="cart_item" style="border-bottom: 1px solid #cccccc; padding: 20px 0; display: flex; align-items: center;">
                     
                     
@@ -49,7 +49,8 @@
 		
 
         <!-- 관심상품에 상품이 없는 경우 -->
-        <c:otherwise> --%>
+        <c:otherwise> 
+        --%>
             <div class="jumbotron" style="border: solid 1px #cccccc; background-color: white; margin-top: 8%; font-weight: bold; ">
     			<p align="center">관심상품 내역이 없습니다.</p>
 			</div>
@@ -58,8 +59,9 @@
         </c:otherwise>
     </c:choose>
     --%>
-    
-     
+	
+
+
     
      <%-- 주문하기, 비우기 버튼 --%>
 	<div class="ec-base-button gColumn">
