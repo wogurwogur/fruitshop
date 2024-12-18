@@ -6,6 +6,7 @@ import java.util.List;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import qna.domain.QnaListVO;
 import qna.model.*;
 
 public class QnaListController extends AbstractController {
@@ -15,24 +16,24 @@ public class QnaListController extends AbstractController {
 	public QnaListController() {
 
 		
-	}
+	};
 
 			
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		//System.out.println("ReviewListController 실행됨");
 
-		/*
+		
 		try {
-			List<QnaListVO> revList = revdao.reviewListall();
+			List<QnaListVO> qnaList = qdao.qnaListall();
 			
-			if(revList.size() > 0) {
-				request.setAttribute("revList", revList);
-				*/
+			if(qnaList.size() > 0) {
+				request.setAttribute("qnaList", qnaList);
+				
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/qna/qnaList.jsp");
-	/*			
+				
 			}
 						
 		} catch(SQLException e) {
@@ -42,7 +43,7 @@ public class QnaListController extends AbstractController {
 			super.setViewPage(request.getContextPath()+"/error.ddg"); // 아직없음
 		  }
 			
-	*/		
+			
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		
 

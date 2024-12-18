@@ -1,6 +1,7 @@
 package review.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import common.controller.AbstractController;
@@ -29,9 +30,13 @@ public class ReviewListController extends AbstractController {
 		
 		try {
 			List<ReviewListVO> revList = revdao.reviewListall();
+			List<ReviewListVO> brevList = revdao.breviewListall();
+			List<ReviewListVO> crevList = revdao.creviewListall();
 			
 			if(revList.size() > 0) {
 				request.setAttribute("revList", revList);
+				request.setAttribute("brevList", brevList);
+				request.setAttribute("crevList", crevList);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/review/reviewList.jsp");
@@ -43,6 +48,7 @@ public class ReviewListController extends AbstractController {
 			super.setRedirect(true);
 			super.setViewPage(request.getContextPath()+"/error.ddg"); // 아직없음
 		  }
+			
 			
 			
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {

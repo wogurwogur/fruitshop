@@ -71,31 +71,11 @@ div#company_info > div:last-child > p {
 	font-weight: bold;
 }
 
-/* 푸터 끝 */
 
-
-
-/* 컨테이너 시작 */
-
-
-
-/*글번호 제목 작성자 작성일자 조회수 css */
-
-
-/*글번호 제목 작성자 작성일자 조회수 css 끝*/
-
-#container > div:nth-child(2) > ul {
-	
-font-family: 'Noto Sans KR', sans-serif;
+body > div {
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 14pt;
 	/* font-style: regular; */
-	font-weight: 400;
+	font-weight: 400
+	
 }
-
-/* 실제 게시판 글 css */
-
-
-
-
-
-/* 컨테이너 끝 */

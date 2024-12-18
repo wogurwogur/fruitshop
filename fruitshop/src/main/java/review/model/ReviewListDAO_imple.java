@@ -59,15 +59,30 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 		List<ReviewListVO> revList = new ArrayList<>();
 		
+		
+		
 		try {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, m.user_no, m.userid, p.prod_name "
+			String sql = " select A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+					+ " FROM  "
+					+ " ( "
+					+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
+					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
 					+ " from tbl_reviews r INNER JOIN tbl_member m "
 					+ " on r.fk_user_no = m.user_no "
 					+ " INNER JOIN tbl_products p "
 					+ " on r.fk_prod_no = p.prod_no "
+					+ " order by review_no desc "
+					+ " ) A "
+					+ " LEFT OUTER JOIN "
+					+ " ( "
+					+ " select count(comment_no) as com_count, fk_review_no "
+					+ " from tbl_comments "
+					+ " group by fk_review_no "
+					+ " ) B "
+					+ " ON A.review_no = B.fk_review_no "
 					+ " order by review_no desc ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -81,22 +96,142 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 				revvo.setReview_title(rs.getString("review_title"));
 				revvo.setReview_viewcount(rs.getString("review_viewcount"));
 				revvo.setReview_regidate(rs.getString("review_regidate"));
-				revvo.setFk_user_no(rs.getInt("Fk_user_no"));
+				revvo.setFk_user_no(rs.getInt("user_no"));
 				revvo.setUserid(rs.getString("userid"));
 				revvo.setProd_name(rs.getString("prod_name"));
+				revvo.setComment_count(rs.getInt("comment_count"));
+				
 				revList.add(revvo);
 								
 				
-			} // end of while ----------------		
+			} // end of while ----------------
+
 
 									
 		} finally {
 			close();
 		}
+				  
+		return revList;
+	}
+
+	// 구매후기 조회수 베스트 글 보여주는 메소드 
+	@Override
+	public List<ReviewListVO> breviewListall() throws SQLException {
+		
+		List<ReviewListVO> brevList = new ArrayList<>();
+		
+		
+		try {
+				conn = ds.getConnection();
+			
+				String sql = " select A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+						+ " FROM  "
+						+ " ( "
+						+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
+						+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
+						+ " from tbl_reviews r INNER JOIN tbl_member m "
+						+ " on r.fk_user_no = m.user_no "
+						+ " INNER JOIN tbl_products p "
+						+ " on r.fk_prod_no = p.prod_no "
+						+ " order by review_no desc "
+						+ " ) A "
+						+ " LEFT OUTER JOIN "
+						+ " ( "
+						+ " select count(comment_no) as com_count, fk_review_no "
+						+ " from tbl_comments "
+						+ " group by fk_review_no "
+						+ " ) B "
+						+ " ON A.review_no = B.fk_review_no "
+						+ " where review_viewcount = (select max(review_viewcount) "
+						+ "                            from tbl_reviews "
+						+ "                            where substr(sysdate, 1, 7) = substr(review_regidate, 1, 7) ) ";
+			
+				pstmt = conn.prepareStatement(sql);
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					ReviewListVO brevvo = new ReviewListVO();
+					brevvo.setReview_no(rs.getInt("review_no"));
+					brevvo.setReview_title(rs.getString("review_title"));
+					brevvo.setReview_viewcount(rs.getString("review_viewcount"));
+					brevvo.setReview_regidate(rs.getString("review_regidate"));
+					brevvo.setFk_user_no(rs.getInt("user_no"));
+					brevvo.setUserid(rs.getString("userid"));
+					brevvo.setProd_name(rs.getString("prod_name"));
+					brevvo.setComment_count(rs.getInt("comment_count"));
+					
+					brevList.add(brevvo);
+									
+					System.out.println(brevList);
+				} // end of while ----------------
+			
+		} finally {
+			close();
+		}
+		
+		return brevList;
+	}
+
+	// 구매후기 댓글 베스트 글 보여주는 메소드
+	@Override
+	public List<ReviewListVO> creviewListall() throws SQLException {
+		
+		List<ReviewListVO> crevList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+					+ " FROM "
+					+ " ( "
+					+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
+					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
+					+ " from tbl_reviews r INNER JOIN tbl_member m "
+					+ " on r.fk_user_no = m.user_no "
+					+ " INNER JOIN tbl_products p "
+					+ " on r.fk_prod_no = p.prod_no "
+					+ " order by review_no desc "
+					+ " ) A "
+					+ " LEFT OUTER JOIN "
+					+ " ( "
+					+ " select count(comment_no) as com_count, fk_review_no "
+					+ " from tbl_comments "
+					+ " group by fk_review_no "
+					+ " ) B "
+					+ " ON A.review_no = B.fk_review_no "
+					+ " where substr(sysdate, 1, 7) = substr(A.review_regidate, 1, 7) "
+					+ " order by comment_count desc ";
 			
 		
-		  
-		return revList;
+				pstmt = conn.prepareStatement(sql);
+		
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				
+				ReviewListVO crevvo = new ReviewListVO();
+				
+				crevvo.setReview_no(rs.getInt("review_no"));
+				crevvo.setReview_title(rs.getString("review_title"));
+				crevvo.setReview_viewcount(rs.getString("review_viewcount"));
+				crevvo.setReview_regidate(rs.getString("review_regidate"));
+				crevvo.setFk_user_no(rs.getInt("user_no"));
+				crevvo.setUserid(rs.getString("userid"));
+				crevvo.setProd_name(rs.getString("prod_name"));
+				crevvo.setComment_count(rs.getInt("comment_count"));
+				
+				crevList.add(crevvo);
+				
+		
+		} finally {
+			close();
+		}
+		
+		return crevList;
+				
 	}
 	
 	
