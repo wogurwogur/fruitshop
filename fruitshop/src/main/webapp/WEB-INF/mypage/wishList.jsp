@@ -6,6 +6,37 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/mypage/wishlist.css">
 
 
+<script type="text/javascript">
+
+<%-- 찜목록 X버튼 누를때 --%>
+function deleteItem() {
+	
+	confirm("정말 삭제하시겠습니까?");
+	
+	if(e.keyCode == 13) {
+		 alert("삭제가 완료되었습니다.")
+	  }
+	
+	
+}// end of function deleteItem() {}--------------
+
+<%-- 선택상품 장바구니로 옮기기 누를때 --%>
+function goCartList() {
+	
+	confirm("선택한 상품을 장바구니로 옮기겠습니까?");
+	
+}// end of function goCartList() {}-----------------------------
+
+<%-- 관심상품 비우기 누를때 --%>
+function DeleteAll() {
+	
+	confirm("정말로 관심상품을 모두 비우시겠습니까?");
+	
+}
+
+
+</script>
+
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 <jsp:include page="mypage_list.jsp"></jsp:include>
@@ -55,8 +86,8 @@
 			
 		 	<%-- 주문하기, 비우기 버튼 --%>
 			<div class="ec-base-button gColumn">
-			    <a href="#" class="btnpick">선택상품 장바구니에담기</a>  
-			    <a href="#" class="btnremove">관심상품 비우기</a>       
+			    <a href="#" onclick="goCartList();" class="btnpick">선택상품 장바구니에담기</a>  
+			    <a href="#" onclick="DeleteAll();" class="btnremove">관심상품 비우기</a>       
 		    </div>
 
         </c:when>
@@ -64,7 +95,7 @@
         <%-- 관심상품에 상품이 없는 경우 --%>
         <c:otherwise> 
             <div style="border: solid 1px #cccccc; background-color: white; height: 30%; font-weight: bold; margin: 7% auto; ">
-    			<p align="center" style="margin-top: 10%;">관심상품 내역이 없습니다.</p>
+    			<p align="center" style="margin: 10% auto; padding-top: 1%; ">관심상품 내역이 없습니다.</p>
 			</div>
             
             

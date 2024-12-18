@@ -10,9 +10,11 @@
 
 <script type="text/javascript">
 
+	
 	$(document).ready(function(){
+	
 		
-	$("input:number[name='prodcount']").bind("keyup", function(e) {
+		$("input:number[name='prodcount']").bind("keyup", function(e) {
 		  if(e.keyCode == 13) {
 			   Update();
 		  }
@@ -26,10 +28,17 @@
 		
 	const prodcount = $("input:number[name='prodcount']").val();
 	
+	if(prodcount == ""){
+		alert("수량을 입력하세요!!");
+		return; // Update() 함수를 종료한다.
+	}
+	
+	const frm = document.member_search_frm;
+	 // frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+	 // frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+	    frm.submit();
 		
 	}// end of function Update() {}---------------------------------
-	
-	
 	
 	function updateCount() {
 		
@@ -38,7 +47,44 @@
 		
 	}
 	
+	}
+	*/
+	
+	
+	<%-- 관심상품 X버튼 누를때 --%>
+	function deleteProduct() {
+		
+		confirm("정말 삭제하시겠습니까?");
+		
+		if(e.keyCode == 13) {
+			 alert("삭제가 완료되었습니다.")
+		  }
+		
+	}// end of function deleteProduct() {}--------------
+	
+	
+	<%-- 선택상품 주문하기 누를때 --%>
+	function Orderpick() {
+		
+		confirm("선택한 상품을 주문하시겠습니까?");
+		
+	}// end of function goCartList() {}-----------------------------
 
+	<%-- 전체상품 주문하기 누를때 --%>
+	function OrderAll() {
+		
+		confirm("장바구니에 있는 전체상품을 주문하시겠습니까?");
+		
+	}
+	
+	<%-- 장바구니 비우기 누를때 --%>
+	function CartDeleteAll() {
+		
+		confirm("정말로 관심상품을 모두 비우시겠습니까?");
+		
+	}
+	
+	
 	
 </script>
 
@@ -89,7 +135,7 @@
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 0.5; text-align: center;">
-                            <button onclick="deleteItem(${item.cart_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            <button onclick="deleteProduct(${item.cart_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -116,9 +162,9 @@
 </div>
 
 	<div class="ec-base-button gColumn">
-	    <a href="#" class="btnpick">선택상품 주문하기</a>  
-	    <a href="#" class="btnSubmit">전체상품 주문하기</a>
-	    <a href="#" class="btnremove">장바구니 비우기</a>       
+	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
+	    <a href="#" onclick="OrderAll();" class="btnSubmit">전체상품 주문하기</a>
+	    <a href="#" onclick="CartDeleteAll();" class="btnremove">장바구니 비우기</a>       
 	    </div>
         </c:when>
 		

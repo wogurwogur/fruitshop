@@ -12,7 +12,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import cart.domain.CartVO;
 import mypage.wish.domain.WishVO;
 import product.domain.ProductVO;
 
@@ -49,7 +48,7 @@ public class WishDAO_imple implements WishDAO {
 	
 	// 관심상품 리스트
 	@Override
-	public List<WishVO> wishListSelectAll() throws SQLException {
+	public List<WishVO> wishListSelectAll(int user_no) throws SQLException {
 		
 		List<WishVO> wishList = new ArrayList<>();
 		
@@ -57,13 +56,15 @@ public class WishDAO_imple implements WishDAO {
 		try {
 	        conn = ds.getConnection();
 
-	        String sql = " SELECT w.wish_no, "
-		        	   + "       p.prod_thumnail, p.prod_name, p.prod_price "
-		        	   + " FROM tbl_wish w "
-		               + " INNER JOIN tbl_products p "
-		        	   + " ON w.fk_prod_no = p.prod_no ";
+	        String sql = " SELECT w.fk_user_no, w.wish_no, "
+	        		   + " p.prod_thumnail, p.prod_name, p.prod_price "
+	        		   + " FROM tbl_wish w "
+	        		   + " INNER JOIN tbl_products p "
+	        		   + " ON w.fk_prod_no = p.prod_no "
+	        		   + " where fk_user_no = ? ";
 
 	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, user_no);
 	        rs = pstmt.executeQuery();
 	        
 	        while (rs.next()) {
@@ -89,5 +90,69 @@ public class WishDAO_imple implements WishDAO {
 		
 		return wishList;
 	}
+
+	/*
+	// 상품 특정 1개 행(데이터)만 읽어오기
+	@Override
+	public WishVO selectOne(String wish_no) throws SQLException {
+		
+		WishVO wishvo = null;
+		
+		try {
+	        conn = ds.getConnection();
+
+	        String sql = " select wish_no, fk_user_no, fk_prod_no "
+		        	   + " from tbl_wish "
+		        	   + " where wish_no = ? ";
+
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, wish_no);
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        if(rs.next()) {
+	            
+	        	wishvo = new WishVO();
+	        	wishvo.setWish_no(rs.getInt("wish_no"));
+	        	wishvo.setFk_user_no(rs.getInt("fk_user_no"));
+	        	wishvo.setFk_prod_no(rs.getInt("fk_prod_no"));
+	          
+	         }// end of if--------------------------------
+	      
+
+	    } finally {
+	        close();
+	    }
+		
+		return wishvo;
+	}// end of public WishVO selectOne(String wish_no) throws SQLException {}--------------------
+
+	
+	// 상품 특정 1개 행 데이터 삭제(delete)
+	@Override
+	public int deletePerson(String wish_no) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+	         
+	         String sql = " delete from tbl_wish "
+	         			+ " where wish_no = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, wish_no);
+	         
+	         result = pstmt.executeUpdate();
+	         
+	             
+	      } finally {
+	         close();
+	      }      
+		
+		
+		return result;
+	}// end of public int deletePerson(String wish_no) throws SQLException {}-------------------
+	
+	*/
 
 }
