@@ -17,6 +17,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.catalina.connector.Request;
+
 import member.domain.MemberVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
@@ -66,19 +68,23 @@ public class AdminDAO_imple implements AdminDAO {
 	
     // 회원의 모든 정보를 가져오는 메소드 시작-----------------------
 	@Override
-	public List<MemberVO> MemberSelectAll() throws SQLException{
+	public List<MemberVO> MemberSelectAll(String user_id) throws SQLException{
 		
 		List<MemberVO> member_allList = new ArrayList<>();
+		
 		
 		conn = ds.getConnection();
 		
 		String sql = " select userid, user_no, passwd, tel, role, name, birthday, email, "
-				   + " postcode, address, detailaddress, extraaddress, gender, point,"
+				   + " postcode, address, detailaddress, extraaddress, gender, point, "
 				   + " registerday, lastpwdchangedate, idle, status "
-				   + " from tbl_member ";
+				   + " from tbl_member "
+				   + " where userid != ? "
+				   + " order by registerday desc ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
 			rs = pstmt.executeQuery();
 			
 			
@@ -136,9 +142,12 @@ public class AdminDAO_imple implements AdminDAO {
 			String sql = " select user_no, userid, passwd, name, birthday, email, tel,"
 					+ " postcode, address, detailaddress, extraaddress, gender, point, registerday,"
 					+ " lastpwdchangedate, idle, status, role"
-					+ " from tbl_member ";
+					+ " from tbl_member "
+					+ "	where user_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(detail_user_no));
 			
 			rs = pstmt.executeQuery();
 			

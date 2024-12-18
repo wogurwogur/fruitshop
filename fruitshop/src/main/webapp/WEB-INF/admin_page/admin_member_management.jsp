@@ -25,6 +25,7 @@ function memberDetail(user_no){
 	
 }
 
+
 </script>
 <style>
 
@@ -36,45 +37,6 @@ div#admin_top_nav{
 div#admin_top_nav_center{
 	margin: 0 auto;
 }
-
-/* drop down start */
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content button {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border: none;
-}
-
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* drop down end */
 
 
 /* search start */
@@ -103,16 +65,18 @@ form.example button {
 </style>
 
 <%-- div top nav start --%>
-<div class="container-fluid " id="admin_top_nav">
 
+	<form name="memberSerchSort">
+	<div class="container-fluid " id="admin_top_nav">
 	<%-- dropdown div start --%>
-	<div class="dropdown">
-	  <button class="dropbtn">정렬</button>
-	  <div class="dropdown-content">
-	    <button type="button">징계받은 회원</button>
-	    <button type="button">----</button>
-	    <button type="button">----</button>
-	  </div>
+	<div>
+	  <select name="select_sort" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
+	    <option>정렬방식</option>
+	    <option value="1">Audi</option>
+	    <option value="2">BMW</option>
+	    <option value="3">Citroen</option>
+	    <option value="4">Ford</option>
+	  </select>
 	</div>
 	<%-- dropdown div end --%>
 	
@@ -126,15 +90,17 @@ form.example button {
 		
 	<%-- search div start --%>
 	<div>
-		<form class="example" id="member_management_frm" name = "member_management_frm" style="margin:auto;max-width:300px">
+		
 		  <input type="text" placeholder="Search.." name="search2">
 		  <button type="submit"><i class="fa fa-search"></i></button>
 		  <input type="hidden" name="detail_user_no">
-		</form> 
+		
+			
 	</div>
 	<%-- search div end --%>
-	
-</div>
+	</div>
+</form> 
+
 <%-- div top nav end --%>
 
 <div class="container-fluid ">

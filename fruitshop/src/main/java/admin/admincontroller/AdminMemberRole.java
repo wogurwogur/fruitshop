@@ -24,9 +24,10 @@ public class AdminMemberRole extends AbstractController {
 		String role = request.getParameter("role");
 		String user_no = request.getParameter("user_no");
 		
+		
 		if(null == loginuser) {
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "javascript:history.back()";
+	        String loc = "/WEB-INF/admin_page/admin_page.jsp";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);
@@ -37,7 +38,7 @@ public class AdminMemberRole extends AbstractController {
 		}else if(loginuser.getRole() == 1){ 
 			
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "javascript:history.back()";
+	        String loc = "/WEB-INF/admin_page/admin_page.jsp";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);
@@ -51,13 +52,17 @@ public class AdminMemberRole extends AbstractController {
 			
 			if(n == 1) {
 				
-				request.setAttribute("detail_user_no", user_no);
+				
+				MemberVO detailMember = adao.memberDetailInfo(user_no);
+				
+				request.setAttribute("detailMember", detailMember);
+				request.setAttribute("adminpage_val", "admin_member_detail");
 				
 				super.setRedirect(false);
-				super.setViewPage("/admin/adminMemberDetail.ddg");
+				super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
 				
 			}else {
-				String message = "관리자 권한을 주는데 실패했습니다.";
+				String message = "관리자 설정에 주는데 실패했습니다.";
 		        String loc = "javascript:history.back()";
 		        
 		        request.setAttribute("message", message);

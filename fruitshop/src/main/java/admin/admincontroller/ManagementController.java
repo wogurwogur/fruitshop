@@ -20,7 +20,7 @@ public class ManagementController extends AbstractController {
 
 		HttpSession session = request.getSession();
 
-		MemberVO loginuser = (MemberVO) (session.getAttribute("loginuser"));
+		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
 
 	
 		if(null == loginuser) {
@@ -45,8 +45,10 @@ public class ManagementController extends AbstractController {
 	        super.setViewPage("/WEB-INF/common/msg.jsp"); 
 			
 		}else {
-
-			List<MemberVO> member_allList = adao.MemberSelectAll();
+			
+			String user_id = loginuser.getUserid();
+			
+			List<MemberVO> member_allList = adao.MemberSelectAll(user_id);
 
 			request.setAttribute("member_allList", member_allList);
 
