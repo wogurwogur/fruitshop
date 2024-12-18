@@ -8,17 +8,7 @@
 
 <script type="text/javascript">
 
-<%-- 찜목록 X버튼 누를때 --%>
-function deleteItem() {
-	
-	confirm("정말 삭제하시겠습니까?");
-	
-	if(e.keyCode == 13) {
-		 alert("삭제가 완료되었습니다.")
-	  }
-	
-	
-}// end of function deleteItem() {}--------------
+
 
 <%-- 선택상품 장바구니로 옮기기 누를때 --%>
 function goCartList() {
@@ -78,8 +68,12 @@ function DeleteAll() {
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 1; text-align: center;">
-                            <button  onclick="deleteItem(${item.wish_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            <form method="post" action="<%= request.getContextPath() %>/mypage/wishList.ddg" onsubmit= "return confirm('정말 삭제하시겠습니까?'); ">
+                                <input type="hidden" name="wish_no" value="${item.wish_no}">
+                                <button type="submit" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            </form>
                         </div>
+                        
                     </div>
                 </c:forEach>
             </div>

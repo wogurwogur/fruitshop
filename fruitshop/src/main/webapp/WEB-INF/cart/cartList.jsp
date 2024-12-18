@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 
-	
+	<%--
 	$(document).ready(function(){
 	
 		
@@ -48,10 +48,10 @@
 	}
 	
 	}
-	*/
+	--%>
 	
 	
-	<%-- 관심상품 X버튼 누를때 --%>
+	<%-- 장바구니 X버튼 누를때 --%>
 	function deleteProduct() {
 		
 		confirm("정말 삭제하시겠습니까?");

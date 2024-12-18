@@ -1,5 +1,6 @@
 package mypage.wish.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import common.controller.AbstractController;
@@ -30,20 +31,7 @@ public class WishList extends AbstractController {
                 
                 request.setAttribute("wishList", wishList);
                     
-                /*
-                // === 특정 상품을 삭제하기전 삭제할 상품의 정보를 먼저 알아온다.
-				  String wish_no = request.getParameter("wish_no");
-				  
-				  WishVO wishvo = wdao.selectOne(wish_no);
-				  request.setAttribute("wishvo", wishvo);
-				  
-				  int n = wdao.deletePerson(wish_no);
-				
-				
-				  if(n==1) {
-					 
-				  } 
-                */
+                
                     
             } catch (Exception e) {
                 e.printStackTrace(); 
@@ -55,6 +43,37 @@ public class WishList extends AbstractController {
     		super.setViewPage("/WEB-INF/mypage/wishList.jsp");
     		
     	}
+    	
+    	///////////////////////////////////////////////////////////////////////////////////
+    	
+    	String wish_pno = request.getParameter("wish_no");
+
+        if (wish_pno != null) {
+        	
+            		// 관심상품 삭제(X버튼 누를때) 
+            try {
+                int wish_no = Integer.parseInt(wish_pno);
+                boolean isDeleted = wdao.deleteWishItem(wish_no);
+
+                if (isDeleted) {
+                    request.setAttribute("message", "관심상품이 삭제되었습니다.");
+                } else {
+                    request.setAttribute("message", "관심상품 삭제에 실패하였습니다.");
+                }
+
+       
+            } catch (SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("message", "삭제에 실패하였습니다.");
+            }
+
+            // 메시지를 보여주고 관심상품 리스트로 리다이렉트
+            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.do");
+            super.setRedirect(false);
+            super.setViewPage("/WEB-INF/msg.jsp");
+            return;
+        }
+    	
 		
 		
 
