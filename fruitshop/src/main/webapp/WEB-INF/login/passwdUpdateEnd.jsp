@@ -42,11 +42,21 @@
             frm.action = "<%=request.getContextPath()%>/login/passwdUpdateEnd.ddg";
             frm.method = "post";
             frm.submit();
-        }
-	
+        	}
+		
          
-	});// end of $("button.btn-success").click(function(){})----
+		});// end of $("button.btn-success").click(function(){})----
 
+		
+		
+		// 비밀번호 변경 완료시 5초뒤 자동으로 로그인페이지로 이동시킴
+		if( "${requestScope.method}" == "POST" ) {
+			
+	    	setTimeout("location.href='<%=request.getContextPath()%>/login/login.ddg'", 5000);
+	    }
+	
+	
+	
 });// end of $(document).ready(function(){})--------------------
 </script>
 
@@ -72,11 +82,16 @@
 			
 		</form>
 	</c:if>
-	
+</div>	
+
+<div style="width:1000px; margin: 10px auto; text-align: center;">
 	<c:if test="${requestScope.method == 'POST'}">
 		<div style="text-align: center; font-size: 14pt; color: navy;">
 			<c:if test="${requestScope.n == 1}">
-	            <span class="h3">${requestScope.userid}님의 비밀번호가 변경되었습니다.</span>
+				<div style="height:300px; margin:160px auto;">
+	            	<span class="h3" style="color:black;">${requestScope.userid}님의 비밀번호가 변경되었습니다.</span><br><br>
+	            	<span class="h4" style="color:black;"><span style="color:red;">5초</span>뒤 로그인 페이지로 이동합니다.</span>
+	            </div>
 	        </c:if>
 	
 			<c:if test="${requestScope.n == 0}">
