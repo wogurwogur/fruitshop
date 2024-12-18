@@ -9,6 +9,7 @@ import com.oracle.wls.shaded.org.apache.xalan.trace.PrintTraceListener;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.jsp.tagext.TryCatchFinally;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
@@ -35,6 +36,15 @@ public class PasswdUpdateEnd extends AbstractController {
 	    	int n = 0;
 	    	try {
 	    		n = mdao.pwdUpdate(paraMap);
+	    		
+	    		HttpSession session = request.getSession();
+
+	    	    session.removeAttribute("verifyCertification"); // 복구되면 인증기록 지우기
+	    	    
+	    	    
+	    	    super.setRedirect(false);
+	    		super.setViewPage("/WEB-INF/login/login.jsp");
+	    	    
 	    	}
 	    	catch (SQLException e) {
 	    		e.printStackTrace();

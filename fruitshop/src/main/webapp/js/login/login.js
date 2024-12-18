@@ -55,18 +55,17 @@ function goLogin() {
 			if(json.isExists) {
 				
 				if(json.idle == 0) {
-					alert("휴면 계정입니다. 복구 페이지로 이동합니다.");
+					alert("휴면 계정입니다."+"\n"+"복구 페이지로 이동합니다.");
 					
-					location.href="/fruitshop/index.ddg";
+					location.href="/fruitshop/login/useridRecovery.ddg";
 				}
 				else {
 					if(json.requirePwdChange) {
-						alert("비밀번호를 변경한지 3개월이 지났습니다. 비밀번호 변경 페이지로 이동합니다.");
+						alert("비밀번호를 변경한지 3개월이 지났습니다."+"\n"+"비밀번호 변경 페이지로 이동합니다.");
 						
-						location.href="/fruitshop/index.ddg";
+						location.href="/fruitshop/login/passwdUpdateEnd.ddg?userid="+json.userid;
 					}
-					else { 
-						
+					else { 		
 						location.href="/fruitshop/index.ddg";
 					}
 				}		

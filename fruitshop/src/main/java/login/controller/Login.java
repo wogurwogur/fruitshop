@@ -48,16 +48,21 @@ public class Login extends AbstractController {
 				JSONObject jsonObj = new JSONObject();
 
 				if (loginuser != null) {
-
+					
 					isExists = true;
 					
-					HttpSession session = request.getSession();
-
-					session.setAttribute("loginuser", loginuser);
-			
+					if(loginuser.getIdle() == 0) { // 휴면 계정인경우
+					
+					}
+					else { 
+						HttpSession session = request.getSession();
+						session.setAttribute("loginuser", loginuser);
+					}
+					
 					jsonObj.put("requirePwdChange", loginuser.isRequirePwdChange());
 					jsonObj.put("idle", loginuser.getIdle());
-					
+					jsonObj.put("userid", loginuser.getUserid());
+
 				} 
 			
 				jsonObj.put("isExists", isExists);

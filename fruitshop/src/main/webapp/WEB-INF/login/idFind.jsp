@@ -20,6 +20,10 @@
 <script type="text/javascript">
 $(()=>{
 	
+	if( ${!empty sessionScope.loginuser} ) { 	
+		location.href="<%=request.getContextPath()%>/index.ddg";
+	}
+	
 	 const method = "${requestScope.method}";
 	 
 	 if(method == "GET") {

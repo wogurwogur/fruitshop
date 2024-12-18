@@ -16,6 +16,8 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+    	
+
 
    	   	$("button#passwdUpdate").click(function(){
       	   
