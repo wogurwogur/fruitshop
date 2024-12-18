@@ -27,7 +27,9 @@
 	});
 </script>
 
-<div style="border: solid 1px red; margin-top: 2%;" id="container">
+<jsp:include page="../mypage/mypage_list.jsp"></jsp:include>
+
+<div style="margin-top: 3%;" id="container">
 
 <%-- 페이지 도착 시 기본 조회 기간은 3개월 --%>
 	<%-- 주문내역조회 메뉴 바 시작 --%>
@@ -50,11 +52,11 @@
 	<%-- 기간 필터 시작 --%>
 	<div id="order_time">
 		<div style="padding: 2%;" class="btn-group" role="group" aria-label="Date Select Filter">
-			<button type="button" class="btn btn-outline-dark">오늘</button>
-			<button type="button" class="btn btn-outline-dark">일주일</button>
-			<button type="button" class="btn btn-outline-dark">1개월</button>
-			<button type="button" class="btn btn-outline-dark">3개월</button>
-			<button type="button" class="btn btn-outline-dark">6개월</button>
+			<button type="button" class="btn btn-outline-dark" id="today">오늘</button>
+			<button type="button" class="btn btn-outline-dark" id="week">일주일</button>
+			<button type="button" class="btn btn-outline-dark" id="month">1개월</button>
+			<button type="button" class="btn btn-outline-dark" id="3month">3개월</button>
+			<button type="button" class="btn btn-outline-dark" id="6month">6개월</button>
 		</div>
 		
 		<div style="margin-top: 1%; padding: 1%;">
@@ -81,10 +83,10 @@
 	<%-- 기간 필터 끝 --%>
 	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
-	<div style="margin-left: 1%;" class="h6">주문 상품 정보</div>
+	<div style="margin-left: 1%;" class="h6 mt-5">주문 상품 정보</div>
 	<hr style="border: solid 1px black;">	
 	<div>
-		<table class="table table-hover text-center">
+		<table id="orderList" class="table table-hover text-center">
 			<thead>
 				<tr>
 					<th>주문번호</th>
@@ -108,7 +110,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td>123</td>
+					<td>1234</td>
 					<td>이미지</td>
 					<td>딸기 5kg</td>
 					<td>1</td>
@@ -117,7 +119,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td>123</td>
+					<td>12345</td>
 					<td>이미지</td>
 					<td>딸기 5kg</td>
 					<td>1</td>
@@ -126,7 +128,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td>123</td>
+					<td>12321</td>
 					<td>이미지</td>
 					<td>딸기 5kg</td>
 					<td>1</td>
@@ -156,7 +158,7 @@
 		</ul>
 	</nav>
 	--%>
-	<div style="margin-top: 3%; display: flex;">
+	<div style="margin-top: 5%; display: flex;">
 		<div class="pagination">
 			<a href="#">&laquo;</a>
 			<a href="#">&lsaquo;</a>
