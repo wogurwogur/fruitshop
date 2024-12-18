@@ -388,6 +388,30 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 
 	}
+
+	// 계정 복구 메소드
+	@Override
+	public int useridRecovery(String userid) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " update tbl_member set idle = 1 " 
+					   + " where userid = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+
+			result = pstmt.executeUpdate();
+
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
 	
 	
 	

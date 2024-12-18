@@ -34,12 +34,12 @@ $(()=>{
         $("input:text[name='email']").val("${requestScope.email}");
         
         if(${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}) {
-             $("button#findPasswd").hide();  
+             $("button#emailAuthentication").hide();  
              $("button#back").hide();
         }
      }
 
-	$("button#findPasswd").click(function(){
+	$("button#emailAuthentication").click(function(){
 		goFind(); 
 	});
 	     
@@ -63,7 +63,7 @@ $(()=>{
 		const frm =document.verifyCertificationFrm;
 		frm.userCertificationCode.value = input_confirmCode;
 		frm.userid.value = $("input:text[name='userid']").val();
-		frm.page.value = "비밀번호찾기";
+		frm.page.value = "계정복구";
 			    	 
 		frm.action = "<%=request.getContextPath()%>/login/verifyCertification.ddg";
 		frm.method = "post";
@@ -95,8 +95,8 @@ function goFind() {
       	return; 
     }    
       
-    const frm = document.pwdFindFrm;
-    frm.action = "<%=request.getContextPath()%>/login/passwdFind.ddg";
+    const frm = document.emailAuthenticationFrm;
+    frm.action = "<%=request.getContextPath()%>/login/useridRecovery.ddg";
     frm.method = "post";
     frm.submit();
     
@@ -108,12 +108,12 @@ function goFind() {
 
 <div class="container">
 
-	<form name="pwdFindFrm" action="<%=request.getContextPath()%>/login/passwdFind.ddg" method="post">
+	<form name="emailAuthenticationFrm" action="<%=request.getContextPath()%>/useridRecovery.ddg" method="post">
 	
 		<div style="width:450px; margin : 10px auto;">
 		
 			<div class="text-center" style="margin-top:100px; margin-bottom:50px;">
-				<h2 style="font-weight:bold;">비밀번호 찾기</h2>
+				<h2 style="font-weight:bold;">계정 복구하기</h2>
 			</div>
 			
 			<div>
@@ -158,13 +158,15 @@ function goFind() {
 			</div>
 
 			<div class="text-center" style="margin-bottom:100px;" >
-	        	<button type="button" id="findPasswd" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">비밀번호 찾기</button>
+	        	<button type="button" id="emailAuthentication" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">인증번호 발송</button>
 	        
 				<button type="button" id="back" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">취소</button>
 				
 			</div>
 	
 		</div>
+		
+		
 		
 	</form>
 	

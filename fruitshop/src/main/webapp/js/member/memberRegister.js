@@ -352,6 +352,7 @@ function goRegister() {
 			$("span#pwdError").html("비밀번호가 일치하지 않습니다.").addClass("red");
 			bool = false;
 		}
+		
 	}
 	
 
@@ -364,11 +365,13 @@ function goRegister() {
 		bool = false;
 	}
 
+
     // 이메일을 입력했는지 검사
 	if( $("span#emailError").html() != $("input#email").val()+" 은 사용가능합니다.") {
-	$("span#emailError").html("올바른 이메일이 아닙니다.").addClass("red").removeClass("blue");
+		$("span#emailError").html("올바른 이메일이 아닙니다.").addClass("red").removeClass("blue");
 		bool = false;
 	}
+
 
     // 연락처를 입력했는지 검사
 	const tel2 = $("input:text[name='tel2']").val(); 
@@ -381,12 +384,18 @@ function goRegister() {
 		$("input:text[name='tel3']").parent().find("span.error").html("올바른 연락처가 아닙니다.").addClass("red");
 		bool = false;
 	}
+	else {
+		$("input:text[name='tel3']").parent().find("span.error").html("").removeClass("red");
+	}
 
     // 주소 입력했는지 검사
     if($("input#postcode").val().trim() == "" || $("input#address").val().trim() == "") {
         $("input#address").parent().find("span.error").html("주소를 입력하세요.").addClass("red");
         bool = false;
     }
+	else {
+		$("input#address").parent().find("span.error").html("").removeClass("red");
+	}
 
     // 성별 입력했는지 검사
     const gender_check = $("input:radio[name='gender']:checked").length;
@@ -406,6 +415,9 @@ function goRegister() {
         $("input#datepicker").parent().find("span.error").html("생년월일을 입력하세요.").addClass("red");
         bool = false;
     }
+	else {
+		$("input#datepicker").parent().find("span.error").html("").removeClass("red");
+	}
 
     // 약관 동의 했는지 검사
     if($("input:checkbox[id='agree']:checked").length == 0) {

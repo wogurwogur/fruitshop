@@ -28,6 +28,9 @@ public interface MemberDAO {
 	// 비밀번호 변경 메소드
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
 
+	// 계정 복구 메소드
+	int useridRecovery(String userid) throws SQLException;
+
 
 
 }

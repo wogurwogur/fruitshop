@@ -28,13 +28,30 @@ public class VerifyCertification extends AbstractController {
 			
 			if(certification_code.equals(userCertificationCode)) {
 				
-				message = "인증성공 되었습니다. \\n비밀번호를 설정하세요.";
-				loc = request.getContextPath() + "/login/passwdUpdateEnd.ddg?userid=" + userid;
-				
+				session.setAttribute("verifyCertification", true);
+			
+				if("계정복구".equals(request.getParameter("page")) ) {
+					message = "인증성공 되었습니다. \\n계정을 복구합니다.";
+					loc = request.getContextPath() + "/login/useridRecoveryEnd.ddg?userid="+userid;
+				}
+
+				if("비밀번호찾기".equals(request.getParameter("page")) ) {
+					message = "인증성공 되었습니다. \\n비밀번호를 설정하세요.";
+					loc = request.getContextPath() + "/login/passwdUpdateEnd.ddg?userid=" + userid;
+				}
 			}
 			else {
+				
 				message = "인증실패 하였습니다. \\n다시 시도해주세요.";
-				loc = request.getContextPath() + "/login/passwdFind.ddg";
+				
+				if("계정복구".equals(request.getParameter("page")) ) {
+					loc = request.getContextPath() + "/login/useridRecovery.ddg";
+				}
+
+				if("비밀번호찾기".equals(request.getParameter("page")) ) {
+					loc = request.getContextPath() + "/login/passwdFind.ddg";
+				}
+				
 			}
 			
 			session.removeAttribute("certification_code");
@@ -46,18 +63,6 @@ public class VerifyCertification extends AbstractController {
 			
 			
 		}
-		
-		
-		
-		
-	
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
