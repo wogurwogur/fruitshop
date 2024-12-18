@@ -10,16 +10,27 @@ import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
 
-public class ProductListController extends AbstractController {
+public class SeasonProduct extends AbstractController {
 	
 	private ProductDAO prdao = new ProductDAO_imple();
 
-	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		
+	
 		try {
-			List<ProductVO> prdList = prdao.productListSelectAll();
+			
+			String seasonNo = request.getParameter("seasonNo");
+			
+			
+			if(seasonNo == null || 
+			  (!"1".equals(seasonNo) &&  
+		       !"2".equals(seasonNo) && 
+			   !"3".equals(seasonNo) &&
+			   !"4".equals(seasonNo) ) ) {
+			 		seasonNo = "";
+			}
+			
+			List<ProductVO> prdList = prdao.seasonProduct(seasonNo);
 			
 			if (prdList.size() > 0) {
 				request.setAttribute("prdList", prdList);
@@ -28,15 +39,12 @@ public class ProductListController extends AbstractController {
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/product/productlist.jsp");
 			
-			
 		} catch (SQLException e) {	// 쿼리문 오류 발생 시
 			e.printStackTrace();
 			super.setRedirect(true);	// redirect 시킴
 			super.setViewPage(request.getContextPath()+"/error.ddg");
 		}
 		
-	} // end of public void execute(HttpServletRequest request, HttpServletResponse response)
+	}
 
 }
-
-

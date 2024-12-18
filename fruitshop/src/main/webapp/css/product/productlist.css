@@ -15,6 +15,14 @@ div#container {
 /* 	border: solid 1px red; */
 }
 
+
+/* 상품 정렬 */
+div#seasonList div {
+	margin: 0% 2%;
+}
+
+
+
 /* 그리드 전체 */
 div.product-list { 
 	gap: 50px; /* 그리드 항목 간 간격을 일정하게 설정 */
@@ -39,10 +47,20 @@ span.title {
 }
 
 
+/* 상품 정렬 카테고리 텍스트 EX) 전체, 계절이름 */
+span.seasonList {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+/* 	font-weight: bold; */
+	cursor: pointer;
+}
+
+
+
 /* 상품페이지 상품명 */
 span.product {
 	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 18pt;
+	font-size: 16pt;
 	font-weight: bold;
 	cursor: pointer;
 }
@@ -57,11 +75,12 @@ span.price {
 
 
 
+
 /* 상품페이지 a태그 */
-a.product {
+a.product, .season {
   color: black;
 }
-a.product:hover {
+a.product:hover, .season:hover {
   color: black;
   text-decoration-line: none;
 }
