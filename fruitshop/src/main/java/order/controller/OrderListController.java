@@ -4,6 +4,7 @@ import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
 
 public class OrderListController extends AbstractController {
 
@@ -14,8 +15,9 @@ public class OrderListController extends AbstractController {
 		
 		HttpSession session = request.getSession();
 		
-//		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-		String loginuser = "dfs";
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+//		String loginuser = "";
+		
 		
 		if (loginuser != null) {
 //			유저가 정상적으로 로그인 된 경우	

@@ -58,4 +58,113 @@ $(document).ready(()=> {
 	// === 필터 버튼 조회 시 이벤트 처리 끝 === //
 	
 	
+	// === 기간 필터 버튼 이벤트 처리 시작 === //
+	$("button.btn-outline-dark").on("click", e => {
+		// == 버튼 별 기간에 따라 분기하여 알맞은 날짜를 필터링 한다. == //
+		
+		// alert("버튼 몇번? :"+ $("button.btn-outline-dark").index($(e.target)));
+		const btn_index = $("button.btn-outline-dark").index($(e.target));
+		
+		switch (btn_index) {			
+			case 0:		// 오늘 버튼
+				$("input#fromDate").val(getDate(btn_index));
+				$("input#toDate").val(getDate(btn_index));
+				
+			case 1:		// 일주일 버튼
+				$("input#fromDate").val(getDate(btn_index));
+				$("input#toDate").val(getDate(0));	// 오늘 고정
+				
+			case 2:		// 1개월 버튼
+				$("input#fromDate").val(getDate(btn_index));
+				$("input#toDate").val(getDate(0));	// 오늘 고정
+				
+			case 3:		// 3개월 버튼
+				$("input#fromDate").val(getDate(btn_index));
+				$("input#toDate").val(getDate(0));	// 오늘 고정
+				
+			case 4:		// 6개월 버튼
+				$("input#fromDate").val(getDate(btn_index));
+				$("input#toDate").val(getDate(0));	// 오늘 고정
+				
+		} 
+	});// end of $("button.btn-outline-dark").on("click", e => {}) ---------------------
+	// === 기간 필터 버튼 이벤트 처리 끝 === //
+	
+	
+	// === 주문정보 클릭 시 주문상세정보로 넘기는 이벤트 시작 === //
+	
+	$(document).on("click", "table#orderList > tbody td", e => {
+		//alert("테이블 버튼 몇번? :"+ $(e.target).parent().index());
+		//console.log("테이블 버튼 몇번? :", $(e.target).parent().index());
+		
+		const index = $(e.target).parent().index(); 	// 각 주문번호로 가야 함
+		
+		goOrderDetail(index);
+		
+	});
+	
+	// === 주문정보 클릭 시 주문상세정보로 넘기는 이벤트 끝 === //
+	
+	
 }); // end of $(document).ready(()=> {}) ---------------------------
+
+
+
+// Function Declaration
+function getDate(index) {
+	// == 기간 별 버튼에 따라 분기 하여 해당하는 날짜를 리턴해주는 함수. == //
+	
+	const now = new Date();     // 자바스크립트에서 현재날짜시각을 가져옴
+
+    // console.log(now);
+    // Mon Nov 11 2024 15:07:34 GMT+0900 (Korean Standard Time)
+    // 요일 월 일 연 시 분 초 TZ
+
+    // console.log(now.toLocaleString());
+    // 11/11/2024, 3:09:05 PM
+	
+    const year  = now.getFullYear();     // 현재연도(2024)
+    let month   = now.getMonth() + 1;    // 월은 0부터 시작하므로 +1 해야 현재월(11) 이 나옴
+    let date    = now.getDate();         // 현재일(11)
+    
+	switch (index) {
+		case 0:		// 오늘 버튼
+			break;
+			
+		case 1:		// 일주일 버튼
+			date = date - 6;
+			break;
+			
+		case 2:		// 1개월 버튼
+			month = month - 1;
+			date = date + 1;
+			break;
+			
+		case 3:		// 3개월 버튼
+			month = month - 3;
+			date = date + 1;
+			break;
+			
+		case 4:		// 6개월 버튼
+			month = month - 6;
+			date = date + 1;
+			break;
+	}// end of switch -------------------
+	
+    if (month < 10)
+        month = "0" + month;
+    
+    if (date < 10)
+        date = "0" + date;
+
+	return `${year}-${month}-${date}`;
+}// end of function getDate(index) ----------------------
+
+
+
+
+
+function goOrderDetail(index) {
+	// == 주문 상세 페이지로 넘기기 위한 함수 == //
+	
+}// end of function goOrderDetail(index) -------------- 
