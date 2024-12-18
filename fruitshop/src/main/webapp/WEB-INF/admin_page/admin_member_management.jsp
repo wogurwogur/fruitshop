@@ -70,7 +70,7 @@ form.example button {
 	<div class="container-fluid " id="admin_top_nav">
 	<%-- dropdown div start --%>
 	<div>
-	  <select name="select_sort" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
+	  <select name="memberlistSort" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
 	    <option>정렬방식</option>
 	    <option value="1">Audi</option>
 	    <option value="2">BMW</option>

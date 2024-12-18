@@ -47,6 +47,7 @@ public class ManagementController extends AbstractController {
 		}else {
 			
 			String user_id = loginuser.getUserid();
+			String memberlistSort = request.getParameter("memberlistSort");
 			
 			List<MemberVO> member_allList = adao.MemberSelectAll(user_id);
 
