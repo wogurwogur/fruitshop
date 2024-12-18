@@ -78,7 +78,7 @@ function DeleteAll() {
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 1; text-align: center;">
-                            <button onclick="deleteItem(${item.wish_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            <button  onclick="deleteItem(${item.wish_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
                         </div>
                     </div>
                 </c:forEach>
