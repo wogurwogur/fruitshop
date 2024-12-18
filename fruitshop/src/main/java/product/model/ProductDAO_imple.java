@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,9 +56,11 @@ public class ProductDAO_imple implements ProductDAO {
 			conn = ds.getConnection();
 			
 			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
-						+ " FROM tbl_products " 
+						+ " FROM tbl_products " 			
 						+ " ORDER BY prod_regidate DESC ";
+			
 			pstmt = conn.prepareStatement(sql);
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -86,7 +87,62 @@ public class ProductDAO_imple implements ProductDAO {
 		return prdList;
 	} // end of public List<ProductVO> productListSelectAll()
 	
-
+	
+	
+	// 상품페이지 카테고리(계절)별로 조회(select) 하는 메소드
+	@Override
+	public List<ProductVO> seasonProduct(String seasonNo) throws SQLException {
+		
+		List<ProductVO> prdList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+						+ " FROM tbl_products "; 			
+			
+			
+			
+			if(!seasonNo.isBlank()) {
+				sql += 	" WHERE fk_season_no = ? ";
+			}
+			
+			sql += " ORDER BY prod_regidate DESC ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			if(!seasonNo.isBlank()) {
+				pstmt.setString(1, seasonNo);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductVO prdvo = new ProductVO();
+				
+				prdvo.setProd_no(rs.getInt("prod_no"));
+				prdvo.setProd_name(rs.getString("prod_name"));
+				prdvo.setProd_cost(rs.getInt("prod_cost"));
+				prdvo.setProd_price(rs.getInt("prod_price"));
+				prdvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				prdvo.setProd_descript(rs.getString("prod_descript"));
+				prdvo.setProd_inventory(rs.getInt("prod_inventory"));
+				prdvo.setFk_season_no(rs.getInt("fk_season_no"));
+				prdvo.setProd_regidate(rs.getString("prod_regidate"));
+				
+				prdList.add(prdvo);
+			}
+					
+		} finally {
+			close();
+		}	
+		
+		return prdList;
+		
+	} // end of public List<ProductVO> seasonProduct(String seasonNo)
 	
 	
 	
