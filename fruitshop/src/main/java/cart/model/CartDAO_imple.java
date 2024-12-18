@@ -13,7 +13,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import cart.domain.CartVO;
-import index.domain.MainVO;
 import product.domain.ProductVO;
 
 public class CartDAO_imple implements CartDAO {
@@ -51,23 +50,30 @@ public class CartDAO_imple implements CartDAO {
 	
 	// 장바구니 리스트 보기 //
 	@Override
-	public List<CartVO> cartListSelectAll() throws SQLException {
+	public List<CartVO> cartListSelectAll(int user_no) throws SQLException {
 		
 		
 		List<CartVO> cartList = new ArrayList<>();
 		
 		try {
 	        conn = ds.getConnection();
+	        
 
-	        String sql = " SELECT c.cart_no, c.cart_prodcount, " 
+	        String sql = " SELECT c.fk_user_no, c.cart_no, c.cart_prodcount, " 
 	                   + "        p.prod_thumnail, p.prod_name, p.prod_price " 
 	                   + " FROM tbl_cart c " 
 	                   + " INNER JOIN tbl_products p " 
-	                   + " ON c.fk_prod_no = p.prod_no ";
+	                   + " ON c.fk_prod_no = p.prod_no "
+	                   + " where fk_user_no = ? ";
 
 	        pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setInt(1, user_no);
+	        
 	        rs = pstmt.executeQuery();
-
+	        
+	        
+	        
 	        while (rs.next()) {
 	            // ProductVO 설정
 	            ProductVO pdvo = new ProductVO();

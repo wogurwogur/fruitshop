@@ -25,7 +25,6 @@ div.container > div.ec-base-button.gColumn{
     text-align: center;
     font-size: var(--wt-re-size);
     box-sizing: border-box;
-    margin: 5% auto;
     display: flex;
     justify-content: center;
 }
@@ -35,7 +34,7 @@ div.container > div.ec-base-button.gColumn > a.btnSubmit{
 	color: #fff;
     background-color: black;
     padding: 0.8em 0;
-    margin: 0 2px;
+    margin: 0 2%;
     padding-left: 8px;
     padding-right: 8px;
     word-break: keep-all;
@@ -53,7 +52,7 @@ div.container > div.ec-base-button.gColumn > a.btnremove{
     color: #555;
     background-color: #fff;
     padding: 0.8em 0;
-    margin: 0 2px;
+    margin: 0 2%;
     padding-left: 8px;
     padding-right: 8px;
     word-break: keep-all;

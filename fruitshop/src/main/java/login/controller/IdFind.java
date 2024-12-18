@@ -40,10 +40,12 @@ public class IdFind extends AbstractController {
 			
 			if(userid != null) {
 				request.setAttribute("userid", userid);
+				request.setAttribute("isExist", true);
 				
 			}
 			else {
-				request.setAttribute("userid", "존재하지 않습니다.");
+				request.setAttribute("userid", "검색되는 아이디가 존재하지 않습니다.");
+				request.setAttribute("isExist", false);
 			}
 			
 			request.setAttribute("name", name);

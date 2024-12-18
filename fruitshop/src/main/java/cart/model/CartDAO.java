@@ -8,6 +8,6 @@ import cart.domain.CartVO;
 public interface CartDAO {
 	
 	// 장바구니 리스트 보기 // 
-	List<CartVO> cartListSelectAll() throws SQLException;
+	List<CartVO> cartListSelectAll(int user_no) throws SQLException;
 
 }
