@@ -106,15 +106,18 @@ function goFind() {
 
 </script>
 
-<div class="container">
+<div class="container" >
 
 	<form name="pwdFindFrm" action="<%=request.getContextPath()%>/login/passwdFind.ddg" method="post">
 	
-		<div style="width:450px; margin : 10px auto;">
+		<div style="width:450px; margin : 10px auto 100px auto;">
+		
 		
 			<div class="text-center" style="margin-top:100px; margin-bottom:50px;">
 				<h2 style="font-weight:bold;">비밀번호 찾기</h2>
 			</div>
+			
+			
 			
 			<div>
 				<table style="margin : 10px auto;">
@@ -132,33 +135,43 @@ function goFind() {
 					</tbody>
 				</table>
 			</div>
+			
+			
+			
 			<div style="vertical-align:top; height:50px;">
 			
-			<%-- 결과가 출력되는 곳 --%>
-			<div class="my-3 text-center" id="div_findResult">
-				<c:if test="${requestScope.isUserExist == false}">
-      				<span style="color: red;">검색되는 회원이 존재하지 않습니다.</span>
-   				</c:if>
-				
-				<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}">
-			    	<span style="font-size: 10pt;">
-				          인증코드가 ${requestScope.email}로 발송되었습니다.<br>
-				          인증코드를 입력해주세요
-			     	</span>
-			     <br>
-			     <input type="text" name="input_confirmCode" />
-			     <br><br> 
-			     <button type="button" id="verifyCertification" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">인증하기</button>
-			   </c:if>
+				<%-- 결과가 출력되는 곳 --%>
+				<div class="mt-3 text-center" id="div_findResult">
+					<c:if test="${requestScope.isUserExist == false}">
+	      				<span style="color: red;">검색되는 회원이 존재하지 않습니다.</span>
+	   				</c:if>
+					
+					<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}">
+				    	<span style="font-size: 10pt;">
+					          인증코드가 ${requestScope.email}로 발송되었습니다.<br>
+					          인증코드를 입력해주세요
+				     	</span>
+				     <br>
+				     <input type="text" name="input_confirmCode" />
+				     <br><br> 
+				     <div>
+				     <button type="button" id="verifyCertification" class="h5" style=" width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">인증하기</button><br><br><br><br>
+				   	 </div>
+				   </c:if>
+				</div>
+				<%-- 에러가 출력되는 곳 --%>
+				<div class="my-3 text-center">
+					<span id="div_error" style="color:red; font-size: 14pt; font-weight: bold;"></span>
+				</div>
+			
 			</div>
-			<%-- 에러가 출력되는 곳 --%>
-			<div class="my-3 text-center">
-				<span id="div_error" style="color:red; font-size: 14pt; font-weight: bold;"></span>
-			</div>
-			</div>
+			
+			
+			
+			
 
 			<div class="text-center" style="margin-bottom:100px;" >
-	        	<button type="button" id="findPasswd" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">비밀번호 찾기</button>
+	        	<button type="button" id="findPasswd" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">인증번호 발송</button>
 	        
 				<button type="button" id="back" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">취소</button>
 				
@@ -170,7 +183,10 @@ function goFind() {
 	
 	
 		
+		
 </div>
+
+
 
 <%-- 인증하기 form --%>
 <form name="verifyCertificationFrm">

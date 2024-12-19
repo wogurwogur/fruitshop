@@ -106,7 +106,7 @@ function goFind() {
 
 </script>
 
-<div class="container">
+<div class="container" style="margin:100px 0; height:500px;">
 
 	<form name="emailAuthenticationFrm" action="<%=request.getContextPath()%>/useridRecovery.ddg" method="post">
 	
@@ -135,7 +135,7 @@ function goFind() {
 			<div style="vertical-align:top; height:50px;">
 			
 			<%-- 결과가 출력되는 곳 --%>
-			<div class="my-3 text-center" id="div_findResult">
+			<div class="mt-3 text-center" id="div_findResult" style="margin-bottom:100px;">
 				<c:if test="${requestScope.isUserExist == false}">
       				<span style="color: red;">검색되는 회원이 존재하지 않습니다.</span>
    				</c:if>
@@ -157,7 +157,7 @@ function goFind() {
 			</div>
 			</div>
 
-			<div class="text-center" style="margin-bottom:100px;" >
+			<div class="text-center" >
 	        	<button type="button" id="emailAuthentication" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">인증번호 발송</button>
 	        
 				<button type="button" id="back" class="h5" style="width:450px; height:50px; margin:10px 0; display:inline-block; line-height:50px; background-color:#000000; color:white;">취소</button>
@@ -173,6 +173,8 @@ function goFind() {
 	
 		
 </div>
+
+
 
 <%-- 인증하기 form --%>
 <form name="verifyCertificationFrm">
