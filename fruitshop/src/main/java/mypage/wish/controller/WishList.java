@@ -50,7 +50,7 @@ public class WishList extends AbstractController {
 
         if (wish_pno != null) {
         	
-            		// 관심상품 삭제(X버튼 누를때) 
+            // 관심상품 삭제(X버튼 누를때) 
             try {
                 int wish_no = Integer.parseInt(wish_pno);
                 boolean isDeleted = wdao.deleteWishItem(wish_no);
@@ -68,13 +68,16 @@ public class WishList extends AbstractController {
             }
 
             // 메시지를 보여주고 관심상품 리스트로 리다이렉트
-            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.do");
+            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.ddg");
             super.setRedirect(false);
-            super.setViewPage("/WEB-INF/msg.jsp");
+            super.setViewPage("/WEB-INF/common/msg.jsp");
             return;
         }
     	
-		
+		////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
 		
 
 	}

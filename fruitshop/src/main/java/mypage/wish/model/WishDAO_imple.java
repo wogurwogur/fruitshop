@@ -92,7 +92,7 @@ public class WishDAO_imple implements WishDAO {
 	}
 	
 	
-	
+	// 관심상품 1행 삭제(X버튼 클릭시)
 	@Override
 	public boolean deleteWishItem(int wish_no) throws SQLException {
 		
@@ -112,15 +112,16 @@ public class WishDAO_imple implements WishDAO {
             }
             
             
-            
         } finally {
             close();
         }
 
         return isDeleted;
 		
-		
 	}
+	
+	
+	
 
 	
 
