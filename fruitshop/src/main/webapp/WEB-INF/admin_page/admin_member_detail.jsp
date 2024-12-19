@@ -4,7 +4,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <% 
 	String ctxPath = request.getContextPath();
@@ -22,16 +22,82 @@ function adminRoleAddandRemove(role, user_no){
 	frm.action = "<%=ctxPath%>/admin/adminMemberRole.ddg";
 	frm.method = "post";
 	
-	frm.submit();
+	let ck_adminRole = "";
+	
+	if(role == 1){
+		 ck_adminRole = confirm("관리자 권한을 부여하시겠습니까?");
+	}else{
+		 ck_adminRole = confirm("관리자 권한을 박탈하시겠습니까?");
+	}
+	
+	
+	if(ck_adminRole == true){
+		frm.submit();
+	}
+	
 	
 }
+
+$(document).ready(function(){
+	const modalOpenButton = document.getElementById('couponModalOpen');
+	const modalCloseButton = document.getElementById('couponModalClose');
+	const modal = document.getElementById('modalContainer');
+
+	modalOpenButton.addEventListener('click', () => {
+	  modal.classList.remove('hidden');
+	});
+
+	modalCloseButton.addEventListener('click', () => {
+	  modal.classList.add('hidden');
+	});
+});
 
 </script>
 
 <style>
 
-tbody > tr:nth:child(1){
-	colspan:2;
+#modalOpenButton, #modalCloseButton {
+  cursor: pointer;
+}
+
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 500px;
+  height: 400px;
+  padding: 15px;
+  border-radius: 20%;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContainer.hidden {
+  display: none;
 }
 
 </style>
@@ -91,11 +157,11 @@ tbody > tr:nth:child(1){
 			</tr>
 			<tr>
 				<td>가입일자</td>
-				<td>${requestScope.detailMember.registerday}</td>
+				<td>${fn:substring(requestScope.detailMember.registerday,0,11)}</td>
 			</tr>
 			<tr>
 				<td>마지막 비밀번호 변경일자</td>
-				<td>${requestScope.detailMember.lastpwdchangedate}</td>
+				<td>${fn:substring(requestScope.detailMember.lastpwdchangedate,0,11)}</td>
 			</tr>
 			<tr>
 				<td>회원상태</td>
@@ -118,7 +184,7 @@ tbody > tr:nth:child(1){
 	<table class="table" style="text-align:center;">
 		<tbody>
 			<tr>
-				<td><button type="button" class="btn btn-outline-success" id="couponModal">쿠폰수령</button></td>
+				<td><button type="button" class="btn btn-outline-success" id="couponModalOpen">쿠폰수령</button></td>
 				<!-- <td><button type="button" class="btn btn-outline-success" id="couponModal">징계처분</button></td> -->
 				<c:if test="${requestScope.detailMember.role eq '1'}"><td><button type="button" class="btn btn-outline-success" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no}')">관리자권한부여</button></td></c:if>
 				<c:if test="${requestScope.detailMember.role eq '2'}"><td><button type="button" class="btn btn-outline-danger" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no}')">관리자권한박탈</button></td></c:if>
@@ -130,6 +196,17 @@ tbody > tr:nth:child(1){
 	<form name="roleAddRemove">
 		<input type="hidden" name="role"/>
 		<input type="hidden" name="user_no"/>
-	</form>
+
 	
+	<div id="modalContainer" class="hidden">
+	  <div id="modalContent">
+	    <div class="container mt-5">
+	    
+	    	
+		    <button type="button" id="couponModalClose">닫기</button>
+		    <input type="text" style="display:none;"/>
+	    </div>
+	  </div>
+	</div>
+	</form>
 </div>
