@@ -2,23 +2,13 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/mypage/wishlist.css">
 
 
 <script type="text/javascript">
 
-<%-- 찜목록 X버튼 누를때 --%>
-function deleteItem() {
-	
-	confirm("정말 삭제하시겠습니까?");
-	
-	if(e.keyCode == 13) {
-		 alert("삭제가 완료되었습니다.")
-	  }
-	
-	
-}// end of function deleteItem() {}--------------
 
 <%-- 선택상품 장바구니로 옮기기 누를때 --%>
 function goCartList() {
@@ -33,7 +23,6 @@ function DeleteAll() {
 	confirm("정말로 관심상품을 모두 비우시겠습니까?");
 	
 }
-
 
 </script>
 
@@ -62,32 +51,36 @@ function DeleteAll() {
                         
                         <%-- 상품 이미지 --%>
                         <div style="flex: 1; text-align: center;">
-                            <img src="<%= request.getContextPath()%>/images/product/${item.product.prod_thumnail}" style="width: 80%; height: auto;">
+                            <img src="<%= request.getContextPath()%>/images/product/thumnail/${item.product.prod_thumnail}" style="width: 80%; height: auto;">
                             
                         </div>
                         
                         <%-- 상품 이름 --%>
                         <div style="flex: 2.5;">
-                            <p style="font-size: 18pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
                         </div>
                         
                         <%-- 상품 가격 --%>
-                        <div style="flex: 2;">
-                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_price} 원</p>
+                        <div style="flex: 1.5;">
+                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif; m"><fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />&nbsp;원</p>
                         </div>
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 1; text-align: center;">
-                            <button onclick="deleteItem(${item.wish_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            <form method="post" action="<%= request.getContextPath() %>/mypage/wishList.ddg" onsubmit= "return confirm('정말 삭제하시겠습니까?'); ">
+                                <input type="hidden" name="wish_no" value="${item.wish_no}">
+                                <button type="submit" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            </form>
                         </div>
+                        
                     </div>
                 </c:forEach>
             </div>
 			
 		 	<%-- 주문하기, 비우기 버튼 --%>
 			<div class="ec-base-button gColumn">
-			    <a href="#" onclick="goCartList();" class="btnpick">선택상품 장바구니에담기</a>  
-			    <a href="#" onclick="DeleteAll();" class="btnremove">관심상품 비우기</a>       
+			    <a href="#" class="btnpick">선택상품 장바구니에담기</a>  
+			    <a href="<%= request.getContextPath() %>/mypage/wishList.ddg"  onclick="DeleteAll();" class="btnremove">관심상품 비우기</a>       
 		    </div>
 
         </c:when>

@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/cart/cart.css">
 
@@ -12,78 +14,40 @@
 
 	
 	$(document).ready(function(){
-	
 		
-		$("input:number[name='prodcount']").bind("keyup", function(e) {
-		  if(e.keyCode == 13) {
-			   Update();
-		  }
-		  
-	});// end of $("input:number[name='prodcount']").bind("keydown", function(e) {
+		$("input:number[name='prodcount']").bind("keyup", function(cart_prodcount){
+	        if(cart_prodcount.keyCode == 13) {
+	        	alert("rr!!");
+	          
+	        }
+	        
+	     });// $("input:number[name='prodcount']").bind("keyup", function(e){------- 
 		
-		
-	});// $(document).ready(function(){})-----------
-	
-	function Update() {
-		
-	const prodcount = $("input:number[name='prodcount']").val();
-	
-	if(prodcount == ""){
-		alert("수량을 입력하세요!!");
-		return; // Update() 함수를 종료한다.
-	}
-	
-	const frm = document.member_search_frm;
-	 // frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
-	 // frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
-	    frm.submit();
-		
-	}// end of function Update() {}---------------------------------
-	
-	function updateCount() {
-		
-		const prodcount= $("input:number[name='prodcount']").val();
-		
-		
-	}
-	
-	}
-	*/
+	});// end of $(document).ready(function(){}----------------------------
 	
 	
-	<%-- 관심상품 X버튼 누를때 --%>
-	function deleteProduct() {
-		
-		confirm("정말 삭제하시겠습니까?");
-		
-		if(e.keyCode == 13) {
-			 alert("삭제가 완료되었습니다.")
-		  }
-		
-	}// end of function deleteProduct() {}--------------
 	
-	
-	<%-- 선택상품 주문하기 누를때 --%>
+	<%-- 선택상품 주문하기 누를때
 	function Orderpick() {
 		
 		confirm("선택한 상품을 주문하시겠습니까?");
 		
 	}// end of function goCartList() {}-----------------------------
 
-	<%-- 전체상품 주문하기 누를때 --%>
+	  전체상품 주문하기 누를때 
 	function OrderAll() {
 		
 		confirm("장바구니에 있는 전체상품을 주문하시겠습니까?");
 		
 	}
 	
-	<%-- 장바구니 비우기 누를때 --%>
+	  장바구니 비우기 누를때 
 	function CartDeleteAll() {
 		
 		confirm("정말로 관심상품을 모두 비우시겠습니까?");
 		
 	}
-	
+	--%>
 	
 	
 </script>
@@ -115,27 +79,30 @@
                         
                         <%-- 상품 정보 --%>
                         <div style="flex: 1;">
-                            <p style="font-size: 18pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
-                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_price} 원</p>
+                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;"><fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />&nbsp;원</p>
                         </div>
 
                         <%-- 수량 조절 --%>
                          <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
-                            <button onclick="updateCount(${item.cart_no}, 'decrease')" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
-                            <input type='number' min='0'  value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
-                            <button onclick="updateCount(${item.cart_no}, 'increase')" style="width: 8%; font-size: 23pt; background-color: white; border: white;">+</button>
+                            <button style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
+                            <input type='number' min='1' value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
+                            <button style="width: 8%; font-size: 23pt; background-color: white; border: white;">+</button>
                         </div>
 
                         <%-- 상품의 총액 --%>
                         <div style="flex: 1.6; text-align: center;">
                         <button style=" background-color: white; border: 1px solid white; color: black; padding: 4% 30%; font-family: 'Noto Sans KR', sans-serif; font-size: 16pt;">
-                                ${item.product.prod_price * item.cart_prodcount}원
+                               <fmt:formatNumber value="${item.product.prod_price * item.cart_prodcount}" pattern="###,###" />&nbsp;원
                          </button>
                         </div>
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 0.5; text-align: center;">
-                            <button onclick="deleteProduct(${item.cart_no})" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                           <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" onsubmit= "return confirm('정말 삭제하시겠습니까?'); ">
+                                <input type="hidden" name="wish_no" value="${item.cart_no}">
+                                <button type="submit" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
+                            </form>
                         </div>
                     </div>
                 </c:forEach>
@@ -152,11 +119,15 @@
             <td style="padding: 2% 5%;">총 결제금액</td>
         </tr>
         <tr>
-            <td style="padding: 2% 5%; font-size: 18pt;">${totalPrice}원</td>
+            <td style="padding: 2% 5%; font-size: 18pt;">
+             <fmt:formatNumber value="${totalPrice}" pattern="###,###" />&nbsp;원
+            </td>
             <td style="padding: 2% -20%; ">+</td>
-            <td style="padding: 2% 5%; font-size: 18pt;">2500원</td>
+            <td style="padding: 2% 5%; font-size: 18pt;">2,500원</td>
             <td style="padding: 2%;">=</td>
-            <td style="padding: 2% 5%; font-size: 18pt;">${totalPrice + 2500}원</td>
+            <td style="padding: 2% 5%; font-size: 18pt;">
+            <fmt:formatNumber value="${totalPrice + 2500}" pattern="###,###" />&nbsp;원
+            </td>
         </tr>
     </table>
 </div>
