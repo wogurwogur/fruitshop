@@ -29,7 +29,7 @@ public interface MemberDAO {
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
 
 	// 계정 복구 메소드
-	int useridRecovery(String userid) throws SQLException;
+	int useridRecovery(Map<String, String> paraMap) throws SQLException;
 
 
 

@@ -97,5 +97,34 @@ public class CartDAO_imple implements CartDAO {
 	    return cartList;
 		
 	}// end of public List<CartVO> cartListSelectAll() throws SQLException {
+	
+	
+	// 장바구니 X버튼 눌렀을 때 한 행 삭제 //
+	@Override
+	public boolean deleteCartItem(int cart_no) throws SQLException {
+		
+		boolean isDeleted = false;
+
+        try {
+        	
+            conn = ds.getConnection();
+            String sql = " delete from tbl_cart "
+            		   + " where cart_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, cart_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
+	}
 
 }

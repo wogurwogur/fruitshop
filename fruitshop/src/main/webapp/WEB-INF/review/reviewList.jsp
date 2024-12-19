@@ -11,6 +11,7 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
+
 <div class="container-fluid">
 
 	<div>
@@ -40,7 +41,7 @@
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
-				<table class="table text-center table-hover">
+				<table class="table text-center">
 					<tr>
 						
 						<th>글 번호</th>
@@ -49,18 +50,52 @@
 						<th>작성일자</th>
 						<th>조회수</th>
 					</tr>
-					<%-- 글 리스트 --%>	
+					<%-- 글 리스트 --%>
+
 			<c:if test="${not empty requestScope.revList}">
-				<c:forEach var="revvo" items="${requestScope.revList}" varStatus="status">
+				<c:forEach var="brevvo" items="${requestScope.brevList}" varStatus="status">
+					<tr class ="bg-light">
+						<td style="border-top: none">${brevvo.review_no}</td>	 				
+						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
+						<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${brevvo.prod_name}]</a>
+							&nbsp;<a href ="#" style="text-decoration:none" class = "text-dark">${brevvo.review_title}</a>
+							<c:if test="${brevvo.comment_count ne '0'}"><span class="text-danger">[${brevvo.comment_count}]</span></c:if>							
+						</td>						
+						<td style="border-top: none">${brevvo.userid}</td>
+						<td style="border-top: none">${brevvo.review_regidate}</td>
+						<td style="border-top: none">${brevvo.review_viewcount}</td>
+					</tr>
+				</c:forEach>
+				
+				<c:forEach var="crevvo" items="${requestScope.crevList}" varStatus="status">
+					<tr class ="bg-light">
+						<td style="border-top: none">${crevvo.review_no}</td>	 				
+						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
+						<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${crevvo.prod_name}]</a>
+							&nbsp;<a href ="#" style="text-decoration:none" class = "text-dark">${crevvo.review_title}</a>
+							<c:if test="${crevvo.comment_count ne '0'}"><span class="text-danger">[${crevvo.comment_count}]</span></c:if>							
+						</td>						
+						<td style="border-top: none">${crevvo.userid}</td>
+						<td style="border-top: none">${crevvo.review_regidate}</td>
+						<td style="border-top: none">${crevvo.review_viewcount}</td>
+					</tr>
+				</c:forEach>
+					
+				<c:forEach var="revvo" items="${requestScope.revList}" varStatus="status">						
 					<tr>						
-						<td>${revvo.review_no}</td>						
-						<td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a> 
-																		 		  ${revvo.review_title}</td>						
-						<td>${revvo.userid}</td>
-						<td>${revvo.review_regidate}</td>
-						<td>${revvo.review_viewcount}</td>
-					</tr>				
-				</c:forEach>			
+						<td style="border-top: none">${revvo.review_no}</td>	 				
+						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>
+						<td style="border-top: none"><a href="#" class="text-body font-weight-bold">[${revvo.prod_name}]</a>
+							<a href ="#" style="text-decoration:none" class = "text-dark">${revvo.review_title}</a>
+							&nbsp;<c:if test="${revvo.comment_count ne '0'}"><span class="text-danger">[${revvo.comment_count}]</span></c:if>							
+						</td>						
+						<td style="border-top: none">${revvo.userid}</td>
+						<td style="border-top: none">${revvo.review_regidate}</td>
+						<td style="border-top: none">${revvo.review_viewcount}</td>
+					</tr>	
+								
+				</c:forEach>
+						
 			</c:if>																	
 
 				</table>
@@ -94,4 +129,4 @@
 </div>
 </div>
 
-
+<jsp:include page="../common/footer.jsp"></jsp:include>
