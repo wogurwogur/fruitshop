@@ -290,13 +290,13 @@ public class AdminDAO_imple implements AdminDAO {
 			conn = ds.getConnection();
 			
 			
-			String sql = "SELECT RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel "
+			String sql = "SELECT RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
 					+ "  FROM "
 					+ "  ( "
-					+ "      SELECT rownum AS RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel "
+					+ "      SELECT rownum AS RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
 					+ "      FROM "
 					+ "      ( "
-					+ "        select userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel "
+					+ "        select userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
 					+ "        from tbl_member "
 					+ "        where userid != ? ";
 
@@ -319,7 +319,8 @@ public class AdminDAO_imple implements AdminDAO {
 			
 			sql += " ) V "
 					+ "  ) T "
-					+ "  WHERE T.RNO BETWEEN ? AND ? ";
+					+ " WHERE T.RNO BETWEEN ? AND ? "
+					+ " order by registerday desc ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -377,6 +378,42 @@ public class AdminDAO_imple implements AdminDAO {
 		}
 		
 		return memberList;
+	}
+
+	// 회원상세에서 회원의 쿠폰 개수를 볼수 있게하는 메소드
+	@Override
+	public String memberCouponCnt(String detail_user_no) throws SQLException {
+		
+		String memberCoupon = "";
+		
+		conn = ds.getConnection();
+		
+		String sql = " select C.coupon_cnt "
+				+ " from "
+				+ " ( "
+				+ " select user_no "
+				+ " from tbl_member "
+				+ " where user_no = ? "
+				+ " )M "
+				+ " cross join "
+				+ " ( "
+				+ " select  count(coupon_no) as coupon_cnt "
+				+ " from tbl_coupons  "
+				+ " where fk_user_no = ? "
+				+ " )C ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, detail_user_no);
+		pstmt.setString(2, detail_user_no);
+		
+		rs = pstmt.executeQuery();
+		
+		rs.next();
+		
+		memberCoupon = rs.getString(1);
+		
+		return memberCoupon;
 	}
 
 	

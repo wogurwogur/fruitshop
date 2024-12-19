@@ -27,7 +27,7 @@ function memberDetail(user_no){
 
 function memberSearch(){
 	
-	const searchType = $("select[nema='searchType']");
+	const searchType = $("select[name='searchType']");
 	
 	if(searchType == ""){
 		alert("검색대상을 선택하세요!!");
@@ -116,7 +116,7 @@ form.example button {
 	<%-- search div start --%>
 	<div>
 	  <select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
-	    <option>검색대상</option>
+	    <option value="">검색대상</option>
 	    <option value="name">회원명</option>
 	    <option value="userid">아이디</option>
 	    <option value="email">이메일</option>

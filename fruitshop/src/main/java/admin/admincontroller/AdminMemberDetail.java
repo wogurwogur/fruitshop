@@ -25,6 +25,10 @@ public class AdminMemberDetail extends AbstractController {
 			
 			MemberVO detailMember = adao.memberDetailInfo(detail_user_no);
 			
+			String memberCoupon = adao.memberCouponCnt(detail_user_no);
+			
+			request.setAttribute("memberCoupon", memberCoupon);
+			
 			request.setAttribute("detail_user_no", detail_user_no);
 			
 			request.setAttribute("detailMember", detailMember);

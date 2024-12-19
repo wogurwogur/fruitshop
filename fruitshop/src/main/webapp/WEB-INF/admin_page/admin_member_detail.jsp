@@ -76,7 +76,7 @@ $(document).ready(function(){
   position: absolute;
   background-color: #ffffff;
   width: 500px;
-  height: 400px;
+  height: 600px;
   padding: 15px;
   border-radius: 20%;
 }
@@ -178,6 +178,10 @@ $(document).ready(function(){
 				<c:if test="${requestScope.detailMember.role eq '1'}"><td>일반회원</td></c:if>
 				<c:if test="${requestScope.detailMember.role eq '2'}"><td>관리자</td></c:if>
 			</tr>
+			<tr>
+				<td>보유 쿠폰개수</td>
+				<td>${requestScope.memberCoupon}</td>
+			</tr>
 		</tbody>
 	
 	</table>
@@ -201,9 +205,32 @@ $(document).ready(function(){
 	<div id="modalContainer" class="hidden">
 	  <div id="modalContent">
 	    <div class="container mt-5">
-	    
-	    	
-		    <button type="button" id="couponModalClose">닫기</button>
+	    	<table class="table" style="text-align:center;">
+	    		<thead>
+	    			<tr>
+	    				<th colspan="2">쿠폰 수령</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<tr>
+	    				<td>쿠폰이름</td>
+	    				<td><input type="text" name="coupon_name" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td>쿠폰설명</td>
+	    				<td><input type="text" name="coupon_descript" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td>쿠폰유효기간</td>
+	    				<td><input type="text" name="coupon_expire" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td>할인금액</td>
+	    				<td><input type="text" name="coupon_discount" size="8"></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	<button type="button" id="couponModalClose">나가기</button>
 		    <input type="text" style="display:none;"/>
 	    </div>
 	  </div>

@@ -23,5 +23,8 @@ public interface AdminDAO {
 	
 	// 페이징처리를 한 모든회원 목록 보여주기
 	List<MemberVO> select_Member_paging(Map<String, String> paraMap) throws SQLException;
+
+	// 회원상세에서 회원의 쿠폰 개수를 볼수 있게하는 메소드
+	String memberCouponCnt(String detail_user_no) throws SQLException;
 	
 }
