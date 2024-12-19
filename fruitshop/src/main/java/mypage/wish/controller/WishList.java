@@ -76,10 +76,34 @@ public class WishList extends AbstractController {
     	
 		////////////////////////////////////////////////////////////////////////////////////////////
         
-        
-        
-		
+        /*
+        if (loginuser != null) {
+        	
+            // 관심상품 비우기
+            try {
+            	int user_no = loginuser.getUser_no();
+                boolean isDeleted = wdao.deleteAll(user_no);
 
+                if (isDeleted) {
+                    request.setAttribute("message", "관심상품 비우기 완료했습니다.");
+                } else {
+                    request.setAttribute("message", "관심상품 비우기 실패하였습니다.");
+                }
+
+       
+            } catch (SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("message", "삭제에 실패하였습니다.");
+            }
+
+            // 메시지를 보여주고 관심상품 리스트로 리다이렉트
+            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.ddg");
+            super.setRedirect(false);
+            super.setViewPage("/WEB-INF/common/msg.jsp");
+            return;
+        }
+		
+		*/
 	}
 
 }
