@@ -177,7 +177,7 @@
 							</td>
 							<td class="text-center" style="height: 100px;">
 								<input type="button" class="btn btn-success btn-lg mr-5" value="가입하기" onclick="goRegister()" />
-								<input type="reset" class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
+								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
 							</td>
 						</tr> 
 

@@ -13,6 +13,13 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style type="text/css">
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+</style>
+
 <script type="text/javascript">
 	$(()=>{
 		

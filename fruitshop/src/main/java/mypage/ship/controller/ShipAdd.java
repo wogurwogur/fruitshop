@@ -12,40 +12,29 @@ import mypage.ship.domain.ShipVO;
 import mypage.ship.model.ShipDAO;
 import mypage.ship.model.ShipDAO_imple;
 
-public class ShipManagement extends AbstractController {
+public class ShipAdd extends AbstractController {
 
 	ShipDAO sdao = new ShipDAO_imple();
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-		
-		
 		
 		if(loginuser != null) {
 			
 			if("get".equalsIgnoreCase(request.getMethod())) {
 				
-				List<ShipVO> shipList = new ArrayList<>();
 				
-				shipList = sdao.shipSelectAll(loginuser.getUser_no());
-				
-				
-				
-				request.setAttribute("shipList", shipList);
 				
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/mypage/shipInfo.jsp");
+				super.setViewPage("/WEB-INF/mypage/shipAdd.jsp");
 				
 			} 
 			else if("post".equalsIgnoreCase(request.getMethod())) {
-				
-				
-				
 				
 				
 			}
@@ -55,7 +44,7 @@ public class ShipManagement extends AbstractController {
 			super.setRedirect(true);
 			super.setViewPage(request.getContextPath()+"/login/login.ddg");
 		}
-		
+
 	}
 
 }

@@ -59,7 +59,7 @@ public class EmailDuplicateCheck extends AbstractController {
 
 		} else {
 			super.setRedirect(true);
-			super.setViewPage(request.getContextPath() + "/index.ddg");
+			super.setViewPage(request.getContextPath() + "/login/login.ddg");
 		}
 
 	}

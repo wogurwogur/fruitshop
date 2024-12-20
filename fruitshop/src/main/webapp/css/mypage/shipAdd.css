@@ -23,13 +23,13 @@ input[type="text"],
 input[type="password"] {
 	width: 440px;
 	height: 40px;
-	font-size: 16px;
+	font-size: 12pt;
 	padding-left: 10px;
 }
 
 select {
 	height: 40px;
-	font-size: 20px;
+	font-size: 12pt;
 	padding-left: 10px;
 }
 
@@ -43,7 +43,7 @@ select {
 }
 
 .rule {
-	font-size:10pt;
+	font-size:9pt;
 }
 
 #zipcodeSearch:hover {
