@@ -2,127 +2,96 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.Calendar" %>
 
-<% 
-	String ctxPath = request.getContextPath();
+<%
+	Calendar time = Calendar.getInstance();
+	int year = time.get(Calendar.YEAR);
 %>
 
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/adminpage/statistics.css">
+<script type="text/javascript" src="<%= request.getContextPath()%>/js/admin/statistics.js"></script>
+
 <script type="text/javascript">
-
-
+	$(document).ready(() => {
+	
+		$("div.order_title").click(e => {
+			// alert("야야호"+ $(e.target).index());
+			$("div.order_title").removeClass("active");
+			$(e.target).addClass("active");
+		});
+	});
 </script>
 
-<script src="<%=ctxPath %>/js/admin/admin_member_management.js"></script>
-<style>
+<div style="margin-top: 3%;" id="container">
 
-div#admin_top_nav{
-	display: flex;
-	margin-top: 1%;
-}
-
-div#admin_top_nav_center{
-	margin: 0 auto;
-}
-
-/* drop down start */
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content button {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border: none;
-}
-
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* drop down end */
-
-
-/* search start */
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
-
-form.example button {
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-/* search end  */
-</style>
-
-<%-- div top nav start --%>
-<div class="container-fluid " id="admin_top_nav">
-
-	<%-- dropdown div start --%>
-	<div class="dropdown">
-	  <button class="dropbtn">정렬</button>
-	  <div class="dropdown-content">
-	    <button type="button">징계받은 회원</button>
-	    <button type="button">----</button>
-	    <button type="button">----</button>
-	  </div>
-	</div>
-	<%-- dropdown div end --%>
+<%-- 페이지 도착 시 기본 조회 기간은 3개월 --%>
+	<%-- 주문내역조회 메뉴 바 시작 --%>
+	<div id="menu_filter">
 	
-	
-	<%-- center div start --%>
-	<div id="admin_top_nav_center">
-		<span>통계</span>
+		<div class="menu_title active">
+			회원관련<%-- url 필요 --%>
+		</div>
+		<div class="menu_title">
+			상품관련<%-- url 필요 --%>
+		</div>
+		<div class="menu_title">
+			매출/이익<%-- url 필요 --%>
+		</div>
+		<div id="menu_title_nbsp">
+		</div>
 	</div>
-	<%-- center div end --%>
+	<%-- 주문내역조회 메뉴 바 끝 --%>
+	
+	<%-- 기간 필터 시작 --%>
+	<div id="order_time">
+		<div style="padding: 2%;" class="btn-group" role="group" aria-label="Date Select Filter">
+			<%-- <button type="button" class="btn btn-outline-dark" id="today">오늘</button>
+			<button type="button" class="btn btn-outline-dark" id="week">일주일</button> --%>
+			<button type="button" class="btn btn-outline-dark" id="month">1개월</button>
+			<button type="button" class="btn btn-outline-dark" id="3month">3개월</button>
+			<button type="button" class="btn btn-outline-dark" id="6month">6개월</button>
+			<button type="button" class="btn btn-outline-dark" id="year">올해</button>
+			<select id="searchYear">
+	        	<option value="">연도선택</option>
+	         	<option><%= year-1 %></option>
+	         	<option><%= year-2 %></option>
+	         	<option><%= year-3 %></option>
+	      	</select>
+		</div>
 		
+		<div style="margin-top: 1%; padding: 1%;">
+			<form name="dateFilter">
+				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="fromDate" id="fromDate" maxlength="10" />
+				<label style="cursor:pointer" for="fromDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
+				&nbsp;~&nbsp;&nbsp;
+				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="toDate" id="toDate" maxlength="10" />
+				<label style="cursor:pointer" for="toDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
+			</form>
+		</div>
 		
-	<%-- search div start --%>
-	<div>
-		<form class="example" id="member_management_frm" style="margin:auto;max-width:300px">
-		  <input type="text" placeholder="Search.." name="search2">
-		  <button type="submit"><i class="fa fa-search"></i></button>
-		</form>
+		<div style="margin-top: 2%;">
+			<button style="width: 80px; height: 40px;" type="button" class="btn btn-secondary">조회</button>
+		</div>
 	</div>
-	<%-- search div end --%>
+	<div id="filter_desc">
+		<ul>
+			<li>기본적으로 최근 3개월간의 자료가 조회되며, 특정 기간을 선택하여 조회할 수 있습니다.</li>
+		</ul>
+	</div>
+	<%-- 기간 필터 끝 --%>
 	
-</div>
-<%-- div top nav end --%>
-
-<div class="container-fluid ">
-	
-	회원리스트
+	<%-- 통계 본문 보여주기 시작 --%>
+	<div style="margin-left: 1%;" class="h6 mt-5">회원 통계 정보</div>
+	<hr style="border: solid 1px black;">	
+	<div style="display: flex;">
+		<div class="" style="width: 50%; border: solid 1px green;">
+			꺾은선 차트
+		</div>
+		<div class="" style="width: 50%; border: solid 1px green;">
+			파이 차트
+		</div>
+	</div>
+	<%-- 통계 본문 보여주기 끝 --%>
 	
 </div>

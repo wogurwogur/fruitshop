@@ -392,7 +392,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 	// 계정 복구 메소드
 	@Override
-	public int useridRecovery(String userid) throws SQLException {
+	public int useridRecovery(Map<String, String> paraMap) throws SQLException {
 		
 		int result = 0;
 		
@@ -403,9 +403,35 @@ public class MemberDAO_imple implements MemberDAO {
 					   + " where userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
+			pstmt.setString(1, paraMap.get("userid"));
 
 			result = pstmt.executeUpdate();
+			
+			if(result==1) {
+				
+				sql = " select user_no"
+					+ " from tbl_member"
+					+ " where userid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				
+				
+				sql = " insert into tbl_loginhistory(loghis_no, fk_user_no, CLIENTIP) "
+					+ " values(login_seq.nextval, ?, ?) ";
+
+					pstmt = conn.prepareStatement(sql);
+
+					pstmt.setInt(1, rs.getInt("user_no"));
+					pstmt.setString(2, paraMap.get("clientip"));
+
+					pstmt.executeUpdate();
+
+			}
 
 		} finally {
 			close();

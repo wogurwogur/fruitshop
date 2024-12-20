@@ -1,5 +1,6 @@
 package cart.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import cart.domain.CartVO;
 import common.controller.AbstractController;
@@ -23,6 +24,7 @@ public class CartList extends AbstractController {
     	HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
+    	String message = "";
     	
     	if(loginuser != null  ) {
     		
@@ -44,6 +46,49 @@ public class CartList extends AbstractController {
             super.setViewPage("/WEB-INF/cart/cartList.jsp");
     		
     	}
+    	
+    	else {
+    		//	로그인 상태가 아닌 경우
+			message = "로그인 후 볼수 있습니다!!";
+			String loc = request.getContextPath()+"/login/login.ddg";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/common/msg.jsp");
+		}
+    	
+    	//////////////////////////////////////////////////////////////////////////////////////////
+    	
+    	String cart_pno = request.getParameter("wish_no");
+
+        if (cart_pno != null) {
+        	
+            		// 관심상품 삭제(X버튼 누를때) 
+            try {
+            	
+                int cart_no = Integer.parseInt(cart_pno);
+                boolean isDeleted = cdao.deleteCartItem(cart_no);
+
+                if (isDeleted) {
+                    request.setAttribute("message", "장바구니 상품이 삭제되었습니다.");
+                } else {
+                    request.setAttribute("message", "장바구니 상품 삭제에 실패하였습니다.");
+                }
+
+       
+            } catch (SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("message", "삭제에 실패하였습니다.");
+            }
+
+            // 메시지를 보여주고 장바구니 리스트로 리다이렉트
+            request.setAttribute("redirectUrl", request.getContextPath() + "/cart/cartList.ddg");
+            super.setRedirect(false);
+            super.setViewPage("/WEB-INF/common/msg.jsp");
+            return;
+        }
     	
     }
 }
