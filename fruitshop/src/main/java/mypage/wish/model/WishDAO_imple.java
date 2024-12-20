@@ -90,69 +90,67 @@ public class WishDAO_imple implements WishDAO {
 		
 		return wishList;
 	}
-
-	/*
-	// 상품 특정 1개 행(데이터)만 읽어오기
+	
+	
+	// 관심상품 1행 삭제(X버튼 클릭시)
 	@Override
-	public WishVO selectOne(String wish_no) throws SQLException {
+	public boolean deleteWishItem(int wish_no) throws SQLException {
 		
-		WishVO wishvo = null;
+		boolean isDeleted = false;
+
+        try {
+            conn = ds.getConnection();
+            String sql = " delete from tbl_wish "
+            		   + " where wish_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, wish_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
 		
-		try {
-	        conn = ds.getConnection();
-
-	        String sql = " select wish_no, fk_user_no, fk_prod_no "
-		        	   + " from tbl_wish "
-		        	   + " where wish_no = ? ";
-
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, wish_no);
-	        
-	        rs = pstmt.executeQuery();
-	        
-	        if(rs.next()) {
-	            
-	        	wishvo = new WishVO();
-	        	wishvo.setWish_no(rs.getInt("wish_no"));
-	        	wishvo.setFk_user_no(rs.getInt("fk_user_no"));
-	        	wishvo.setFk_prod_no(rs.getInt("fk_prod_no"));
-	          
-	         }// end of if--------------------------------
-	      
-
-	    } finally {
-	        close();
-	    }
+	}
+	
+	
+	// 관심 상품 비우기 // 
+	@Override
+	public boolean WishDeleteAll(int user_no) throws SQLException {
 		
-		return wishvo;
-	}// end of public WishVO selectOne(String wish_no) throws SQLException {}--------------------
+		boolean isDeleted = false;
+
+        try {
+            conn = ds.getConnection();
+            String sql = " delete from tbl_wish "
+            		   + " where fk_user_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, user_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
+	}
+	
+	
+	
 
 	
-	// 상품 특정 1개 행 데이터 삭제(delete)
-	@Override
-	public int deletePerson(String wish_no) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-	         
-	         String sql = " delete from tbl_wish "
-	         			+ " where wish_no = ? ";
-	         
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, wish_no);
-	         
-	         result = pstmt.executeUpdate();
-	         
-	             
-	      } finally {
-	         close();
-	      }      
-		
-		
-		return result;
-	}// end of public int deletePerson(String wish_no) throws SQLException {}-------------------
-	
-	*/
 
 }

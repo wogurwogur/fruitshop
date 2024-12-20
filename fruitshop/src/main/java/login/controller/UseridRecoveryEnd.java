@@ -23,7 +23,14 @@ public class UseridRecoveryEnd extends AbstractController {
 	      
 	    if("POST".equalsIgnoreCase(method)) {
 	    	
-	    	int n = mdao.useridRecovery(userid);
+	    	String clientip = request.getRemoteAddr();
+	    	
+	    	Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("userid", userid);
+			paraMap.put("clientip", clientip);
+	    	
+	    	
+	    	int n = mdao.useridRecovery(paraMap);
 	    	
 	    	System.out.println("n : " + n);
 	    	

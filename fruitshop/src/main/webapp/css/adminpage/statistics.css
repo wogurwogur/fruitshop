@@ -8,20 +8,20 @@ div#container {
 
 
 /* 주문내역 메뉴바 시작 */
-div#order_filter {
+div#menu_filter {
 	border: solid 0px blue;
 	display: flex;
 	/*width: 70%;*/
 	/*margin: 0 auto;*/
 }
 
-div.order_title {
+div.menu_title {
 	width: 18%;
 }
 
 
 
-div#order_filter div {
+div#menu_filter div {
 	display: inline-block;
   	color: black;
   	text-align: center;
@@ -31,26 +31,26 @@ div#order_filter div {
   	font-family: 'Noto Sans KR', sans-serif;
 }
 
-div.order_title {
+div.menu_title {
 	border-top: solid 0.5px #c0c0c0;
 	
 }
-div.order_title:nth-child(1), div.order_title:nth-child(2), div.order_title:nth-child(3) {
+div.menu_title:nth-child(1), div.menu_title:nth-child(2), div.menu_title:nth-child(3) {
 	border-left: solid 0.5px #c0c0c0;
 }
 
-div#order_title_nbsp {
+div#menu_title_nbsp {
 	border: solid 0.5px #c0c0c0;
 	width: 46%;
 	background-color: #eee;
 }
 
 
-div#order_filter div.order_title:hover {
+div#menu_filter div.menu_title:hover {
   	cursor: pointer;
 }
 
-div#order_filter div.active {
+div#menu_filter div.active {
   	background-color: black;
   	color: white;
 	font-weight: bold;
