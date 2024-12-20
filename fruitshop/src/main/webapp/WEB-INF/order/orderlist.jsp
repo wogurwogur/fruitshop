@@ -12,13 +12,7 @@
 
 <script type="text/javascript">
 	$(document).ready(() => {
-		$("a.ordermenu").click(e => {
-			// alert("야야호"+ $(e.target).index());
-			$("a.ordermenu").removeClass("active");
-			$(e.target).addClass("active");
-		});
-		
-		
+
 		$("div.order_title").click(e => {
 			// alert("야야호"+ $(e.target).index());
 			$("div.order_title").removeClass("active");
@@ -60,13 +54,13 @@
 		</div>
 		
 		<div style="margin-top: 1%; padding: 1%;">
-			<%--<form name="dateFilter"> --%>
+			<form name="dateFilter">
 				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="fromDate" id="fromDate" maxlength="10" />
 				<label style="cursor:pointer" for="fromDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
 				&nbsp;~&nbsp;&nbsp;
 				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="toDate" id="toDate" maxlength="10" />
 				<label style="cursor:pointer" for="toDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
-			<%-- </form>--%>
+			</form>
 		</div>
 		
 		<div style="margin-top: 2%;">
