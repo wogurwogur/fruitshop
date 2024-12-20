@@ -11,12 +11,13 @@
 
 
 <div class="title">
-        <h2>My page</h2> 
+        <h2>Admin page</h2> 
     </div>
     
 
-    <div id="mypage" class="menu">
+    <div id="Adminpage" class="manu container">
    		<a href="<%=ctxPath%>/admin/adminManagement.ddg">회원관리</a>
+   		<a href="<%=ctxPath%>/product/registerProduct.ddg">상품관리</a>
         <a href="<%=ctxPath%>/admin/adminCommunity.ddg">게시판관리</a>
         <a href="<%=ctxPath%>/admin/adminStatistics.ddg">통계</a>
         <a href="<%=ctxPath%>/admin/adminDeliveryStatus.ddg">배송상태</a>

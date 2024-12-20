@@ -42,6 +42,8 @@ $(document).ready(function(){
 	const modalOpenButton = document.getElementById('couponModalOpen');
 	const modalCloseButton = document.getElementById('couponModalClose');
 	const modal = document.getElementById('modalContainer');
+	const couponModalSubmit = document.getElementById('getElementById');
+	
 
 	modalOpenButton.addEventListener('click', () => {
 	  modal.classList.remove('hidden');
@@ -50,7 +52,75 @@ $(document).ready(function(){
 	modalCloseButton.addEventListener('click', () => {
 	  modal.classList.add('hidden');
 	});
+	const coupon_discount = $("input[name='coupon_discount']");
+	
+	coupon_discount.bind("keyup",function(){
+		
+		alert("할인금액은 클릭으로 설정해주세요.");
+		coupon_discount.val("");
+		
+	});
+	
+	
+	
+	
+	$("button#couponModalSubmit").click(function(){
+		
+		
+		const coupon_name = $("input:text[name='coupon_name']").val();
+		const couponname_Reg = /^[가-힣]{2,8}$/;
+		const coupon_descript = $("textarea[name='coupon_descript']").val();
+		const coupondescript_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{4,40}$/;
+		const coupon_expire_str = $("input[name='coupon_expire']").val();
+		
+		const now = new Date();
+		const coupon_expire = new Date(coupon_expire_str);
+		
+		console.log(coupon_expire);
+		
+		const coupon_discount = $("input[name='coupon_discount']").val();
+		
+		if(coupon_name == ""){
+			alert("쿠폰명을 입력해주세요.");
+			return;
+		}
+		if(!couponname_Reg.test(coupon_name)){
+			alert("쿠폰명은 한글로 2글자 이상 8 글자 이하로 입력해주세요.");
+			return;
+		}
+		
+		if(coupon_descript == ""){
+			alert("쿠폰설명을 입력해주세요.");
+			return;
+		}
+		if(!coupondescript_Reg.test(coupon_descript)){
+			alert("쿠폰설명은 한글로 4글자 이상 40 글자 이하로 입력해주세요.");
+			return;
+		}
+		
+		if(now > coupon_expire){
+			alert("현재 날짜 이후로 설정해주세요.");
+			return;
+		}
+		
+		if(coupon_discount == ""){
+			alert("할인금액을 입력해주세요.");
+			return;
+		}
+
+		const frm = document.roleAddRemove;
+		
+		frm.action = "<%=ctxPath%>/coupon/receiptCoupon.ddg";
+		frm.method = "post";
+		frm.userid.value = "";
+		
+		frm.submit();
+		
+	});
+	
 });
+
+
 
 </script>
 
@@ -98,6 +168,9 @@ $(document).ready(function(){
 
 #modalContainer.hidden {
   display: none;
+}
+input[type="number"]{
+	width: 3em;
 }
 
 </style>
@@ -180,7 +253,8 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>보유 쿠폰개수</td>
-				<td>${requestScope.memberCoupon}</td>
+				<c:if test="${!empty requestScope.memberCoupon}"><td>${requestScope.memberCoupon}</td></c:if>
+				<c:if test="${empty requestScope.memberCoupon}"><td>0</td></c:if>
 			</tr>
 		</tbody>
 	
@@ -218,20 +292,24 @@ $(document).ready(function(){
 	    			</tr>
 	    			<tr>
 	    				<td>쿠폰설명</td>
-	    				<td><input type="text" name="coupon_descript" size="8"></td>
+	    				<td><textarea name="coupon_descript"></textarea></td>
 	    			</tr>
 	    			<tr>
 	    				<td>쿠폰유효기간</td>
-	    				<td><input type="text" name="coupon_expire" size="8"></td>
+	    				<td><input type="date" name="coupon_expire" size="8"></td>
 	    			</tr>
 	    			<tr>
 	    				<td>할인금액</td>
-	    				<td><input type="text" name="coupon_discount" size="8"></td>
+	    				<td><input type="number" name="coupon_discount" size="2" min="1">,000</td>
+	    			</tr>
+	    			<tr>
+	    				<td><button class="btn btn-outline-success" type="button" id="couponModalSubmit">쿠폰수령하기</button></td>
+	    				<td><button class="btn btn-outline-secondary" type="button" id="couponModalClose">나가기</button></td>
 	    			</tr>
 	    		</tbody>
 	    	</table>
-	    	<button type="button" id="couponModalClose">나가기</button>
-		    <input type="text" style="display:none;"/>
+	    	
+		    <input type="text" name="userid" style="display:none;"/>
 	    </div>
 	  </div>
 	</div>

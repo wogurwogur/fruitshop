@@ -9,6 +9,8 @@ public class AdminStatisticsController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		
+		
 		request.setAttribute("adminpage_val", "admin_statistics");
 		
 		super.setRedirect(false);

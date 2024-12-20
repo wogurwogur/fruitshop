@@ -133,7 +133,7 @@ form.example button {
 
 <%-- div top nav end --%>
 
-<div class="container-fluid ">
+<div class="container">
 	
 	<c:if test="${!empty requestScope.member_allList}">
 		<table class="table">
