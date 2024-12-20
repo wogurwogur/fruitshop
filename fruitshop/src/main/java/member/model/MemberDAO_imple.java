@@ -90,6 +90,7 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(10, member.getGender());
 			pstmt.setString(11, member.getBirthday());
 
+			
 			result= pstmt.executeUpdate();
 			
 		} catch (NoSuchAlgorithmException e) {

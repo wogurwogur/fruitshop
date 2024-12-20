@@ -15,6 +15,8 @@ public class ReviewListVO {
 	private String	review_regidate;
 	private String 	userid;
 	private String 	prod_name;
+	private int 	prod_price;
+	private String  prod_thumnail;
 	private int 	comment_count;
 	
 	
@@ -41,10 +43,24 @@ public class ReviewListVO {
 	public void setComment_count(int comment_count) {
 		this.comment_count = comment_count;
 	}
-
+	public int getProd_price() {
+		return prod_price;
+	}
+	public void setProd_price(int prod_price) {
+		this.prod_price = prod_price;
+	}
+	public String getProd_thumnail() {
+		return prod_thumnail;
+	}
+	public void setProd_thumnail(String prod_thumnail) {
+		this.prod_thumnail = prod_thumnail;
+	}
+	
 /////////////////////////////////////////////////
 	
 
+	
+	
 	public int getReview_no() {
 		return review_no;
 	}
