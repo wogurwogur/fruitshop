@@ -121,6 +121,34 @@ public class WishDAO_imple implements WishDAO {
 	}
 	
 	
+	// 관심 상품 비우기 // 
+	@Override
+	public boolean WishDeleteAll(int user_no) throws SQLException {
+		
+		boolean isDeleted = false;
+
+        try {
+            conn = ds.getConnection();
+            String sql = " delete from tbl_wish "
+            		   + " where fk_user_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, user_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
+	}
+	
+	
 	
 
 	
