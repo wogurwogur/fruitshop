@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+
+div#container {
+	width: 80%;
+	margin: 0 auto;
+}
+
+
+/* 주문내역 메뉴바 시작 */
+div#menu_filter {
+	border: solid 0px blue;
+	display: flex;
+	/*width: 70%;*/
+	/*margin: 0 auto;*/
+}
+
+div.menu_title {
+	width: 18%;
+}
+
+
+
+div#menu_filter div {
+	display: inline-block;
+  	color: black;
+  	text-align: center;
+  	padding: 15px;
+  	text-decoration: none;
+  	font-size: 12pt;
+  	font-family: 'Noto Sans KR', sans-serif;
+}
+
+div.menu_title {
+	border-top: solid 0.5px #c0c0c0;
+	
+}
+div.menu_title:nth-child(1), div.menu_title:nth-child(2), div.menu_title:nth-child(3) {
+	border-left: solid 0.5px #c0c0c0;
+}
+
+div#menu_title_nbsp {
+	border: solid 0.5px #c0c0c0;
+	width: 46%;
+	background-color: #eee;
+}
+
+
+div#menu_filter div.menu_title:hover {
+  	cursor: pointer;
+}
+
+div#menu_filter div.active {
+  	background-color: black;
+  	color: white;
+	font-weight: bold;
+}
+/* 주문내역 메뉴바 끝 */
+
+
+
+/* 기간설정구역 시작 */
+div#order_time {
+	border: solid 1px black;
+	/*width: 70%;*/
+	/*margin: 0 auto;*/
+	display: flex;
+}
+
+div#filter_desc {
+	margin-top: 1%;
+}
+
+div#filter_desc > ul {
+	padding: 0 0 0 1%;
+	border: solid 0px red;
+}
+
+div#filter_desc li {
+	padding: 0;
+	color: #999999;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+}
+::marker {
+	font-size: 5px;
+}
+/* 기간설정구역 끝 */
+
+
+
+/* 페이징 숫자 처리 */
+
+div.pagination {
+	border:solid 0px red;
+	display: inline-block;
+	margin: 0 auto;
+}
+
+div.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border-radius: 5px;
+}
+
+div.pagination a.active {
+  /*background-color: #4CAF50;*/
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+div.pagination a:hover:not(.active) {background-color: #ddd;}

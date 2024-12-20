@@ -12,6 +12,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import member.domain.MemberVO;
 import review.domain.ReviewListVO;
 
 public class ReviewListDAO_imple implements ReviewListDAO {
@@ -145,13 +147,13 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 						+ " ON A.review_no = B.fk_review_no "
 						+ " where review_viewcount = (select max(review_viewcount) "
 						+ "                            from tbl_reviews "
-						+ "                            where substr(sysdate, 1, 7) = substr(review_regidate, 1, 7) ) ";
+						+ "                            where substr(sysdate, 1, 5) = substr(review_regidate, 1, 5) ) ";
 			
 				pstmt = conn.prepareStatement(sql);
 				
 				rs = pstmt.executeQuery();
 				
-				while(rs.next()) {
+				rs.next();
 					
 					ReviewListVO brevvo = new ReviewListVO();
 					brevvo.setReview_no(rs.getInt("review_no"));
@@ -165,8 +167,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 					
 					brevList.add(brevvo);
 									
-					System.out.println(brevList);
-				} // end of while ----------------
+					// System.out.println(brevList);
+				// end of while ----------------
 			
 		} finally {
 			close();
@@ -185,54 +187,106 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
-					+ " FROM "
-					+ " ( "
-					+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
-					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
-					+ " from tbl_reviews r INNER JOIN tbl_member m "
-					+ " on r.fk_user_no = m.user_no "
-					+ " INNER JOIN tbl_products p "
-					+ " on r.fk_prod_no = p.prod_no "
-					+ " order by review_no desc "
-					+ " ) A "
-					+ " LEFT OUTER JOIN "
-					+ " ( "
-					+ " select count(comment_no) as com_count, fk_review_no "
-					+ " from tbl_comments "
-					+ " group by fk_review_no "
-					+ " ) B "
-					+ " ON A.review_no = B.fk_review_no "
-					+ " where substr(sysdate, 1, 7) = substr(A.review_regidate, 1, 7) "
-					+ " order by comment_count desc ";
+						+ " FROM "
+						+ " ( "
+						+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
+						+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
+						+ " from tbl_reviews r INNER JOIN tbl_member m "
+						+ " on r.fk_user_no = m.user_no "
+						+ " INNER JOIN tbl_products p "
+						+ " on r.fk_prod_no = p.prod_no "
+						+ " order by review_no desc "
+						+ " ) A "
+						+ " LEFT OUTER JOIN "
+						+ " ( "
+						+ " select count(comment_no) as com_count, fk_review_no "
+						+ " from tbl_comments "
+						+ " group by fk_review_no "
+						+ " ) B "
+						+ " ON A.review_no = B.fk_review_no "
+						+ " where substr(sysdate, 1, 5) = substr(A.review_regidate, 1, 5) "
+						+ " order by comment_count desc ";
+				
 			
-		
-				pstmt = conn.prepareStatement(sql);
-		
-				rs = pstmt.executeQuery();
-				
-				rs.next();
-				
-				ReviewListVO crevvo = new ReviewListVO();
-				
-				crevvo.setReview_no(rs.getInt("review_no"));
-				crevvo.setReview_title(rs.getString("review_title"));
-				crevvo.setReview_viewcount(rs.getString("review_viewcount"));
-				crevvo.setReview_regidate(rs.getString("review_regidate"));
-				crevvo.setFk_user_no(rs.getInt("user_no"));
-				crevvo.setUserid(rs.getString("userid"));
-				crevvo.setProd_name(rs.getString("prod_name"));
-				crevvo.setComment_count(rs.getInt("comment_count"));
-				
-				crevList.add(crevvo);
-				
-		
+					pstmt = conn.prepareStatement(sql);
+			
+					rs = pstmt.executeQuery();
+					
+					rs.next();
+					
+						ReviewListVO crevvo = new ReviewListVO();
+						
+						crevvo.setReview_no(rs.getInt("review_no"));
+						crevvo.setReview_title(rs.getString("review_title"));
+						crevvo.setReview_viewcount(rs.getString("review_viewcount"));
+						crevvo.setReview_regidate(rs.getString("review_regidate"));
+						crevvo.setFk_user_no(rs.getInt("user_no"));
+						crevvo.setUserid(rs.getString("userid"));
+						crevvo.setProd_name(rs.getString("prod_name"));
+						crevvo.setComment_count(rs.getInt("comment_count"));
+						
+						crevList.add(crevvo);
+					
+					
+			
 		} finally {
 			close();
 		}
-		
+			
 		return crevList;
-				
+					
 	}
+
+	
+	
+	// 구매후기 글 클릭시 글 내용 보여주는 메소드
+	@Override
+	public ReviewListVO reviewReadall(String review_no) throws SQLException {
+		
+		
+		ReviewListVO reviewRead1 = null;	
+		
+		try {
+			conn=ds.getConnection();
+		
+		
+		String sql = " select r.review_no, r.review_title, r.fk_user_no, r.review_contents, "
+				+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name, p.prod_price, p.prod_thumnail "
+				+ " from tbl_reviews r INNER JOIN tbl_member m "
+				+ " on r.fk_user_no = m.user_no "
+				+ " INNER JOIN tbl_products p "
+				+ " on r.fk_prod_no = p.prod_no "
+				+ " where r.review_no = ? ";
+		
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, review_no);
+			
+			rs = pstmt.executeQuery();
+		
+			
+			if (rs.next() ) {
+				// 번호 제목 글쓴이 내용 상품썸넬 상품이름 상품 가격
+				reviewRead1 = new ReviewListVO();
+				
+				reviewRead1.setReview_no(rs.getInt("review_no"));
+				reviewRead1.setReview_title(rs.getString("review_title"));
+				reviewRead1.setReview_contents(rs.getString("review_contents"));
+				reviewRead1.setUserid(rs.getString("userid"));
+				reviewRead1.setProd_thumnail(rs.getString("prod_thumnail"));
+				reviewRead1.setProd_name(rs.getString("prod_name"));
+				reviewRead1.setProd_price(rs.getInt("prod_price"));
+				
+				
+			}
+			
+		} finally{
+			close();
+		}
+		
+		return reviewRead1;
+	}
+
 	
 	
 

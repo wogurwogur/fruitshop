@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+div.container > div.titleArea{
+	text-align: center;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 18pt;
+	margin: 5%;
+}
+
+div.container > div.titleArea > h3{
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 3%;
+    font-family: 'Noto Sans KR', sans-serif;
+	font-size: 16pt;
+	/* font-style: regular; */
+	font-weight: 500;
+}
+
+
+
+
+div.container > div.jumbotron{
+	font-family: 'Noto Sans KR', sans-serif;
+	width: 75%;
+	height: 30%;
+}
+
+
+
+div.container > div.ec-base-button.gColumn{
+	font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    width: 100%;
+    padding: calc(var(--wt-re-size)*1.5) 0;
+    text-align: center;
+    font-size: var(--wt-re-size);
+    box-sizing: border-box;
+    margin: 5% auto;
+    display: flex;
+    justify-content: center;
+    
+}
+
+div.container > div.ec-base-button.gColumn > a.btnpick{
+	color: #fff;
+    background-color: black;
+    padding: 0.8em 0;
+    margin: 0 3%;
+    padding-left: 8px;
+    padding-right: 8px;
+    word-break: keep-all;
+    word-wrap: break-word;
+    white-space: normal;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    width: 80%;
+}
+
+
+div.container > div.ec-base-button.gColumn > a.btnremove{
+	border: 1px solid #000;
+    color: #555;
+    background-color: #fff;
+    padding: 0.8em 0;
+    margin: 0 3%;
+    padding-left: 8px;
+    padding-right: 8px;
+    word-break: keep-all;
+    word-wrap: break-word;
+    white-space: normal;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    width: 80%;
+}
+
+
+
+
+div.container > div.ec-base-button.gColumn > a.btnpick:hover,
+div.container > div.ec-base-button.gColumn > a.btnremove:hover{
+	text-decoration: none;
+}
+
+
+
+
+div.xans-element-.xans-myshop.xans-myshop-wishlistpaging.ec-base-paginate{
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--wt-font-color-sub);
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: var(--wt-margin) 0;
+    font-size: calc(var(--wt-re-size)*1.2);
+    text-align: center;
+    background: var(--wt-main-color);
+	list-style: none;
+}
+
+
+div:nth-child(6) > div.info > a{
+	font-size: 12pt;
+	font-family: 'Noto Sans KR', sans-serif;
+	margin: 2% 6%;
+	font-weight: bold;
+}
+
+div:nth-child(6) > div.info > a:nth-child(3){
+	margin-left: 30%;
+}
+
+
+div:nth-child(6) > div.info > a:nth-child(4){
+	margin-left: 16%;	
+}	
+
+

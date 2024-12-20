@@ -90,6 +90,7 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(10, member.getGender());
 			pstmt.setString(11, member.getBirthday());
 
+			
 			result= pstmt.executeUpdate();
 			
 		} catch (NoSuchAlgorithmException e) {
@@ -188,12 +189,12 @@ public class MemberDAO_imple implements MemberDAO {
 					
 					sql = " SELECT userid, name, point, pwdchangegap, "
 						+ "		NVL( lastlogingap, TRUNC( months_between(sysdate, registerday)) ) AS lastlogingap, "
-						+ "		idle, email, tel, postcode, address, detailaddress, extraaddress, role "
+						+ "		idle, email, tel, postcode, address, detailaddress, extraaddress, role, gender "
 						+ "	FROM "
 						+ "	( "
 						+ "	SELECT userid, name, point, "
 						+ "		trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
-						+ "		registerday, idle, email, tel, postcode, address, detailaddress, extraaddress, role "
+						+ "		registerday, idle, email, tel, postcode, address, detailaddress, extraaddress, role, gender "
 						+ "	FROM tbl_member "
 						+ "	WHERE status = 1 AND user_no = ? "
 						+ "	) M "
@@ -226,6 +227,7 @@ public class MemberDAO_imple implements MemberDAO {
 						member.setDetailaddress(rs.getString("detailaddress"));
 						member.setExtraaddress(rs.getString("extraaddress"));
 						member.setRole(rs.getInt("role"));
+						member.setGender(rs.getString("gender"));
 
 						if (rs.getInt("lastlogingap") >= 12) {
 

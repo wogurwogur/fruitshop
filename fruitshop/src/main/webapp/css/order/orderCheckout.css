@@ -1,45 +1,86 @@
 @charset "UTF-8";
 
+div#container {
+	border: solid 0.5px #c0c0c0;
+	width: 50%;
+	margin: 0 auto;
+}
+
+
+/* 주문/결제 타이틀 시작 */
 span#order_title {
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 24px;
 	font-weight: 500;
 }
+/* 주문/결제 타이틀 끝 */
 
-
-.accordion {
-	background-color: white;
-	color: black;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.8s;
+span#input_guide {
+	display: inline-block;
+	margin-left: 2%;
+	color: #999999;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12px;
 }
 
-
-.panel {
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow: hidden;
-}
-
-div#selectInputBox {
+/* 배송지 선택 - 직접입력 메뉴바 시작 */
+div#shipInput_selector {
+	border: solid 0px blue;
 	display: flex;
-	/*padding-top: 2%;*/
-	height: 50px;
-	margin-bottom: 3%;
-	/*border-top: solid 1px #c0c0c0;*/
+	margin-top: 2%;
+	/*width: 70%;*/
+	/*margin: 0 auto;*/
 }
 
-div.selectInput {
-	cursor: pointer;
-	width: 50%;
-	padding: 1%;
-	margin: 0 auto;
-	border: solid 1px #c0c0c0;
+div#shipInput_selector div {
+	display: inline-block;
+  	color: #555555;
+  	text-align: center;
+  	padding: 15px;
+  	text-decoration: none;
+  	font-size: 12pt;
+  	font-family: 'Noto Sans KR', sans-serif;
 }
+
+div.shipInput_title {
+	width: 50%;
+	border-top: solid 0.5px #c0c0c0;
+	border-bottom: solid 0.5px #c0c0c0;
+	background-color: #0000001A;
+	
+}
+
+div.shipInput_title:nth-child(2) {
+	border-right: solid 0.5px #c0c0c0;
+	border-left: solid 0.5px #c0c0c0;
+}
+
+
+div#shipInput_selector div.shipInput_title:hover {
+  	cursor: pointer;
+}
+
+div#shipInput_selector div.active {
+  	background-color: white;
+  	color: black;
+	font-weight: bold;
+}
+/* 배송지 선택 - 직접입력 메뉴바 끝 */
+
+
+/* 배송지 정보란 시작 */
+div#shipInfo_place {
+	border: solid 0px green;
+	margin-top: 1%;
+}
+
+div#shipInfo_place > form label {
+	display: inline-block;
+	width: 10%;
+}
+
+span.error {
+	color: red;
+}
+
+/* 배송지 정보란 시작 */

@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+
+/* 상단 메뉴 슬라이드바 시작 */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: whitesmoke;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #ccc;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  
+  
+  /* 상단 메뉴 슬라이드바 끝  */
+
+/* 푸터 시작 */
+div#footer {
+	background-color: black;
+	color: white;
+
+}
+
+div#company_info {
+	display: flex;
+}
+
+div#company_info > div {
+	margin: 0 auto;
+}
+
+div#company_info > div:last-child {
+	text-align: right;
+}
+
+
+div#company_info > div > p {
+	font-family: Arial;
+	/* font-weight: bold; */
+}
+
+div#company_info > div:last-child > p {
+	font-weight: bold;
+}
+
+
+
+body > div {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 14pt;
+	/* font-style: regular; */
+	font-weight: 400
+	
+}
+
+
+/* 비밀번호 인풋태그 화살표 제거*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

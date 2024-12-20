@@ -72,6 +72,13 @@ div#company_info > div:last-child > p {
 }
 
 
+tr.reviewRead:hover {
+	
+    cursor: pointer;
+}
+
+
+
 body > div {
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 14pt;

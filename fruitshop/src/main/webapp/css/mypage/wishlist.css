@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 div.container > div.titleArea{
-	text-align: left;
+	text-align: center;
 	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 20pt;
-	margin-top: 2%;
+	font-size: 18pt;
+	margin: 4%;
 }
 
 div.container > div.titleArea > h3{
@@ -13,10 +13,11 @@ div.container > div.titleArea > h3{
     font-weight: bold;
     margin-top: 3%;
     font-family: 'Noto Sans KR', sans-serif;
-	font-size: 20pt;
+	font-size: 16pt;
 	/* font-style: regular; */
 	font-weight: 500;
 }
+
 
 
 
@@ -104,6 +105,24 @@ div.xans-element-.xans-myshop.xans-myshop-wishlistpaging.ec-base-paginate{
 	list-style: none;
 }
 
+div:nth-child(6) > div.info > a{
+	font-size: 12pt;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: bold;
+	margin-left: 14%;
+}
 
 
 
+
+div:nth-child(6) > div.info > a:nth-child(2){
+	margin-left: 11%;	
+}	
+
+div:nth-child(6) > div.info > a:nth-child(3){
+	margin-left: 34%;	
+}
+
+div:nth-child(6) > div.info > a:nth-child(4){
+	margin-left: 18%;	
+}

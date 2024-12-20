@@ -11,13 +11,11 @@
 
 <script type="text/javascript">
 	$(()=>{
-		if( ${!empty sessionScope.loginuser} ) { 	
-			location.href="<%=request.getContextPath()%>/index.ddg";
-		}
+
 	});
 </script>
 
-<div class="container">
+<div class="container" style="margin-bottom: 100px;">
 
 	<form name="registerFrm">
 
@@ -42,7 +40,7 @@
 							<td style="height: 80px; vertical-align:top;">
 								<input type="text" name="userid" id="userid" maxlength="40" class="requiredInfo info" placeholder="아이디" /><br>
 								<span id="idcheckResult"></span>
-								<span id="useridError" class="error"></span>&nbsp;<span class="rule">(영문소문자/숫자, 5~16자)</span>
+								<span id="useridError" class="error"></span><span class="rule">(영문소문자/숫자, 5~16자)</span>
 							</td>
 						</tr>
 
@@ -61,7 +59,7 @@
 							</td>
 							<td style="height: 80px; vertical-align:top;">
 								<input type="password" id="passwdcheck" maxlength="20" class="requiredInfo info" placeholder="비밀번호 확인" /><br>
-								<span id="pwdError" class="error"></span>&nbsp;<span class="rule">(영문 대소문자/숫자/특수문자 조합, 8자~20자)</span>
+								<span id="pwdError" class="error"></span><span class="rule">(영문 대소문자/숫자/특수문자 조합, 8자~20자)</span>
 							</td>
 						</tr>
 
@@ -177,9 +175,9 @@
 							<td>
 								<span class="star text-danger"></span>
 							</td>
-							<td class="text-center">
+							<td class="text-center" style="height: 100px;">
 								<input type="button" class="btn btn-success btn-lg mr-5" value="가입하기" onclick="goRegister()" />
-								<input type="reset" class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
+								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
 							</td>
 						</tr> 
 

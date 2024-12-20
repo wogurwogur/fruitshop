@@ -8,12 +8,13 @@ import product.domain.ProductVO;
 
 public interface ProductDAO {
 	
-	// 상품페이지 출력을 위해 상품 정보를 등록일순으로 모두 조회(select)하는 메소드
-	List<ProductVO> productListSelectAll() throws SQLException;
 	
+	// 페이징 처리를 위해 검색이 있는 경우, 검색이 없는 경우, 계절을 클릭 한 경우에 대한 총페이지수 알아오기
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
 	
-	// 상품페이지 카테고리(계절)에 따라 조회(select) 하는 메소드
-	List<ProductVO> seasonProduct(String seasonNo) throws SQLException;
+	// 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 //
+	List<ProductVO> prdListPaging(Map<String, String> paraMap) throws SQLException;
 	
 
 }
