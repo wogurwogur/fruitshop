@@ -8,7 +8,7 @@ div#title {
 	margin-bottom: 2%;
 }
 
-/* 상품 이미지 전체 틀 */
+/* 상품페이지 전체 틀 */
 div#container {
 	width: 80%;
 	margin: 0 auto;
@@ -16,11 +16,22 @@ div#container {
 }
 
 
-/* 상품 정렬 */
+/* 상품 카테고리 메뉴(+검색창) 전체 틀 */
+div#seasonList {
+/* 	border: solid 2px blue; */
+}
+
+
+/* 상품 각각 카테고리 */
 div#seasonList div {
 	margin: 0% 2%;
 }
 
+
+/* 상품 검색창 */
+div#fruitSearch {
+/* 	border: solid 2px red; */
+}
 
 
 /* 그리드 전체 */
@@ -30,12 +41,13 @@ div.product-list {
 /*     border: solid 2px blue; */
 }
 
+
+
 /* 각 그리드 */
 div.product-item { 
 	margin: 0 auto;
 /* 	border:solid 1px red;  */
 }
-
 
 
 /* 상품페이지 제목명 */
@@ -72,10 +84,6 @@ span.price {
 }
 
 
-
-
-
-
 /* 상품페이지 a태그 */
 a.product, .season {
   color: black;
@@ -84,5 +92,39 @@ a.product:hover, .season:hover {
   color: black;
   text-decoration-line: none;
 }
+
+
+/* 하트 이미지 */
+i.heart:hover {
+	cursor: pointer;
+}
+
+
+
+/* 검색 돋보기 아이콘 */
+i.searchIcon {
+	cursor: pointer;
+}
+
+
+
+/* 검색 결과 없을 때 div */
+div#nodata {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+
+/* 검색 결과 없을 때 text  */
+span.nodata {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 20pt;
+}
+
+
+
+
+
+
 
 

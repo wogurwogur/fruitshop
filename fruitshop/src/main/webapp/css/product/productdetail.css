@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+
+/* 상품상세페이지 전체 틀 */
+div#container {
+	width: 80%;
+	margin: 0 auto;
+	border: solid 1px red;
+}
+
+
+
+div#detailWrap {
+	border: solid 2px blue;
+}
+
+div#prod_thumnail {
+	border: solid 2px green;
+}
+
+div#prod_info {
+	border: solid 2px red;
+}

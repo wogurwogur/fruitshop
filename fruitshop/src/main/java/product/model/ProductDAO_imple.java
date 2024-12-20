@@ -1,11 +1,13 @@
 package product.model;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -46,77 +48,138 @@ public class ProductDAO_imple implements ProductDAO {
 	// == custom method start == //
 	
 	
-	// 상품페이지 출력을 위해 상품 정보를 등록일순으로 모두 조회(select)하는 메소드
+	// 페이징 처리를 위해 검색이 있는 경우, 검색이 없는 경우, 계절을 클릭 한 경우에 대한 총페이지수 알아오기
 	@Override
-	public List<ProductVO> productListSelectAll() throws SQLException {
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		
-		List<ProductVO> prdList = new ArrayList<>();
-		
+		int totalPage = 0;
+
 		try {
 			conn = ds.getConnection();
 			
-			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
-						+ " FROM tbl_products " 			
-						+ " ORDER BY prod_regidate DESC ";
+			String sql = " select ceil(count(*)/16) "
+					   + " from tbl_products ";
+			
+			String searchFruit = paraMap.get("searchFruit");
+			String seasonNo = paraMap.get("seasonNo");
+			
+			if(!searchFruit.isBlank()) {
+				// 검색이 있는 경우
+				sql += " where prod_name like '%'|| ? ||'%' ";
+				
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
+			}
+			
+			// 계절 카테고리를 클력한 경우
+			if (!seasonNo.isBlank()) {
+				sql += " where fk_season_no = ? ";
+			}
+			
+			
+			sql += "ORDER BY prod_regidate desc ";
 			
 			pstmt = conn.prepareStatement(sql);
+
+			if(!searchFruit.isBlank()) {
+				pstmt.setString(1, searchFruit);	
+				
+			}
+			
+			if(!seasonNo.isBlank()) {
+				pstmt.setString(1, seasonNo);	
+				
+			}
 			
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				
-				ProductVO prdvo = new ProductVO();
-				
-				prdvo.setProd_no(rs.getInt("prod_no"));
-				prdvo.setProd_name(rs.getString("prod_name"));
-				prdvo.setProd_cost(rs.getInt("prod_cost"));
-				prdvo.setProd_price(rs.getInt("prod_price"));
-				prdvo.setProd_thumnail(rs.getString("prod_thumnail"));
-				prdvo.setProd_descript(rs.getString("prod_descript"));
-				prdvo.setProd_inventory(rs.getInt("prod_inventory"));
-				prdvo.setFk_season_no(rs.getInt("fk_season_no"));
-				prdvo.setProd_regidate(rs.getString("prod_regidate"));
-				
-				prdList.add(prdvo);
-			}
 					
+			rs.next();
+			
+			totalPage = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
+			
 		} finally {
 			close();
-		}	
+		}
 		
-		return prdList;
-	} // end of public List<ProductVO> productListSelectAll()
+		return totalPage;
+	} // end of public int getTotalPage(Map<String, String> paraMap)
 	
 	
 	
-	// 상품페이지 카테고리(계절)별로 조회(select) 하는 메소드
+	// 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 //
 	@Override
-	public List<ProductVO> seasonProduct(String seasonNo) throws SQLException {
+	public List<ProductVO> prdListPaging(Map<String, String> paraMap) throws SQLException {
+		
 		
 		List<ProductVO> prdList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
-						+ " FROM tbl_products "; 			
+			String sql = " SELECT RNO, prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + " FROM "
+					   + " ( "
+					   + "    SELECT rownum AS RNO, prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + "    FROM "
+					   + "    ( "
+					   + "        select prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + "        from tbl_products ";
+	
+			String searchFruit = paraMap.get("searchFruit");
+			String seasonNo = paraMap.get("seasonNo");
 			
 			
-			
-			if(!seasonNo.isBlank()) {
-				sql += 	" WHERE fk_season_no = ? ";
+			// 검색 값이 이는 경우
+			if (!searchFruit.isBlank()) { 
+				sql += " where prod_name like '%'|| ? ||'%' ";  
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
 			}
 			
-			sql += " ORDER BY prod_regidate DESC ";
+			
+			// 계절 카테고리를 클력한 경우
+			if (!seasonNo.isBlank()) {
+				sql += " where fk_season_no = ? ";
+			}
 			
 			
-			pstmt = conn.prepareStatement(sql);
+			sql += " order by prod_regidate desc "
+				+  "  ) V "
+				+  " ) T "
+				+  " WHERE T.RNO BETWEEN ? AND ? ";
+			
+			/*
+				=== 페이징처리의 공식 ===
+				where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+			*/
 			
 			
-			if(!seasonNo.isBlank()) {
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = 16;
+			
+			pstmt = conn.prepareCall(sql);
+			
+			
+			if(!searchFruit.isBlank()) {
+				// 검색이 있는 경우
+				pstmt.setString(1, searchFruit);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage) );
+			}
+			else if (!seasonNo.isBlank()) {
+				// 계절 카테고리를 클릭한 경우
 				pstmt.setString(1, seasonNo);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage) );
 			}
-			
+			else {
+				// 검색 또는 계절 번호를 선택하지 않은 경우 경우 
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) );
+			}
+				
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -134,16 +197,15 @@ public class ProductDAO_imple implements ProductDAO {
 				prdvo.setProd_regidate(rs.getString("prod_regidate"));
 				
 				prdList.add(prdvo);
-			}
-					
+				
+			} // end of while 
+			
 		} finally {
 			close();
-		}	
+		}
 		
 		return prdList;
+	} // end of public List<ProductVO> prdListPaging(Map<String, String> paraMap)
+	
 		
-	} // end of public List<ProductVO> seasonProduct(String seasonNo)
-	
-	
-	
 }

@@ -3,27 +3,51 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
+<jsp:include page="mypage_list.jsp"></jsp:include>
+
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/member/memberRegister.css" />
 
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/member/memberRegister.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/mypage/updateInfo.js"></script>
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<style type="text/css">
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+</style>
+
 <script type="text/javascript">
 	$(()=>{
-
+		
+		
+		$("input#userid").val("${sessionScope.loginuser.userid}");
+		$("input#name").val("${sessionScope.loginuser.name}");
+		$("input#email").val("${sessionScope.loginuser.email}");
+		$("input#tel1").val("${sessionScope.loginuser.tel}".substring(0,3));
+		$("input#tel2").val("${sessionScope.loginuser.tel}".substring(3,7));
+		$("input#tel3").val("${sessionScope.loginuser.tel}".substring(7,11));
+		$("input#postcode").val("${sessionScope.loginuser.postcode}");
+		$("input#address").val("${sessionScope.loginuser.address}");
+		$("input#extraAddress").val("${sessionScope.loginuser.extraaddress}");
+		$("input#detailAddress").val("${sessionScope.loginuser.detailaddress}");
+		
+		$("input#userid").attr("readonly", true);
 	});
 </script>
 
 <div class="container" style="margin-bottom: 100px;">
 
-	<form name="registerFrm">
+	<form name="updateInfoFrm">
 
 		<div style="width: 450px; margin: 10px auto;">
 
 			<div class="text-center"
 				style="margin-top: 50px; margin-bottom: 50px;">
-				<h2 style="font-weight: bold;">회원가입</h2>
+				<h2 style="font-weight: bold;">회원정보 수정</h2>
 				(<span class="star text-danger">*</span>표시는 필수입력사항)
 			</div>
 
@@ -35,12 +59,10 @@
 					<tbody>
 						<tr>
 							<td>
-								<span class="star text-danger">*</span>
+								<span class="star text-danger"> </span>
 							</td>
-							<td style="height: 80px; vertical-align:top;">
+							<td style="height: 50px; vertical-align:top;">
 								<input type="text" name="userid" id="userid" maxlength="40" class="requiredInfo info" placeholder="아이디" /><br>
-								<span id="idcheckResult"></span>
-								<span id="useridError" class="error"></span><span class="rule">(영문소문자/숫자, 5~16자)</span>
 							</td>
 						</tr>
 
@@ -126,58 +148,15 @@
 							</td>
 						</tr>
 
-						<tr>
-							<td>
-								<span class="star text-danger">*</span>
-							</td>
-							<td style="height: 60px; vertical-align:top;">
-								<label for="male" style="margin-right: 10px; margin-left: 10px; font-size: 20px;">남자</label>
-								<input type="radio" name="gender" value="남" id="male" />
-								<label for="female" style="margin-right: 10px; margin-left: 40px; font-size: 20px;">여자</label>
-								<input type="radio" name="gender" value="여" id="female" /><br>
-								<span class="error"></span>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<span class="star text-danger">*</span>
-							</td>
-							<td style="height: 80px; vertical-align:top;">
-								<label for="datepicker" style="font-size: 20px; margin-left: 10px; margin-right: 20px;" >생년월일</label>
-								<input type="text" name="birthday" id="datepicker" maxlength="10" style="width:150px; display:inline-block"/>
-								<span class="rule">(클릭하면 달력이 나옵니다.)</span><br>
-								<span class="error"></span>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<span class="star text-danger">*</span>
-							</td>
-							<td>
-								<label for="agree">이용약관에 동의합니다</label>&nbsp;&nbsp;
-								<input type="checkbox" id="agree" /><br>
-								<span id="agreecheck" class="error"></span>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<span class="star text-danger"></span>
-							</td>
-							<td style="height: 200px; vertical-align:top;">
-								<iframe src="<%= request.getContextPath() %>/iframe_agree/agree.html" width="100%" height="150px" style="border: solid 1px navy;"></iframe>
-							</td>
-						</tr>
+			
 
 						<tr>
 							<td>
 								<span class="star text-danger"></span>
 							</td>
 							<td class="text-center" style="height: 100px;">
-								<input type="button" class="btn btn-success btn-lg mr-5" value="가입하기" onclick="goRegister()" />
-								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
+								<input type="button" class="btn btn-success btn-lg mr-5" value="변경하기" onclick="goUpdate()" />
+								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goback()" />
 							</td>
 						</tr> 
 
@@ -191,6 +170,6 @@
 </div>
 
 
+
+
 <jsp:include page="../common/footer.jsp"></jsp:include>
-
-
