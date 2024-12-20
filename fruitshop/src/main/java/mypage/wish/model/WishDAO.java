@@ -13,8 +13,10 @@ public interface WishDAO {
 	// 관심상품 1행 삭제(X버튼 클릭시)
     boolean deleteWishItem(int wish_no) throws SQLException;
     
-    // 관심 상품 비우기 
-//	boolean deleteAll(int user_no) throws SQLException;
+    // 장바구니 비우기
+	boolean WishDeleteAll(int user_no) throws SQLException ;
+
+	
     
    
     

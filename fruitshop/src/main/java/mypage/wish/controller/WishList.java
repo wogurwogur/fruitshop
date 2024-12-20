@@ -22,6 +22,8 @@ public class WishList extends AbstractController {
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
     	
+    	String message = "";
+    	
     	if(loginuser != null  ) {
     		
     		try {
@@ -31,7 +33,6 @@ public class WishList extends AbstractController {
                 
                 request.setAttribute("wishList", wishList);
                     
-                
                     
             } catch (Exception e) {
                 e.printStackTrace(); 
@@ -43,6 +44,17 @@ public class WishList extends AbstractController {
     		super.setViewPage("/WEB-INF/mypage/wishList.jsp");
     		
     	}
+    	else {
+    		//	로그인 상태가 아닌 경우
+			message = "로그인 후 볼수 있습니다!!";
+			String loc = request.getContextPath()+"/login/login.ddg";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/common/msg.jsp");
+		}
     	
     	///////////////////////////////////////////////////////////////////////////////////
     	
@@ -56,9 +68,9 @@ public class WishList extends AbstractController {
                 boolean isDeleted = wdao.deleteWishItem(wish_no);
 
                 if (isDeleted) {
-                    request.setAttribute("message", "관심상품이 삭제되었습니다.");
+                    request.setAttribute("message", "상품이 삭제되었습니다.");
                 } else {
-                    request.setAttribute("message", "관심상품 삭제에 실패하였습니다.");
+                    request.setAttribute("message", "상품 삭제에 실패하였습니다.");
                 }
 
        
@@ -76,13 +88,15 @@ public class WishList extends AbstractController {
     	
 		////////////////////////////////////////////////////////////////////////////////////////////
         
-        /*
-        if (loginuser != null) {
+        
+        	String deleteAll = request.getParameter("delete_all");
+        	
+        	if ("true".equals(deleteAll)) {
         	
             // 관심상품 비우기
             try {
             	int user_no = loginuser.getUser_no();
-                boolean isDeleted = wdao.deleteAll(user_no);
+                boolean isDeleted = wdao.WishDeleteAll(user_no);
 
                 if (isDeleted) {
                     request.setAttribute("message", "관심상품 비우기 완료했습니다.");
@@ -102,8 +116,8 @@ public class WishList extends AbstractController {
             super.setViewPage("/WEB-INF/common/msg.jsp");
             return;
         }
+	
 		
-		*/
 	}
 
 }

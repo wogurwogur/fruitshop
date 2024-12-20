@@ -13,35 +13,24 @@
 <script type="text/javascript">
 
 	
-	$(document).ready(function(){
-		
-		$("input:number[name='prodcount']").bind("keyup", function(cart_prodcount){
-	        if(cart_prodcount.keyCode == 13) {
-	        	alert("rr!!");
-	          
-	        }
-	        
-	     });// $("input:number[name='prodcount']").bind("keyup", function(e){------- 
-		
-	});// end of $(document).ready(function(){}----------------------------
 	
 	
 	
-	<%-- 선택상품 주문하기 누를때
+	<%-- 선택상품 주문하기 누를때--%>
 	function Orderpick() {
 		
 		confirm("선택한 상품을 주문하시겠습니까?");
 		
 	}// end of function goCartList() {}-----------------------------
 
-	  전체상품 주문하기 누를때 
+	<%--  전체상품 주문하기 누를때 --%>
 	function OrderAll() {
 		
 		confirm("장바구니에 있는 전체상품을 주문하시겠습니까?");
 		
 	}
 	
-	--%>
+	
 	
 	 <%-- 장바구니 비우기 누를때 --%> 
 	function CartDeleteAll() {
@@ -57,7 +46,8 @@
 <div class="container" style="margin-top: 2%;">
 
     <div class="titleArea">
-        <h3>Cart</h3>
+        <h3>Cart <i class="bi bi-cart2"></i></h3>
+        <i class="fa-solid fa-cart-shopping"></i>
     </div>
     
     <%-- 장바구니 상품 목록 --%>
@@ -111,28 +101,9 @@
             </div>
 
             <%-- 총 금액 계산 --%>
-           <div class="cartsum" style="text-align: center; margin: 5% auto;">
-    <table style="margin: 5% auto; text-align: center; font-size: 16pt; width: 80%; border-collapse: collapse; font-family: 'Noto Sans KR', sans-serif;">
-        <tr>
-            <td style="padding: 2% 5%;">총 상품금액</td>
-            <td style="padding: 2%;"></td>
-            <td style="padding: 2% 5%;">배송비</td>
-            <td style="padding: 2%;"></td>
-            <td style="padding: 2% 5%;">총 결제금액</td>
-        </tr>
-        <tr>
-            <td style="padding: 2% 5%; font-size: 14pt;">
-             <fmt:formatNumber value="${totalPrice}" pattern="###,###" />원
-            </td>
-            <td style="padding: 2% -20%; ">+</td>
-            <td style="padding: 2% 5%; font-size: 14pt;">2,500원</td>
-            <td style="padding: 2%;">=</td>
-            <td style="padding: 2% 5%; font-size: 14pt;">
-            <fmt:formatNumber value="${totalPrice + 2500}" pattern="###,###" />원
-            </td>
-        </tr>
-    </table>
-</div>
+           <div class="cartsum" style="text-align: center; margin: 5% auto; font-family: 'Noto Sans KR', sans-serif;">
+            <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt; ">장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원 </p>
+		  </div>
 
 	<div class="ec-base-button gColumn">
 	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  

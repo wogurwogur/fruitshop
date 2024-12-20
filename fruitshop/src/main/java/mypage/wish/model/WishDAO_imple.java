@@ -121,12 +121,11 @@ public class WishDAO_imple implements WishDAO {
 	}
 	
 	
-	/*
 	// 관심 상품 비우기 // 
 	@Override
-	public boolean deleteAll(int user_no) throws SQLException {
+	public boolean WishDeleteAll(int user_no) throws SQLException {
 		
-		boolean AllDeleted = false;
+		boolean isDeleted = false;
 
         try {
             conn = ds.getConnection();
@@ -138,7 +137,7 @@ public class WishDAO_imple implements WishDAO {
             int n = pstmt.executeUpdate();
             
             if (n != 0) {
-            	AllDeleted = true;
+            	isDeleted = true;
             }
             
             
@@ -146,10 +145,10 @@ public class WishDAO_imple implements WishDAO {
             close();
         }
 
-        return AllDeleted;
+        return isDeleted;
 	}
 	
-	*/
+	
 	
 
 	
