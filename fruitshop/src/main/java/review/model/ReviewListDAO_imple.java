@@ -13,7 +13,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import member.domain.MemberVO;
 import review.domain.ReviewListVO;
 
 public class ReviewListDAO_imple implements ReviewListDAO {
