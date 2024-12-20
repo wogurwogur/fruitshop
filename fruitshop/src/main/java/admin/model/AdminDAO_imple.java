@@ -139,7 +139,8 @@ public class AdminDAO_imple implements AdminDAO {
 		
 		try {
 			
-			String sql = " select user_no, userid, passwd, name, birthday, email, tel,"
+			
+			String sql = " select user_no, userid,  name, birthday, email, tel,"
 					+ " postcode, address, detailaddress, extraaddress, gender, point, registerday,"
 					+ " lastpwdchangedate, idle, status, role"
 					+ " from tbl_member "
@@ -225,6 +226,194 @@ public class AdminDAO_imple implements AdminDAO {
 		
 		
 		return n;
+	}
+
+	
+	// 총 페이지수 알아오기
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		conn = ds.getConnection();
+		
+		int total = 0;
+		try {
+		
+			String sql = " select ceil(count(*)/ 10) "
+					+ " from tbl_member "
+					+ " where userid != 'admin' ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if("email".equals(colname)) {
+				searchWord = aes.encrypt(searchWord);
+				
+			}
+			
+			if(!colname.isBlank() && !searchWord.isBlank()) {
+				sql += " and "+colname +" like  '%' || ? || '%' ";
+			}
+		
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			if(!colname.isBlank() && !searchWord.isBlank()) {
+				
+				pstmt.setString(1, searchWord);
+				
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			total = rs.getInt(1);
+			
+		}catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return total;
+	}
+
+	
+	// 페이징처리를 한 모든회원 목록 보여주기
+	@Override
+	public List<MemberVO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
+		List<MemberVO> memberList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			
+			String sql = "SELECT RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
+					+ "  FROM "
+					+ "  ( "
+					+ "      SELECT rownum AS RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
+					+ "      FROM "
+					+ "      ( "
+					+ "        select userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
+					+ "        from tbl_member "
+					+ "        where userid != ? ";
+
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			if("email".equals(colname)) {
+				searchWord = aes.encrypt(searchWord);
+				
+			}
+			
+			//if(colname != null && !colname.trim().isEmpty()) // jdk 1.8 방식
+			if(!colname.isBlank() && !searchWord.isBlank()) {	// jdk 11 이상
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				sql += " and " +colname+ " like '%'|| ? ||'%' ";
+			}
+			
+			sql += " ) V "
+					+ "  ) T "
+					+ " WHERE T.RNO BETWEEN ? AND ? "
+					+ " order by registerday desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			// where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			
+			//if( ( colname != null && !colname.trim().isEmpty() ) && 
+		    //         ( searchWord != null && !searchWord.trim().isEmpty() ) ) {
+			// 검색이 있는경우
+			if(!colname.isBlank() && !searchWord.isBlank()) {
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setString(2, searchWord);
+				pstmt.setInt(3, (currentShowPageNo*sizePerPage) - (sizePerPage-1));	//  공
+				pstmt.setInt(4, (currentShowPageNo*sizePerPage));
+				
+			}else {
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setInt(2, (currentShowPageNo*sizePerPage) - (sizePerPage-1));	//  공
+				pstmt.setInt(3, (currentShowPageNo*sizePerPage));
+			}
+			
+			// 검색이 없는경우
+			
+			
+			
+			
+			
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				MemberVO mvo = new MemberVO();
+				
+				mvo.setUserid(rs.getString("userid"));
+				mvo.setName(rs.getString("name"));
+				mvo.setEmail(aes.decrypt(rs.getString("email")));
+				mvo.setGender(rs.getString("gender"));
+				mvo.setUser_no(rs.getInt("user_no"));
+				mvo.setAddress(rs.getString("address"));
+				mvo.setDetailaddress(rs.getString("detailaddress"));
+				mvo.setExtraaddress(rs.getString("extraaddress"));
+				mvo.setTel(aes.decrypt(rs.getString("tel")));
+				
+				memberList.add(mvo);
+				
+			}
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return memberList;
+	}
+
+	// 회원상세에서 회원의 쿠폰 개수를 볼수 있게하는 메소드
+	@Override
+	public String memberCouponCnt(String detail_user_no) throws SQLException {
+		
+		String memberCoupon = "";
+		
+		conn = ds.getConnection();
+		
+		String sql = " select C.coupon_cnt "
+				+ " from "
+				+ " ( "
+				+ " select user_no "
+				+ " from tbl_member "
+				+ " where user_no = ? "
+				+ " )M "
+				+ " cross join "
+				+ " ( "
+				+ " select  count(coupon_no) as coupon_cnt "
+				+ " from tbl_coupons  "
+				+ " where fk_user_no = ? "
+				+ " )C ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, detail_user_no);
+		pstmt.setString(2, detail_user_no);
+		
+		rs = pstmt.executeQuery();
+		
+		rs.next();
+		
+		memberCoupon = rs.getString(1);
+		
+		return memberCoupon;
 	}
 
 	

@@ -16,15 +16,36 @@ function memberDetail(user_no){
 	const memberfrm = document.member_management_frm;
 	
 	
-	memberfrm.method = "post";
-	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
-	
 	memberfrm.detail_user_no.value = user_no;
+	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
+	memberfrm.method = "post";
+	
 	
 	memberfrm.submit();
 	
 }
 
+function memberSearch(){
+	
+	const searchType = $("select[name='searchType']");
+	
+	if(searchType == ""){
+		alert("검색대상을 선택하세요!!");
+		return;
+	}
+	
+	const searchWord = $("input:text[name='searchWord']").val();
+	
+	if(searchWord.trim() == ""){
+		alert("검색어를 입력하세요!!");
+		return;
+	}
+	
+	const memberfrm = document.member_management_frm;
+	
+	memberfrm.submit();
+	
+}
 
 </script>
 <style>
@@ -60,41 +81,50 @@ form.example button {
   cursor: pointer;
 }
 
+   div#pageBar {
+      border: solid 0px red;
+      width: 80%;
+      margin: 3% auto 0 auto;
+      display: flex;
+   }
+   
+   div#pageBar > nav {
+      margin: auto;
+   }
 
 /* search end  */
 </style>
 
 <%-- div top nav start --%>
 
-	<form name="memberSerchSort">
+	<form name="member_management_frm">
 	<div class="container-fluid " id="admin_top_nav">
 	<%-- dropdown div start --%>
 	<div>
-	  <select name="select_sort" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
-	    <option>정렬방식</option>
-	    <option value="1">Audi</option>
-	    <option value="2">BMW</option>
-	    <option value="3">Citroen</option>
-	    <option value="4">Ford</option>
-	  </select>
+
 	</div>
 	<%-- dropdown div end --%>
-	
+	 
 	
 	<%-- center div start --%>
 	<div id="admin_top_nav_center">
-		<span>회원관리 명단</span>
+		<span></span>
 	</div>
 	<%-- center div end --%>
 		
 		
 	<%-- search div start --%>
 	<div>
-		
-		  <input type="text" placeholder="Search.." name="search2">
-		  <button type="submit"><i class="fa fa-search"></i></button>
-		  <input type="hidden" name="detail_user_no">
-		
+	  <select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
+	    <option value="">검색대상</option>
+	    <option value="name">회원명</option>
+	    <option value="userid">아이디</option>
+	    <option value="email">이메일</option>
+	    <option value="user_no">회원번호</option>
+	  </select>
+	  <input type="text" placeholder="입력란" name="searchWord">
+	  <button type="button" onclick="memberSearch()"><i class="fa fa-search"></i></button>
+	  <input type="hidden" name="detail_user_no">
 			
 	</div>
 	<%-- search div end --%>
@@ -103,7 +133,7 @@ form.example button {
 
 <%-- div top nav end --%>
 
-<div class="container-fluid ">
+<div class="container">
 	
 	<c:if test="${!empty requestScope.member_allList}">
 		<table class="table">
@@ -133,6 +163,11 @@ form.example button {
 	<c:if test="${empty requestScope.member_allList}">
 		<span>등록된 회원이 없습니다.</span>
 	</c:if>
+	<div id="pageBar">
+       <nav>
+          <ul class="pagination">${requestScope.pageBar}</ul>
+       </nav>
+   </div>
 </div>
-
+	
 
