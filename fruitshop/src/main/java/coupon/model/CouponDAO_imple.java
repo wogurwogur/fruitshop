@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -53,6 +54,36 @@ public class CouponDAO_imple implements CouponDAO {
 	    }
 	   
     }// end of  private void close()---------------------------
+
+    // 회원번호 및 쿠폰정보를 받아 특정 회원에게 쿠폰을 주는 메소드 
+	@Override
+	public int reciptCoupon(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " insert into tbl_coupons(coupon_no, fk_user_no, coupon_name, coupon_descript, coupon_expire, coupon_discount) "
+				+ " values(coupon_seq.nextval, ?, ?, ?, ?, ?) ";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("user_no"));
+			pstmt.setString(2, paraMap.get("coupon_name"));
+			pstmt.setString(3, paraMap.get("coupon_descript"));
+			pstmt.setString(4, paraMap.get("coupon_expire"));
+			pstmt.setInt(5, Integer.parseInt(paraMap.get("coupon_discount")) * 1000);
+			
+			n = pstmt.executeUpdate(); 	
+		}finally {
+			close();
+		}
+		
+		
+		
+		return n;
+	}
     
     
     

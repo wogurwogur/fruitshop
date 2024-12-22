@@ -69,16 +69,6 @@ $(document).ready(function(){
 		
 		const coupon_name = $("input:text[name='coupon_name']").val();
 		const couponname_Reg = /^[가-힣]{2,8}$/;
-		const coupon_descript = $("textarea[name='coupon_descript']").val();
-		const coupondescript_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{4,40}$/;
-		const coupon_expire_str = $("input[name='coupon_expire']").val();
-		
-		const now = new Date();
-		const coupon_expire = new Date(coupon_expire_str);
-		
-		console.log(coupon_expire);
-		
-		const coupon_discount = $("input[name='coupon_discount']").val();
 		
 		if(coupon_name == ""){
 			alert("쿠폰명을 입력해주세요.");
@@ -89,6 +79,10 @@ $(document).ready(function(){
 			return;
 		}
 		
+		
+		const coupon_descript = $("textarea[name='coupon_descript']").val();
+		const coupondescript_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{4,40}$/;
+		
 		if(coupon_descript == ""){
 			alert("쿠폰설명을 입력해주세요.");
 			return;
@@ -98,10 +92,19 @@ $(document).ready(function(){
 			return;
 		}
 		
+		const coupon_expire_str = $("input[name='coupon_expire']").val();
+		const coupon_expire = new Date(coupon_expire_str);
+		const now = new Date();
+		
 		if(now > coupon_expire){
 			alert("현재 날짜 이후로 설정해주세요.");
 			return;
 		}
+		
+		console.log(coupon_expire);
+		
+		const coupon_discount = $("input[name='coupon_discount']").val();
+		
 		
 		if(coupon_discount == ""){
 			alert("할인금액을 입력해주세요.");
@@ -112,9 +115,16 @@ $(document).ready(function(){
 		
 		frm.action = "<%=ctxPath%>/coupon/receiptCoupon.ddg";
 		frm.method = "post";
-		frm.userid.value = "";
+		
+		frm.user_no.value = "${requestScope.detailMember.user_no}";
+		frm.coupon_name.value = coupon_name;
+		frm.coupon_descript.value = coupon_descript;
+		frm.coupon_expire.value = coupon_expire_str;
+		frm.coupon_discount.value = coupon_discount;
 		
 		frm.submit();
+		
+		
 		
 	});
 	
@@ -282,7 +292,7 @@ input[type="number"]{
 	    	<table class="table" style="text-align:center;">
 	    		<thead>
 	    			<tr>
-	    				<th colspan="2">쿠폰 수령</th>
+	    				<th colspan="2">${requestScope.detailMember.name} 님께 쿠폰 수령</th>
 	    			</tr>
 	    		</thead>
 	    		<tbody>
@@ -309,7 +319,7 @@ input[type="number"]{
 	    		</tbody>
 	    	</table>
 	    	
-		    <input type="text" name="userid" style="display:none;"/>
+		    <input type="text" style="display:none;"/>
 	    </div>
 	  </div>
 	</div>

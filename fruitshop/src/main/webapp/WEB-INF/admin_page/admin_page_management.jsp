@@ -25,45 +25,6 @@ div#admin_top_nav_center{
 	margin: 0 auto;
 }
 
-/* drop down start */
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content button {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border: none;
-}
-
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* drop down end */
-
 
 /* search start */
 form.example input[type=text] {
@@ -89,16 +50,11 @@ form.example button {
 </style>
 
 <%-- div top nav start --%>
-<div class="container-fluid " id="admin_top_nav">
+<div class="container" id="admin_top_nav">
 
 	<%-- dropdown div start --%>
-	<div class="dropdown">
-	  <button class="dropbtn">Dropdown</button>
-	  <div class="dropdown-content">
-	    <button type="button">징계받은 회원</button>
-	    <button type="button">----</button>
-	    <button type="button">----</button>
-	  </div>
+	<div>
+
 	</div>
 	<%-- dropdown div end --%>
 	
@@ -122,8 +78,8 @@ form.example button {
 </div>
 <%-- div top nav end --%>
 
-<div class="container-fluid ">
+<div class="container">
 	
-	회원리스트
+	메인페이지 관리
 	
 </div>

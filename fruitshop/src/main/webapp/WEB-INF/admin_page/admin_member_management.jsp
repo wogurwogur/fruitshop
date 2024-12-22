@@ -98,20 +98,19 @@ form.example button {
 <%-- div top nav start --%>
 
 	<form name="member_management_frm">
-	<div class="container-fluid " id="admin_top_nav">
-	<%-- dropdown div start --%>
-	<div>
-
-	</div>
-	<%-- dropdown div end --%>
-	 
+	<div class="container" id="admin_top_nav">
+		<%-- dropdown div start --%>
+		<div>
 	
-	<%-- center div start --%>
-	<div id="admin_top_nav_center">
-		<span></span>
-	</div>
-	<%-- center div end --%>
+		</div>
+		<%-- dropdown div end --%>
+		 
 		
+		<%-- center div start --%>
+		<div id="admin_top_nav_center">
+			<span></span>
+		</div>
+		<%-- center div end --%>
 		
 	<%-- search div start --%>
 	<div>

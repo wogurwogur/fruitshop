@@ -118,8 +118,7 @@ public class ManagementController extends AbstractController {
 	        		pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a></li>";
 	        	}
 	        	
-	        	
-	        	
+
 	        	
 	        	loop++;
 	        	pageNo++;
