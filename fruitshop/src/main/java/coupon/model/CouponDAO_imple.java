@@ -84,6 +84,51 @@ public class CouponDAO_imple implements CouponDAO {
 		
 		return n;
 	}
+
+	// 모든 회원에게 쿠폰을 증정하는 메소드
+	@Override
+	public int reciptCouponAll(Map<String, String> paraMap) throws SQLException {
+		
+		int n=0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " select user_no "
+				+ " from tbl_member "
+				+ " where role = 1 ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		try {
+			
+			rs = pstmt.executeQuery();
+			
+			String updateSql = " insert into tbl_coupons(coupon_no, fk_user_no, coupon_name, coupon_descript, coupon_expire, coupon_discount) "
+					+ " values(coupon_seq.nextval, ?, ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(updateSql);
+			
+			while(rs.next()) {
+				
+				pstmt.setInt(1, rs.getInt("user_no"));
+				pstmt.setString(2, paraMap.get("coupon_name"));
+				pstmt.setString(3, paraMap.get("coupon_descript"));
+				pstmt.setString(4, paraMap.get("coupon_expire"));
+				pstmt.setInt(5, Integer.parseInt(paraMap.get("coupon_discount")));
+				
+				n += pstmt.executeUpdate();
+				
+				
+			}
+			
+		}finally {
+			close();
+		}
+		
+		
+		
+		return n;
+	}
     
     
     

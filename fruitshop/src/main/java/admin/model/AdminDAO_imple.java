@@ -409,6 +409,32 @@ public class AdminDAO_imple implements AdminDAO {
 		return memberCoupon;
 	}
 
+	@Override
+	public int memberAllCount() throws SQLException {
+		
+		int memberCnt = 0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " select count(*) as memberCnt "
+				   + " from tbl_member "
+				   + " where role = 1 ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		try {
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			memberCnt = rs.getInt("memberCnt");
+		}finally {
+			close();
+		}
+		
+		return memberCnt;
+	}
+
 	
 	
 	
