@@ -76,8 +76,7 @@ public class ShipDAO_imple implements ShipDAO {
 
 			String sql = " select SHIP_NO, SHIP_NAME, SHIP_POSTCODE, SHIP_ADDRESS, SHIP_DETAILADDRESS, SHIP_EXTRAADRESS, SHIP_DEFAULT, SHIP_RECEIVER, SHIP_RECEIVERTEL "
 					   + " from tbl_ship "
-					   + " where FK_USER_NO = ? "
-					   + " order by SHIP_DEFAULT asc ";
+					   + " where FK_USER_NO = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, user_no);
@@ -96,6 +95,7 @@ public class ShipDAO_imple implements ShipDAO {
 				svo.setShip_extraAddress(rs.getString("SHIP_EXTRAADRESS"));
 				svo.setShip_receiver(rs.getString("SHIP_RECEIVER"));
 				svo.setShip_receivertel(aes.decrypt(rs.getString("SHIP_RECEIVERTEL")));
+				svo.setShip_default(rs.getInt("SHIP_DEFAULT"));
 				
 				shipList.add(svo);
 			}

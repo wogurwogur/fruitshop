@@ -40,7 +40,7 @@ $(()=>{
 		const ship_no = $(e.target).val();
 		
 		const frm = document.shipInfoFrm;
-		frm.action = "shipDefualt.ddg";
+		frm.action = "shipDefault.ddg";
 		frm.inputValue.value = ship_no;
 		frm.submit();
 		

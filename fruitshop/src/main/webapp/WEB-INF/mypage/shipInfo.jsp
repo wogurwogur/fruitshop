@@ -49,13 +49,9 @@
 
 					<tbody id="" class="">
 					
-					
-					
-					
+		
 						<c:if test="${!empty requestScope.shipList}">
-						
 							<c:forEach var="svo" items="${requestScope.shipList}">
-						
 								<c:if test="${svo.ship_default == 1}">
 									<tr>
 										<td><input type="checkbox" name="select" class="checkOne" value="${svo.ship_no}"/></td>
@@ -69,7 +65,10 @@
 									</tr>
 							
 								</c:if>
-						
+							</c:forEach>
+							
+							
+							<c:forEach var="svo" items="${requestScope.shipList}">
 								<c:if test="${svo.ship_default == 0}">
 					
 									<tr>
@@ -84,7 +83,6 @@
 									</tr>
 								
 								</c:if>
-								
 							</c:forEach>
 							
 						</c:if>
