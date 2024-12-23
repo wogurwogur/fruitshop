@@ -73,7 +73,7 @@ public class CouponDAO_imple implements CouponDAO {
 			pstmt.setString(2, paraMap.get("coupon_name"));
 			pstmt.setString(3, paraMap.get("coupon_descript"));
 			pstmt.setString(4, paraMap.get("coupon_expire"));
-			pstmt.setInt(5, Integer.parseInt(paraMap.get("coupon_discount")) * 1000);
+			pstmt.setInt(5, Integer.parseInt(paraMap.get("coupon_discount")));
 			
 			n = pstmt.executeUpdate(); 	
 		}finally {

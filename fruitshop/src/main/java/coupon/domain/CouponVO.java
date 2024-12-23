@@ -7,7 +7,7 @@ public class CouponVO {
 	private String coupon_name;
 	private String coupon_descript;
 	private String coupon_expire;
-	private String coupon_discount;
+	private int coupon_discount;
 	 
 	 
 	 
@@ -42,10 +42,10 @@ public class CouponVO {
 	public void setCoupon_expire(String coupon_expire) {
 		this.coupon_expire = coupon_expire;
 	}
-	public String getCoupon_discount() {
+	public int getCoupon_discount() {
 		return coupon_discount;
 	}
-	public void setCoupon_discount(String coupon_discount) {
+	public void setCoupon_discount(int coupon_discount) {
 		this.coupon_discount = coupon_discount;
 	}
 	

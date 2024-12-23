@@ -52,13 +52,18 @@ function memberSearch(){
 
 div#admin_top_nav{
 	display: flex;
-	margin-top: 1%;
+	margin-top: 3%;
+	margin-bottom: 0.5%;
 }
 
 div#admin_top_nav_center{
-	margin: 0 auto;
+	margin: 0 1% 0 auto;
 }
 
+button#couponAllReceipt{
+	
+	border: 0px;
+}
 
 /* search start */
 form.example input[type=text] {
@@ -108,13 +113,13 @@ form.example button {
 		
 		<%-- center div start --%>
 		<div id="admin_top_nav_center">
-			<span></span>
+			<button type="button" id="couponAllReceipt">쿠폰일괄증정</button>
 		</div>
 		<%-- center div end --%>
 		
 	<%-- search div start --%>
 	<div>
-	  <select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example">
+	  <select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
 	    <option value="">검색대상</option>
 	    <option value="name">회원명</option>
 	    <option value="userid">아이디</option>

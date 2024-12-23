@@ -24,7 +24,6 @@ public class ReceiptCoupon extends AbstractController {
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
-		String detail_user_no = request.getParameter("detail_user_no");
 		
 		
 		if(null == loginuser) {
@@ -74,7 +73,7 @@ public class ReceiptCoupon extends AbstractController {
 				request.setAttribute("detailMember", detailMember);
 				request.setAttribute("adminpage_val", "admin_member_detail");
 				
-				String memberCoupon = adao.memberCouponCnt(detail_user_no);
+				String memberCoupon = adao.memberCouponCnt(user_no);
 				
 				request.setAttribute("memberCoupon", memberCoupon);
 				
