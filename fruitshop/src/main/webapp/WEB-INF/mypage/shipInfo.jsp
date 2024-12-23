@@ -19,14 +19,10 @@
 <script type="text/javascript">
 	$(()=>{
 		
-		$("button#shipAdd").click(()=>{
-			location.href="<%=request.getContextPath()%>/mypage/shipAdd.ddg";
-		});
+		
 
 	});
 
-	
-	
 </script>
 
 	<div class="container">
@@ -44,41 +40,68 @@
 							<th style="width:8%; ">배송지명</th>
 							<th style="width:8%; ">수령인</th>
 							<th style="width:8%; ">연락처</th>
-							<th style="width:50%; ">주소</th>
+							<th style="width:40%; ">주소</th>
+							<th style="width:10%; ">기본배송지</th>
 							<th style="width:10%; "></th>
 							<th style="width:10%; "></th>
 						</tr>
 					</thead>
-					
+
 					<tbody id="" class="">
-						<c:if test="${!empty requestScope.shipList}">
-							<c:forEach var="svo" items="${requestScope.shipList}">
-								<tr>
-									<td><input type="checkbox" name="select" class="checkOne" value="${sdto.ship_no}"/></td>
-									<td>${svo.ship_name}</td>
-									<td>${svo.ship_receiver}</td>
-									<td>${svo.ship_receivertel}</td>
-									<td>`${svo.ship_postcode} ${sdto.ship_address} ${sdto.ship_detailaddress} ${sdto.ship_extraadress}`</td>
-									<td><button type="button" class="" onclick="goUpdate(${sdto.ship_no})">수정</button></td>
-									<td><button type="button" class="" onclick="goDelete(${sdto.ship_no})">삭제</button></td>
-								</tr>
-							</c:forEach>
 					
+					
+					
+					
+						<c:if test="${!empty requestScope.shipList}">
+						
+							<c:forEach var="svo" items="${requestScope.shipList}">
+						
+								<c:if test="${svo.ship_default == 1}">
+									<tr>
+										<td><input type="checkbox" name="select" class="checkOne" value="${svo.ship_no}"/></td>
+										<td class="text-center">${svo.ship_name}</td>
+										<td class="text-center">${svo.ship_receiver}</td>
+										<td class="text-center">${svo.ship_receivertel}</td>
+										<td>${svo.ship_postcode} ${svo.ship_address} ${svo.ship_detailAddress} ${svo.ship_extraAddress}</td>
+										<td class="text-center"><input type="radio" name="default" value="${svo.ship_no}" checked/></td>
+										<td class="text-center"><button class="" type="button" onclick="goUpdate('${svo.ship_no}')" >수정</button></td>
+										<td class="text-center"><button class="" type="button" onclick="goDelete('${svo.ship_no}')" >삭제</button></td>
+									</tr>
+							
+								</c:if>
+						
+								<c:if test="${svo.ship_default == 0}">
+					
+									<tr>
+										<td><input type="checkbox" name="select" class="checkOne" value="${svo.ship_no}"/></td>
+										<td class="text-center">${svo.ship_name}</td>
+										<td class="text-center">${svo.ship_receiver}</td>
+										<td class="text-center">${svo.ship_receivertel}</td>
+										<td>${svo.ship_postcode} ${svo.ship_address} ${svo.ship_detailAddress} ${svo.ship_extraAddress}</td>
+										<td class="text-center"><input type="radio" name="default" value="${svo.ship_no}"/></td>
+										<td class="text-center"><button class="" type="button" onclick="goUpdate('${svo.ship_no}')" >수정</button></td>
+										<td class="text-center"><button class="" type="button" onclick="goDelete('${svo.ship_no}')" >삭제</button></td>
+									</tr>
+								
+								</c:if>
+								
+							</c:forEach>
+							
 						</c:if>
 						
 						<c:if test="${empty requestScope.shipList}">
 							<tr>
-								<td colspan="7" class="text-center">저장된 배송지가 없습니다.</td>
+								<td colspan="8" class="text-center">저장된 배송지가 없습니다.</td>
 							</tr>
 						</c:if>
 						
 					</tbody>
-					
+
 					<tfoot class="text-center" style="border: 0px;">
 						<tr>
-							<td colspan="5" class="border" ></td>
+							<td colspan="6" class="border" ></td>
 							<td class="border" ><button type="button" id="shipAdd" class="">추가</button></td>
-							<td class="border" ><button type="button" id="checkDelete" class="">선택 삭제</button></td>
+							<td class="border" ><button type="button" id="checkDelete" onclick="goCheckDelete()">선택 삭제</button></td>
 						</tr>
 					</tfoot>
 		
@@ -86,5 +109,10 @@
 			</div>
 		
 	</div>
-
+	
+	<form name="shipInfoFrm">
+		<input type="hidden" name="inputValue" />
+		<input type="hidden" name="inputValue2" />
+	</form>
+	
 <jsp:include page="../common/footer.jsp"></jsp:include>

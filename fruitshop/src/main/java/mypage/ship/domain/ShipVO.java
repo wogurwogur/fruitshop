@@ -4,14 +4,14 @@ public class ShipVO {
 	
 	
 	private int ship_no;					// 배송지 번호 //시퀀스명 : ship_seq
-	private String fk_user_no;				// 회원 번호
+	private int fk_user_no;				// 회원 번호
 	private String ship_name;				// 배송지명 (최대 10글자)
 	private String ship_receiver;			// 받는사람 이름 (최대 10글자)
 	private String ship_receivertel;		// 받는사람 연락처 (AES-256 암호화/복호화 대상)
 	private String ship_postcode;			// 우편번호
 	private String ship_address; 			// 주소
-	private String ship_detailaddress;		// 상세주소
-	private String ship_extraadress;		// 참고항목
+	private String ship_detailAddress;		// 상세주소
+	private String ship_extraAdress;		// 참고항목
 	private int ship_default;				// 기본배송지여부 (0: 그외 / 1: 기본배송지)
 	
 	
@@ -38,10 +38,10 @@ public class ShipVO {
 	public void setShip_no(int ship_no) {
 		this.ship_no = ship_no;
 	}
-	public String getFk_user_no() {
+	public int getFk_user_no() {
 		return fk_user_no;
 	}
-	public void setFk_user_no(String fk_user_no) {
+	public void setFk_user_no(int fk_user_no) {
 		this.fk_user_no = fk_user_no;
 	}
 	public String getShip_name() {
@@ -62,17 +62,17 @@ public class ShipVO {
 	public void setShip_address(String ship_address) {
 		this.ship_address = ship_address;
 	}
-	public String getShip_detailaddress() {
-		return ship_detailaddress;
+	public String getShip_detailAddress() {
+		return ship_detailAddress;
 	}
-	public void setShip_detailaddress(String ship_detailaddress) {
-		this.ship_detailaddress = ship_detailaddress;
+	public void setShip_detailAddress(String ship_detailaddress) {
+		this.ship_detailAddress = ship_detailaddress;
 	}
-	public String getShip_extraadress() {
-		return ship_extraadress;
+	public String getShip_extraAddress() {
+		return ship_extraAdress;
 	}
-	public void setShip_extraadress(String ship_extraadress) {
-		this.ship_extraadress = ship_extraadress;
+	public void setShip_extraAddress(String ship_extraadress) {
+		this.ship_extraAdress = ship_extraadress;
 	}
 	public int getShip_default() {
 		return ship_default;
