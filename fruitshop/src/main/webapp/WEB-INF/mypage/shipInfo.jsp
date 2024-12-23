@@ -112,7 +112,7 @@
 	
 	<form name="shipInfoFrm">
 		<input type="hidden" name="inputValue" />
-		<input type="hidden" name="inputValue2" />
+		<input type="text" style="display: none;" />
 	</form>
 	
 <jsp:include page="../common/footer.jsp"></jsp:include>
