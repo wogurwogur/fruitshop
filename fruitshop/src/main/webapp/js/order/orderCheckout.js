@@ -6,17 +6,27 @@ $(document).ready(() => {
 		$("span.error").hide();
 		$("table#couponSelect").hide();
 		
+		
+		// === 모달창 주소 고르기 시작 === //
 		$("table#shipInfo tr").on("dblclick", e => {
+			const receiver = $(e.target).parent().children(".receiver").text();
+			const receivertel = $(e.target).parent().children(".receivertel").text();
 			const postcode = $(e.target).parent().children(".postcode").text();
 			const address = $(e.target).parent().children(".address").text();
 			const detailaddress = $(e.target).parent().children(".detailaddress").text();
 			const extraaddress = $(e.target).parent().children(".extraaddress").text();
 			
+			console.log("receiver : ", receiver);
 			console.log("postcode : ", postcode);
 			console.log("address : ", address);
 			console.log("detailaddress : ", detailaddress);
 			console.log("extraaddress : ", extraaddress);
 			
+			
+			$("input#name").val(receiver);
+			$("input#hp1").val(receivertel.substring(0,3));
+			$("input#hp2").val(receivertel.substring(4,8));
+			$("input#hp3").val(receivertel.substring(9,13));
 			$("input#postcode").val(postcode);
 			$("input#address").val(address);
 			$("input#detailAddress").val(detailaddress);
@@ -25,29 +35,45 @@ $(document).ready(() => {
 			$('#userShipInfo').modal('hide');
 			
 		});// end of $("table#shipInfo tr").on("click", e => {}) -----------------
+		// === 모달창 주소 고르기 끝 === //
 		
 		
-		
-		$("table#shipInfo tr").on("dblclick", e => {
+		// === 모달창 쿠폰 고르기 이벤트 시작 === //
+		$("table#couponInfo tr").on("dblclick", e => {
 			const coupon_name = $(e.target).parent().children(".coupon_name").text();
 			const coupon_expdate = $(e.target).parent().children(".coupon_expdate").text();
 			const coupon_discount = $(e.target).parent().children(".coupon_discount").text();
 			
-			console.log("coupon_name : ", coupon_name);
-			console.log("coupon_expdate : ", coupon_expdate);
-			console.log("coupon_discount : ", coupon_discount);
+			//console.log("coupon_name : ", coupon_name);
+			//console.log("coupon_expdate : ", coupon_expdate);
+			//console.log("coupon_discount : ", coupon_discount);
 			
 			$("td#coupon_name").html(coupon_name);
 			$("td#coupon_expdate").html(coupon_expdate);
 			$("td#coupon_discount").html(coupon_discount);
+			
+			$("span#discount").html(coupon_discount+"원");
+			
+			const discount = Number(coupon_discount.split(",").join(""));
+			const tprice = Number($("input:hidden[name='order_tprice']").val());
+			
+			const dcPrice = tprice - discount;
+			
+			// DB에 넘어갈 값 추가
+			$("input:hidden[name='order_tprice']").val(dcPrice);
+			console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+			
+			// 총금액들에 추가
+			$("span.total_price").html(dcPrice.toLocaleString("en")+"원");
 			
 			$("table#couponSelect").show();
 			
 			$('#userCouponInfo').modal('hide');
 			
 		});// end of $("table#shipInfo tr").on("click", e => {}) -----------------
+		// === 모달창 쿠폰 고르기 이벤트 끝 === //
 		
-		
+		// === 주소 직접입력시 이벤트 처리 시작 === //
 		$("span.btn-outline-secondary").on("click", function() {
 			new daum.Postcode({
 	            oncomplete: function(data) {
@@ -96,6 +122,61 @@ $(document).ready(() => {
 	        }).open();
 		});// end of $("btn.btn-outline-secondary").on("click", function() {}) ---------------
 		
+		
+		// === 주문상품 결제금액 구하기 시작 === //
+		let price_sum  = 0;
+		let price_ship = 2500;
+		$("table#orderList td.prod_price").each((index, element) => {
+			
+			//console.log("가격: ", $(element).text());
+			
+			price_sum += Number($(element).text().split(",").join(""));
+			
+			
+			if (index+1 == $("table#orderList td.prod_price").length){
+				//price_sum += price_ship;
+				$("span#total_oprice").html(price_sum.toLocaleString("en")+"원");
+				$("span.total_price").html((price_sum+price_ship).toLocaleString("en")+"원");
+			}
+			
+			
+		});// end of $("table#orderList td.prod_price").each((index, element) => {}) ----------------- 
+		
+		
+		// 실제 DB에 들어갈 값 지정하기			
+		$("input:hidden[name='order_tprice']").val(price_sum + price_ship);
+		$("input:hidden[name='point']").val(price_sum * 0.01);
+		$("span#point").text((price_sum * 0.01).toLocaleString("en")+"원");
+		
+		console.log("DB전송포인트: ", $("input:hidden[name='point']").val());
+		console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+			
+		// === 주문상품 결제금액 구하기 끝 === //
+		
+		
+		
+		// === 쿠폰 삭제 버튼 클릭시 이벤트 시작 === //
+		$("span.btn-outline-danger").on("click", e => {
+			const discount = Number($("td#coupon_discount").text().split(",").join(""));
+			
+			
+			//console.log($("span.total_price").text().indexOf("원"));
+			const index = $("span.total_price").text().indexOf("원");
+			//console.log($("span.total_price").text().substring(0, index));
+			
+			const currentPrice = Number($("span.total_price").text().substring(0, index).split(",").join(""));
+			
+			const changePrice = currentPrice + discount;
+			
+			$("input:hidden[name='order_tprice']").val(changePrice);
+			console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+			
+			
+			$("span.total_price").html(changePrice.toLocaleString("en")+"원");
+			$("span#discount").html("");
+			$("table#couponSelect").hide();
+		});// end of $("span.btn-outline-danger").on("click", e => {}) ----------------
+		
 });// end of $(document).ready(() => {}) --------------------- 
 
 
@@ -103,7 +184,3 @@ $(document).ready(() => {
 
 
 
-// Function Declaration
-function useUserInfo() {
-	
-}
