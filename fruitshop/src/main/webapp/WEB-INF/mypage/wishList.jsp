@@ -91,7 +91,6 @@ function WishDeleteAll() {
                     </div>
                 </c:forEach>
                 
-             
             </div>
 			
 		 	<%-- 주문하기, 비우기 버튼 --%>
@@ -100,7 +99,7 @@ function WishDeleteAll() {
 			    <a href="#" onclick="WishDeleteAll();  return false;" class="btnremove">관심상품 비우기</a>       
 		    </div>
 
-			 <form method="post" action="<%= request.getContextPath() %>/wishList.ddg" id="deleteAll">
+			 <form method="post" action="<%= request.getContextPath() %>/mypage/wishList.ddg" id="deleteAll">
         	<input type="hidden" name="delete_all" value="true">
     		</form>
         </c:when>
@@ -115,10 +114,7 @@ function WishDeleteAll() {
         </c:otherwise>
     </c:choose>
 	
-
     
-    
-
 </div>
 
 

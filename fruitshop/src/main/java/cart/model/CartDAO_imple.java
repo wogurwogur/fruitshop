@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -126,5 +127,62 @@ public class CartDAO_imple implements CartDAO {
 
         return isDeleted;
 	}
+	
+	
+	// 장바구니 비우기 //
+	@Override
+	public boolean CartDeleteAll(int user_no) throws SQLException {
+		
+		boolean isDeleted = false;
 
+        try {
+            conn = ds.getConnection();
+            String sql = " delete from tbl_cart "
+            		   + " where fk_user_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, user_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
+	}
+
+	// 장바구니 등록
+	@Override
+	public int insertCart(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		 try {
+	            conn = ds.getConnection();
+	            String sql = " insert into tbl_cart(cart_no, fk_user_no, fk_prod_no, cart_prodcount) "
+	            		   + " values(cart_seq.nextval, ?, ?, ?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            pstmt.setString(3, paraMap.get("cart_prodcount"));
+	            
+	            n = pstmt.executeUpdate();
+	            
+	            
+		
+		 } finally {
+	            close();
+	        }
+		
+		
+		return n;
+	}
+	
+	
 }

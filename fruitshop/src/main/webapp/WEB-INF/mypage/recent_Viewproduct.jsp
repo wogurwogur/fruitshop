@@ -34,7 +34,7 @@
             <div class="wish-items">
                 <c:forEach var="item" items="${wishList}">
 
-                    <div class="wish_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; margin-top: 1.8%;">
+                    <div class="wish_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; margin-top: 2%; margin-bottom: 7%;">
                          
                         <%-- 상품 이미지 --%>
                         <div style="flex: 1; text-align: center;">

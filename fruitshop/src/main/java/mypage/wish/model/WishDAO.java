@@ -2,6 +2,7 @@ package mypage.wish.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import mypage.wish.domain.WishVO;
 
@@ -15,6 +16,9 @@ public interface WishDAO {
     
     // 장바구니 비우기
 	boolean WishDeleteAll(int user_no) throws SQLException ;
+	
+	
+	
 
 	
     
