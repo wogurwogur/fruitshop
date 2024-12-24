@@ -28,11 +28,30 @@ div#seasonList div {
 }
 
 
-/* 상품 검색창 */
+/* 상품 검색창 시작 */
 div#fruitSearch {
 /* 	border: solid 2px red; */
+	display: flex;
+	align-items: center;
 }
 
+div#fruitSearch input {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+	border: 1px solid #ccc;
+	padding-left: 14px;
+    border-radius: 20px; 
+    outline: none; 
+}
+
+
+div#fruitSearch input::placeholder {
+	color: #979797;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+}
+
+/* 상품 검색창 끝 */
 
 /* 그리드 전체 */
 div.product-list { 
@@ -67,6 +86,10 @@ span.seasonList {
 	cursor: pointer;
 }
 
+/* 상품페이지 이미지 썸네일 */
+img.thumnail {
+	cursor: pointer;
+}
 
 
 /* 상품페이지 상품명 */
@@ -104,7 +127,50 @@ i.heart:hover {
 /* 검색 돋보기 아이콘 */
 i.searchIcon {
 	cursor: pointer;
+	font-size: 14pt;
+    color: #333;
+    margin-left: 10px;
 }
+
+i.searchIcon:hover {
+  color: red;
+}
+/* 검색 돋보기 아이콘 끝 */
+
+
+
+/* 페이지 바 */
+div#pageBar {
+	text-align: center;
+}
+
+div.pagination {
+  display: inline-block;
+}
+
+
+div.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12pt;
+}
+
+div.pagination a.active {
+  background-color: red;
+  color: white;
+}
+
+div.pagination a:hover:not(.active) {
+	background-color: #ddd;
+}
+
+/* 페이지 바 끝 */
+
+
 
 
 

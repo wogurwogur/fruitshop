@@ -136,7 +136,34 @@ public class UpdateInfoDAO_imple implements UpdateInfoDAO {
 	
 	        
 		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	// 회원 탈퇴 메소드 (status 변경)
+	@Override
+	public int memberWithdrawal(int user_no) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
 			
+			String sql = " update tbl_member set status = 0 "
+					   + " where user_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	         
+	        pstmt.setInt(1, user_no);
+	        
+	        result = pstmt.executeUpdate();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			close();
 		}

@@ -13,13 +13,27 @@
 
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/mypage/shipAdd.css" />
 
-<script type="text/javascript" src="<%= request.getContextPath()%>/js/mypage/shipAdd.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath()%>/js/mypage/shipUpdate.js"></script>
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script type="text/javascript">
 	$(()=>{
 		
+		$("input#ship_name").val("${requestScope.svo.ship_name}");
+		$("input#ship_receiver").val("${requestScope.svo.ship_receiver}");
+		
+		const ship_receivertel1 = "${requestScope.svo.ship_receivertel}".substring(0,3);
+		const ship_receivertel2 = "${requestScope.svo.ship_receivertel}".substring(3,7);
+		const ship_receivertel3 = "${requestScope.svo.ship_receivertel}".substring(7,11);
+		$("input#ship_receivertel1").val(ship_receivertel1);
+		$("input#ship_receivertel2").val(ship_receivertel2);
+		$("input#ship_receivertel3").val(ship_receivertel3);
+		
+		$("input#ship_postcode").val("${requestScope.svo.ship_postcode}");
+		$("input#ship_address").val("${requestScope.svo.ship_address}");
+		$("input#ship_extraAddress").val("${requestScope.svo.ship_extraAddress}");
+		$("input#ship_detailAddress").val("${requestScope.svo.ship_detailAddress}");
 	
 	});
 
@@ -28,7 +42,7 @@
 
 <div class="container" style="margin-bottom: 100px;">
 
-	<form name="addFrm">
+	<form name="updateFrm">
 
 		<div style="width: 450px; margin: 10px auto;">
 
@@ -113,8 +127,8 @@
 								<span class="star text-danger"></span>
 							</td>
 							<td class="text-center" style="height: 100px;">
-								<input type="button" class="btn btn-outline-success btn-lg mr-5" value="추가하기" onclick="goAdd()" />
-								<input type="button" class="btn btn-outline-danger btn-lg" value="취소하기" onclick="goBack()" />
+								<input type="button" class="btn btn-success btn-lg mr-5" value="변경하기" onclick="goUpdate()" />
+								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goBack()" />
 							</td>
 						</tr> 
 

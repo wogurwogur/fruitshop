@@ -207,5 +207,52 @@ public class ProductDAO_imple implements ProductDAO {
 		return prdList;
 	} // end of public List<ProductVO> prdListPaging(Map<String, String> paraMap)
 	
+	
+	
+	// 상품 번호를 가지고 상품 상세 페이지 보여주기
+	@Override
+	public ProductVO prdDetails(String prodNo) throws SQLException {
+
+		
+		ProductVO prdvo = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+						+ " FROM tbl_products " 			
+						+ " WHERE prod_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, prodNo);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				prdvo = new ProductVO();
+				
+				prdvo.setProd_no(rs.getInt("prod_no"));
+				prdvo.setProd_name(rs.getString("prod_name"));
+				prdvo.setProd_cost(rs.getInt("prod_cost"));
+				prdvo.setProd_price(rs.getInt("prod_price"));
+				prdvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				prdvo.setProd_descript(rs.getString("prod_descript"));
+				prdvo.setProd_inventory(rs.getInt("prod_inventory"));
+				prdvo.setFk_season_no(rs.getInt("fk_season_no"));
+				prdvo.setProd_regidate(rs.getString("prod_regidate"));
+			}
+			
+			
+			
+			
+		} finally {
+			close();
+		}	
+		
+		return prdvo;
+		
+	} // end of public List<ProductVO> prdDetails(String prodNo)
+	
 		
 }

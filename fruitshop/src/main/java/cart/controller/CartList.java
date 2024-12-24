@@ -8,15 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
+
 import cart.model.CartDAO;
 import cart.model.CartDAO_imple;
 
 public class CartList extends AbstractController {
 
     private CartDAO cdao = new CartDAO_imple();
-    private MemberDAO mdao = new MemberDAO_imple();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -26,14 +24,14 @@ public class CartList extends AbstractController {
     	String userid = request.getParameter("userid");
     	String message = "";
     	
-    	if(loginuser != null  ) {
+    	if(loginuser != null) {
     		
     		try {
                 // DAO에서 장바구니 데이터 가져오기
     			int user_no = loginuser.getUser_no();
                 List<CartVO> cartList = cdao.cartListSelectAll(user_no);
                 
-                    request.setAttribute("cartList", cartList);
+                request.setAttribute("cartList", cartList);
 
             } catch (Exception e) {
                 e.printStackTrace(); 
@@ -61,11 +59,11 @@ public class CartList extends AbstractController {
     	
     	//////////////////////////////////////////////////////////////////////////////////////////
     	
-    	String cart_pno = request.getParameter("wish_no");
+    	String cart_pno = request.getParameter("cart_no");
 
         if (cart_pno != null) {
         	
-            		// 관심상품 삭제(X버튼 누를때) 
+            // 장바구니 삭제(X버튼 누를때) 
             try {
             	
                 int cart_no = Integer.parseInt(cart_pno);
@@ -90,5 +88,41 @@ public class CartList extends AbstractController {
             return;
         }
     	
+        
+		////////////////////////////////////////////////////////////////////////////////////////////
+		        
+		String deleteAll = request.getParameter("delete_all");
+		
+		if ("true".equals(deleteAll)) {
+		
+		// 장바구니 비우기
+		try {
+		int user_no = loginuser.getUser_no();
+		boolean isDeleted = cdao.CartDeleteAll(user_no);
+		
+		if (isDeleted) {
+		request.setAttribute("message", "장바구니 비우기 완료했습니다.");
+		} else {
+		request.setAttribute("message", "장바구니 비우기 실패하였습니다.");
+		}
+		
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+		request.setAttribute("message", "삭제에 실패하였습니다.");
+		}
+		
+		// 메시지를 보여주고 관심상품 리스트로 리다이렉트
+		request.setAttribute("redirectUrl", request.getContextPath() + "/mypage/wishList.ddg");
+		super.setRedirect(false);
+		super.setViewPage("/WEB-INF/common/msg.jsp");
+		return;
+		
+		}
+        
+		
+		
+		
     }
+        
 }

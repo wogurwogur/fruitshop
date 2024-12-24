@@ -1,8 +1,5 @@
 package mypage.ship.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,35 +9,43 @@ import mypage.ship.domain.ShipVO;
 import mypage.ship.model.ShipDAO;
 import mypage.ship.model.ShipDAO_imple;
 
-public class ShipManagement extends AbstractController {
+public class ShipUpdate extends AbstractController {
 
 	ShipDAO sdao = new ShipDAO_imple();
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-	
+		
+
 		if(loginuser != null) {
-	
-				List<ShipVO> shipList = new ArrayList<>();
+			
+			if("get".equalsIgnoreCase(request.getMethod())) {
 				
-				shipList = sdao.shipSelectAll(loginuser.getUser_no());
+				String ship_no = request.getParameter("inputValue");
 				
-				request.setAttribute("shipList", shipList);
+				ShipVO svo = new ShipVO();
+				
+				svo = sdao.shipSelectOne(ship_no);
+				
+				request.setAttribute("svo", svo);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/mypage/shipInfo.jsp");
-		
-			
-		}
-		else {
-			super.setRedirect(true);
-			super.setViewPage(request.getContextPath()+"/login/login.ddg");
+				super.setViewPage("/WEB-INF/mypage/shipUpdate.jsp");
+				
+			} 
+			if("post".equalsIgnoreCase(request.getMethod())) {
+				
+				
+				
+			}
 		}
 		
 	}
+	
+	
 
 }

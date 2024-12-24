@@ -81,7 +81,7 @@
 							</td>
 							<td style="height: 80px; vertical-align:top;">
 								<input type="password" id="passwdcheck" maxlength="20" class="requiredInfo info" placeholder="비밀번호 확인" /><br>
-								<span id="pwdError" class="error"></span><span class="rule">(영문 대소문자/숫자/특수문자 조합, 8자~20자)</span>
+								<span id="pwdError" class="error"></span><span class="rule">(영문/숫자/특수문자 조합, 8자~20자)</span>
 							</td>
 						</tr>
 
@@ -134,6 +134,7 @@
 								<img src="<%= request.getContextPath() %>/images/memberRegister/b_zipcode.gif" id="zipcodeSearch" width="90" height="30" />
 								<span class="error"></span>
 							</td>
+							
 						</tr>
 
 						<tr>
@@ -155,8 +156,9 @@
 								<span class="star text-danger"></span>
 							</td>
 							<td class="text-center" style="height: 100px;">
-								<input type="button" class="btn btn-success btn-lg mr-5" value="변경하기" onclick="goUpdate()" />
-								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goback()" />
+								<input type="button" class="btn btn-outline-success btn-lg mr-3" value="변경하기" onclick="goUpdate()" />
+								<input type="button" class="btn btn-outline-danger btn-lg mr-3" value="취소하기" onclick="goBack()" />
+								<input type="button" class="btn btn-outline-warning btn-lg" value="탈퇴하기" onclick="goWithdrawal()" />
 							</td>
 						</tr> 
 
@@ -168,7 +170,6 @@
 		</div>
 	</form>
 </div>
-
 
 
 

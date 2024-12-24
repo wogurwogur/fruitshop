@@ -6,7 +6,11 @@
 
 $(()=>{
 	
-	$("input:text[name='ship_name']").focus();
+	
+	
+	
+	
+	
 
 
     // 배송지명
@@ -165,7 +169,7 @@ $(()=>{
 
 
 // 추가하기 클릭시 goAdd() 함수
-function goAdd() {
+function goUpdate() {
 	
     let bool = true;
 	
@@ -224,9 +228,9 @@ function goAdd() {
         return false;
     }
 
-    const frm = document.addFrm
+    const frm = document.updateFrm;
 
-    frm.action = "shipAdd.ddg";
+    frm.action = "ShipUpdate.ddg";
     frm.method = "post";
     frm.submit();
 

@@ -6,14 +6,14 @@
 
 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/cart/cart.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/js/cart/cart.js">
+
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 
 <script type="text/javascript">
 
-	
-	
 	
 	
 	<%-- 선택상품 주문하기 누를때--%>
@@ -31,13 +31,18 @@
 	}
 	
 	
-	
 	 <%-- 장바구니 비우기 누를때 --%> 
 	function CartDeleteAll() {
 		
-		confirm("정말로 관심상품을 모두 비우시겠습니까?");
+		if( confirm("정말로 관심상품을 모두 비우시겠습니까?") ){
+			
+		const frm = document.getElementById("deleteAll");
+			frm.submit();
+		}
 		
 	}
+	
+	
 	
 	
 	
@@ -77,9 +82,9 @@
 
                         <%-- 수량 조절 --%>
                          <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
-                            <button style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
-                            <input type='number' min='1' value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
-                            <button style="width: 8%; font-size: 23pt; background-color: white; border: white;">+</button>
+                            <button class="minus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
+                            <input type='text' min='1' value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
+                            <button class="plus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">+</button>
                         </div>
 
                         <%-- 상품의 총액 --%>
@@ -92,7 +97,7 @@
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 0.5; text-align: center;">
                            <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" onsubmit= "return confirm('정말 삭제하시겠습니까?'); ">
-                                <input type="hidden" name="wish_no" value="${item.cart_no}">
+                                <input type="hidden" name="cart_no" value="${item.cart_no}">
                                 <button type="submit" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
                             </form>
                         </div>
@@ -108,8 +113,12 @@
 	<div class="ec-base-button gColumn">
 	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
 	    <a href="#" onclick="OrderAll();" class="btnSubmit">전체상품 주문하기</a>
-	    <a href="#" onclick="CartDeleteAll();" class="btnremove">장바구니 비우기</a>       
+	    <a href="#" onclick="CartDeleteAll(); return false;" class="btnremove">장바구니 비우기</a>       
 	    </div>
+	    
+	    <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" id="deleteAll">
+		<input type="hidden" name="delete_all" value="true">
+		</form>
         </c:when>
 		
         <%-- 장바구니에 상품이 없는 경우 --%>

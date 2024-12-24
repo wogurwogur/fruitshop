@@ -18,13 +18,13 @@
     <div class="container" style="margin-top: 2.5%;">
 
     <div id="mypage" class="menu">
-            <a href="#">마이페이지</a>
-            <a href="#">회원정보수정</a>
+            <a href="<%= request.getContextPath()%>/mypage/mypageIndex.ddg">마이페이지</a>
+            <a href="<%= request.getContextPath()%>/mypage/updateInfo.ddg">회원정보수정</a>
             <a href="#">주문내역조회</a>
             <a href="<%= request.getContextPath()%>/mypage/wishList.ddg">관심상품</a>
-            <a href="#">배송주소록관리</a>
+            <a href="<%= request.getContextPath()%>/mypage/shipManagement.ddg">배송주소록관리</a>
             <a href="#">게시물관리</a>
-            <a href="#">최근본상품</a>
+            <a href="<%= request.getContextPath()%>/mypage/recent_Viewproduct.ddg">최근본상품</a>
     </div>
 	
 	</div>

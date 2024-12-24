@@ -59,6 +59,15 @@ public class Login extends AbstractController {
 						
 						if(loginuser.getIdle() == 0) { // 휴면 계정인경우
 						
+							String message = "휴면 계정입니다. \\n복구 페이지로 이동합니다.";
+							String loc = request.getContextPath()+"/login/useridRecovery.ddg";
+							
+							request.setAttribute("message", message);
+							request.setAttribute("loc", loc);
+							
+							super.setRedirect(false);
+							super.setViewPage("/WEB-INF/common/msg.jsp");
+							
 						}
 						else { 
 							session.setAttribute("loginuser", loginuser);
