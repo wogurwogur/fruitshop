@@ -167,8 +167,8 @@ public class OrderDAO_imple implements OrderDAO {
 				shipVO.setShip_name(rs.getString("ship_name"));
 				shipVO.setShip_postcode(rs.getString("ship_postcode"));
 				shipVO.setShip_address(rs.getString("ship_address"));
-				shipVO.setShip_detailaddress(rs.getString("ship_detailaddress"));
-				shipVO.setShip_extraadress(rs.getString("ship_extraadress"));
+				shipVO.setShip_detailAddress(rs.getString("ship_detailaddress"));
+				shipVO.setShip_extraAddress(rs.getString("ship_extraadress"));
 				shipVO.setShip_default(rs.getInt("ship_default"));
 				shipVO.setShip_receiver(rs.getString("ship_receiver"));
 				shipVO.setShip_receivertel(aes.decrypt(rs.getString("ship_receivertel")));

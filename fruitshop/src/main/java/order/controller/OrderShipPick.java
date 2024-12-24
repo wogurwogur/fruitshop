@@ -39,8 +39,8 @@ public class OrderShipPick extends AbstractController {
 				jsonObj.put("ship_name", svo.getShip_name());
 				jsonObj.put("ship_postcode", svo.getShip_postcode());
 				jsonObj.put("ship_address", svo.getShip_address());
-				jsonObj.put("ship_detailaddress", svo.getShip_detailaddress());
-				jsonObj.put("ship_extraadress", svo.getShip_extraadress());
+				jsonObj.put("ship_detailaddress", svo.getShip_detailAddress());
+				jsonObj.put("ship_extraadress", svo.getShip_extraAddress());
 				jsonObj.put("ship_default", svo.getShip_default());
 				jsonObj.put("ship_receiver", svo.getShip_receiver());
 				jsonObj.put("ship_receivertel", svo.getShip_receivertel());
