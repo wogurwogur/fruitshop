@@ -86,24 +86,24 @@ public class ProductListController extends AbstractController {
 		int pageNo  = ( (Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1; 
 		// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 			
-		
+		pageBar += "<div class='pagination'>";
 		
 		// [맨처음]
-		pageBar += "<li class='page-item'><a class='page-link' href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo=1'>[맨처음]</a></li>"; 
+		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo=1'>&laquo;</a>"; 
 		
 		// [이전]
 		
-		pageBar += "<li class='page-item'><a class='page-link' href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>"; 
+		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
 		
 	
 		
 		while( !(loop > blockSize || pageNo > totalPage) ) {
 			
 			if(pageNo == Integer.parseInt(currentShowPageNo)) {
-				pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>";
+				pageBar += "<a class='active' href='#'>"+pageNo+"</a>";
 			}
 			else {
-				pageBar += "<li class='page-item'><a class='page-link' href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
+				pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
 			}
 			
 			loop++;   // 1 2 3 4 5 6 7 8 9 10
@@ -113,12 +113,14 @@ public class ProductListController extends AbstractController {
 		} // end of while( !(loop > blockSize || pageNo > totalPage) 
 		
 		// [다음]
-		pageBar += "<li class='page-item'><a class='page-link' href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>"; 
+		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>"; 
 
 		
 		// [맨마지막]
-		pageBar += "<li class='page-item'><a class='page-link' href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>"; 
+		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+totalPage+"'>&raquo;</a>"; 
 		
+		
+		pageBar += "</div>";
 		
 		try {
 			// List<ProductVO> prdList = prdao.productListSelectAll();
