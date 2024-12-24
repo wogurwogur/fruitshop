@@ -178,7 +178,7 @@ $(document).ready(function(){
   position: absolute;
   background-color: #ffffff;
   width: 500px;
-  height: 600px;
+  height: 480px;
   padding: 15px;
   border-radius: 20%;
 }

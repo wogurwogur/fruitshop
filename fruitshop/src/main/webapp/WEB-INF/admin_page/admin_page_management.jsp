@@ -26,27 +26,7 @@ div#admin_top_nav_center{
 }
 
 
-/* search start */
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
 
-form.example button {
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-/* search end  */
 </style>
 
 <%-- div top nav start --%>
@@ -80,6 +60,17 @@ form.example button {
 
 <div class="container">
 	
-	메인페이지 관리
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		
+			
+		
+		</tbody>
+	</table>
 	
 </div>

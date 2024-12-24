@@ -185,7 +185,7 @@ $(document).ready(function(){
   position: absolute;
   background-color: #ffffff;
   width: 500px;
-  height: 600px;
+  height: 480px;
   padding: 15px;
   border-radius: 20%;
 }
@@ -205,6 +205,10 @@ $(document).ready(function(){
   background: rgba(0, 0, 0, 0.5);
 }
 
+#couponAllReceiptOpen{
+	height: 36px;
+}
+
 #modalContainer.hidden {
   display: none;
 }
@@ -220,29 +224,28 @@ div#admin_top_nav_center{
 }
 
 button#couponAllReceipt{
-	
+	vertical-align: middle;
 	border: 0px;
 }
 
-/* search start */
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
+select#searchType{
+	height: 36px;
+	vertical-align: middle;
 }
 
-form.example button {
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
+#searchTypeWord{
+	vertical-align: middle;
+	height: 36px;
+	padding: 0px;
+}
+#searchButton{
+	vertical-align: middle;
+	height: 36px;
+	width: 35px;
+	border: 0px;
+}
+#admin_top_nav_right{
+	margin-right: 1%;
 }
 
    div#pageBar {
@@ -271,25 +274,28 @@ form.example button {
 		 
 		
 		<%-- center div start --%>
+		
 		<div id="admin_top_nav_center">
-			<button type="button" id="couponAllReceiptOpen">쿠폰일괄증정</button>
+			<button type="button" class="btn btn-outline-success" id="couponAllReceiptOpen">쿠폰일괄증정</button>
 		</div>
 		<%-- center div end --%>
 		
 	<%-- search div start --%>
-	<div>
-	  <select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
+	<div id="admin_top_nav_right">
+	<select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
 	    <option value="">검색대상</option>
 	    <option value="name">회원명</option>
 	    <option value="userid">아이디</option>
 	    <option value="email">이메일</option>
 	    <option value="user_no">회원번호</option>
 	  </select>
-	  <input type="text" placeholder="입력란" name="searchWord">
-	  <button type="button" onclick="memberSearch()"><i class="fa fa-search"></i></button>
+	</div> 
+	<div>
+	  <input type="text" placeholder="입력란" name="searchWord" id="searchTypeWord">
+	  <button type="button" onclick="memberSearch()" id="searchButton"><i class="fa fa-search"></i></button>
 	  <input type="hidden" name="detail_user_no">
-			
-	</div>
+	</div>		
+
 	<%-- search div end --%>
 	</div>
  
@@ -299,7 +305,7 @@ form.example button {
 <div class="container">
 	
 	<c:if test="${!empty requestScope.member_allList}">
-		<table class="table">
+		<table class="table"  style="text-align:center;">
 			<thead>
 				<tr>
 					<th>회원번호</th>
@@ -314,7 +320,7 @@ form.example button {
 					<tr onclick="memberDetail('${memberinfo.user_no}')">
 						<td>${memberinfo.user_no}</td>
 						<td>${memberinfo.name}</td>
-						<td>${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
+						<td style="text-align:left;">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
 						<td>${memberinfo.gender}</td>
 						<td>${memberinfo.tel}</td>
 					</tr>

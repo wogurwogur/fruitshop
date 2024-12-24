@@ -56,16 +56,6 @@ div#admin_top_nav_center{
   border: none;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* drop down end */
-
-
-/* search start */
 form.example input[type=text] {
   padding: 10px;
   font-size: 17px;

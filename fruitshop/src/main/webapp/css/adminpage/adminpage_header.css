@@ -38,13 +38,22 @@ option{
 	font-size: 15px;
 	font-weight: 300;
 }
+button{
+	font-size: 15px;
+	font-weight: 300;
+}
+
+span{
+	font-size: 15px;
+	font-weight: 300;
+}
 
 
 select#searchType{
 	height: 34.5px;
 	margin-bottom: 3px;
 }
-
+d
 button{
 	
 	font-size: 15px;
