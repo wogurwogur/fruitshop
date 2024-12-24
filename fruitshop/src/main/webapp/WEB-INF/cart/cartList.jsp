@@ -96,7 +96,7 @@
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 0.5; text-align: center;">
                            <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" onsubmit= "return confirm('정말 삭제하시겠습니까?'); ">
-                                <input type="hidden" name="wish_no" value="${item.cart_no}">
+                                <input type="hidden" name="cart_no" value="${item.cart_no}">
                                 <button type="submit" style="background-color: white; color: black; font-size: 20pt; border: solid 1px white; margin-left: 10%; color: gray;">X</button>
                             </form>
                         </div>

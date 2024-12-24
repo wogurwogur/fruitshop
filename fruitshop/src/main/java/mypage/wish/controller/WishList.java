@@ -23,7 +23,7 @@ public class WishList extends AbstractController {
 		HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
-    	String wish_pno = request.getParameter("wish_no");
+    	
     	String message = "";
     	
     	if(loginuser != null  ) {
@@ -60,7 +60,7 @@ public class WishList extends AbstractController {
     	
     	///////////////////////////////////////////////////////////////////////////////////
     	
-    	
+    	String wish_pno = request.getParameter("wish_no");
 
         if (wish_pno != null) {
         	

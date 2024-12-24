@@ -2,6 +2,7 @@ package cart.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cart.domain.CartVO;
 
@@ -16,7 +17,8 @@ public interface CartDAO {
 	// 장바구니 비우기 //
 	boolean CartDeleteAll(int user_no) throws SQLException;
 	
-	// 장바구니 수량 조절 //
-	boolean updateCartQuantity(int cart_no, int prodcount) throws SQLException;
+	// 장바구니 등록 // 
+	int insertCart(Map<String, String> paraMap) throws SQLException;
+	
 
 }

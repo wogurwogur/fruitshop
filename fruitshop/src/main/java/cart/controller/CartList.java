@@ -16,7 +16,6 @@ import cart.model.CartDAO_imple;
 public class CartList extends AbstractController {
 
     private CartDAO cdao = new CartDAO_imple();
-    private MemberDAO mdao = new MemberDAO_imple();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -26,7 +25,7 @@ public class CartList extends AbstractController {
     	String userid = request.getParameter("userid");
     	String message = "";
     	
-    	if(loginuser != null  ) {
+    	if(loginuser != null) {
     		
     		try {
                 // DAO에서 장바구니 데이터 가져오기
@@ -65,7 +64,7 @@ public class CartList extends AbstractController {
 
         if (cart_pno != null) {
         	
-            		// 장바구니 삭제(X버튼 누를때) 
+            // 장바구니 삭제(X버튼 누를때) 
             try {
             	
                 int cart_no = Integer.parseInt(cart_pno);
@@ -92,7 +91,6 @@ public class CartList extends AbstractController {
     	
         
 		////////////////////////////////////////////////////////////////////////////////////////////
-		        
 		        
 		String deleteAll = request.getParameter("delete_all");
 		
@@ -123,10 +121,6 @@ public class CartList extends AbstractController {
 		
 		}
         
-		///////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
 		
 		
 		

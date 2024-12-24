@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -154,29 +155,34 @@ public class CartDAO_imple implements CartDAO {
 
         return isDeleted;
 	}
-	
-	
-	// 장바구니 수량 조절 //
+
+	// 장바구니 등록
 	@Override
-	public boolean updateCartQuantity(int cart_no, int prodcount) throws SQLException {
-		 boolean isUpdated = false;
-
-		    try {
-		        conn = ds.getConnection();
-		        String sql = " UPDATE tbl_cart SET cart_prodcount = ? WHERE cart_no = ? ";
-		        pstmt = conn.prepareStatement(sql);
-		        pstmt.setInt(1, prodcount);
-		        pstmt.setInt(2, cart_no);
-
-		        int rowsAffected = pstmt.executeUpdate();
-		        if (rowsAffected > 0) {
-		            isUpdated = true;
-		        }
-		    } finally {
-		        close();
-		    }
-
-		    return isUpdated;
+	public int insertCart(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		 try {
+	            conn = ds.getConnection();
+	            String sql = " insert into tbl_cart(cart_no, fk_user_no, fk_prod_no, cart_prodcount) "
+	            		   + " values(cart_seq.nextval, ?, ?, ?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            pstmt.setString(3, paraMap.get("cart_prodcount"));
+	            
+	            n = pstmt.executeUpdate();
+	            
+	            
+		
+		 } finally {
+	            close();
+	        }
+		
+		
+		return n;
 	}
-
+	
+	
 }
