@@ -28,7 +28,7 @@ public class ProductDetail extends AbstractController {
 			request.setAttribute("prdvo", prdvo);
 			
 			
-			ReviewListVO revo = prdao.reviewList(prodNo); // 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
+			// ReviewListVO revo = prdao.reviewList(prodNo); // 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
 			
 			
 			super.setRedirect(false);
