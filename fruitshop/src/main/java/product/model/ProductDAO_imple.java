@@ -15,6 +15,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import product.domain.ProductVO;
+import review.domain.ReviewListVO;
 
 public class ProductDAO_imple implements ProductDAO {
 
@@ -253,6 +254,14 @@ public class ProductDAO_imple implements ProductDAO {
 		return prdvo;
 		
 	} // end of public List<ProductVO> prdDetails(String prodNo)
+	
+	
+	// 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
+	@Override
+	public ReviewListVO reviewList(String prodNo) throws SQLException {
+		
+		return null;
+	}
 	
 		
 }

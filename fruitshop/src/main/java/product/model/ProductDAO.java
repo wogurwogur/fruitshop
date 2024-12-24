@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import product.domain.ProductVO;
+import review.domain.ReviewListVO;
 
 public interface ProductDAO {
 	
@@ -19,6 +20,10 @@ public interface ProductDAO {
 	
 	// 입력받은 상품 번호를 가지고 상품 상세 페이지 보여주기
 	ProductVO prdDetails(String prodNo) throws SQLException;
+
+	
+	// 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
+	ReviewListVO reviewList(String prodNo) throws SQLException;
 	
 
 }
