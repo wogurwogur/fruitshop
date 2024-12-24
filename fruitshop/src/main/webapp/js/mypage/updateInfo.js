@@ -328,13 +328,25 @@ function goUpdate() {
 } //
 
 // 취소하기 클릭시 리셋하는 함수
-function goback() {
+function goBack() {
 
     location.href="/fruitshop/login/login.ddg";
 
 }// end of function goReset()---------------------
 
 
+function goWithdrawal() {
+	
+	if(confirm("정말로 탈퇴 하시겠습니까?")) {
+		
+		const frm = document.updateInfoFrm;
+					
+		frm.action = "memberWithdrawal.ddg";
+		frm.method = "post";
+		frm.submit();
+		
+	}
+}
 
 
 
