@@ -20,5 +20,11 @@ public interface CartDAO {
 	// 장바구니 등록 // 
 	int insertCart(Map<String, String> paraMap) throws SQLException;
 	
+	// 장바구니안에 같은 상품이 있는지 정보 보기 //
+	CartVO selectproduct(Map<String, String> paraMap) throws SQLException;
+	
+	// 같은 상품 있을때 상품수량 업데이트 // 
+	int updatecount(Map<String, String> paraMap) throws SQLException;
+	
 
 }

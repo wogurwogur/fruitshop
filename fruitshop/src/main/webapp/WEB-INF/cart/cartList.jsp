@@ -15,6 +15,7 @@
 <script type="text/javascript">
 
 	
+	
 	<%-- 선택상품 주문하기 누를때--%>
 	function Orderpick() {
 		
@@ -81,9 +82,9 @@
 
                         <%-- 수량 조절 --%>
                          <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
-                            <button id="plus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
+                            <button class="minus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
                             <input type='text' min='1' value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
-                            <button id="minus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">+</button>
+                            <button class="plus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">+</button>
                         </div>
 
                         <%-- 상품의 총액 --%>

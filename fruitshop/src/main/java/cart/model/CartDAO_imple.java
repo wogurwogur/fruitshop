@@ -185,4 +185,72 @@ public class CartDAO_imple implements CartDAO {
 	}
 	
 	
+	
+	// 장바구니안에 같은 상품이 있는지 정보 보기
+	@Override
+	public CartVO selectproduct(Map<String, String> paraMap) throws SQLException {
+		
+		CartVO cvo = null;
+		
+		 try {
+	            conn = ds.getConnection();
+	            String sql = " select fk_user_no, fk_prod_no, cart_prodcount "
+	            	       + " from tbl_cart "
+	            		   + " where fk_user_no = ? and fk_prod_no = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            if(rs.next()) {
+	            	
+	            	cvo = new CartVO();
+	            	
+	            	cvo.setFk_user_no(rs.getInt("fk_user_no"));
+	            	cvo.setFk_prod_no(rs.getInt("fk_prod_no"));
+	            	cvo.setCart_prodcount(rs.getInt("cart_prodcount"));
+	            	
+	            }
+	            
+	            
+		 } finally {
+	            close();
+	        }
+		
+		return cvo;
+	}
+	
+	
+	// 같은 상품 있을때 상품수량 업데이트 //
+	@Override
+	public int updatecount(Map<String, String> paraMap) throws SQLException {
+		
+		int update = 0;
+		
+		try {
+            conn = ds.getConnection();
+            String sql = " update tbl_cart set cart_prodcount = cart_prodcount + ? "
+            		   + " where fk_user_no = ? and fk_prod_no = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setString(1, paraMap.get("cart_prodcount"));
+            pstmt.setString(2, paraMap.get("fk_user_no"));
+            pstmt.setString(3, paraMap.get("fk_prod_no"));
+            
+            update = pstmt.executeUpdate();
+            
+            
+            
+		 } finally {
+            close();
+         }
+		
+		return update;
+	}
+	
+	
+	
 }
