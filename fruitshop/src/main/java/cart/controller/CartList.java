@@ -8,8 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
+
 import cart.model.CartDAO;
 import cart.model.CartDAO_imple;
 
