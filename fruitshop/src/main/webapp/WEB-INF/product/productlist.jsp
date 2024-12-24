@@ -80,6 +80,20 @@
 		
 			
 	} // end of function goSearch()
+	
+	
+	
+	// 상품 클릭시 상품 정보 페이지로 넘어간다.
+	function goDetail(prodNo) {	
+		
+		const frm = document.productDetail_frm;
+		frm.prodNo.value = prodNo; // 상품 번호 값 데이터 가지고 URL 이동
+		
+		frm.action = "productDetail.ddg";
+		frm.method = "get"; 
+		frm.submit();
+		
+	}//  end of function goDetail(prodNo)
 			
 			
 </script>
@@ -114,7 +128,7 @@
    		<%-- 검색창 시작 --%>
 		<div id="fruitSearch">
 			<form name="fruit_search_frm">
-				<input type="text" name="searchFruit" placeholder="과일명으로 검색하기" maxlength="50" />
+				<input type="text" class="" name="searchFruit" placeholder="과일명으로 검색하기" maxlength="50" />
 				<input type="text" style="display: none;" />
 				<i class="fa-solid fa-magnifying-glass searchIcon" onclick="goSearch()"></i>
 			</form>
@@ -132,9 +146,8 @@
                 <%-- 상품 시작 --%>
                 <div class="product-item" data-aos="fade-up" data-aos-delay="0">
                     <div class="my-5" style="position: relative;">
-                        <a href="<%= ctxPath%>/product/productDetail.ddg"> <%-- 이미지 클릭 시 상세페이지 열기 --%>
-                            <img src="<%=request.getContextPath()%>/images/product/thumnail/${prdvo.prod_thumnail}" style="width: 100%; height: auto;">
-                        </a>
+                    
+                        <img src="<%=request.getContextPath()%>/images/product/thumnail/${prdvo.prod_thumnail}" class="thumnail" style="width: 100%; height: auto;" onclick="goDetail(${prdvo.prod_no})">
                         
                         <%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 시작 --%>
                         <c:if test="${prdvo.prod_inventory == 0}">   
@@ -144,9 +157,7 @@
 
                         <div style="display: flex;">
                             <div>
-                                <a href="#" class="product">
-                                    <span class="mt-3 product">${prdvo.prod_name}</span>
-                                </a>
+                                <span class="mt-3 product" onclick="goDetail(${prdvo.prod_no})">${prdvo.prod_name}</span>
                             </div>
                             <div class="ml-auto">
                                 <span><i onclick="wishToggle(this)" class="fa-regular fa-heart fa-lg heart mt-3"></i></span>
@@ -172,20 +183,23 @@
     <%-- 검색 시 데이터가 없을 끝 --%>
    
   	<div id="pageBar">
-		<nav>
-			<ul class="pagination pagination-sm justify-content-center">${requestScope.pageBar}</ul>
-		</nav>
+		${requestScope.pageBar}
 	</div>
     
 </div>
 
 
 
-
+<%-- 계절 카테고리 --%>
 <form name="seasonNo_frm">
 	<input type="hidden" name="seasonNo" />
 </form>
 
+
+<%-- 상품 상세페이지 이동을 위한 --%>
+<form name="productDetail_frm">
+	<input type="hidden" name="prodNo" />
+</form>
  
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
