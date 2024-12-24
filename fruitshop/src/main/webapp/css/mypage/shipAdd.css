@@ -37,13 +37,13 @@ select {
 .red {
 	color:red;
 }
-
+	
 .blue {
 	color:blue;
 }
 
 .rule {
-	font-size:9pt;
+	font-size:10pt;
 }
 
 #zipcodeSearch:hover {

@@ -11,7 +11,7 @@ public class ShipVO {
 	private String ship_postcode;			// 우편번호
 	private String ship_address; 			// 주소
 	private String ship_detailAddress;		// 상세주소
-	private String ship_extraAdress;		// 참고항목
+	private String ship_extraAddress;		// 참고항목
 	private int ship_default;				// 기본배송지여부 (0: 그외 / 1: 기본배송지)
 	
 	
@@ -69,10 +69,10 @@ public class ShipVO {
 		this.ship_detailAddress = ship_detailaddress;
 	}
 	public String getShip_extraAddress() {
-		return ship_extraAdress;
+		return ship_extraAddress;
 	}
 	public void setShip_extraAddress(String ship_extraadress) {
-		this.ship_extraAdress = ship_extraadress;
+		this.ship_extraAddress = ship_extraadress;
 	}
 	public int getShip_default() {
 		return ship_default;
