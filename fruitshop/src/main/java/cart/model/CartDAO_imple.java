@@ -126,5 +126,57 @@ public class CartDAO_imple implements CartDAO {
 
         return isDeleted;
 	}
+	
+	
+	// 장바구니 비우기 //
+	@Override
+	public boolean CartDeleteAll(int user_no) throws SQLException {
+		
+		boolean isDeleted = false;
+
+        try {
+            conn = ds.getConnection();
+            String sql = " delete from tbl_cart "
+            		   + " where fk_user_no = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, user_no);
+
+            int n = pstmt.executeUpdate();
+            
+            if (n != 0) {
+            	isDeleted = true;
+            }
+            
+            
+        } finally {
+            close();
+        }
+
+        return isDeleted;
+	}
+	
+	
+	// 장바구니 수량 조절 //
+	@Override
+	public boolean updateCartQuantity(int cart_no, int prodcount) throws SQLException {
+		 boolean isUpdated = false;
+
+		    try {
+		        conn = ds.getConnection();
+		        String sql = " UPDATE tbl_cart SET cart_prodcount = ? WHERE cart_no = ? ";
+		        pstmt = conn.prepareStatement(sql);
+		        pstmt.setInt(1, prodcount);
+		        pstmt.setInt(2, cart_no);
+
+		        int rowsAffected = pstmt.executeUpdate();
+		        if (rowsAffected > 0) {
+		            isUpdated = true;
+		        }
+		    } finally {
+		        close();
+		    }
+
+		    return isUpdated;
+	}
 
 }

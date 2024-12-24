@@ -33,7 +33,7 @@ public class CartList extends AbstractController {
     			int user_no = loginuser.getUser_no();
                 List<CartVO> cartList = cdao.cartListSelectAll(user_no);
                 
-                    request.setAttribute("cartList", cartList);
+                request.setAttribute("cartList", cartList);
 
             } catch (Exception e) {
                 e.printStackTrace(); 
@@ -61,11 +61,11 @@ public class CartList extends AbstractController {
     	
     	//////////////////////////////////////////////////////////////////////////////////////////
     	
-    	String cart_pno = request.getParameter("wish_no");
+    	String cart_pno = request.getParameter("cart_no");
 
         if (cart_pno != null) {
         	
-            		// 관심상품 삭제(X버튼 누를때) 
+            		// 장바구니 삭제(X버튼 누를때) 
             try {
             	
                 int cart_no = Integer.parseInt(cart_pno);
@@ -90,5 +90,46 @@ public class CartList extends AbstractController {
             return;
         }
     	
+        
+		////////////////////////////////////////////////////////////////////////////////////////////
+		        
+		        
+		String deleteAll = request.getParameter("delete_all");
+		
+		if ("true".equals(deleteAll)) {
+		
+		// 장바구니 비우기
+		try {
+		int user_no = loginuser.getUser_no();
+		boolean isDeleted = cdao.CartDeleteAll(user_no);
+		
+		if (isDeleted) {
+		request.setAttribute("message", "장바구니 비우기 완료했습니다.");
+		} else {
+		request.setAttribute("message", "장바구니 비우기 실패하였습니다.");
+		}
+		
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+		request.setAttribute("message", "삭제에 실패하였습니다.");
+		}
+		
+		// 메시지를 보여주고 관심상품 리스트로 리다이렉트
+		request.setAttribute("redirectUrl", request.getContextPath() + "/mypage/wishList.ddg");
+		super.setRedirect(false);
+		super.setViewPage("/WEB-INF/common/msg.jsp");
+		return;
+		
+		}
+        
+		///////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		
+		
     }
+        
 }

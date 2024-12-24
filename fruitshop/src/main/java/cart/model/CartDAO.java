@@ -12,5 +12,11 @@ public interface CartDAO {
 	
 	// 장바구니 X버튼 눌렀을 때 한 행 삭제 //
 	boolean deleteCartItem(int cart_no) throws SQLException;
+	
+	// 장바구니 비우기 //
+	boolean CartDeleteAll(int user_no) throws SQLException;
+	
+	// 장바구니 수량 조절 //
+	boolean updateCartQuantity(int cart_no, int prodcount) throws SQLException;
 
 }

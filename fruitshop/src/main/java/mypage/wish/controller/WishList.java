@@ -1,7 +1,9 @@
 package mypage.wish.controller;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class WishList extends AbstractController {
 		HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
-    	
+    	String wish_pno = request.getParameter("wish_no");
     	String message = "";
     	
     	if(loginuser != null  ) {
@@ -32,7 +34,7 @@ public class WishList extends AbstractController {
                 List<WishVO> wishList = wdao.wishListSelectAll(user_no);
                 
                 request.setAttribute("wishList", wishList);
-                    
+    
                     
             } catch (Exception e) {
                 e.printStackTrace(); 
@@ -58,7 +60,7 @@ public class WishList extends AbstractController {
     	
     	///////////////////////////////////////////////////////////////////////////////////
     	
-    	String wish_pno = request.getParameter("wish_no");
+    	
 
         if (wish_pno != null) {
         	
@@ -80,7 +82,7 @@ public class WishList extends AbstractController {
             }
 
             // 메시지를 보여주고 관심상품 리스트로 리다이렉트
-            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.ddg");
+            request.setAttribute("redirectUrl", request.getContextPath() + "/mypage/wishList.ddg");
             super.setRedirect(false);
             super.setViewPage("/WEB-INF/common/msg.jsp");
             return;
@@ -111,13 +113,13 @@ public class WishList extends AbstractController {
             }
 
             // 메시지를 보여주고 관심상품 리스트로 리다이렉트
-            request.setAttribute("redirectUrl", request.getContextPath() + "/wishList.ddg");
+            request.setAttribute("redirectUrl", request.getContextPath() + "/mypage/wishList.ddg");
             super.setRedirect(false);
             super.setViewPage("/WEB-INF/common/msg.jsp");
             return;
         }
-	
-		
+        	
+        	//////////////////////////////////////////////////////////////////////////////////////////
 	}
 
 }
