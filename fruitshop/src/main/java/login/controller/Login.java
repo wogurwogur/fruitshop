@@ -21,7 +21,7 @@ public class Login extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		Boolean isExists = false;
+		boolean isExists = false;
 		
 		HttpSession session = request.getSession();
 		

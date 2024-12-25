@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
+import review.domain.ReviewListVO;
 
 public class ProductDetail extends AbstractController {
 	
@@ -24,8 +25,11 @@ public class ProductDetail extends AbstractController {
 		
 		try {
 			ProductVO prdvo = prdao.prdDetails(prodNo);
+			request.setAttribute("prdvo", prdvo);
 			
-			request.setAttribute("prdvo", prdvo);	
+			
+			// ReviewListVO revo = prdao.reviewList(prodNo); // 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
+			
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/product/productdetail.jsp");

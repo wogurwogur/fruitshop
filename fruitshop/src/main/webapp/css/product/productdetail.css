@@ -164,7 +164,7 @@ div#prdInquire ul {
     justify-content: space-evenly;
     height: 52px;
     position: sticky;
-  	top: 0;
+  	top: 90px;
   	overflow: hidden;
 }
 
@@ -247,7 +247,8 @@ div#prdInquire div.inquireBoard {
 div.reveiwBtn,
 div.inquireBtn {
 	border: none;
-	background-color: black;
+	background-color: rgb(0, 0, 0);
+	cursor: pointer;
 }
 
 div.reveiwBtn span,
@@ -263,6 +264,7 @@ div.reveiwAllsee,
 div.inquireAllsee {
 	border: solid 1px black;
 	background-color: white;
+	cursor: pointer;
 }
 
 div.reveiwAllsee span,
@@ -294,17 +296,19 @@ span.reviewCnt {
 
 
 /* 상품 상세 페이지 a태그 */
-a.reveiwBtn,
+a
+/* a.reveiwBtn,
 a.reveiwAllsee,
 a.inquireBtn
-a.inquireAllsee {
+a.inquireAllsee */ {
   color: black;
 }
 
-a.reveiwBtn:hover,
+a:hover
+/* a.reveiwBtn:hover,
 a.reveiwAllsee:hover,
 a.inquireBtn:hover,
-a.inquireAllsee:hover {
+a.inquireAllsee:hover */ {
   color: black;
   text-decoration-line: none;
 }

@@ -22,42 +22,51 @@ $(document).ready(function(){
 	
 		let qty = 1; // 수량 초기값 설정
 		const maxQty = 20; // 수량 최대값 설정
+		let prod_inventory = ${requestScope.prdvo.prod_inventory}; // 현재 상품 재고량
 		
-	    // 상품 상세페이지에서 - 버튼을 클릭한 경우
+		
+		// 상품 상세페이지에서 - 버튼을 클릭한 경우
 	    $("button.minus").click(function(){
-			if (qty > 1) {
+			if (qty > 1 && prod_inventory != 0) {
 				qty--;
 				$("input.qty").val(qty);
 				totalPrice();
+			}
+			else if (prod_inventory == 0) {
+				alert("현재 해당 상품은 품절입니다.")
 			}
 	    });
 	
 		// 상품 상세페이지에서 + 버튼을 클릭한 경우
 		$("button.plus").click(function(){
-			if (qty < maxQty) {
+			if (qty < maxQty && prod_inventory != 0) {
 			    qty++;
 				$("input.qty").val(qty);
 				totalPrice();
 			}
-			else {
+			else if (qty >= maxQty) {
 				alert("주문 가능한 최대 수량은 20개입니다.")
 				return;
 			}
+			else if (prod_inventory == 0) {
+				alert("현재 해당 상품은 품절입니다.")
+			}
 		});
+
 		
-		totalPrice(); // 초기 총금액 및 수량 설정
+		totalPrice(); // 페이지 처음 들어왔을 때 총 금액 및 수량 설정
+		
 	
 		// 총 금액 및 수량 함수 ($(document).ready 외부에 위치 시 동작안해서 내부에 위치시켜놓음)
 		function totalPrice(){
-			const shipCost = 2500; // 배송비
 			const prdPrice = ${requestScope.prdvo.prod_price}; 
-			const totalPrice = (prdPrice * qty) + shipCost;
+			const totalPrice = (prdPrice * qty)
 			// console.log(qty);
 			$("span#totalPrice").text(totalPrice.toLocaleString() + ' 원(' + qty + '개)');
 		};
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 끝 --------- //
 		
-		
+			
 		// 장바구니 클릭 
 		$("div.cart").click(function() {
 			const prdCnt = $("input.qty").val();
@@ -70,8 +79,28 @@ $(document).ready(function(){
 		$("div.purchase").click(function() {
 			alert("구매하기 클릭")
 		});
-	
-	
+		
+		
+		
+		
+		// 상품후기 쓰기 클릭
+		
+		
+		// 상품후기 모두보기 클릭
+		$("div.reveiwAllsee").click(function(){
+			// alert("후기 모두보기 클릭")
+			location.href =`${pageContext.request.contextPath}/review/reviewList.ddg`;
+		});
+		
+		
+		// 문의하기 클릭
+		
+		// 문의하기 모두보기 클릭
+		$("div.inquireAllsee").click(function(){
+			location.href =`${pageContext.request.contextPath}/qna/qnaList.ddg`;
+		});
+		
+		
 		
 }); // end of $(document).ready(function(){
 	
@@ -155,7 +184,7 @@ $(document).ready(function(){
 				<%-- 재고 0일 경우 SOLD OUT --%>
 				<c:if test="${requestScope.prdvo.prod_inventory == 0}">
 					<div class="soldout" style="flex: 1; height: 52px; display: flex; justify-content: center; align-items: center;">
-							<span>SOLD OUT</span>
+						<span>SOLD OUT</span>
 					</div>
 				</c:if>
 				<%-- 재고 0일 경우 SOLD OUT 끝 --%>
@@ -172,12 +201,12 @@ $(document).ready(function(){
 		<%-- 상세정보 --%>
 		<div id="detailInfo" >
 			<ul style="display: flex;">
-				<li class="detail">상세정보</li>
-				<li>이용안내</li>
-				<li>상품후기<span class="reviewCnt">0</span></li>
-				<li>문의하기</li>	
+				<li class="detail"><a href="#detail">상세정보</a></li>
+				<li><a href="#guide">이용안내</a></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
-			<p>
+			<p id="detail">
 				<img src="<%=request.getContextPath()%>/images/product/thumnail/${requestScope.prdvo.prod_thumnail}" style="width: 700px; height: 700px;">
 			</p>
 		</div>
@@ -185,12 +214,12 @@ $(document).ready(function(){
 		<%-- 이용안내 --%>
 		<div id="guideInfo" >
 			<ul style="display: flex;">
-				<li>상세정보</li>
-				<li class="guide">이용안내</li>
-				<li>상품후기<span class="reviewCnt">0</span></li>
-				<li>문의하기</li>	
+				<li><a href="#detail">상세정보</a></li>
+				<li class="guide"><a href="#guide">이용안내</a></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
-			<div class="guideText" style="height: auto;">
+			<div id="guide" class="guideText" style="height: auto;">
 				<span class="paymentTextTitle">상품결제정보</span>
 				<span class="paymentTextContetns">
 					<br><br>
@@ -265,12 +294,12 @@ $(document).ready(function(){
 		<%-- 상품후기 --%>	
 		<div id="prdReview" >
 			<ul style="display: flex;">
-				<li>상세정보</li>
-				<li>이용안내</li>
-				<li class="review">상품후기<span class="reviewCnt">0</span></li>
-				<li>문의하기</li>	
+				<li><a href="#detail">상세정보</a></li>
+				<li><a href="#guide">이용안내</a></li>
+				<li class="review"><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
-			<div class="reviewBoard" style="height: auto;">
+			<div id="review" class="reviewBoard" style="height: auto;">
 				
 				<%-- 상품 후기 없는 경우 --%>
 				<span style="font-size: 15pt; font-weight:bold">REVIEW</span>
@@ -287,14 +316,10 @@ $(document).ready(function(){
 				<%-- 상품후기 쓰기 / 모두 보기 --%>
 				<div style="display: flex; margin-top: 0.5%; justify-content: right;">
 					<div class="reveiwBtn" style="width: 9%; height: 45px; margin-right: 1%; display: flex; justify-content: center; align-items: center;"> 
-						<a href="#" class="reveiwBtn">
-							<span>상품후기 쓰기</span>
-						</a>
+						<span>상품후기 쓰기</span>
 					</div>
 					<div class="reveiwAllsee" style="width: 9%; display: flex; justify-content: center; align-items: center;">
-						<a href="#" class="reveiwAllsee">
-							<span>모두보기</span>
-						</a>
+						<span>모두보기</span>
 					</div>
 				</div>
 				
@@ -311,13 +336,13 @@ $(document).ready(function(){
 		<%-- 문의하기 --%>	
 		<div id="prdInquire" >
 			<ul style="display: flex;">
-				<li>상세정보</li>
-				<li>이용안내</li>
-				<li>상품후기<span class="reviewCnt">0</span></li>
-				<li class="inquire">문의하기</li>	
+				<li><a href="#detail">상세정보</a></li>
+				<li><a href="#guide">이용안내</a></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li class="inquire"><a href="#inquire">문의하기</a></li>	
 			</ul>
 			
-			<div class="inquireBoard" style="height: auto;">
+			<div id="inquire" class="inquireBoard" style="height: auto;">
 				
 				<%-- 문의 하기 없는 경우 --%>
 				<span style="font-size: 15pt; font-weight:bold">Q&A</span>
@@ -334,14 +359,10 @@ $(document).ready(function(){
 				<%-- 상품문의 하기 / 모두 보기 --%>
 				<div style="display: flex; margin-top: 0.5%; justify-content: right;">
 					<div class="inquireBtn" style="width: 9%; height: 45px; margin-right: 1%; display: flex; justify-content: center; align-items: center;"> 
-						<a href="#" class="inquireBtn">
-							<span>상품문의 하기</span>
-						</a>
+						<span>상품문의 하기</span>
 					</div>
 					<div class="inquireAllsee" style="width: 9%; display: flex; justify-content: center; align-items: center;">
-						<a href="#" class="inquireAllsee">
-							<span>모두보기</span>
-						</a>
+						<span>모두보기</span>
 					</div>
 				</div>
 				<%-- 문의 하기 있는 경우 --%>
