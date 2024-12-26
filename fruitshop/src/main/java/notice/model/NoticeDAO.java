@@ -13,4 +13,9 @@ public interface NoticeDAO {
 	// 공지사항 글 작성하는 메소드
 	int noticeInsert(String notice_title, String notice_contents) throws SQLException;
 
+	// notice_no을 받아서 공지사항을 삭제하는 메소드
+	int deleteNotice(String notice_no) throws SQLException;
+	
+	
+
 }

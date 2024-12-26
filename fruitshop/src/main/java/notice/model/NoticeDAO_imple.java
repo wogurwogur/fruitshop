@@ -64,7 +64,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 		List<NoticeVO> noticeList = new ArrayList<>();
 		
 		
-		String sql = " select notice_no, notice_title, notice_contents, notice_regidate, notice_status, notice_viewcount "
+		String sql = " select notice_no, notice_title, notice_contents, notice_regidate, notice_viewcount "
 				   + " from tbl_notice "
 				   + " where notice_status = 1 "
 				   + " order by notice_regidate ";
@@ -85,7 +85,6 @@ public class NoticeDAO_imple implements NoticeDAO {
 				nvo.setNotice_contents(rs.getString("notice_contents"));
 				nvo.setNotice_title(rs.getString("notice_title"));
 				nvo.setNotice_regidate(rs.getString("notice_regidate"));
-				nvo.setNotice_status(rs.getInt("notice_status"));
 				nvo.setNotice_viewcount(rs.getInt("notice_viewcount"));
 				
 				noticeList.add(nvo);
@@ -116,6 +115,33 @@ public class NoticeDAO_imple implements NoticeDAO {
 			
 			pstmt.setString(1, notice_title);
 			pstmt.setString(2, notice_contents);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
+	// notice_no을 받아서 공지사항을 삭제하는 메소드
+	@Override
+	public int deleteNotice(String notice_no) throws SQLException {
+		
+		int n = 0;
+		
+		String sql = " update tbl_notice "
+					+" set  notice_status = 0 "
+					+" where  notice_no = ? ";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, notice_no);
 			
 			n = pstmt.executeUpdate();
 			

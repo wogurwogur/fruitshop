@@ -11,6 +11,116 @@
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
+<script type="text/javascript">
+
+function delShow(){
+	
+	$("button#delShowBtn").addClass("delHide");
+	
+	$("button#delCancleBtn").removeClass("delHide");
+	$("button#delCkBtn").removeClass("delHide");
+	$("input:text[name='notice_no']").removeClass("delHide");
+	
+	$("button#delCkBtn").addClass("delShow");
+	$("input:text[name='notice_no']").addClass("delShow");
+	$("button#delCancleBtn").addClass("delShow");
+	
+}
+
+function delCancler(){
+	
+	$("button#delShowBtn").removeClass("delHide");
+	
+	$("button#delCkBtn").removeClass("delShow");
+	$("input:text[name='notice_no']").removeClass("delShow");
+	
+	$("button#delCancleBtn").removeClass("delShow");
+	
+	$("button#delShowBtn").addClass("delShow");
+	$("button#delCkBtn").addClass("delHide");
+	$("input:text[name='notice_no']").addClass("delHide");
+	$("button#delCancleBtn").addClass("delHide");
+	
+	$("input:text[name='notice_no']").val("");
+	
+}
+
+function delCheck(){
+	
+	const frm = document.noticeForm;
+	
+	const notice_no = Number(frm.notice_no.value);
+	
+	const notice_noReg = /^[0-9]*$/;
+	
+	if(notice_no == ""){
+		alert("글번호를 입력해주세요");
+		return;
+	}
+	
+	if(!notice_noReg.test(notice_no)){
+		alert("숫자로만 입력해주세요");
+		return;
+	}
+	
+	$.ajax({
+		url:"deleteNotice.ddg",
+		type:"post",
+		data:{
+			"notice_no":notice_no
+		},
+		dataType:"json",
+		success:function(json){
+			
+			let v_html = "";
+			
+			console.log(json);
+			
+			if(json.length == 0){
+				v_html += "<tr><td colspan='5'>존재하는 글이 없습니다.</td></tr>";
+			}else{
+				
+				$.each(json, function(index, item){
+	                v_html += `
+					<tr>						
+						<td>\${item.notice_no}</td>						
+						<td>\${item.notice_title}</td>						
+						<td>\${item.notice_regidate}</td>
+						<td>\${item.notice_viewcount}</td>
+					</tr>
+	                `;
+	            });// end of $.each(json, function(index, item){})---------
+				
+			}
+			
+            $("#notice_list").html(v_html);
+            
+            delCancler();
+			
+		},
+		error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+	});
+	
+}
+
+</script>
+
+<style type="text/css">
+
+.delShow{
+	display:inline;
+}
+
+.delHide{
+	display:none;
+}
+
+</style>
+
+
+
 <div class="container-fluid">
 
 	<div>
@@ -50,17 +160,18 @@
 						<th>조회수</th>
 					</tr>
 					<%-- 글 리스트 --%>	
+			<tbody id="notice_list">
 			<c:if test="${not empty requestScope.noticeList}">
 				<c:forEach var="nvo" items="${requestScope.noticeList}" varStatus="status">
 					<tr>						
 						<td>${nvo.notice_no}</td>						
-						<td>${nvo.notice_title}</span></a></td>						
+						<td>${nvo.notice_title}</td>						
 						<td>${nvo.notice_regidate}</td>
 						<td>${nvo.notice_viewcount}</td>
 					</tr>				
 				</c:forEach>			
 			</c:if>																	
-			
+			</tbody>
 			<c:if test="${empty requestScope.noticeList}">
 				<tr>
 					<td colspan="5">존재하는 글이 없습니다.</td>
@@ -79,9 +190,16 @@
 				<input type="text" style="height:4%"></input>
 				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%">검색</button>
 				<c:if test="${sessionScope.loginuser.role == 2}">
+				<form name="noticeForm">
 					<a href="<%=ctxPath%>/notice/noticeWrite.ddg">
-						<button type="button" class="btn btn-outline-dark float-right" style="height:4.1%">글쓰기</button>
+						<button type="button" class="btn btn-outline-dark float-right delShow" style="height:4.1%">글쓰기</button>
 					</a>
+					<button type="button" class="btn btn-outline-danger float-right" id="delShowBtn" style="height:4.1%; margin-right:0.8%;" onclick="delShow()">삭제하기</button>
+					<button type="button" class="btn btn-outline-dark float-right delHide" id="delCancleBtn" style="height:4.1%; margin-right:0.8%;" onclick="delCancler()">취소</button>
+					<button type="button" class="btn btn-outline-danger float-right delHide" id="delCkBtn" style="height:4.1%; margin-right:0.8%;" onclick="delCheck()">확인</button>
+					<input type="text" name="notice_no" class="delHide" id="notice_no" size="4">
+					<input type="text" style="display:none"/>
+				</form>
 				</c:if>
 		</div>
 								
