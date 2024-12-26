@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+div#container {
+	width: 80%;
+	margin: 0 auto;
+	font-family: 'Noto Sans KR', sans-serif;
+/* 	border: solid 1px red; */
+}
+
+div#title {
+/* 	border: solid 1px blue; */
+	margin: 0 auto;
+	text-align: center;
+}
+
+div#title span {
+	font-size: 20pt;
+}
+
+
+div#table {
+	margin: 2% auto 0 auto;
+	width: 60%;
+	border-collapse: collapse; /* 경계선 없애기  */
+}
+
+tr {
+	transition: background-color .3s;
+	border: solid 1px #DADADA;
+}
+
+tr:hover {
+	background-color: #ddd;
+	cursor: context-menu;
+}
+
+
+td.tdTitle {
+	font-weight: bold;
+}
