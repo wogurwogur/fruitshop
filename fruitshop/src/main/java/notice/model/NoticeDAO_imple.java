@@ -98,5 +98,32 @@ public class NoticeDAO_imple implements NoticeDAO {
 		
 		return noticeList;
 	}
+
+	// 공지사항 글 작성하는 메소드
+	@Override
+	public int noticeInsert(String notice_title, String notice_contents) throws SQLException {
+		
+		int n = 0;
+		
+		String sql = " insert into tbl_notice(notice_no, notice_title, notice_contents) "
+				   + " values(notice_seq.nextval, ?, ?) ";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, notice_title);
+			pstmt.setString(2, notice_contents);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
 	
 }

@@ -19,19 +19,51 @@ function noRegister(){
 	
 	const frm = document.noticeWriteFrm;
 	
-	noticeTitle_Reg = /^[가-힣]{2,30}$/;
-	const notice_title = frm.notice_title.value;
-	console.log(noticeTitle_Reg.test(notice_title));
+	/* 제목 유효성 검사 시작 */
 	
-	if(noticeTitle_Reg.test(notice_title)){
+	const noticeTitle_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,50}$/;
+	const notice_title = frm.notice_title.value;
+	
+	if(notice_title == ""){
 		
-		alert("제목은 한글로 2글자 이상 30자 이하로 작성해주세요");
+		alert("제목을 작성해주세요.");
 		return;
 		
 	}
 	
+	if(!noticeTitle_Reg.test(notice_title)){
+		
+		alert("제목은 한글로 2글자 이상 50자 이하로 작성해주세요");
+		return;
+		
+	}
+	/* 제목 유효성 검사 끝 */
+	/* 내용 유효성 검사 시작 */
+	const noticeContent_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,200}$/;
+	const notice_content = frm.notice_contents.value;
+	
+	if(notice_content == ""){
+		
+		alert("내용을 작성해주세요.");
+		return;
+		
+	}
+	
+	if(!noticeContent_Reg.test(notice_content)){
+		
+		alert("내용은 한글로 2글자 이상 200자 이하로 작성해주세요");
+		return;
+		
+	}
+	/* 내용 유효성 검사 끝 */
+	
 	frm.action = "<%=ctxPath%>/notice/noticeWrite.ddg"
 	frm.method = "post";
+	frm.notice_title.value = notice_title;
+	frm.notice_contents.value = notice_content;
+	
+	
+	frm.submit();
 	
 }
 
