@@ -61,7 +61,7 @@
 				</div>
 				
 				<div class= "" style="width:70%;">
-					<div class="ml-5 " style="margin:2.2%">${rvo.review_title }</div>
+					<div class="ml-5 " style="margin:2.2%">${rvo.review_title}</div>
 					<div class="ml-5 " style="margin:4.2%">${rvo.userid}</div>
 					<div class="ml-5 " style="margin:4.2%; margin-right: 15%;">${rvo.review_contents}
 					</div>
