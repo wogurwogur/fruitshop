@@ -15,6 +15,9 @@ public interface NoticeDAO {
 
 	// notice_no을 받아서 공지사항을 삭제하는 메소드
 	int deleteNotice(String notice_no) throws SQLException;
+
+	// 공지사항 정보 1개를 가져오는 매소드
+	NoticeVO oneNoticeDetail(String notice_no) throws SQLException;
 	
 	
 
