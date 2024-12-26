@@ -1,6 +1,9 @@
 package product.controller;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
-import review.domain.ReviewListVO;
 
 public class ProductDetail extends AbstractController {
 	
@@ -18,17 +20,40 @@ public class ProductDetail extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String prodNo = request.getParameter("prodNo"); // 상품 번호
+		String currentShowPageNo = request.getParameter("currentShowPageNo"); // 현재 페이지 번호
 		
 		if(prodNo == null) {
 			prodNo = "";
 		}
 		
+		if(currentShowPageNo == null) {
+			currentShowPageNo = "1";
+		}
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("prodNo", prodNo);
+		paraMap.put("currentShowPageNo", currentShowPageNo);
+		
+		
+		// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
+//		int reviewTotalPage = prdao.getReviewTotalPage(paraMap);
+		
+		// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
+//		int qnaTotalPage = prdao.getQnaTTotalPage(paraMap);
+		
+		
 		try {
 			ProductVO prdvo = prdao.prdDetails(prodNo);
 			request.setAttribute("prdvo", prdvo);
 			
+			List<ProductVO> prd_reviewList = prdao.prd_reviewList(paraMap); // 입력받은 상품번호에 대한 후기 리스트를 조회해온다.
+			request.setAttribute("prd_reviewList", prd_reviewList);
 			
-			// ReviewListVO revo = prdao.reviewList(prodNo); // 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
+			List<ProductVO> prd_qnaList = prdao.prd_qnaList(paraMap); // 입력받은 상품번호에 대한 Q&A 리스트를 조회해온다.
+			request.setAttribute("prd_qnaList", prd_qnaList);
+			
+			int review_cnt = prdao.review_cnt(prodNo); // 상품 상세페이지 내 입력받은 상품번호에 후기 수량 표시를 위해 후기 개수를 조회해온다.
+			request.setAttribute("review_cnt", review_cnt);
 			
 			
 			super.setRedirect(false);

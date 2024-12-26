@@ -1,5 +1,6 @@
 package product.domain;
 
+
 public class ProductVO {
 	
 	// 상품 테이블
@@ -13,6 +14,22 @@ public class ProductVO {
 	private int prod_inventory;		// 상품재고량
 	private int fk_season_no; 		// 계절 테이블 계절 번호
 	private String prod_regidate;	// 상품등록일
+	
+	
+
+	// 타 테이블
+	
+	private String userid; 			// 멤버 회원아이디
+	
+	private int qna_no;				// 문의 번호
+	private String qna_title;		// 문의 제목
+	private String qna_regidate;	// 문의 등록일자
+	
+	private int review_no;			// 후기 번호
+	private String review_title;	// 후기 제목
+	private String review_contents; // 후기 내용
+	private String review_regidate; // 후기 등록일자
+	
 	
 	
 		
@@ -87,6 +104,76 @@ public class ProductVO {
 	public void setProd_regidate(String prod_regidate) {
 		this.prod_regidate = prod_regidate;
 	}
-	
 
+
+
+
+
+	// 타 테이블
+	public int getQna_no() {
+		return qna_no;
+	}
+
+	public void setQna_no(int qna_no) {
+		this.qna_no = qna_no;
+	}
+
+	public String getQna_title() {
+		return qna_title;
+	}
+
+	public void setQna_title(String qna_title) {
+		this.qna_title = qna_title;
+	}
+
+	public String getQna_regidate() {
+		return qna_regidate;
+	}
+
+	public void setQna_regidate(String qna_regidate) {
+		this.qna_regidate = qna_regidate;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public int getReview_no() {
+		return review_no;
+	}
+
+	public void setReview_no(int review_no) {
+		this.review_no = review_no;
+	}
+
+	public String getReview_title() {
+		return review_title;
+	}
+
+	public void setReview_title(String review_title) {
+		this.review_title = review_title;
+	}
+
+	public String getReview_contents() {
+		return review_contents;
+	}
+
+	public void setReview_contents(String review_contents) {
+		this.review_contents = review_contents;
+	}
+
+	public String getReview_regidate() {
+		return review_regidate;
+	}
+
+	public void setReview_regidate(String review_regidate) {
+		this.review_regidate = review_regidate;
+	}
+
+	
+	
 }

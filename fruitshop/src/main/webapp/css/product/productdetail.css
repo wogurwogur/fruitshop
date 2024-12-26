@@ -5,6 +5,7 @@
 div#container {
 	width: 80%;
 	margin: 4% auto;
+	font-family: 'Noto Sans KR', sans-serif;
 /* 	border: solid 1px red; */
 }
 
@@ -161,7 +162,7 @@ div#prdInquire ul {
     list-style-type: none; /* 기본 점 표시 없애기 */
     padding: 0;
     margin: 0;
-    justify-content: space-evenly;
+    justify-content: space-evenly; /* 간격 균등하게 사용  */
     height: 52px;
     position: sticky;
   	top: 90px;
@@ -226,6 +227,29 @@ div#guideInfo > div.guideText > span.serviceTextContetns  {
 	font-size: 10pt;
 }
 
+
+
+/* 상품 후기 문의 하기 table  */
+
+
+table {
+	/* border: solid 1px #DADADA; */
+	border-collapse: collapse; /* 경계선 없애기  */
+}
+
+
+th, td {
+	text-align: center;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+}
+
+
+
+
+
+
+
 /* 상품 후기 내용란 전체 */
 div#prdReview div.reviewBoard {
 	margin-top: 5%;
@@ -241,6 +265,8 @@ div#prdInquire {
 div#prdInquire div.inquireBoard {
 	margin-top: 5%;
 }
+
+
 
 
 /* 상품후기 후기 쓰기 및 상품문의 하기 버튼 */
