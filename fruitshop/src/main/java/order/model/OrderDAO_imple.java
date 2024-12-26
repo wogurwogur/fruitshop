@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponVO;
 import mypage.ship.domain.ShipVO;
+import product.domain.ProductVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
 
@@ -185,6 +186,44 @@ public class OrderDAO_imple implements OrderDAO {
 		
 		return shipList;
 	}// end of public List<ShipVO> getShipList(String user_no) throws SQLException -----------------------
+
+	
+	// 상품 정보 및 재고를 확인한다.
+	@Override
+	public ProductVO checkProd(Map<String, String> paraMap) throws SQLException {
+		ProductVO pvo = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql	= " SELECT prod_no, prod_name, prod_price, prod_thumnail, prod_inventory "
+						+ "   FROM TBL_PRODUCTS "
+						+ "  WHERE prod_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("prod_no"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pvo = new ProductVO();
+				
+				pvo.setProd_no(rs.getInt("prod_no"));
+				pvo.setProd_name(rs.getString("prod_name"));
+				pvo.setProd_price(rs.getInt("prod_price"));
+				pvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				pvo.setProd_inventory(rs.getInt("prod_inventory"));
+				
+			}// end of if(rs.next()) -------------------
+			
+		} finally {
+			close();
+		}
+		
+		
+		return pvo;
+	}// end of public ProductVO checkProd(Map<String, String> paraMap) throws SQLException -----------------------
     
     
     

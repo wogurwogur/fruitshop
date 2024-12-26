@@ -297,18 +297,33 @@
 						</tr>
 					</thead>
 					<tbody>
-					<%-- 상품리스트 반복문 --%>
-						<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
+						<%-- 장바구니를 통한 주문과 상품페이지 직접 주문 여부에 따라 분기한다. --%>
+						<%-- 상품 개별페이지에서 주문한 경우. --%>
+						<c:if test="${empty requestScope.cartList}">
 							<tr>
-								<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}"></td>
-								<td>${cartItem.prod_name}</td>
-								<td class="prod_count">${cartItem.cart_prodcount}</td>
-								<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
-								<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
+								<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}"></td>
+								<td>${requestScope.pvo.prod_name}</td>
+								<td class="prod_count">${requestScope.pvo.prodCnt}</td>
+								<fmt:parseNumber var="count" type="number" value="${requestScope.prodCnt}" />
+								<fmt:parseNumber var="price" type="number" value="${requestScope.pvo.prod_price}" />
 								<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
-							</tr>							
-						</c:forEach>
-					<%-- 상품리스트 반복문 --%>
+							</tr>	
+						</c:if>
+						
+						<c:if test="${!empty requestScope.cartList}">
+						<%-- 상품리스트 반복문 --%>
+							<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
+								<tr>
+									<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}"></td>
+									<td>${cartItem.prod_name}</td>
+									<td class="prod_count">${cartItem.cart_prodcount}</td>
+									<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
+									<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
+									<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
+								</tr>							
+							</c:forEach>
+						<%-- 상품리스트 반복문 --%>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
