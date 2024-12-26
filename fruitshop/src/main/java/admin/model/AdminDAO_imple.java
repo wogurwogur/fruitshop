@@ -388,32 +388,51 @@ public class AdminDAO_imple implements AdminDAO {
 		
 		conn = ds.getConnection();
 		
-		String sql = " select C.coupon_cnt "
-				+ " from "
-				+ " ( "
-				+ " select user_no "
-				+ " from tbl_member "
-				+ " where user_no = ? "
-				+ " )M "
-				+ " cross join "
-				+ " ( "
-				+ " select  count(coupon_no) as coupon_cnt "
-				+ " from tbl_coupons  "
-				+ " where fk_user_no = ? "
-				+ " )C ";
+		String sql = " select  count(coupon_no) "
+				+ " from tbl_coupons "
+				+ " where fk_user_no = ? ";
 		
 		pstmt = conn.prepareStatement(sql);
 		
 		pstmt.setString(1, detail_user_no);
-		pstmt.setString(2, detail_user_no);
 		
 		rs = pstmt.executeQuery();
 		
-		rs.next();
+		if(rs.next()) {
+			memberCoupon = rs.getString(1);
+		}else {
+			memberCoupon = "0";
+		}
 		
-		memberCoupon = rs.getString(1);
+		
 		
 		return memberCoupon;
+	}
+
+	@Override
+	public int memberAllCount() throws SQLException {
+		
+		int memberCnt = 0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " select count(*) as memberCnt "
+				   + " from tbl_member "
+				   + " where role = 1 ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		try {
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			memberCnt = rs.getInt("memberCnt");
+		}finally {
+			close();
+		}
+		
+		return memberCnt;
 	}
 
 	

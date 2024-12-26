@@ -7,6 +7,8 @@ div{
 	font-weight: 400;
 }
 
+
+
 div.title {
 	text-align: center;
 	margin-top: 1.5%;
@@ -22,14 +24,44 @@ div.title {
 	margin: 0 4%;
 }
 
+td{
+	font-size: 15px;
+	font-weight: 300;
+}
+
+select{
+	font-size: 15px;
+	font-weight: 300;
+}
+
+option{
+	font-size: 15px;
+	font-weight: 300;
+}
+button{
+	font-size: 15px;
+	font-weight: 300;
+}
+
+span{
+	font-size: 15px;
+	font-weight: 300;
+}
 
 
+select#searchType{
+	height: 34.5px;
+	margin-bottom: 3px;
+}
+d
+button{
+	
+	font-size: 15px;
+	font-weight: 300;
+	
+}
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+li{
+	font-size: 15px;
+	font-weight: 300;
+}

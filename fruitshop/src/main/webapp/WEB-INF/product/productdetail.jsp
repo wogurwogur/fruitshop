@@ -77,14 +77,18 @@ $(document).ready(function(){
 		
 		// 구매하기 클릭
 		$("div.purchase").click(function() {
-			alert("구매하기 클릭")
+			const prodCnt = $("input.qty").val();
+			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prodCnt=`+ prodCnt;
 		});
 		
 		
 		
-		
 		// 상품후기 쓰기 클릭
+		$("div.reveiwBtn").click(function() {
+			alert("상품후기쓰기 클릭") // 상품번호랑 유저번호 넘기기
+		});
 		
+	
 		
 		// 상품후기 모두보기 클릭
 		$("div.reveiwAllsee").click(function(){
@@ -94,6 +98,11 @@ $(document).ready(function(){
 		
 		
 		// 문의하기 클릭
+		$("div.inquireBtn").click(function() {
+			alert("문의하기쓰기 클릭")  // 상품번호랑 유저번호 넘기기
+		});
+		
+		
 		
 		// 문의하기 모두보기 클릭
 		$("div.inquireAllsee").click(function(){
@@ -203,7 +212,7 @@ $(document).ready(function(){
 			<ul style="display: flex;">
 				<li class="detail"><a href="#detail">상세정보</a></li>
 				<li><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
 				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
 			<p id="detail">
@@ -216,7 +225,7 @@ $(document).ready(function(){
 			<ul style="display: flex;">
 				<li><a href="#detail">상세정보</a></li>
 				<li class="guide"><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
 				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
 			<div id="guide" class="guideText" style="height: auto;">
@@ -296,22 +305,58 @@ $(document).ready(function(){
 			<ul style="display: flex;">
 				<li><a href="#detail">상세정보</a></li>
 				<li><a href="#guide">이용안내</a></li>
-				<li class="review"><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li class="review"><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
 				<li><a href="#inquire">문의하기</a></li>	
 			</ul>
 			<div id="review" class="reviewBoard" style="height: auto;">
 				
-				<%-- 상품 후기 없는 경우 --%>
 				<span style="font-size: 15pt; font-weight:bold">REVIEW</span>
 				<span style="font-size: 12pt; margin-left: 1%;">상품의 사용후기를 적어주세요</span>
+			
 				
-				<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 상품후기 회색실선 --%>
-				
-				<p style="font-size: 10.5pt; color: #555555; padding: 6% 0;">
-					게시물이 없습니다.
-				</p>
-				
+				<%-- 상품 후기 있는 경우 --%>
+				<c:if test="${not empty requestScope.prd_reviewList}">
+					<hr style="border: none; border-top: 1px solid black; margin-top: 1%;"> <%-- 상품후기 있을 때 검정 실선 --%>
+					
+					<table class="table table-borderless">
+						<colgroup> <%-- 테이블 간 간격 설정 --%>
+						<col style="width: 10%;">
+						<col style="width: 60%;">
+						<col style="width: 10%;">
+						<col style="width: 20%;">
+						<colgroup>
+				        <thead>
+					        <tr class="reviewInfoTitle">
+						        <th scope="col">번호</th>
+						        <th scope="col">제목</th>
+						        <th scope="col">작성자</th>
+						        <th scope="col">작성날짜</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+				        	<c:forEach var="prd_review" items="${requestScope.prd_reviewList}" varStatus="status">
+					        	<tr class="reviewInfo">
+					        		<td>${prd_review.review_no}</td>
+					        		<td>${prd_review.review_title}</td>
+					        		<td>${prd_review.userid}</td>
+					        		<td>${prd_review.review_regidate}</td>
+					        	</tr>
+				        	</c:forEach>
+				        </tbody>
+			        </table>
+		        </c:if>
+		        
+		        <c:if test="${empty requestScope.prd_reviewList}"> 
+			        <hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 상품후기 회색실선 --%>
+					
+					<p style="font-size: 10.5pt; color: #555555; padding: 6% 0;">
+						게시물이 없습니다.
+					</p>
+				</c:if>
+			
+			
 				<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 상품후기 회색실선2 --%>
+				
 				
 				<%-- 상품후기 쓰기 / 모두 보기 --%>
 				<div style="display: flex; margin-top: 0.5%; justify-content: right;">
@@ -322,14 +367,6 @@ $(document).ready(function(){
 						<span>모두보기</span>
 					</div>
 				</div>
-				
-				<%-- 상품 후기 있는 경우 --%>
-				
-				
-				
-				
-				
-				
 			</div>
 		</div>			
 		
@@ -338,23 +375,60 @@ $(document).ready(function(){
 			<ul style="display: flex;">
 				<li><a href="#detail">상세정보</a></li>
 				<li><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">0</span></li>
+				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
 				<li class="inquire"><a href="#inquire">문의하기</a></li>	
 			</ul>
 			
 			<div id="inquire" class="inquireBoard" style="height: auto;">
 				
-				<%-- 문의 하기 없는 경우 --%>
 				<span style="font-size: 15pt; font-weight:bold">Q&A</span>
 				<span style="font-size: 12pt; margin-left: 1%;">구매하시려는 상품에 대해 궁금한 점이 있으면 문의주시기 바랍니다.</span>
 				
-				<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 상품후기 회색실선 --%>
 				
-				<p style="font-size: 10.5pt; color: #555555; padding: 6% 0;">
-					게시물이 없습니다.
-				</p>
+				<%-- 문의 하기 있는 경우 --%>
+				<c:if test="${not empty requestScope.prd_qnaList}">	
 				
-				<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 상품후기 회색실선2 --%>
+					<hr style="border: none; border-top: 1px solid black; margin-top: 1%;"> <%-- 문의후기 있을 때 검정 실선 --%>
+					
+					<table class="table table-borderless">
+						<colgroup> <%-- 테이블 간 간격 설정 --%>
+					   	<col style="width: 10%;">
+					   	<col style="width: 60%;">
+					   	<col style="width: 10%;">
+					   	<col style="width: 20%;">
+					   	<colgroup>
+				        <thead>
+					        <tr class="qnaInfoTitle">
+						        <th scope="col">번호</th>
+						        <th scope="col">제목</th>
+						        <th scope="col">작성자</th>
+						        <th scope="col">작성날짜</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+				        	<c:forEach var="prd_qna" items="${requestScope.prd_qnaList}" varStatus="status">
+					        	<tr class="qnaInfo">
+					        		<td>${prd_qna.qna_no}</td>
+					        		<td>${prd_qna.qna_title}</td>
+					        		<td>${prd_qna.userid}</td>
+					        		<td>${prd_qna.qna_regidate}</td>
+					        	</tr>
+				        	</c:forEach>
+				        </tbody>
+				     </table>   
+			    </c:if>
+			        
+			    <%-- 문의 하기 없는 경우 --%>
+				<c:if test="${empty requestScope.prd_qnaList}">	
+					<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;">  <%-- 문의후기 없을 때 회색실선 --%>
+					
+					<p style="font-size: 10.5pt; color: #555555; padding: 6% 0;">
+						게시물이 없습니다.
+					</p>
+				</c:if>
+			        
+
+				<hr style="border: none; border-top: 1px solid #DADADA; margin-top: 1%;"> <%-- 문의후기 회색실선2 --%>
 				
 				<%-- 상품문의 하기 / 모두 보기 --%>
 				<div style="display: flex; margin-top: 0.5%; justify-content: right;">
@@ -365,7 +439,6 @@ $(document).ready(function(){
 						<span>모두보기</span>
 					</div>
 				</div>
-				<%-- 문의 하기 있는 경우 --%>
 		
 			</div>					
 		

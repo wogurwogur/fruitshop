@@ -27,18 +27,18 @@ public class AdminMemberRole extends AbstractController {
 		
 		if(null == loginuser) {
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "/WEB-INF/admin_page/admin_page.jsp";
+	        String loc = "/WEB-INF/index/index.jsp";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);
 	        
 	        super.setRedirect(false);
-	        super.setViewPage("/WEB-INF/common/msg.jsp");
+	        super.setViewPage("/WEB-INF/common/msg.jsp"); 
 			
 		}else if(loginuser.getRole() == 1){ 
 			
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "/WEB-INF/admin_page/admin_page.jsp";
+	        String loc = "/WEB-INF/index/index.jsp";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);
@@ -62,7 +62,7 @@ public class AdminMemberRole extends AbstractController {
 				super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
 				
 			}else {
-				String message = "관리자 설정에 주는데 실패했습니다.";
+				String message = "관리자 권한 부여에 실패했습니다.";
 		        String loc = "javascript:history.back()";
 		        
 		        request.setAttribute("message", message);

@@ -128,7 +128,7 @@
    		<%-- 검색창 시작 --%>
 		<div id="fruitSearch">
 			<form name="fruit_search_frm">
-				<input type="text" class="" name="searchFruit" placeholder="과일명으로 검색하기" maxlength="50" />
+				<input type="text" name="searchFruit" placeholder="과일명으로 검색하기" maxlength="50" />
 				<input type="text" style="display: none;" />
 				<i class="fa-solid fa-magnifying-glass searchIcon" onclick="goSearch()"></i>
 			</form>
@@ -181,10 +181,12 @@
 	   	</div>
     </c:if>
     <%-- 검색 시 데이터가 없을 끝 --%>
-   
-  	<div id="pageBar">
-		${requestScope.pageBar}
-	</div>
+   	
+   	<c:if test="${not empty requestScope.prdList}">
+	  	<div id="pageBar">
+			${requestScope.pageBar}
+		</div>
+	</c:if>
     
 </div>
 

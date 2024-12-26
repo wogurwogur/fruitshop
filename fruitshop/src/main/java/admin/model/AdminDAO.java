@@ -27,4 +27,7 @@ public interface AdminDAO {
 	// 회원상세에서 회원의 쿠폰 개수를 볼수 있게하는 메소드
 	String memberCouponCnt(String detail_user_no) throws SQLException;
 	
+	// 관리자가 아닌 회원의 수를 가져오는 메소드
+	int memberAllCount() throws SQLException;
+	
 }

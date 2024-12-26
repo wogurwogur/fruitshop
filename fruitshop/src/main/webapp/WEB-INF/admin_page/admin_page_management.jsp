@@ -10,11 +10,110 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	
+	const modalOpenButton = document.getElementById('mainImgModalOpen');
+	const modalCloseButton = document.getElementById('mainImgModalClose');
+	const modal = document.getElementById('modalContainer');
+	
+	modalOpenButton.addEventListener('click', () => {
+		modal.classList.remove('hidden');
+	});
+
+	modalCloseButton.addEventListener('click', () => {
+		modal.classList.add('hidden');
+	});
+	
+	const previewImg = $("#imgbody > tr > td:nth-child(3) > img ");
+	
+	previewImg.hover(function(e){
+		
+		$(e.target).removeClass("nomalimg");
+		$(e.target).addClass("bigimg");
+		
+	},function(e){
+		
+		$(e.target).removeClass("bigimg");
+		$(e.target).addClass("nomalimg");
+	});
+	
+	const reader = new FileReader();
+	
+		
+	$("input[name='mainImg_file']").bind("change",function(e){
+		
+		const input_file = $(e.target).get(0);
+		
+		console.log(input_file.files);
+		
+		reader.readAsDataURL(input_file.files[0]);
+		
+		reader.onload = (e) => {
+	        let img_src = reader.result;
+	        
+	        document.getElementById('uploadPreview').src = img_src;
+	        
+	    }
+		
+	})
+
+	
+});
 
 </script>
 
 <script src="<%=ctxPath %>/js/admin/admin_member_management.js"></script>
 <style>
+
+
+
+#modalOpenButton, #modalCloseButton {
+  cursor: pointer;
+}
+
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 500px;
+  height: 480px;
+  padding: 15px;
+  border-radius: 20%;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+
+#uploadPreview{
+	border: 0px;
+}
 
 div#admin_top_nav{
 	display: flex;
@@ -25,80 +124,37 @@ div#admin_top_nav_center{
 	margin: 0 auto;
 }
 
-/* drop down start */
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
+
+#button_posi{
+	text-align: center;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
+#imgbody > tr > td{
+	vertical-align: center;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+.bigimg{
+	position:relative;
+	z-index: 10;
+	transform: scale(4.0);
+	transition: transform .5s;
 }
 
-.dropdown-content button {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border: none;
+.nomalimg{
+	position:relative;
+	z-index: 0;
+	transform: scale(1.0);
+	transition: transform .5s;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* drop down end */
-
-
-/* search start */
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
-
-form.example button {
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-/* search end  */
 </style>
 
 <%-- div top nav start --%>
-<div class="container-fluid " id="admin_top_nav">
+<div class="container" id="admin_top_nav">
 
 	<%-- dropdown div start --%>
-	<div class="dropdown">
-	  <button class="dropbtn">Dropdown</button>
-	  <div class="dropdown-content">
-	    <button type="button">징계받은 회원</button>
-	    <button type="button">----</button>
-	    <button type="button">----</button>
-	  </div>
+	<div>
+
 	</div>
 	<%-- dropdown div end --%>
 	
@@ -112,18 +168,74 @@ form.example button {
 		
 	<%-- search div start --%>
 	<div>
-		<form class="example" id="member_management_frm" style="margin:auto;max-width:300px">
-		  <input type="text" placeholder="Search.." name="search2">
-		  <button type="submit"><i class="fa fa-search"></i></button>
-		</form>
 	</div>
 	<%-- search div end --%>
 	
 </div>
 <%-- div top nav end --%>
 
-<div class="container-fluid ">
+<div class="container">
 	
-	회원리스트
+	<table class="table" style="text-align: center;">
+		<thead>
+			<tr>
+				<th>사진 이름</th>
+				<th>사진 파일이름</th>
+				<th>사진 미리보기</th>
+			</tr>
+		</thead>
+		<tbody id="imgbody">
+			<c:forEach items="${requestScope.imgList}" var="imgs" varStatus="index">
+				<tr>
+					<td>${imgs.imgname}</td>
+					<td>${imgs.imgfilename}</td>
+					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table> 
+		<table class="table" id="button_posi">
+		<tbody>
+			<tr>
+				<td><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
+				<td><button class="btn btn-outline-danger" id="modalCloseButton">삭제하기</button></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div id="modalContainer" class="hidden">
+	  <div id="modalContent">
+	    <div class="container mt-5">
+	    	<table class="table" style="text-align:center;">
+	    		<thead>
+	    			<tr>
+	    				<th colspan="2">메인페이지 이미지 등록하기</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<tr>
+	    				<td>사진파일</td>
+	    				<td><input type="file" name="mainImg_file" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td colspan="2">사진 미리보기
+	    					<img  width="100" height="100"  id="uploadPreview"/>
+	    				</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	<table class="table" style="text-align:center;">
+	    		<tbody>
+	    			<tr>
+	    				<td><button class="btn btn-outline-success" type="button" id="couponModalSubmit">이미지 등록</button></td>
+	    				<td><button class="btn btn-outline-secondary" type="button" id="mainImgModalClose">나가기</button></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	
+		    <input type="text" style="display:none;"/>
+	    </div>
+	  </div>
+	</div>
 	
 </div>

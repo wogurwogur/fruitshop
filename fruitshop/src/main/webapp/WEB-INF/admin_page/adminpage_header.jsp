@@ -17,7 +17,7 @@
 
     <div id="Adminpage" class="manu container">
    		<a href="<%=ctxPath%>/admin/adminManagement.ddg">회원관리</a>
-   		<a href="<%=ctxPath%>/product/registerProduct.ddg">상품관리</a>
+   		<a href="<%=ctxPath%>/admin/adminProduct.ddg">상품관리</a>
    		<a href="<%=ctxPath%>/admin/adminDeliveryStatus.ddg">주문관리</a>
         <a href="<%=ctxPath%>/admin/pageManagement.ddg">메인페이지관리</a>
         <a href="<%=ctxPath%>/admin/adminStatistics.ddg">통계</a>

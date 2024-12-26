@@ -15,7 +15,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import product.domain.ProductVO;
-import review.domain.ReviewListVO;
 
 public class ProductDAO_imple implements ProductDAO {
 
@@ -49,11 +48,198 @@ public class ProductDAO_imple implements ProductDAO {
 	// == custom method start == //
 	
 	
-	// 페이징 처리를 위해 검색이 있는 경우, 검색이 없는 경우, 계절을 클릭 한 경우에 대한 총페이지수 알아오기
+	// 페이징 처리를 위해 검색이 있는 경우, 검색이 없는 경우에 대한 총페이지수 알아오기 (상품 관리 페이지 10개씩)
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		
 		int totalPage = 0;
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/10) "
+					   + " from tbl_products ";
+			
+			String searchFruit = paraMap.get("searchFruit");
+			
+			if(!searchFruit.isBlank()) {
+				// 검색이 있는 경우
+				sql += " where prod_name like '%'|| ? ||'%' ";
+				
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
+			}
+			
+			
+			sql += "ORDER BY prod_regidate desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			if(!searchFruit.isBlank()) {
+				pstmt.setString(1, searchFruit);	
+				
+			}
+			
+			rs = pstmt.executeQuery();
+					
+			rs.next();
+			
+			totalPage = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	} // end of public int getTotalPage(Map<String, String> paraMap)
+	
+	
+		
+	
+	// 페이징 처리한 모든 과일 목록 , 검색되어진 과일 목록 보여주기 (상품 관리 페이지)
+	@Override
+	public List<ProductVO> prdListPaging(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> prdList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT RNO, prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + " FROM "
+					   + " ( "
+					   + "    SELECT rownum AS RNO, prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + "    FROM "
+					   + "    ( "
+					   + "        select prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+					   + "        from tbl_products ";
+	
+			String searchFruit = paraMap.get("searchFruit");
+					
+			// 검색 값이 이는 경우
+			if (!searchFruit.isBlank()) { 
+				sql += " where prod_name like '%'|| ? ||'%' ";  
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
+			}
+			
+			
+			sql += " order by prod_regidate desc "
+				+  "  ) V "
+				+  " ) T "
+				+  " WHERE T.RNO BETWEEN ? AND ? ";
+			
+			/*
+				=== 페이징처리의 공식 ===
+				where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+			*/
+			
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = 10;
+			
+			pstmt = conn.prepareCall(sql);
+			
+			
+			if(!searchFruit.isBlank()) {
+				// 검색이 있는 경우
+				pstmt.setString(1, searchFruit);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage) );
+			}
+			else {
+				// 검색이 없는 경우
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) );
+			}
+				
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductVO prdvo = new ProductVO();
+				
+				prdvo.setProd_no(rs.getInt("prod_no"));
+				prdvo.setProd_name(rs.getString("prod_name"));
+				prdvo.setProd_cost(rs.getInt("prod_cost"));
+				prdvo.setProd_price(rs.getInt("prod_price"));
+				prdvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				prdvo.setProd_descript(rs.getString("prod_descript"));
+				prdvo.setProd_inventory(rs.getInt("prod_inventory"));
+				prdvo.setFk_season_no(rs.getInt("fk_season_no"));
+				prdvo.setProd_regidate(rs.getString("prod_regidate"));
+				
+				prdList.add(prdvo);
+				
+			} // end of while 
+			
+		} finally {
+			close();
+		}
+		
+		return prdList;
+	} // end of public List<ProductVO> prdListPaging(Map<String, String> paraMap)
+	
+	
+	
+	
+	// 뷰단(admin_product_management.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 (상품 관리 페이지)
+	@Override
+	public int getTotalProductCount(Map<String, String> paraMap) throws SQLException {
+		
+		int getTotalProductCount = 0;
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) "
+					   + " from tbl_products ";
+			
+			String searchFruit = paraMap.get("searchFruit");
+			
+			
+			if(!searchFruit.isBlank()) {
+				// 검색이 있는 경우
+				sql += " where prod_name like '%'|| ? ||'%' ";
+				
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			if(!searchFruit.isBlank()) {
+				pstmt.setString(1, searchFruit);	
+				
+			}
+			
+			rs = pstmt.executeQuery();
+					
+			rs.next();
+			
+			getTotalProductCount = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
+			
+		} finally {
+			close();
+		}
+		
+		return getTotalProductCount;
+		
+	} // end of public int getTotalProductCount(Map<String, String> paraMap)
+	
+	
+	
+	
+	
+	// 페이징 처리를 위해 검색이 있는 경우, 검색이 없는 경우, 계절을 클릭 한 경우에 대한 총페이지수 알아오기 (상품 목록 페이지 16개씩)
+	@Override
+	public int getTotalPage2(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage2 = 0;
 
 		try {
 			conn = ds.getConnection();
@@ -97,20 +283,20 @@ public class ProductDAO_imple implements ProductDAO {
 					
 			rs.next();
 			
-			totalPage = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
+			totalPage2 = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
 			
 		} finally {
 			close();
 		}
 		
-		return totalPage;
+		return totalPage2;
 	} // end of public int getTotalPage(Map<String, String> paraMap)
 	
 	
 	
-	// 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 //
+	// 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 (상품 관리 및 목록 페이지)
 	@Override
-	public List<ProductVO> prdListPaging(Map<String, String> paraMap) throws SQLException {
+	public List<ProductVO> prdListPaging2(Map<String, String> paraMap) throws SQLException {
 		
 		
 		List<ProductVO> prdList = new ArrayList<>();
@@ -176,7 +362,7 @@ public class ProductDAO_imple implements ProductDAO {
 				pstmt.setInt(3, (currentShowPageNo * sizePerPage) );
 			}
 			else {
-				// 검색 또는 계절 번호를 선택하지 않은 경우 경우 
+				// 검색 또는 계절 번호를 선택하지 않은 경우 
 				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) );
 				pstmt.setInt(2, (currentShowPageNo * sizePerPage) );
 			}
@@ -244,9 +430,6 @@ public class ProductDAO_imple implements ProductDAO {
 				prdvo.setProd_regidate(rs.getString("prod_regidate"));
 			}
 			
-			
-			
-			
 		} finally {
 			close();
 		}	
@@ -256,12 +439,173 @@ public class ProductDAO_imple implements ProductDAO {
 	} // end of public List<ProductVO> prdDetails(String prodNo)
 	
 	
-	// 입력받은 상품번호에 대한 reivew 리스트를 조회해온다.
-	@Override
-	public ReviewListVO reviewList(String prodNo) throws SQLException {
-		
-		return null;
-	}
 	
+	
+//	// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
+//	@Override
+//	public int getReviewTotalPage(Map<String, String> paraMap) throws SQLException {
+//		
+//		int reviewTotalPage = 0;
+//
+//		try {
+//			conn = ds.getConnection();
+//			
+//			String sql = " select ceil(count(*)/10) "
+//					   + " from tbl_products ";
+//			
+//			String searchFruit = paraMap.get("searchFruit");
+//			
+//			if(!searchFruit.isBlank()) {
+//				// 검색이 있는 경우
+//				sql += " where prod_name like '%'|| ? ||'%' ";
+//				
+//				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+//	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+//				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
+//			}
+//			
+//			
+//			sql += "ORDER BY prod_regidate desc ";
+//			
+//			pstmt = conn.prepareStatement(sql);
+//
+//			if(!searchFruit.isBlank()) {
+//				pstmt.setString(1, searchFruit);	
+//				
+//			}
+//			
+//			rs = pstmt.executeQuery();
+//					
+//			rs.next();
+//			
+//			totalPage = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
+//			
+//		} finally {
+//			close();
+//		}
+//		
+//		return reviewTotalPage;
+//		
+//	} // end of public int getReviewTotalPage(Map<String, String> paraMap)
+	
+	
+	
+	
+	
+	// 후기 테이블에서 입력받은 상품번호에 대한 후기 리스트를 조회해온다.
+	@Override
+	public List<ProductVO> prd_reviewList(Map<String, String> paraMap) throws SQLException {
 		
+		List<ProductVO> prd_reviewList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select review_no, review_title, review_contents, M.userid, review_regidate "
+					   + " from tbl_reviews R "
+					   + " join tbl_member M "
+				 	   + " on R.fk_user_no = M.user_no "
+					   + " where R.fk_prod_no = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("prodNo"));
+			
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				
+				ProductVO prdvo = new ProductVO();
+				
+				prdvo.setReview_no(rs.getInt(1));
+				prdvo.setReview_title(rs.getString(2));
+				prdvo.setReview_contents(rs.getString(3));
+				prdvo.setUserid(rs.getString(4));
+				prdvo.setReview_regidate(rs.getString(5));
+				
+				prd_reviewList.add(prdvo);
+			} // end of while(rs.next())----------------------------------
+
+		} finally {
+			close();
+		}
+
+		return prd_reviewList;
+		
+	} // end of public List<ProductVO> prd_review(String prodNo)
+	
+	
+	
+	
+	
+	
+	// 문의 테이블에서 입력받은 상품번호에 대한 문의 리스트를 조회해온다.
+	@Override
+	public List<ProductVO> prd_qnaList(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> prd_qnaList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select qna_no, qna_title, M.userid, qna_regidate "
+					   + " from tbl_qna Q "
+					   + " join tbl_member M "
+				 	   + " on Q.fk_user_no = M.user_no "
+					   + " where Q.fk_prod_no = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("prodNo"));
+			
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				
+				ProductVO prdvo = new ProductVO();
+				
+				prdvo.setQna_no(rs.getInt(1));
+				prdvo.setQna_title(rs.getString(2));
+				prdvo.setUserid(rs.getString(3));
+				prdvo.setQna_regidate(rs.getString(4));
+				
+				prd_qnaList.add(prdvo);
+			} // end of while(rs.next())----------------------------------
+
+		} finally {
+			close();
+		}
+
+		
+		return prd_qnaList;
+	} // end of public QnaListVO qnaList(String prodNo)
+	
+	
+	
+	// 상품 상세페이지 내 입력받은 상품번호에 후기 수량 표시를 위해 후기 개수를 조회해온다.
+	@Override
+	public int review_cnt(String prodNo) throws SQLException {
+		
+		int review_cnt = 0;
+		
+		try {
+			conn = ds.getConnection();
+	          
+	        String sql = " select count(*) "
+	                   + " from tbl_reviews "
+	                   + " where fk_prod_no = ? ";	
+	        pstmt =conn.prepareCall(sql);
+	        pstmt.setString(1, prodNo);
+	        
+	        rs = pstmt.executeQuery();
+			
+	        rs.next();
+	        
+	        review_cnt = rs.getInt(1);
+		} finally {
+			close();
+		}
+		
+		return review_cnt;
+	} // end of public int review_cnt(String prodNo)
+	
+	
 }
