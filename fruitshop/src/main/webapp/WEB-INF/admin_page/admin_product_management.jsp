@@ -30,7 +30,7 @@
 				
 		// 등록하기 클릭
 		$("div#prdRegister").click(function(){
-			location.href =`${pageContext.request.contextPath}/product/adminProductRegister.ddg`;
+			location.href =`${pageContext.request.contextPath}/admin/adminProductRegister.ddg`;
 		});		
 	
 	
