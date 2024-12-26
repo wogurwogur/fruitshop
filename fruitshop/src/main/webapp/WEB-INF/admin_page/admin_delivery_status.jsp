@@ -112,11 +112,11 @@
 	 				<div id="orderInfo">
 		     			<form name="orderInfoUpdate">
 		     				
-		     				<label class="text-left" style="margin: 2% 0.6% 0 1%; width: 30%;">주문번호 &nbsp;</label><input id="order_no" style="width:60%;" type="text" name="order_no" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 0 1%; width: 30%;">주문자 &nbsp;</label><input id="name" style="width:60%;" type="text" name="name" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 0 1%; width: 30%;">상품명 &nbsp;</label><input id="prod_name" style="width:60%;" type="text" name="prod_name" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 0 1%; width: 30%;">주문금액 &nbsp;</label><input id="order_tprice" style="width:60%;" type="text" name="order_tprice" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 0 1%; width: 30%;">주문일자 &nbsp;</label><input id="order_date" style="width:60%;" type="text" name="order_date" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문번호 &nbsp;</label><input id="order_no" style="width:60%;" type="text" name="order_no" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문자 &nbsp;</label><input id="name" style="width:60%;" type="text" name="name" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">상품명 &nbsp;</label><input id="prod_name" style="width:60%;" type="text" name="prod_name" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문금액 &nbsp;</label><input id="order_tprice" style="width:60%;" type="text" name="order_tprice" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문일자 &nbsp;</label><input id="order_date" style="width:60%;" type="text" name="order_date" readonly/>
 		     				<label class="text-left" style="margin-top: 2%; margin-left: 1%; width: 30%;">주문상태 &nbsp;</label>
 		     				<select id="modal_ship_status" style="width:60%;" name="ship_status">
 								<option value="">선택</option>			
