@@ -277,7 +277,8 @@
             <label class="text-left" style="margin-left: 1%; width: 15%;">요청사항 &nbsp;</label><input style="margin-top: 2%; width:80%" type="text" name="order_request" value="빠른 배송 부탁드립니다."/>
             
             
-            <label for="setDefaultShip" class="text-left" style="cursor: pointer; margin-left: 1%; width: 15%;">기본배송지로 설정 &nbsp;</label><input id="setDefaultShip" style="margin-top: 2%;" type="checkbox" name=ship_default" />
+            <label for="setDefaultShip" class="text-left" style="cursor: pointer; margin-left: 1%; width: 15%;">기본배송지 설정 &nbsp;</label>
+            <input id="setDefaultShip" style="margin-top: 2%;" type="checkbox" />
             
             <%-- 회원정보 입력 끝 --%>
             
@@ -303,7 +304,7 @@
 							<tr>
 								<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}"></td>
 								<td>${requestScope.pvo.prod_name}</td>
-								<td class="prod_count">${requestScope.pvo.prodCnt}</td>
+								<td class="prod_count">${requestScope.prodCnt}</td>
 								<fmt:parseNumber var="count" type="number" value="${requestScope.prodCnt}" />
 								<fmt:parseNumber var="price" type="number" value="${requestScope.pvo.prod_price}" />
 								<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
@@ -430,14 +431,22 @@
             	<span>적립예정금액</span><input type="hidden" name="point" value=""/><span id="point" style="float: right"></span>
             </div>
             
-            <button style="margin-top: 3%; width: 100%; height: 50px;" type="button" class="btn btn-primary"><span class="total_price"></span> 결제하기</button>
+            <button id="payments" type="button" class="btn btn-primary"><span class="total_price"></span> 결제하기</button>
+
+			<%-- DB 전송 필요항목 숨김 태그 --%>
+			<input type="hidden" name="user_no" value="${sessionScope.loginuser.user_no}" />
+			<input type="hidden" name="coupon_name" />
+			<input type="hidden" name="ordetail_count" />
+			<input type="hidden" name="coupon_name" />
+			<input type="hidden" name="coupon_name" />
+			<input type="hidden" name="coupon_name" />
+			<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
+			<input type="hidden" id="ship_default" name="ship_default" />
             
 		</form>	
 	</div>
 	<%-- 주문정보 확인 및 결제 끝 --%>
 </div>
-
-
 
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

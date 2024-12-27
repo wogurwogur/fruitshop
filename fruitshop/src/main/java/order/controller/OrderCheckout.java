@@ -25,10 +25,12 @@ public class OrderCheckout extends AbstractController {
 		
 		HttpSession session = request.getSession();
 		// 상품번호, 유저번호, 상품개수
-		String user_no = request.getParameter("userNo"); 	// 회원번호
+		String userNo = request.getParameter("userNo"); 	// 회원번호
 		String prod_no = request.getParameter("prodNo"); 	// 상품번호
 		String prodCnt = request.getParameter("prodCnt"); 	// 상품개수
 		String cart_no = request.getParameter("cart_no"); 	// 장바구니번호
+		
+//		System.out.println("확인용 userno :"+ user_no);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
@@ -50,9 +52,23 @@ public class OrderCheckout extends AbstractController {
 		}
 		
 		// 본인 아이디가 아닌 경우
-		/*if (loginuser.getUser_no() == Integer.parseInt(user_no)) {
-			// 본인 아이디가 아닌 경우
-			message = "주문자와 로그인한 유저가 일치해야 합니다!";
+		try {
+			if (loginuser.getUser_no() != Integer.parseInt(userNo)) {
+				// 본인 아이디가 아닌 경우
+				message = "주문자와 로그인한 유저가 일치해야 합니다!";
+				loc = "javascript:history.back()";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/common/msg.jsp");
+				
+				return;
+			}
+		} catch (NumberFormatException e) {
+			
+			message = "비정상적인 요청입니다.";
 			loc = "javascript:history.back()";
 			
 			request.setAttribute("message", message);
@@ -63,7 +79,10 @@ public class OrderCheckout extends AbstractController {
 			
 			return;
 		}
-	*/
+	
+		
+		
+		
 		
 		// 결제하기 버튼 클릭 여부에 따라 분기한다.
 		if (!"POST".equalsIgnoreCase(request.getMethod())) {
@@ -142,6 +161,37 @@ public class OrderCheckout extends AbstractController {
 		}
 		else {
 			// 결제하기 버튼을 클릭한 경우
+			String name = request.getParameter("name");
+			String postcode = request.getParameter("postcode");
+			String address = request.getParameter("address");
+			String detailaddress = request.getParameter("detailaddress");
+			String extraaddress = request.getParameter("extraaddress");
+			String hp1 = request.getParameter("hp1");
+			String hp2 = request.getParameter("hp2");
+			String hp3 = request.getParameter("hp3");
+			String email = request.getParameter("email");
+			String order_request = request.getParameter("order_request");
+			String ship_default = request.getParameter("ship_default");
+			String user_no = request.getParameter("user_no");
+			String coupon_name = request.getParameter("coupon_name");
+			String order_tprice = request.getParameter("order_tprice");
+			String point = request.getParameter("point");
+			
+			String mobile = hp1 +"-"+ hp2 +"-"+ hp3;
+			
+			System.out.println("확인용 name => "+ name);
+			System.out.println("확인용 postcode => "+ postcode);
+			System.out.println("확인용 address => "+ address);
+			System.out.println("확인용 detailaddress => "+ detailaddress);
+			System.out.println("확인용 extraaddress => "+ extraaddress);
+			System.out.println("확인용 mobile => "+ mobile);
+			System.out.println("확인용 email => "+ email);
+			System.out.println("확인용 order_request => "+ order_request);
+			System.out.println("확인용 ship_default => "+ ship_default);
+			System.out.println("확인용 user_no => "+ user_no);
+			System.out.println("확인용 coupon_name => "+ coupon_name);			
+			System.out.println("확인용 order_tprice => "+ order_tprice);			
+			System.out.println("확인용 point => "+ point);			
 			
 		}
 		
