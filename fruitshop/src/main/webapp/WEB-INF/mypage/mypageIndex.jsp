@@ -88,7 +88,7 @@
 				<div class="p-3" style="line-height:30px; font-size:14pt">
 		  			<ul>
 		  				<li class="my-2">포인트 : <span class="text-primary"><fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="#,###" /></span>&nbsp;원</li>
-		  				<li class="my-2"><a id="couponModalOpen" style="cursor: pointer;" onclick="modalOpen()">쿠&nbsp;&nbsp;&nbsp;폰 : <span class="text-primary">${requestScope.couponList_length}</span> 개</a></li>
+		  				<li class="my-2"><a id="couponModalOpen" style="cursor: pointer;" onclick="modalOpen()">쿠&nbsp;&nbsp;&nbsp;폰 : <span class="text-primary">${requestScope.couponList_cnt}</span> 개</a></li>
 		  			</ul>
 				</div>
 

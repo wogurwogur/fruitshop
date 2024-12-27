@@ -28,27 +28,45 @@ public class MypageIndex extends AbstractController {
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
 		if(loginuser != null ) {
-			
+
 			int user_no = loginuser.getUser_no();
 			
 			List<CouponVO> couponList = new ArrayList<>();
 			couponList = mpidao.couponInfo(user_no);
 			
 			request.setAttribute("couponList", couponList);
-			request.setAttribute("couponList_length", couponList.size());
+			request.setAttribute("couponList_cnt", couponList.size());
 			
 			
-			Map<String, String> shipStatus_count = mpidao.shipStatus(user_no);
+			List<Map<String, Integer>> shipStatus_count = mpidao.shipStatus(user_no);
 			
-			String cnt_1 = shipStatus_count.get("cnt_1");
-			String cnt_2 = shipStatus_count.get("cnt_2");
-			String cnt_3 = shipStatus_count.get("cnt_3");
+			int cnt_1 = 0;
+			int cnt_2 = 0;
+			int cnt_3 = 0;
 			
+			for(int i=0; i<shipStatus_count.size(); i++) {
+				
+				int ship_status = shipStatus_count.get(i).get("ship_status");
+				int ship_cnt = shipStatus_count.get(i).get("ship_cnt");
+				
+				switch (ship_status) {
+				case 1:
+					cnt_1=ship_cnt;
+					break;
+				case 2:
+					cnt_2=ship_cnt;
+					break;
+				case 3:
+					cnt_3=ship_cnt;
+					break;
+				}
+				
+			}
+
 			request.setAttribute("cnt_1", cnt_1);
 			request.setAttribute("cnt_2", cnt_2);
 			request.setAttribute("cnt_3", cnt_3);
-			
-			
+
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/mypage/mypageIndex.jsp");
 			
