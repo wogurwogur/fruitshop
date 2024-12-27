@@ -1,10 +1,13 @@
 package order.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cart.domain.CartVO;
 import common.controller.AbstractController;
 import coupon.domain.CouponVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,9 +31,14 @@ public class OrderCheckout extends AbstractController {
 		String userNo = request.getParameter("userNo"); 	// 회원번호
 		String prod_no = request.getParameter("prodNo"); 	// 상품번호
 		String prodCnt = request.getParameter("prodCnt"); 	// 상품개수
-		String cart_no = request.getParameter("cart_no"); 	// 장바구니번호
+		String cartTotal = request.getParameter("cartTotal"); 	// 장바구니번호
+		String selectedItems = request.getParameter("selectedItem"); 	// 장바구니 일부 상품 번호
+		
+//		for (int i=0; i<)
 		
 //		System.out.println("확인용 userno :"+ user_no);
+//		System.out.println("확인용 selectedItems :"+ selectedItems);
+//		System.out.println("확인용 cartTotal :"+ cartTotal);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
@@ -91,37 +99,57 @@ public class OrderCheckout extends AbstractController {
 			try {
 				// 해당 상품과 수량이 판매중인지, 재고보다 많은 요청인지 알아오기
 				Map<String, String> paraMap = new HashMap<>();
-						
-				Integer.parseInt(prod_no);	// exception 발생 시 비정상접근 리턴
-				Integer.parseInt(prodCnt);
-				
-				paraMap.put("prod_no", prod_no);
-				
-				ProductVO pvo = odao.checkProd(paraMap);
-				
-				if (pvo == null || Integer.parseInt(prodCnt) > pvo.getProd_inventory()) {
-					message = "주문 상품이 올바르지 않거나 재고량보다 많습니다.\n상품 및 수량을 확인하세요.";
-					loc = "javascript:history.back()";
-					
-					request.setAttribute("message", message);
-					request.setAttribute("loc", loc);
-					
-					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/common/msg.jsp");
-					
-					return;
-				}
-				
-				request.setAttribute("pvo", pvo);
-				request.setAttribute("prodCnt", prodCnt);
-				
 				paraMap.put("user_no", String.valueOf(loginuser.getUser_no()));
 				
-				
-				if (cart_no != null) {
-					// 장바구니를 통한 주문일 경우
+				// 상품 상세페이지에서 주문 시
+				if (prodCnt != null) {
+					Integer.parseInt(prod_no);	// exception 발생 시 비정상접근 리턴
+					Integer.parseInt(prodCnt);
+					
+					paraMap.put("prod_no", prod_no);
+					ProductVO pvo = odao.checkProd(paraMap);
+					
+					if (pvo == null || Integer.parseInt(prodCnt) > pvo.getProd_inventory()) {
+						message = "주문 상품이 올바르지 않거나 재고량보다 많습니다.\n상품 및 수량을 확인하세요.";
+						loc = "javascript:history.back()";
+						
+						request.setAttribute("message", message);
+						request.setAttribute("loc", loc);
+						
+						super.setRedirect(false);
+						super.setViewPage("/WEB-INF/common/msg.jsp");
+						
+						return;
+					}
+					
+					request.setAttribute("pvo", pvo);
+					request.setAttribute("prodCnt", prodCnt);
+				}
+		
+								
+				if ("Y".equalsIgnoreCase(cartTotal)) {
+					// 장바구니 전체 주문일 경우
 					// 해당 회원의 장바구니에 있는 품목을 가져온다
 					List<Map<String, String>> cartList = odao.getCartList(paraMap);
+					request.setAttribute("cartList", cartList);
+				}
+				
+				if (selectedItems != null) {
+					// 장바구니 선택 주문일 경우
+					String[] arr_product;
+					arr_product = selectedItems.split(",");	// 상품 번호
+					List<Map<String, String>> cartList  = new ArrayList<>();
+					
+					for (int i=0; i<arr_product.length; i++) {						
+						paraMap.put("cart_no", arr_product[i]);
+						
+						// 상품의 정보를 가져옴
+						Map<String, String> cartItem = odao.getCartItem(paraMap);
+						
+						cartList.add(cartItem);
+						
+					}// end of for() ----------------------
+					
 					request.setAttribute("cartList", cartList);
 				}
 				
@@ -145,7 +173,7 @@ public class OrderCheckout extends AbstractController {
 				
 			} catch (NumberFormatException e) {
 				
-				message = "비정상적인 요청입니다.";
+				message = "비정상적인 요청입니다다다다 .";
 				loc = "javascript:history.back()";
 				
 				request.setAttribute("message", message);
@@ -172,12 +200,15 @@ public class OrderCheckout extends AbstractController {
 			String email = request.getParameter("email");
 			String order_request = request.getParameter("order_request");
 			String ship_default = request.getParameter("ship_default");
-			String user_no = request.getParameter("user_no");
+			String user_no = request.getParameter("userNo");
 			String coupon_name = request.getParameter("coupon_name");
 			String order_tprice = request.getParameter("order_tprice");
 			String point = request.getParameter("point");
+			String[] arr_prodNo = request.getParameterValues("prod_no");
+			String[] arr_prod_name = request.getParameterValues("prod_name");
 			
-			String mobile = hp1 +"-"+ hp2 +"-"+ hp3;
+			
+			String mobile = hp1 + hp2 + hp3;
 			
 			System.out.println("확인용 name => "+ name);
 			System.out.println("확인용 postcode => "+ postcode);
@@ -192,6 +223,41 @@ public class OrderCheckout extends AbstractController {
 			System.out.println("확인용 coupon_name => "+ coupon_name);			
 			System.out.println("확인용 order_tprice => "+ order_tprice);			
 			System.out.println("확인용 point => "+ point);			
+			System.out.println("확인용 arr_prodNo => "+ String.join(",", arr_prodNo));			
+			System.out.println("확인용 arr_prod_name => "+ String.join(",", arr_prod_name));			
+			
+			// 주문번호 생성하기 (채번) (오늘날짜-시퀀스번호)
+			int order_no = odao.getOrderNo();
+			
+			String prodNo = String.join(",", arr_prodNo);
+			
+			String productName = (arr_prod_name.length > 1)? arr_prod_name[0] +"외 "+ (arr_prod_name.length-1)+ "건" : arr_prod_name[0];
+			
+			String orderNo = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance()) +"-"+ order_no;
+			
+			System.out.println("확인용 주문번호: "+ orderNo);
+			System.out.println("확인용 상품명: "+ productName);
+			
+			request.setAttribute("productName", productName);		// 주문번호(결제, DB) 상품명 결제창 용
+			request.setAttribute("order_no", orderNo);				// 주문번호(결제, DB) DB 컬럼용
+			request.setAttribute("order_tprice", Integer.parseInt(order_tprice));	// 주문금액(DB)
+			request.setAttribute("productPrice", 100);				// 실제결제금액(결제)
+			request.setAttribute("email", email);					// 이메일(결제)
+			request.setAttribute("name", loginuser.getName());		// 주문자이름(결제)
+			request.setAttribute("mobile", mobile);					// 연락처(결제)
+			request.setAttribute("postcode", postcode);				// 우편번호(주문DB)
+			request.setAttribute("address", address);				// 주소(주문DB)
+			request.setAttribute("detailaddress", detailaddress);	// 상세주소(주문DB)
+			request.setAttribute("extraaddress", extraaddress);		// 참고사항(주문DB)
+			request.setAttribute("order_request", order_request);	// 요청사항(주문DB)
+			request.setAttribute("ship_default", ship_default);		// 기본배송지설정(배송지DB)
+			request.setAttribute("user_no", user_no);				// 회원번호(주문DB)
+			request.setAttribute("coupon_name", coupon_name);		// 쿠폰명(쿠폰DB)
+			request.setAttribute("point", point);					// 포인트(회원DB)
+			request.setAttribute("prodNo", prodNo);					// 상품번호(주문상세DB)
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/order/paymentGateway.jsp");
 			
 		}
 		

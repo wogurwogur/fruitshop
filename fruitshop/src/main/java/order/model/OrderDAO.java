@@ -23,4 +23,10 @@ public interface OrderDAO {
 	// 상품 정보 및 재고를 확인한다.
 	ProductVO checkProd(Map<String, String> paraMap) throws SQLException;
 
+	// 장바구니에 담긴 개별 상품의 정보를 가져온다.
+	Map<String, String> getCartItem(Map<String, String> paraMap) throws SQLException;
+
+	// 주문번호 가져오기 (채번)
+	int getOrderNo() throws SQLException;
+
 }

@@ -302,8 +302,11 @@
 						<%-- 상품 개별페이지에서 주문한 경우. --%>
 						<c:if test="${empty requestScope.cartList}">
 							<tr>
-								<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}"></td>
-								<td>${requestScope.pvo.prod_name}</td>
+								<td>
+									<input type="hidden" name="prod_no" value="${requestScope.pvo.prod_no}" />
+									<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}">
+								</td>
+								<td><input type="hidden" name="prod_name" value="${requestScope.pvo.prod_name}" />${requestScope.pvo.prod_name}</td>
 								<td class="prod_count">${requestScope.prodCnt}</td>
 								<fmt:parseNumber var="count" type="number" value="${requestScope.prodCnt}" />
 								<fmt:parseNumber var="price" type="number" value="${requestScope.pvo.prod_price}" />
@@ -315,8 +318,11 @@
 						<%-- 상품리스트 반복문 --%>
 							<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
 								<tr>
-									<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}"></td>
-									<td>${cartItem.prod_name}</td>
+									<td>
+										<input type="hidden" name="prod_no" value="${cartItem.prod_no}" />
+										<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}">
+									</td>
+									<td><input type="hidden" name="prod_name" value="${cartItem.prod_name}" />${cartItem.prod_name}</td>
 									<td class="prod_count">${cartItem.cart_prodcount}</td>
 									<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
 									<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
@@ -434,12 +440,9 @@
             <button id="payments" type="button" class="btn btn-primary"><span class="total_price"></span> 결제하기</button>
 
 			<%-- DB 전송 필요항목 숨김 태그 --%>
-			<input type="hidden" name="user_no" value="${sessionScope.loginuser.user_no}" />
+			<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}" />
 			<input type="hidden" name="coupon_name" />
 			<input type="hidden" name="ordetail_count" />
-			<input type="hidden" name="coupon_name" />
-			<input type="hidden" name="coupon_name" />
-			<input type="hidden" name="coupon_name" />
 			<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
 			<input type="hidden" id="ship_default" name="ship_default" />
             
