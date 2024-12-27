@@ -18,14 +18,33 @@
 	<%-- 선택상품 주문하기 누를때--%>
 	function Orderpick() {
 		
-		const check = $("input:checkbox[name='selectedItems']").length;
+		const check = $("input:checkbox[name='selectedItems']:checked").length;
+		//console.log(check);
+		
+		const arr_cart_no = [];
+		
+		$("input:checkbox[name='selectedItems']:checked").each(function (index, elmt) {
+			console.log("체크박스 값 : ", $(elmt).val());
+			arr_cart_no.push($(elmt).val());
+		})
+		
+		
+		
+		console.log(arr_cart_no);
 		
 		if(check == 0){
+			
 			alert("선택된 상품이 없습니다.");
 		}
 		else{
 		
-		 	confirm("선택한 상품을 주문하시겠습니까?");
+		 	if(confirm("선택한 상품을 주문하시겠습니까?")){
+		 		
+		 		const frm = document.getElementById("checked");
+		 		frm.action = `${pageContext.request.contextPath}/order/orderCheckout.ddg`;
+		 		frm.method = "get";
+		 		frm.submit();
+		 	}
 		}
 		
 	}// end of function goCartList() {}-----------------------------
@@ -33,7 +52,11 @@
 	<%--  전체상품 주문하기 누를때 --%>
 	function OrderAll() {
 		
-		confirm("장바구니에 있는 전체상품을 주문하시겠습니까?");
+		
+		if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
+			
+			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?&userNo=${sessionScope.loginuser.user_no}`;
+		}
 		
 	}
 	
@@ -71,10 +94,14 @@
                     
                     <%-- 상품 수량 숨기기 --%>
                     <input type="hidden" name="prodinventory" value="${item.product.prod_inventory}" />
-                    
+
+ 						            
                           <%-- 각각의 상품 체크박스 --%>
 				        <div style="flex: 0.1; text-align: center;">
-				            <input type="checkbox" name="selectedItems" value="${item.cart_no}">
+				        	<form id="checked">
+				            	<input type="checkbox" name="selectedItems" value="${item.cart_no}">
+				            	<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}">
+				            </form>    
 				        </div>
                         
                         <%-- 상품 이미지 --%>
@@ -122,19 +149,17 @@
 </div>
 
 	<div class="ec-base-button gColumn">
-	    <a href="#" onclick="Orderpick(); return false;" class="btnpick">선택상품 주문하기</a>  
+	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
 	    <a href="#" onclick="OrderAll();" class="btnSubmit">전체상품 주문하기</a>
 	    <a href="#" onclick="CartDeleteAll(); return false;" class="btnremove">장바구니 비우기</a>       
 	    </div>
 	    
 	    
-	    <form method="post" action="<%= request.getContextPath() %>/mypage/wishList.ddg" id="checkCart">
-       	<input type="hidden" name="check_cart" value="true">
-   		</form>
-	    
+	  
 	    <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" id="deleteAll">
 		<input type="hidden" name="delete_all" value="true">
 		</form>
+		
         </c:when>
 		
         <%-- 장바구니에 상품이 없는 경우 --%>
