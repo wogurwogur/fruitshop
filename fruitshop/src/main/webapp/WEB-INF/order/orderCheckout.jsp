@@ -277,7 +277,8 @@
             <label class="text-left" style="margin-left: 1%; width: 15%;">요청사항 &nbsp;</label><input style="margin-top: 2%; width:80%" type="text" name="order_request" value="빠른 배송 부탁드립니다."/>
             
             
-            <label for="setDefaultShip" class="text-left" style="cursor: pointer; margin-left: 1%; width: 15%;">기본배송지로 설정 &nbsp;</label><input id="setDefaultShip" style="margin-top: 2%;" type="checkbox" name=ship_default" />
+            <label for="setDefaultShip" class="text-left" style="cursor: pointer; margin-left: 1%; width: 15%;">기본배송지 설정 &nbsp;</label>
+            <input id="setDefaultShip" style="margin-top: 2%;" type="checkbox" />
             
             <%-- 회원정보 입력 끝 --%>
             
@@ -297,18 +298,39 @@
 						</tr>
 					</thead>
 					<tbody>
-					<%-- 상품리스트 반복문 --%>
-						<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
+						<%-- 장바구니를 통한 주문과 상품페이지 직접 주문 여부에 따라 분기한다. --%>
+						<%-- 상품 개별페이지에서 주문한 경우. --%>
+						<c:if test="${empty requestScope.cartList}">
 							<tr>
-								<td><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}"></td>
-								<td>${cartItem.prod_name}</td>
-								<td class="prod_count">${cartItem.cart_prodcount}</td>
-								<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
-								<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
+								<td>
+									<input type="hidden" name="prod_no" value="${requestScope.pvo.prod_no}" />
+									<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}">
+								</td>
+								<td><input type="hidden" name="prod_name" value="${requestScope.pvo.prod_name}" />${requestScope.pvo.prod_name}</td>
+								<td class="prod_count">${requestScope.prodCnt}</td>
+								<fmt:parseNumber var="count" type="number" value="${requestScope.prodCnt}" />
+								<fmt:parseNumber var="price" type="number" value="${requestScope.pvo.prod_price}" />
 								<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
-							</tr>							
-						</c:forEach>
-					<%-- 상품리스트 반복문 --%>
+							</tr>	
+						</c:if>
+						
+						<c:if test="${!empty requestScope.cartList}">
+						<%-- 상품리스트 반복문 --%>
+							<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
+								<tr>
+									<td>
+										<input type="hidden" name="prod_no" value="${cartItem.prod_no}" />
+										<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}">
+									</td>
+									<td><input type="hidden" name="prod_name" value="${cartItem.prod_name}" />${cartItem.prod_name}</td>
+									<td class="prod_count">${cartItem.cart_prodcount}</td>
+									<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
+									<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
+									<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
+								</tr>							
+							</c:forEach>
+						<%-- 상품리스트 반복문 --%>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
@@ -415,14 +437,19 @@
             	<span>적립예정금액</span><input type="hidden" name="point" value=""/><span id="point" style="float: right"></span>
             </div>
             
-            <button style="margin-top: 3%; width: 100%; height: 50px;" type="button" class="btn btn-primary"><span class="total_price"></span> 결제하기</button>
+            <button id="payments" type="button" class="btn btn-primary"><span class="total_price"></span> 결제하기</button>
+
+			<%-- DB 전송 필요항목 숨김 태그 --%>
+			<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}" />
+			<input type="hidden" name="coupon_name" />
+			<input type="hidden" name="ordetail_count" />
+			<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
+			<input type="hidden" id="ship_default" name="ship_default" />
             
 		</form>	
 	</div>
 	<%-- 주문정보 확인 및 결제 끝 --%>
 </div>
-
-
 
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

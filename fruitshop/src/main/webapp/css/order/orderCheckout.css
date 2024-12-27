@@ -87,4 +87,12 @@ span.error {
 	color: red;
 }
 
-/* 배송지 정보란 시작 */
+/* 배송지 정보란 끝 */
+
+
+/* 결제하기 버튼 */
+button#payments {
+	margin-top: 3%;
+	width: 100%;
+	height: 50px;
+}

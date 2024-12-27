@@ -6,6 +6,7 @@ import java.util.Map;
 
 import coupon.domain.CouponVO;
 import mypage.ship.domain.ShipVO;
+import product.domain.ProductVO;
 
 
 public interface OrderDAO {
@@ -18,5 +19,14 @@ public interface OrderDAO {
 
 	// 회원이 등록한 배송지 목록을 가져온다.
 	List<ShipVO> getShipList(Map<String, String> paraMap) throws SQLException;
+
+	// 상품 정보 및 재고를 확인한다.
+	ProductVO checkProd(Map<String, String> paraMap) throws SQLException;
+
+	// 장바구니에 담긴 개별 상품의 정보를 가져온다.
+	Map<String, String> getCartItem(Map<String, String> paraMap) throws SQLException;
+
+	// 주문번호 가져오기 (채번)
+	int getOrderNo() throws SQLException;
 
 }

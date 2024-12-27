@@ -57,7 +57,11 @@ $(document).ready(() => {
 			const discount = Number(coupon_discount.split(",").join(""));
 			const tprice = Number($("input:hidden[name='order_tprice']").val());
 			
-			const dcPrice = tprice - discount;
+			let dcPrice = tprice - discount;
+			
+			if (dcPrice < 0) {
+				dcPrice = 0;
+			}
 			
 			// DB에 넘어갈 값 추가
 			$("input:hidden[name='order_tprice']").val(dcPrice);
@@ -72,6 +76,7 @@ $(document).ready(() => {
 			
 		});// end of $("table#shipInfo tr").on("click", e => {}) -----------------
 		// === 모달창 쿠폰 고르기 이벤트 끝 === //
+		
 		
 		// === 주소 직접입력시 이벤트 처리 시작 === //
 		$("span.btn-outline-secondary").on("click", function() {
@@ -164,9 +169,21 @@ $(document).ready(() => {
 			const index = $("span.total_price").text().indexOf("원");
 			//console.log($("span.total_price").text().substring(0, index));
 			
+			// 현재금액
 			const currentPrice = Number($("span.total_price").text().substring(0, index).split(",").join(""));
+			let changePrice = 0;
+			console.log("currentPrice: ", currentPrice);
 			
-			const changePrice = currentPrice + discount;
+			
+			// 쿠폰 금액이 주문 금액보다 컸을 경우
+			if (currentPrice == 0) {
+				const index = $("span#total_oprice").text().indexOf("원");
+				console.log("확인용", index);
+				changePrice = Number($("span#total_oprice").text().substring(0, index).split(",").join(""))+ price_ship;
+			} else{
+				changePrice = currentPrice + discount;
+			}
+			
 			
 			$("input:hidden[name='order_tprice']").val(changePrice);
 			console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
@@ -176,6 +193,63 @@ $(document).ready(() => {
 			$("span#discount").html("");
 			$("table#couponSelect").hide();
 		});// end of $("span.btn-outline-danger").on("click", e => {}) ----------------
+		
+		
+		$("button#payments").on("click", () => {
+			
+						
+			// === 필수 입력사항 유효성검사 시작 === //
+			const name = $("input#name").val().trim();
+			if (name == "") {
+				alert("받는사람은 필수 입력사항입니다.");
+				return;
+			}
+			
+			const postcode = $("input#postcode").val().trim();
+			const address = $("input#address").val().trim();
+			const detailAddress = $("input#detailAddress").val().trim();
+			const extraAddress = $("input#extraAddress").val().trim();
+			
+			if (postcode == "" || address == "" || detailAddress == "" || extraAddress == "") {
+				alert("주소는 필수 입력사항입니다.");
+				return;
+			}
+			
+			const regExp_hp2 = new RegExp(/^[1-9][0-9]{3}$/);
+			const regExp_hp3 = new RegExp(/^[\d]{4}$/);
+	        const hp2 = $("input#hp2").val().trim();
+	        const hp3 = $("input#hp3").val().trim();
+			
+			if (!regExp_hp2.test(hp2) || !regExp_hp3.test(hp3)) {
+	            // 연락처 국번이 형식에 맞지 않은 경우
+				alert("올바른 연락처를 입력하세요.");
+				return;
+	        }
+			
+			const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
+			const email = $("input#email").val().trim();
+			
+			if (!regExp_email.test(email)) {
+				alert("올바른 이메일을 입력하세요.");
+				return;
+			}
+	        
+			const shipSet = $("input:checkbox[id='setDefaultShip']:checked").length;
+			console.log("확인용 shipSet: ", shipSet);
+			//alert("확인용 shipSet: ", $("input:checkbox[id='setDefaultShip']:checked").length);
+			
+			$("input#ship_default").val(shipSet);
+			
+			
+			const frm = document.shipInfo;
+			
+			frm.coupon_name.value  = $("td#coupon_name").text();
+			
+			frm.method = "POST";
+			frm.action = $("input#contextPath").val()+ "/order/orderCheckout.ddg";
+			frm.submit();
+			
+		});// end of $("button#payments").on("click", () => {}) -------------------- 
 		
 });// end of $(document).ready(() => {}) --------------------- 
 

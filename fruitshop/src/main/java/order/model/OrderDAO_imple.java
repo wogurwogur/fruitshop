@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 import coupon.domain.CouponVO;
 import mypage.ship.domain.ShipVO;
+import product.domain.ProductVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
 
@@ -185,6 +186,115 @@ public class OrderDAO_imple implements OrderDAO {
 		
 		return shipList;
 	}// end of public List<ShipVO> getShipList(String user_no) throws SQLException -----------------------
+
+	
+	// 상품 정보 및 재고를 확인한다.
+	@Override
+	public ProductVO checkProd(Map<String, String> paraMap) throws SQLException {
+		ProductVO pvo = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql	= " SELECT prod_no, prod_name, prod_price, prod_thumnail, prod_inventory "
+						+ "   FROM TBL_PRODUCTS "
+						+ "  WHERE prod_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("prod_no"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pvo = new ProductVO();
+				
+				pvo.setProd_no(rs.getInt("prod_no"));
+				pvo.setProd_name(rs.getString("prod_name"));
+				pvo.setProd_price(rs.getInt("prod_price"));
+				pvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				pvo.setProd_inventory(rs.getInt("prod_inventory"));
+				
+			}// end of if(rs.next()) -------------------
+			
+		} finally {
+			close();
+		}
+		
+		
+		return pvo;
+	}// end of public ProductVO checkProd(Map<String, String> paraMap) throws SQLException -----------------------
+
+	
+	// 장바구니에 담긴 개별 상품의 정보를 가져온다.
+	@Override
+	public Map<String, String> getCartItem(Map<String, String> paraMap) throws SQLException {
+		
+		Map<String, String> resultMap = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql	= " SELECT P.prod_no, A.cart_prodcount, P.prod_price, P.prod_thumnail, P.prod_name "
+						+ "   FROM "
+						+ "     ( "
+						+ "     SELECT fk_user_no, fk_prod_no, cart_prodcount "
+						+ "       FROM tbl_cart "
+						+ "      WHERE fk_user_no = ? AND cart_no = ? "
+						+ "     ) A  "
+						+ "   JOIN tbl_products P "
+						+ "     ON A.fk_prod_no = P.prod_no ";
+		
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("user_no"));
+			pstmt.setString(2, paraMap.get("cart_no"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				resultMap = new HashMap<>();
+				
+				resultMap.put("prod_no", String.valueOf(rs.getInt("prod_no")));
+				resultMap.put("cart_prodcount", String.valueOf(rs.getInt("cart_prodcount")));	// 개수		
+				resultMap.put("prod_price", String.valueOf(rs.getInt("prod_price")));			// 상품별 가격
+				resultMap.put("prod_thumnail", rs.getString("prod_thumnail"));				
+				resultMap.put("prod_name", rs.getString("prod_name"));				
+			
+				
+			}// end of if(rs.next()) -------------------
+			
+		} finally {
+			close();
+		}
+		
+		return resultMap;
+	}// end of public Map<String, String> getCartItem(Map<String, String> paraMap) throws SQLException -----------------
+
+	
+	// 주문번호 가져오기 (채번)
+	@Override
+	public int getOrderNo() throws SQLException {
+		int order_no = 0;
+	      
+	    try {
+	        conn = ds.getConnection();
+	         
+	        String sql = " select order_seq.nextval AS order_no "
+	                   + " from dual ";
+	         
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+	         
+	        rs.next();
+	        order_no = rs.getInt(1);
+	         
+	    } finally {
+	    	close();
+	    }
+	      
+	    return order_no;
+	}// end of public int getOrderNo() throws SQLException -------------------- 
     
     
     
