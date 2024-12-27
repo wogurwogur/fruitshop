@@ -104,71 +104,56 @@ public class MypageIndexDAO_imple implements MypageIndexDAO {
 		return couponList;
 	}
 
+	// 특정 회원의 현재 배송 정보를 가져오는 메소드
 	@Override
-	public Map<String, String> shipStatus(int user_no) throws SQLException {
+	public List<Map<String, Integer>> shipStatus(int user_no) throws SQLException {
 		
-		Map<String, String> shipStatus_count = new HashMap<>();
-		
-		int cnt_1 = 0;
-		int cnt_2 = 0;
-		int cnt_3 = 0;
+		List<Map<String, Integer>> shipStatusList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select order_no"
-					   + " from tbl_order "
-					   + " where fk_user_no = ? ";
+			String sql = " select ship_status, count(ship_status) as ship_cnt "
+					   + " from "
+					   + " ( "
+					   + "    select distinct O.order_no, D.ship_status "
+					   + "    from "
+					   + "    ( "
+					   + "        select fk_order_no, ship_status "
+					   + "        from tbl_orderdetail "
+					   + "    )D "
+					   + "    join "
+					   + "    ( "
+					   + "    	  select order_no, fk_user_no "
+					   + "    	  from tbl_order "
+					   + "    )O "
+					   + "    on D.fk_order_no = O.order_no "
+					   + "    where O.fk_user_no = ? "
+					   + " )R "
+					   + " group by ship_status ";
 			
 			pstmt = conn.prepareStatement(sql); 
 			pstmt.setInt(1, user_no);
 
 			rs = pstmt.executeQuery();
-			
-			String sql_2 = "";
-			
+		
 			while(rs.next()) {
 				
-				int order_no = rs.getInt("order_no");
+				Map<String, Integer> shipStatusMap = new HashMap<>();
 				
-				sql_2 = " select ship_status "
-					  + " from tbl_orderdetail "
-					  + " where fk_order_no = ? "
-					  + " group by ship_status ";
-				
-				pstmt = conn.prepareStatement(sql_2); 
-				pstmt.setInt(1, order_no);
-				
-				rs2 = pstmt.executeQuery();
-				
-				while(rs2.next()) {
-					
-					if(rs2.getInt("ship_status") == 1) {
-						cnt_1++;
-					}
-					else if(rs2.getInt("ship_status") == 2) {
-						cnt_2++;
-					}
-					else if(rs2.getInt("ship_status") == 3) {
-						cnt_3++;
-					}
-					
-				}
+				shipStatusMap.put("ship_status", rs.getInt("ship_status"));
+				shipStatusMap.put("ship_cnt", rs.getInt("ship_cnt"));
+
+				shipStatusList.add(shipStatusMap);
 			}
 			
-			shipStatus_count.put("cnt_1", String.valueOf(cnt_1));
-			shipStatus_count.put("cnt_2", String.valueOf(cnt_2));
-			shipStatus_count.put("cnt_3", String.valueOf(cnt_3));
-
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close();
 		}
-		
-		
-		
-		return shipStatus_count;
+
+		return shipStatusList;
 	}
 }
