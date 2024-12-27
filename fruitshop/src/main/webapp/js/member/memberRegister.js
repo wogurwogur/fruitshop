@@ -289,14 +289,17 @@ $(()=>{
         ,changeYear: true     
         ,changeMonth: true                             
         ,yearSuffix: "년"  
-        ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] 
-        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] 
         ,dayNamesMin: ['일','월','화','수','목','금','토'] 
         ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일']
+		,maxDate:"today"
+		,yearRange:"1900:today"
+		,showButtonPanel:true
+		,closeText: "닫기"
+		,currentText: "오늘"
     });
 
-    // 초기값을 20년전 오늘 날짜로 설정 
-    $('input#datepicker').datepicker('setDate', '-20Y');
 
 
     $("input#datepicker").bind("blur", e => {
