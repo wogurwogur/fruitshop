@@ -61,7 +61,7 @@ public class CartDAO_imple implements CartDAO {
 	        
 
 	        String sql = " SELECT c.fk_user_no, c.cart_no, c.cart_prodcount, " 
-	                   + "        p.prod_thumnail, p.prod_name, p.prod_price " 
+	                   + "        p.prod_no, p.prod_thumnail, p.prod_name, p.prod_price, p.prod_inventory " 
 	                   + " FROM tbl_cart c " 
 	                   + " INNER JOIN tbl_products p " 
 	                   + " ON c.fk_prod_no = p.prod_no "
@@ -78,12 +78,15 @@ public class CartDAO_imple implements CartDAO {
 	        while (rs.next()) {
 	            // ProductVO 설정
 	            ProductVO pdvo = new ProductVO();
+	            pdvo.setProd_no(rs.getInt("prod_no"));
 	            pdvo.setProd_thumnail(rs.getString("prod_thumnail"));
 	            pdvo.setProd_name(rs.getString("prod_name"));
 	            pdvo.setProd_price(rs.getInt("prod_price"));
+	            pdvo.setProd_inventory(rs.getInt("prod_inventory"));
 
 	            // CartVO 설정
 	            CartVO cartvo = new CartVO();
+	            cartvo.setFk_user_no(rs.getInt("fk_user_no"));
 	            cartvo.setCart_no(rs.getInt("cart_no"));
 	            cartvo.setCart_prodcount(rs.getInt("cart_prodcount"));
 	            cartvo.setProduct(pdvo);
@@ -249,6 +252,37 @@ public class CartDAO_imple implements CartDAO {
          }
 		
 		return update;
+	}
+	
+	
+	// 장바구니 수량 가져오기 //
+	@Override
+	public int getcartCount(int user_no) throws SQLException {
+		
+		int cnt = 0;
+		
+		try {
+            conn = ds.getConnection();
+            String sql = " select count(*) "
+            		   + " from tbl_cart "
+            		   + " where fk_user_no = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setInt(1, user_no);
+            
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            cnt = rs.getInt(1);
+            
+		} finally {
+            close();
+         }
+		
+		
+		return cnt;
 	}
 	
 	

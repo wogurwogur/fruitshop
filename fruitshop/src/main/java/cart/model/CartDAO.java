@@ -26,5 +26,8 @@ public interface CartDAO {
 	// 같은 상품 있을때 상품수량 업데이트 // 
 	int updatecount(Map<String, String> paraMap) throws SQLException;
 	
+	// 장바구니 수량 가져오기 //
+	int getcartCount(int user_no) throws SQLException;
+	
 
 }

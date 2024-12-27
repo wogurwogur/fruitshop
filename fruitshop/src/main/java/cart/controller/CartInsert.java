@@ -25,12 +25,14 @@ public class CartInsert extends AbstractController {
     	String message = "";
     	String loc = "";
     	
+    	
     	if(loginuser != null) {
     		// 로그인을 했을때 
     		
     		String fk_prod_no = request.getParameter("prodNo");	
 	 	    String fk_user_no = request.getParameter("userNo");	
 	 	    String cart_prodcount = request.getParameter("prdCnt");	
+
     		
 	 	    if(loginuser.getUser_no() == Integer.parseInt(fk_user_no)){
 	 	    	
@@ -63,6 +65,9 @@ public class CartInsert extends AbstractController {
 	    	 	    	int n = cdao.insertCart(paraMap);
 	    	 	    	
 	    	 	    	if(n == 1) {
+	    	 	    		
+	    	 	    		loginuser.setCart_cnt(cdao.getcartCount(loginuser.getUser_no()));
+	    	 	    		
 		    	 	    	super.setRedirect(true);
 		    	 	    	super.setViewPage(request.getContextPath()+ "/cart/cartList.ddg");
 		    	 	    }
