@@ -161,7 +161,6 @@ div#admin_top_nav_center{
 	
 	<%-- center div start --%>
 	<div id="admin_top_nav_center">
-		<span>메인페이지 관리</span>
 	</div>
 	<%-- center div end --%>
 		

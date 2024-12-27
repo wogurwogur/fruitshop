@@ -2,9 +2,6 @@
 
 div{
 	font-family: 'Noto Sans KR', sans-serif;
-	font-size: 14pt;
-	/* font-style: regular; */
-	font-weight: 400;
 }
 
 
@@ -53,7 +50,7 @@ select#searchType{
 	height: 34.5px;
 	margin-bottom: 3px;
 }
-d
+
 button{
 	
 	font-size: 15px;
@@ -62,6 +59,11 @@ button{
 }
 
 li{
+	font-size: 15px;
+	font-weight: 300;
+}
+
+input{
 	font-size: 15px;
 	font-weight: 300;
 }

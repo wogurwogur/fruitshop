@@ -60,7 +60,7 @@ function noticeDetail(notice_no){
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
-		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
+		    <a class="nav-link" href="#" style="color: black; solid black 2px;" tabindex="-1" aria-disabled="true" >자주하는 질문</a>
 		  </li>
 		</ul>		
 	</div>
@@ -83,7 +83,7 @@ function noticeDetail(notice_no){
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
-				<table class="table text-center table-hover">
+				<table class="table text-center">
 					<tr>
 						
 						<th>글 번호</th>
@@ -95,7 +95,7 @@ function noticeDetail(notice_no){
 			<tbody id="notice_list">
 			<c:if test="${not empty requestScope.noticeList}">
 				<c:forEach var="nvo" items="${requestScope.noticeList}" varStatus="status">
-					<tr onclick="noticeDetail('${nvo.notice_no}')" style="cursor:pointer;">						
+					<tr onclick="noticeDetail('${nvo.notice_no}')">						
 						<td>${nvo.notice_no}</td>						
 						<td>${nvo.notice_title}</td>						
 						<td>${fn:substring(nvo.notice_regidate,0,10)}</td>

@@ -67,7 +67,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 		String sql = " select notice_no, notice_title, notice_contents, notice_regidate, notice_viewcount "
 				   + " from tbl_notice "
 				   + " where notice_status = 1 "
-				   + " order by notice_regidate ";
+				   + " order by notice_regidate desc ";
 		
 		try {
 			
@@ -157,7 +157,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 	@Override
 	public NoticeVO oneNoticeDetail(String notice_no) throws SQLException {
 		
-		NoticeVO nvo = new NoticeVO();
+		NoticeVO nvo = null;
 		
 		String sql = " select notice_no, notice_title, notice_contents, notice_regidate, notice_viewcount "
 				   + " from tbl_notice "
@@ -174,6 +174,8 @@ public class NoticeDAO_imple implements NoticeDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
+				nvo = new NoticeVO();
+				
 				nvo.setNotice_no(rs.getInt("notice_no"));
 				nvo.setNotice_title(rs.getString("notice_title"));
 				nvo.setNotice_contents(rs.getString("notice_contents"));
@@ -187,6 +189,32 @@ public class NoticeDAO_imple implements NoticeDAO {
 		
 		
 		return nvo;
+	}
+
+	// 권한을 확인후 조회수를 업데이트 하는 메소드
+	@Override
+	public int setViewCount(String notice_no) throws SQLException {
+		
+		int n = 0;
+		
+		String spl = " update tbl_notice set notice_viewcount =  notice_viewcount+1 "
+				+ " where notice_no = ? ";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			pstmt = conn.prepareStatement(spl);
+			
+			pstmt.setString(1, notice_no);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
 	}
 	
 }

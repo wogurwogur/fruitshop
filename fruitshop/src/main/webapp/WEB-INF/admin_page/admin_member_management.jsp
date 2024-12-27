@@ -3,6 +3,7 @@
 <%@ page import="admin.model.AdminDAO, admin.model.AdminDAO_imple" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <% 
 	String ctxPath = request.getContextPath();
@@ -322,7 +323,7 @@ select#searchType{
 						<td>${memberinfo.name}</td>
 						<td style="text-align:left;">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
 						<td>${memberinfo.gender}</td>
-						<td>${memberinfo.tel}</td>
+						<td>${fn:substring(memberinfo.tel,0,3)}-${fn:substring(memberinfo.tel,3,7)}-${fn:substring(memberinfo.tel,7,11)}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

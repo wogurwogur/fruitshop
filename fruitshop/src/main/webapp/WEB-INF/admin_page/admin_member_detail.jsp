@@ -231,7 +231,7 @@ input[type="number"]{
 			</tr>
 			<tr>
 				<td>연락처</td>
-				<c:if test="${not empty requestScope.detailMember.tel}"><td>${requestScope.detailMember.tel}</td></c:if>
+				<c:if test="${not empty requestScope.detailMember.tel}"><td>${fn:substring(requestScope.detailMember.tel,0,3)}-${fn:substring(requestScope.detailMember.tel,3,7)}-${fn:substring(requestScope.detailMember.tel,7,11)}</td></c:if>
 				<c:if test="${empty requestScope.detailMember.tel}">없음</c:if>
 			</tr>
 			<tr>

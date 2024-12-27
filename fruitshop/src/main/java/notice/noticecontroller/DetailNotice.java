@@ -20,15 +20,37 @@ public class DetailNotice extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
 		
-		String notice_no = request.getParameter("notice_no");
+		String notice_no = request.getParameter("notice_no_detail");
 		
+		String method = request.getContextPath();
+			
 		NoticeVO noticeDetail = ndao.oneNoticeDetail(notice_no);
 		
+		if(noticeDetail != null) {
+			
+			if(loginuser != null && loginuser.getRole() == 1) {
+				
+				int n = ndao.setViewCount(notice_no);
+				
+				noticeDetail.setNotice_viewcount(noticeDetail.getNotice_viewcount()+1);
+				
+			}
+			
+		}
+		
+		
+		
+		System.out.println(noticeDetail.getNotice_title());
+		
 		request.setAttribute("loginuser", loginuser);
+		
+		noticeDetail.setNotice_contents(noticeDetail.getNotice_contents().replaceAll("\r\n", "<br>"));
 		
 		request.setAttribute("noticeDetail", noticeDetail);
 		
 		super.setViewPage("/WEB-INF/notice/noticeDetail.jsp");
+		
+		
 
 	}
 

@@ -33,54 +33,33 @@ public class DeleteNotice extends AbstractController {
 			
 			int n = ndao.deleteNotice(notice_no);
 			
-			JSONArray jsonArr = new JSONArray();
-			
-			String json = "";
-			
 			if(n == 1) {
-				
+					
 				List<NoticeVO> noticeList = ndao.noticeSelectAll();
 				
 				request.setAttribute("noticeList", noticeList);
 				
-				if(noticeList.size() > 0) {
-					
-					for(NoticeVO nvo:noticeList) {
-						JSONObject obj = new JSONObject();
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/notice/notice.jsp");
 						
-						obj.put("notice_no", nvo.getNotice_no());
-						obj.put("notice_contents", nvo.getNotice_contents());
-						obj.put("notice_title", nvo.getNotice_title());
-						obj.put("notice_regidate", nvo.getNotice_regidate());
-						obj.put("notice_viewcount", nvo.getNotice_viewcount());
-						
-						jsonArr.put(obj);
-						
-					}
-					
-					json = jsonArr.toString();
-					
 				}
 				
 				
 				
-				request.setAttribute("json", json);
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/common/jsonview.jsp");
-				
-				
-			}else {
+		}else {
 			
-				json = jsonArr.toString();
-				request.setAttribute("json", json);
-				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/common/jsonview.jsp");
-			}
-			
+			String message = "관리자만 접근이 가능합니다.";
+	        String loc = "javascript:history.back()";
+	        
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
-
+			
 	}
 
 }
