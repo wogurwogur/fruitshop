@@ -22,6 +22,10 @@ public class WishInsert extends AbstractController {
     	
     	if(loginuser != null) {	// 로그인을 했을때 
     		
+    		String fk_prod_no = request.getParameter("prodNo");	
+	 	    String fk_user_no = request.getParameter("userNo");	
+    		
+    		
     	}
 		
 	}
