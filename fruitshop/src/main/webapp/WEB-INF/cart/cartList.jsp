@@ -15,22 +15,11 @@
 
 	
 	
-	<%-- 선택상품 주문하기 누를때--%>
 	function Orderpick() {
 		
 		const check = $("input:checkbox[name='selectedItems']:checked").length;
 		//console.log(check);
 		
-		const arr_cart_no = [];
-		
-		$("input:checkbox[name='selectedItems']:checked").each(function (index, elmt) {
-			console.log("체크박스 값 : ", $(elmt).val());
-			arr_cart_no.push($(elmt).val());
-		})
-		
-		
-		
-		console.log(arr_cart_no);
 		
 		if(check == 0){
 			
@@ -38,9 +27,23 @@
 		}
 		else{
 		
+			
+			
 		 	if(confirm("선택한 상품을 주문하시겠습니까?")){
 		 		
+		 		const arr_cart_no = [];
+				
+				$("input:checkbox[name='selectedItems']:checked").each(function (index, elmt) {
+					console.log("체크박스 값 : ", $(elmt).val());
+					arr_cart_no.push($(elmt).val());
+				});
+		 		
+		 		const cart_no = arr_cart_no.join(",");
+				
+				$("input#selectedItem").val(cart_no);
+		 		
 		 		const frm = document.getElementById("checked");
+		 		
 		 		frm.action = `${pageContext.request.contextPath}/order/orderCheckout.ddg`;
 		 		frm.method = "get";
 		 		frm.submit();
@@ -55,11 +58,10 @@
 		
 		if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
 			
-			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?&userNo=${sessionScope.loginuser.user_no}`;
+			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
 		}
 		
 	}
-	
 	
 	
 	 <%-- 장바구니 비우기 누를때 --%> 
