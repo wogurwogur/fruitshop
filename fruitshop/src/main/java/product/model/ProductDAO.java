@@ -32,9 +32,13 @@ public interface ProductDAO {
 	// 입력받은 상품 번호를 가지고 상품 상세 페이지 보여주기
 	ProductVO prdDetails(String prodNo) throws SQLException;
 	
-
-//	// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
-//	int getReviewTotalPage(Map<String, String> paraMap) throws SQLException;
+	
+	
+	
+	
+	
+	// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
+	int getReviewTotalPage(Map<String, String> paraMap) throws SQLException;
 	
 	
 	

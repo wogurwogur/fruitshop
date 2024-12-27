@@ -85,10 +85,10 @@ public class AdminProductController extends AbstractController {
 		pageBar += "<div class='pagination'>";
 		
 		// [맨처음]
-		pageBar += "<a href='registerProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo=1'>&laquo;</a>"; 
+		pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo=1'>&laquo;</a>"; 
 		// [이전]
 		
-		pageBar += "<a href='registerProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
+		pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
 		
 		
 		while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -97,7 +97,7 @@ public class AdminProductController extends AbstractController {
 				pageBar += "<a class='active' href='#'>"+pageNo+"</a>";
 			}
 			else {
-				pageBar += "<a href='registerProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
+				pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
 			}
 			
 			loop++;   // 1 2 3 4 5 6 7 8 9 10
@@ -108,11 +108,11 @@ public class AdminProductController extends AbstractController {
 		
 		
 		// [다음]
-		pageBar += "<a href='registerProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>"; 
+		pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>"; 
 
 		
 		// [맨마지막]
-		pageBar += "<a href='registerProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+totalPage+"'>&raquo;</a>"; 
+		pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+totalPage+"'>&raquo;</a>"; 
 		
 		
 		pageBar += "</div>";

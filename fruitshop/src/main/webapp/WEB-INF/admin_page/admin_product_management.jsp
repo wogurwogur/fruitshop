@@ -47,7 +47,7 @@
 		}
 		
 		const frm = document.fruit_search_frm;
-		frm.action = "registerProduct.ddg"; 
+		frm.action = "adminProduct.ddg"; 
 		frm.method = "get"; 
 		frm.submit();	
 		
@@ -101,7 +101,7 @@
 		</form>
 		<%-- 검색창 끝 --%>
 		
-		<a id="totalList" href="registerProduct.ddg">전체 목록 보기</a>
+		<a id="totalList" href="adminProduct.ddg">전체 목록 보기</a>
 	</div>
 	
 
