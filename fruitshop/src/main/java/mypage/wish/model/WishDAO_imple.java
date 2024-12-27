@@ -58,7 +58,7 @@ public class WishDAO_imple implements WishDAO {
 	        conn = ds.getConnection();
 
 	        String sql = " SELECT w.fk_user_no, w.wish_no, "
-	        		   + " p.prod_thumnail, p.prod_name, p.prod_price "
+	        		   + " p.prod_no, p.prod_thumnail, p.prod_name, p.prod_price "
 	        		   + " FROM tbl_wish w "
 	        		   + " INNER JOIN tbl_products p "
 	        		   + " ON w.fk_prod_no = p.prod_no "
@@ -71,6 +71,7 @@ public class WishDAO_imple implements WishDAO {
 	        while (rs.next()) {
 	            // ProductVO 설정
 	            ProductVO pdvo = new ProductVO();
+	            pdvo.setProd_no(rs.getInt("prod_no"));
 	            pdvo.setProd_thumnail(rs.getString("prod_thumnail"));
 	            pdvo.setProd_name(rs.getString("prod_name"));
 	            pdvo.setProd_price(rs.getInt("prod_price"));
