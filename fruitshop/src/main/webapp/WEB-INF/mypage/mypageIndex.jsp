@@ -16,33 +16,65 @@
 </style>
 
 <script type="text/javascript">
-
-	$(()=>{
-		
-		$("button.couponInfoClose").click(e=>{
-
-			const iframe_couponInfo = document.getElementById("iframe_couponInfo"); 
-	        // 대상 아이프레임을 선택한다.
-	        <%-- 선택자를 잡을때 jQuery를 사용한 ${} 으로 잡으면 안되고, 순수한 자바스크립트를 사용하여 선택자를 잡아야 한다. --%> 
-	        <%-- .jsp 파일속에 주석문을 만들때 ${} 을 넣고자 한다라면 반드시 JSP 주석문으로 해야 하지, 스크립트 주석문으로 해주면 ${} 때문에 오류가 발생한다. --%>
-	        
-	        const iframe_window = iframe_couponInfo.contentWindow;
-	        
-	        iframe_window.func_form_reset_empty();
-	        // iframe 태그 안의 내용물의 함수 func_form_reset_empty() 실행 
-		});
-		
-		
-		
-		
+	
+	function modalOpen() {
+		$("div#modalContainer").removeClass("hidden");
+	}
+	
+	
+	function modalClose() {
+		$("div#modalContainer").addClass("hidden");
 	}
 	
 
 </script>
 
+<style>
+
+#modalOpenButton, #modalCloseButton {
+  cursor: pointer;
+}
+
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: -70px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 800px;
+  height: 500px;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+
+.goOrderInfo:hover {
+	cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+</style>
+
+
 <div class="container" style="padding-top: 110px; padding-bottom: 110px;">
 	
-	<div class="row" style="">
+	<div class="row border" style="">
 	
 		<div class="col-md-5 m-3" style="">
 		
@@ -55,8 +87,8 @@
 	
 				<div class="p-3" style="line-height:30px; font-size:14pt">
 		  			<ul>
-		  				<li class="my-2">포인트 : <fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="#,###" />&nbsp;원</li>
-		  				<li class="my-2"><a style="cursor: pointer;" data-toggle="modal" data-target="#userCouponInfo" data-dismiss="modal">쿠폰 : </a></li>
+		  				<li class="my-2">포인트 : <span class="text-primary"><fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="#,###" /></span>&nbsp;원</li>
+		  				<li class="my-2"><a id="couponModalOpen" style="cursor: pointer;" onclick="modalOpen()">쿠&nbsp;&nbsp;&nbsp;폰 : <span class="text-primary">${requestScope.couponList_length}</span> 개</a></li>
 		  			</ul>
 				</div>
 
@@ -64,22 +96,22 @@
 		</div>
 		<div class="col-md-1 text-center"></div>
 		<div class="col-md-1 text-center my-auto">
-			<div style="font-size:12pt; font-weight: bold;">주문완료</div>
-			<button type="button" style="border-radius: 50%; width:30px; height:30px; margin-top:20px;" class="btn btn-outline-primary" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'"></button>
+			<div style="font-size:12pt; font-weight: bold;">준비중</div>
+			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_1}</div>
 		</div>
 		
-		<div class="col-md-1 text-center my-auto" style="font-size:24pt; ">▶</div>
+		<div class="col-md-1 text-center my-auto" style="font-size:20pt; ">▶</div>
 			
 		<div class="col-md-1 text-center my-auto">
 			<div style="font-size:12pt; font-weight: bold;" >배송중</div>
-			<button type="button" style="border-radius: 50%; width:30px; height:30px; margin-top:20px;" class="btn btn-outline-primary" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'"></button>
+			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_2}</div>
 		</div>
 		
-		<div class="col-md-1 text-center my-auto" style="font-size:24pt; ">▶</div>
+		<div class="col-md-1 text-center my-auto" style="font-size:20pt; ">▶</div>
 		
 		<div class="col-md-1 text-center my-auto">
 			<div style="font-size:12pt; font-weight: bold;">배송완료</div>
-			<button type="button" style="border-radius: 50%; width:30px; height:30px; margin-top:20px;" class="btn btn-outline-primary" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'"></button>
+			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_3}</div>
 		</div>
 		
 		<div class="col-md-1 text-center"></div>
@@ -88,34 +120,57 @@
 </div>		
 
 
-<div class="modal fade" id="userCouponInfo" data-backdrop="static">
+
+
+<%-- 모달 --%>
+<div id="modalContainer" class="hidden">
+	  <div id="modalContent">
+	    <div class="container mt-5">
+	    
+	    	<h3 class="my-3 ml-1">쿠폰함</h3>
+	    	
+	    	<div style="overflow: auto; width:750px; height:300px; margin: auto;">
+		    	<table class="table" style="text-align:center;">
+		    		
+		    		<thead class="thead-light">
+						<tr>
+							<th style="">쿠폰명</th>
+							<th style="">쿠폰내용</th>
+							<th style="">할인금액</th>
+							<th style="">유효기간</th>			
+						</tr>
+					</thead>
+					
+		    		<tbody>
+		    		
+		    			<c:if test="${!empty requestScope.couponList}">
+		    			
+							<c:forEach var="cvo" items="${requestScope.couponList}">
+								<tr>
+									<th>${cvo.coupon_name}</th>
+									<th>${cvo.coupon_descript}</th>
+									<th><fmt:formatNumber value="${cvo.coupon_discount}" pattern="#,###" />&nbsp;원</th>
+									<th>${cvo.coupon_expire}</th>
+								</tr>
+							</c:forEach>
+							
+						</c:if>
 	
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<!-- Modal header -->
-			<div class="modal-header">
-				<h4 class="modal-title">쿠폰함</h4>
-				<button type="button" class="close couponInfoClose" data-dismiss="modal">&times;</button>
-			</div>
-
-			<!-- Modal body -->
-			<div class="modal-body">
-				<div id="couponInfo">
-					<iframe id="iframe_couponInfo" style="border: none; width: 100%; height: 350px;" src="<%=request.getContextPath()%>/mypage/couponInfo.ddg">
-	
-					</iframe>
-				</div>
-			</div>
-
-			<!-- Modal footer -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger couponInfoClose" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-
+						<c:if test="${empty requestScope.couponList}">
+							<tr>
+								<td colspan="4" class="text-center">쿠폰이 없습니다.</td>
+							</tr>
+						</c:if>
+						
+		    		</tbody>
+		    	</table>
+	    	</div>
+	    	
+	    	<div style="float: right; margin-top:20px;">
+	    		<button class="btn btn-outline-danger mr-3" type="button" onclick="modalClose()">돌아가기</button>
+	    	</div>
+	    </div>
 	</div>
-
 </div>
 
 

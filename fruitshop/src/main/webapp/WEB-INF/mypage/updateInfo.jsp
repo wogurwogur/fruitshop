@@ -47,7 +47,7 @@
 
 			<div class="text-center"
 				style="margin-top: 50px; margin-bottom: 50px;">
-				<h2 style="font-weight: bold;">회원정보 수정</h2>
+				<h4 style="font-weight: bold;">회원정보 수정</h4>
 				(<span class="star text-danger">*</span>표시는 필수입력사항)
 			</div>
 

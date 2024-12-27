@@ -12,8 +12,10 @@ import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import mypage.wish.domain.WishVO;
 import mypage.wish.model.*;
+import product.domain.ProductVO;
+import product.model.ProductDAO;
+import product.model.ProductDAO_imple;
 public class WishList extends AbstractController {
-	
 	
 	private WishDAO wdao = new WishDAO_imple();
 	
@@ -23,10 +25,8 @@ public class WishList extends AbstractController {
 		HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
-    	
     	String message = "";
-    	
-    	if(loginuser != null  ) {
+    	if(loginuser != null  ) {	// 로그인 했을때
     		
     		try {
                 // DAO에서 관심상품 리스트 데이터 가져오기
@@ -120,6 +120,16 @@ public class WishList extends AbstractController {
         }
         	
         	//////////////////////////////////////////////////////////////////////////////////////////
+        	
+        	
+        	
+
+        	
+        	
+        	
+        	
+        	
+        	
 	}
 
 }
