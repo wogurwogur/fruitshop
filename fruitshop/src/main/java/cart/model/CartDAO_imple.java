@@ -255,5 +255,36 @@ public class CartDAO_imple implements CartDAO {
 	}
 	
 	
+	// 장바구니 수량 가져오기 //
+	@Override
+	public int getcartCount(int user_no) throws SQLException {
+		
+		int cnt = 0;
+		
+		try {
+            conn = ds.getConnection();
+            String sql = " select count(*) "
+            		   + " from tbl_cart "
+            		   + " where fk_user_no = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setInt(1, user_no);
+            
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            cnt = rs.getInt(1);
+            
+		} finally {
+            close();
+         }
+		
+		
+		return cnt;
+	}
+	
+	
 	
 }

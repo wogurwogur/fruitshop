@@ -21,8 +21,11 @@ public class CartList extends AbstractController {
     	
     	HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+    	
     	String userid = request.getParameter("userid");
     	String message = "";
+    	
+		
     	
     	if(loginuser != null) {
     		
@@ -32,7 +35,7 @@ public class CartList extends AbstractController {
                 List<CartVO> cartList = cdao.cartListSelectAll(user_no);
                 
                 request.setAttribute("cartList", cartList);
-
+                	
             } catch (Exception e) {
                 e.printStackTrace(); 
                 super.setRedirect(true);	// redirect 시킴
@@ -68,9 +71,13 @@ public class CartList extends AbstractController {
             	
                 int cart_no = Integer.parseInt(cart_pno);
                 boolean isDeleted = cdao.deleteCartItem(cart_no);
-
+                
                 if (isDeleted) {
+                	
+                	loginuser.setCart_cnt(cdao.getcartCount(loginuser.getUser_no())); // 로그인한 유저의 장바구니안에 상품 개수를 저장
                     request.setAttribute("message", "장바구니 상품이 삭제되었습니다.");
+                    
+                    
                 } else {
                     request.setAttribute("message", "장바구니 상품 삭제에 실패하였습니다.");
                 }
@@ -101,9 +108,12 @@ public class CartList extends AbstractController {
 		boolean isDeleted = cdao.CartDeleteAll(user_no);
 		
 		if (isDeleted) {
-		request.setAttribute("message", "장바구니 비우기 완료했습니다.");
-		} else {
-		request.setAttribute("message", "장바구니 비우기 실패하였습니다.");
+			
+			loginuser.setCart_cnt(cdao.getcartCount(loginuser.getUser_no()));  // 로그인한 유저의 장바구니안에 상품 개수를 저장
+			request.setAttribute("message", "장바구니 비우기 완료했습니다.");
+		} 
+		else {
+			request.setAttribute("message", "장바구니 비우기 실패하였습니다.");
 		}
 		
 		

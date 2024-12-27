@@ -99,21 +99,22 @@
                           <%-- 각각의 상품 체크박스 --%>
 				        <div style="flex: 0.1; text-align: center;">
 				        	<form id="checked">
-				            	<input type="checkbox" name="selectedItems" value="${item.cart_no}">
+				            	<input type="checkbox" id="${item.cart_no}" name="selectedItems" value="${item.cart_no}">
 				            	<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}">
 				            </form>    
 				        </div>
                         
                         <%-- 상품 이미지 --%>
-                        <div style="flex: 1; text-align: center;">
+                        <div class="img" style="flex: 1; text-align: center;">
+                            <label for="${item.cart_no}">
                             <img src="<%= request.getContextPath()%>/images/product/thumnail/${item.product.prod_thumnail}" style="width: 120px; height: auto;">
-                            
+                            </label>
                         </div>
                         
                         <%-- 상품 정보 --%>
                         <div style="flex: 1;">
                         <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
-                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" class="price"> ${item.product.prod_price}</p>
+                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" class="price">${item.product.prod_price}원</p>
                         </div>
 
                         <%-- 수량 조절 --%>
@@ -129,6 +130,7 @@
 					    <fmt:formatNumber value="${item.product.prod_price * item.cart_prodcount}" pattern="###,###" />원
 						</button>
                         </div>
+                        
 
                         <%-- 삭제 버튼 --%>
                         <div style="flex: 0.5; text-align: center;">
@@ -141,12 +143,15 @@
                 </c:forEach>
             </div>
 
+
             <%-- 총 금액 계산 --%>
            <div class="cartsum" style="text-align: center; margin: 5% auto; font-family: 'Noto Sans KR', sans-serif;">
-    <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt;">
-        장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원
-    </p>
-</div>
+           
+	        <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt;">
+	        장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원
+	        </p>
+    
+		  </div>
 
 	<div class="ec-base-button gColumn">
 	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
