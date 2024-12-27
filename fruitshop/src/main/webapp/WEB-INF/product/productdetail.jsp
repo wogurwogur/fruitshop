@@ -21,7 +21,6 @@ $(document).ready(function(){
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 시작 --------- //
 	
 		let qty = 1; // 수량 초기값 설정
-		const maxQty = 20; // 수량 최대값 설정
 		let prod_inventory = ${requestScope.prdvo.prod_inventory}; // 현재 상품 재고량
 		
 		
@@ -39,13 +38,13 @@ $(document).ready(function(){
 	
 		// 상품 상세페이지에서 + 버튼을 클릭한 경우
 		$("button.plus").click(function(){
-			if (qty < maxQty && prod_inventory != 0) {
+			if (qty < prod_inventory && prod_inventory != 0) {
 			    qty++;
 				$("input.qty").val(qty);
 				totalPrice();
 			}
-			else if (qty >= maxQty) {
-				alert("주문 가능한 최대 수량은 20개입니다.")
+			else if (qty >= prod_inventory) {
+				alert("현재 해당 상품은 " + prod_inventory + "개 까지 구매 가능합니다.")
 				return;
 			}
 			else if (prod_inventory == 0) {
@@ -208,7 +207,7 @@ $(document).ready(function(){
 	<div id="detailWrap2" style="max-width: 1400px;">
 		
 		<%-- 상세정보 --%>
-		<div id="detailInfo" >
+		<div id="detailInfo">
 			<ul style="display: flex;">
 				<li class="detail"><a href="#detail">상세정보</a></li>
 				<li><a href="#guide">이용안내</a></li>

@@ -441,52 +441,39 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	
 	
-//	// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
-//	@Override
-//	public int getReviewTotalPage(Map<String, String> paraMap) throws SQLException {
-//		
-//		int reviewTotalPage = 0;
-//
-//		try {
-//			conn = ds.getConnection();
-//			
-//			String sql = " select ceil(count(*)/10) "
-//					   + " from tbl_products ";
-//			
-//			String searchFruit = paraMap.get("searchFruit");
-//			
-//			if(!searchFruit.isBlank()) {
-//				// 검색이 있는 경우
-//				sql += " where prod_name like '%'|| ? ||'%' ";
-//				
-//				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
-//	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
-//				// 컬럼명은 값이 바뀌어야 하기 때문에 변수 처리 해준다.
-//			}
-//			
-//			
-//			sql += "ORDER BY prod_regidate desc ";
-//			
-//			pstmt = conn.prepareStatement(sql);
-//
-//			if(!searchFruit.isBlank()) {
-//				pstmt.setString(1, searchFruit);	
-//				
-//			}
-//			
-//			rs = pstmt.executeQuery();
-//					
-//			rs.next();
-//			
-//			totalPage = rs.getInt(1); // 첫번째 컬럼 값, 컬럼명을 AS로 따로 안주었기 때문에 몇 번째 컬럼인지 기입
-//			
-//		} finally {
-//			close();
-//		}
-//		
-//		return reviewTotalPage;
-//		
-//	} // end of public int getReviewTotalPage(Map<String, String> paraMap)
+	// 페이징 처리를 위해 해당 상품 번호에 대한 후기가 있는 경우 총페이지수 알아오기
+	@Override
+	public int getReviewTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int reviewTotalPage = 0;
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/5) "
+					   + " from tbl_reviews "
+					   + " where fk_prod_no = ? "
+					   + " order by review_regidate desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+
+
+			pstmt.setString(1, paraMap.get("prodNo"));	
+				
+	
+			rs = pstmt.executeQuery();
+					
+			rs.next();
+			
+			reviewTotalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return reviewTotalPage;
+		
+	} // end of public int getReviewTotalPage(Map<String, String> paraMap)
 	
 	
 	
