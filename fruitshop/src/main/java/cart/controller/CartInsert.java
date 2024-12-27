@@ -31,6 +31,7 @@ public class CartInsert extends AbstractController {
     		String fk_prod_no = request.getParameter("prodNo");	
 	 	    String fk_user_no = request.getParameter("userNo");	
 	 	    String cart_prodcount = request.getParameter("prdCnt");	
+
     		
 	 	    if(loginuser.getUser_no() == Integer.parseInt(fk_user_no)){
 	 	    	

@@ -5,11 +5,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 
 
-<link rel="stylesheet" href="<%= request.getContextPath()%>/css/cart/cart.css">
-<link rel="stylesheet" href="<%= request.getContextPath()%>/js/cart/cart.js">
-
-
 <jsp:include page="../common/header.jsp"></jsp:include>
+
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/cart/cart.css">
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/cart/cart.js"></script>
 
 
 <script type="text/javascript">
@@ -19,7 +18,15 @@
 	<%-- 선택상품 주문하기 누를때--%>
 	function Orderpick() {
 		
-		confirm("선택한 상품을 주문하시겠습니까?");
+		const check = $("input:checkbox[name='selectedItems']").length;
+		
+		if(check == 0){
+			alert("선택된 상품이 없습니다.");
+		}
+		else{
+		
+		 	confirm("선택한 상품을 주문하시겠습니까?");
+		}
 		
 	}// end of function goCartList() {}-----------------------------
 
@@ -29,6 +36,7 @@
 		confirm("장바구니에 있는 전체상품을 주문하시겠습니까?");
 		
 	}
+	
 	
 	
 	 <%-- 장바구니 비우기 누를때 --%> 
@@ -41,9 +49,6 @@
 		}
 		
 	}
-	
-	
-	
 	
 	
 </script>
@@ -63,6 +68,10 @@
                 <c:set var="itemTotalPrice" value="${item.product.prod_price * item.cart_prodcount}" />
                 <c:set var="totalPrice" value="${totalPrice + itemTotalPrice}"/>
                     <div class="cart_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: solid 1px #ccc; border-top: solid 1px #ccc; margin-top: 2%;">
+                    
+                    <%-- 상품 수량 숨기기 --%>
+                    <input type="hidden" name="prodinventory" value="${item.product.prod_inventory}" />
+                    
                           <%-- 각각의 상품 체크박스 --%>
 				        <div style="flex: 0.1; text-align: center;">
 				            <input type="checkbox" name="selectedItems" value="${item.cart_no}">
@@ -76,22 +85,22 @@
                         
                         <%-- 상품 정보 --%>
                         <div style="flex: 1;">
-                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
-                            <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;"><fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원</p>
+                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" class="price"> ${item.product.prod_price}</p>
                         </div>
 
                         <%-- 수량 조절 --%>
                          <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
                             <button class="minus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
-                            <input type='text' min='1' value='${item.cart_prodcount}' name="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
+                            <input type='text' min='1' value='${item.cart_prodcount}' class="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
                             <button class="plus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">+</button>
                         </div>
 
                         <%-- 상품의 총액 --%>
                         <div style="flex: 1.6; text-align: center;">
-                        <button style=" background-color: white; border: 1px solid white; color: black; padding: 4% 30%; font-family: 'Noto Sans KR', sans-serif; font-size: 16pt;">
-                               <fmt:formatNumber value="${item.product.prod_price * item.cart_prodcount}" pattern="###,###" />원
-                         </button>
+                        <button class="prodtotal" style="background-color: white; border: 1px solid white; color: black; padding: 4% 30%; font-family: 'Noto Sans KR', sans-serif; font-size: 16pt;">
+					    <fmt:formatNumber value="${item.product.prod_price * item.cart_prodcount}" pattern="###,###" />원
+						</button>
                         </div>
 
                         <%-- 삭제 버튼 --%>
@@ -107,14 +116,21 @@
 
             <%-- 총 금액 계산 --%>
            <div class="cartsum" style="text-align: center; margin: 5% auto; font-family: 'Noto Sans KR', sans-serif;">
-            <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt; ">장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원 </p>
-		  </div>
+    <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt;">
+        장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원
+    </p>
+</div>
 
 	<div class="ec-base-button gColumn">
-	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
+	    <a href="#" onclick="Orderpick(); return false;" class="btnpick">선택상품 주문하기</a>  
 	    <a href="#" onclick="OrderAll();" class="btnSubmit">전체상품 주문하기</a>
 	    <a href="#" onclick="CartDeleteAll(); return false;" class="btnremove">장바구니 비우기</a>       
 	    </div>
+	    
+	    
+	    <form method="post" action="<%= request.getContextPath() %>/mypage/wishList.ddg" id="checkCart">
+       	<input type="hidden" name="check_cart" value="true">
+   		</form>
 	    
 	    <form method="post" action="<%= request.getContextPath() %>/cart/cartList.ddg" id="deleteAll">
 		<input type="hidden" name="delete_all" value="true">
