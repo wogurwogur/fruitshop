@@ -14,13 +14,23 @@
 
 <script type="text/javascript">
 
-function noticeDetail(notice_no){
+function faqWrite(){
 	
-	const frm = document.noticeForm;
+	const frm = document.faqForm;
 	
-	frm.notice_no_detail.value = notice_no;
+	frm.action = "<%=ctxPath%>/faq/faqWrite.ddg";
 	
-	frm.action = "<%=ctxPath%>/notice/detailNotice.ddg";
+	frm.submit();
+	
+}
+
+function faqDetail(faq_no){
+	
+	const frm = document.faqForm;
+	
+	frm.action = "<%=ctxPath%>/faq/faqDetail.ddg";
+	
+	frm.faq_no_detail.value = faq_no;
 	
 	frm.submit();
 	
@@ -30,13 +40,7 @@ function noticeDetail(notice_no){
 
 <style type="text/css">
 
-.delShow{
-	display:inline;
-}
 
-.delHide{
-	display:none;
-}
 
 </style>
 
@@ -51,7 +55,7 @@ function noticeDetail(notice_no){
 	<div>
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
-		    <a class="nav-link mr-5" href="#" style="color: black; border-bottom: solid black 2px;">공지사항</a>
+		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
@@ -60,7 +64,7 @@ function noticeDetail(notice_no){
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
-		    <a class="nav-link" href="#" style="color: black; solid black 2px;" tabindex="-1" aria-disabled="true" >자주하는 질문</a>
+		    <a class="nav-link" href="<%= ctxPath%>/faq/faqList.ddg" style="color: black; border-bottom: solid black 2px;" tabindex="-1" aria-disabled="true" >자주하는 질문</a>
 		  </li>
 		</ul>		
 	</div>
@@ -79,7 +83,7 @@ function noticeDetail(notice_no){
 				<input type="text" style="height:4%"></input>
 				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%; margin-right: auto;">검색</button>
 		</div>
-<form name="noticeForm">
+<form name="faqForm">
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
@@ -93,18 +97,18 @@ function noticeDetail(notice_no){
 					</tr>
 					<%-- 글 리스트 --%>	
 			<tbody id="notice_list">
-			<c:if test="${not empty requestScope.noticeList}">
-				<c:forEach var="nvo" items="${requestScope.noticeList}" varStatus="status">
-					<tr onclick="noticeDetail('${nvo.notice_no}')">						
-						<td>${nvo.notice_no}</td>						
-						<td>${nvo.notice_title}</td>						
-						<td>${fn:substring(nvo.notice_regidate,0,10)}</td>
-						<td>${nvo.notice_viewcount}</td>
+			<c:if test="${not empty requestScope.faqList}">
+				<c:forEach var="fvo" items="${requestScope.faqList}">
+					<tr onclick="faqDetail('${fvo.faq_no}')">						
+						<td>${fvo.faq_no}</td>						
+						<td>${fvo.faq_title}</td>						
+						<td>${fn:substring(fvo.faq_regidate,0,10)}</td>
+						<td>${fvo.faq_viewcount}</td>
 					</tr>				
 				</c:forEach>			
 			</c:if>																	
 			</tbody>
-			<c:if test="${empty requestScope.noticeList}">
+			<c:if test="${empty requestScope.faqList}">
 				<tr>
 					<td colspan="5">존재하는 글이 없습니다.</td>
 				</tr>
@@ -115,14 +119,11 @@ function noticeDetail(notice_no){
 		<div id ="Listsearch">
 
 				<c:if test="${sessionScope.loginuser.role == 2}">
-				
-					<a href="<%=ctxPath%>/notice/noticeWrite.ddg">
-						<button type="button" class="btn btn-outline-dark float-right delShow" style="height:4.1%; margin-right:0.8%;">글쓰기</button>
-						
-					</a>
-				
+				<a href="<%=ctxPath%>/faq/faqWrite.ddg">
+					<button type="button" class="btn btn-outline-dark float-right delShow" style="height:4.1%; margin-right:0.8%;">글쓰기</button>
+				</a>
 				</c:if>
-				<input type="text" name="notice_no_detail" style="display: none"/>
+				<input type="text" name="faq_no_detail" style="display: none"/>
 				<input type="text" name="loginuserRole" style="display: none"/>
 				<input type="text" style="display: none"/>
 		</div>

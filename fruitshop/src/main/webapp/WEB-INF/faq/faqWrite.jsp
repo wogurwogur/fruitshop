@@ -15,23 +15,23 @@
 
 <script type="text/javascript">
 
-function noRegister(){
+function faqRegister(){
 	
-	const frm = document.noticeWriteFrm;
+	const frm = document.faqWriteFrm;
 	
 	/* 제목 유효성 검사 시작 */
 	
-	const noticeTitle_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,50}$/;
-	const notice_title = frm.notice_title.value;
+	const faqTitle_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,50}$/;
+	const faq_title = frm.faq_title.value;
 	
-	if(notice_title == ""){
+	if(faq_title == ""){
 		
 		alert("제목을 작성해주세요.");
 		return;
 		
 	}
 	
-	if(!noticeTitle_Reg.test(notice_title)){
+	if(!faqTitle_Reg.test(faq_title)){
 		
 		alert("제목은 한글로 2글자 이상 50자 이하로 작성해주세요");
 		return;
@@ -39,17 +39,17 @@ function noRegister(){
 	}
 	/* 제목 유효성 검사 끝 */
 	/* 내용 유효성 검사 시작 */
-	const noticeContent_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,200}$/;
-	const notice_content = frm.notice_contents.value;
+	const faqContent_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,200}$/;
+	const faq_content = frm.faq_contents.value;
 	
-	if(notice_content == ""){
+	if(faq_content == ""){
 		
 		alert("내용을 작성해주세요.");
 		return;
 		
 	}
 	
-	if(!noticeContent_Reg.test(notice_content)){
+	if(!faqContent_Reg.test(faq_content)){
 		
 		alert("내용은 한글로 2글자 이상 200자 이하로 작성해주세요");
 		return;
@@ -57,10 +57,10 @@ function noRegister(){
 	}
 	/* 내용 유효성 검사 끝 */
 	
-	frm.action = "<%=ctxPath%>/notice/noticeWrite.ddg"
+	frm.action = "<%=ctxPath%>/faq/faqWrite.ddg"
 	frm.method = "post";
-	frm.notice_title.value = notice_title;
-	frm.notice_contents.value = notice_content;
+	frm.faq_title.value = faq_title;
+	frm.faq_contents.value = faq_content;
 	
 	
 	frm.submit();
@@ -88,7 +88,7 @@ function noRegister(){
           <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
         </li>
         <li class="nav-item ml-5">   
-          <a class="nav-link" href="<%= ctxPath%>/faq/faqList.ddg" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
+          <a class="nav-link" href="<%= ctxPath%>/faq.faqList.ddg" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
         </li>
       </ul>
       
@@ -103,11 +103,11 @@ function noRegister(){
 
 
 <%-- 제목 --%>
-<form name="noticeWriteFrm">
+<form name="faqWriteFrm">
    <div id="title">   
       <div class="d-flex mt-5">
          <span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
-         <textarea name="notice_title" cols="80" rows="1" style="resize:none;"></textarea>
+         <textarea name="faq_title" cols="80" rows="1" style="resize:none;"></textarea>
       </div>   
    </div>
 
@@ -118,25 +118,25 @@ function noRegister(){
    <div id="contents">
       <div class="d-flex mt-5">
          <span class="mr-5" style="margin-left:20%; font-size:17pt;">내용</span>
-         <textarea name="notice_contents" cols="130" rows="20" style="resize:none;"></textarea>
+         <textarea name="faq_contents" cols="130" rows="20" style="resize:none;"></textarea>
       </div>
    
    </div>
 
    <div id="buttons">
       <div class="d-flex" style="margin-left:25%;">
-         <button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg'">목록</button>   
+         <button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/faq/faqList.ddg'">목록</button>   
             
          <div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;">
-            <button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="noRegister()">등록</button>
+            <button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="faqRegister()">등록</button>
             <button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
          </div>   
             
       </div>   
    </div>
- </form>  
    
    
+  </form> 
 
 
 
