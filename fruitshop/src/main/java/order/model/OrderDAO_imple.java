@@ -16,6 +16,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import coupon.domain.CouponVO;
 import mypage.ship.domain.ShipVO;
 import product.domain.ProductVO;
@@ -115,7 +118,7 @@ public class OrderDAO_imple implements OrderDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql	= " SELECT coupon_name, TO_CHAR(coupon_expire, 'yyyy-mm-dd') AS coupon_expire, coupon_discount "
+			String sql	= " SELECT coupon_no, coupon_name, TO_CHAR(coupon_expire, 'yyyy-mm-dd') AS coupon_expire, coupon_discount "
 						+ "   FROM tbl_coupons "
 						+ "  WHERE fk_user_no = ? ";
 			
@@ -127,6 +130,7 @@ public class OrderDAO_imple implements OrderDAO {
 			while(rs.next()) {
 				CouponVO couponVO = new CouponVO();
 				
+				couponVO.setCoupon_no(rs.getInt("coupon_no"));
 				couponVO.setCoupon_name(rs.getString("coupon_name"));
 				couponVO.setCoupon_expire(rs.getString("coupon_expire"));
 				couponVO.setCoupon_discount(rs.getInt("coupon_discount"));
@@ -295,9 +299,270 @@ public class OrderDAO_imple implements OrderDAO {
 	      
 	    return order_no;
 	}// end of public int getOrderNo() throws SQLException -------------------- 
-    
-    
-    
-    
+
+	
+	// 주문 완료 시 테이블에 insert
+	@Override
+	public int insertOrder(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		 try {
+			 conn = ds.getConnection();
+			 
+			 conn.setAutoCommit(false);      // 수동 커밋
+		     
+			 // 주문 테이블 처리
+			 String sql	= " INSERT INTO tbl_order(order_no, fk_user_no, order_request, order_tprice, order_postcode, order_address, order_detailaddress, order_extraadress, order_receiver) "
+					 	+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+		         
+			 pstmt = conn.prepareStatement(sql);
+		        
+		     pstmt.setString(1, paraMap.get("order_no"));   
+		     pstmt.setInt(2, Integer.parseInt(paraMap.get("fk_user_no")));   
+		     pstmt.setString(3, paraMap.get("order_request"));   
+		     pstmt.setInt(4, Integer.parseInt(paraMap.get("order_tprice")));   
+		     pstmt.setString(5, paraMap.get("postcode"));   
+		     pstmt.setString(6, paraMap.get("address"));   
+		     pstmt.setString(7, paraMap.get("detailaddress"));   
+		     pstmt.setString(8, paraMap.get("extraaddress"));   
+		     pstmt.setString(9, paraMap.get("order_receiver"));   
+		      
+		     int a = pstmt.executeUpdate();
+ 
+		     
+		     // 주문 상세 테이블 처리
+		     int b = 0;
+		     int prod_length = 0;
+		     if (a == 1) {
+		    	 sql	= " INSERT INTO tbl_orderdetail(ordetail_no, fk_order_no, fk_prod_no, ordetail_count, ordetail_price) "
+		    	 		+ " VALUES (orderdetail_seq.nextval, ?, ?, ?, ?) ";
+		    	 
+		    	 pstmt = conn.prepareStatement(sql);
+		    	 
+		    	 JSONArray jsonArr = new JSONArray(paraMap.get("productArr"));
+		    	 prod_length = jsonArr.length();
+		    	 
+		    	 for (int i=0; i<jsonArr.length(); i++) { 
+		    		 JSONObject jsonObj = jsonArr.getJSONObject(i);
+					
+		    		 String prod_no = jsonObj.getString("prod_no");
+		    		 String prod_count = jsonObj.getString("prod_count");
+		    		 String prod_price = jsonObj.getString("prod_price");
+					
+		    		 pstmt.setString(1, paraMap.get("order_no"));
+		    		 pstmt.setInt(2, Integer.parseInt(prod_no));
+		    		 pstmt.setInt(3, Integer.parseInt(prod_count));
+		    		 pstmt.setInt(4, Integer.parseInt(prod_price));
+		    		 
+		    		 b += pstmt.executeUpdate();
+		    		 
+		    	 }// end of for() -------------------
+		    	 
+		     }// end of 주문상세 ----------------------
+		     
+		     
+		     // 결제 테이블 처리
+		     if (b == prod_length) {
+		    	 sql	= " INSERT INTO tbl_payments(pay_no, fk_order_no, fk_user_no) "
+		    	 		+ " VALUES (payments_seq.nextval, ?, ?) ";
+			    	 
+		    	 pstmt = conn.prepareStatement(sql);
+		    	 
+		    	 pstmt.setString(1, paraMap.get("order_no"));
+		    	 pstmt.setInt(2, Integer.parseInt(paraMap.get("fk_user_no")));
+		     }
+		     int c = pstmt.executeUpdate();
+		     
+		     
+		     
+		     // 장바구니 비우기 시작
+		     if (c == 1) {
+		    	 JSONArray jsonArr = new JSONArray(paraMap.get("productArr"));
+		    	 
+		    	 // 장바구니 상품의 개수만큼 반복 해야 한다.
+		    	 for (int i=0; i<prod_length; i++) {
+		    		 
+		    		 // 장바구니에 상품이 있는지 조회
+		    		 sql	= " SELECT * "
+		    		 		+ "   FROM tbl_cart "
+		    		 		+ "  WHERE fk_user_no = ? AND fk_prod_no = ? ";
+		    		 
+		    		 pstmt = conn.prepareStatement(sql);
+		    		 
+		    		 JSONObject jsonObj = jsonArr.getJSONObject(i);
+		    		 String prod_no = jsonObj.getString("prod_no");
+		    		 
+		    		 pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+		    		 pstmt.setInt(2, Integer.parseInt(prod_no));
+		    		 
+		    		 rs = pstmt.executeQuery();
+		    		 
+		    		 
+		    		 if (rs.next()) {
+		    			// 장바구니에 상품이 존재한다면
+		    			 sql	= " DELETE "
+			    		 		+ "   FROM tbl_cart "
+			    		 		+ "  WHERE fk_user_no = ? AND fk_prod_no = ? ";
+		    			 
+		    			 pstmt = conn.prepareStatement(sql);
+		    			 
+		    			 pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+			    		 pstmt.setInt(2, Integer.parseInt(prod_no));
+			    		 
+			    		 pstmt.executeUpdate();
+		    		 }
+		    		 
+		    	 }// end of for() -----------------
+		    	 
+		     }// end of 장바구니 비우기 -------------
+		     
+		     
+		     // 상품 재고 차감
+		     int d = 0;
+		     if (c == 1) {
+		    	 d = 0;
+		    	 
+		    	 JSONArray jsonArr = new JSONArray(paraMap.get("productArr"));
+		    	 
+		    	 // 주문 상품의 개수만큼 반복 해야 한다.
+		    	 for (int i=0; i<prod_length; i++) {
+		    		 
+		    		 // 장바구니에 상품이 있는지 조회
+		    		 sql	= " UPDATE tbl_products SET prod_inventory = prod_inventory - ? "
+		    		 		+ "  WHERE prod_no = ? ";
+		    		 
+		    		 pstmt = conn.prepareStatement(sql);
+		    		 
+		    		 JSONObject jsonObj = jsonArr.getJSONObject(i);
+		    		 String prod_no = jsonObj.getString("prod_no");
+		    		 String prod_count = jsonObj.getString("prod_count");
+		    		 
+		    		 pstmt.setInt(1, Integer.parseInt(prod_count));
+		    		 pstmt.setInt(2, Integer.parseInt(prod_no));
+		    		 
+		    		 d += pstmt.executeUpdate();
+		    		 
+		    		 
+		    	 }// end of for() -----------------
+		    	 
+		     }// end of 상품 재고 차감 -------------------
+		     
+		     
+		     // 기본배송지 설정을 체크 했을 경우
+		     if ("1".equals(paraMap.get("ship_default"))) {
+		    	 
+		    	 // 배송지 등록한 것이 있는지 조회
+		    	 sql	= " SELECT count(*) "
+	    		 		+ "   FROM tbl_ship "
+	    		 		+ "  WHERE fk_user_no = ? ";
+		    	 
+		    	 pstmt = conn.prepareStatement(sql);
+		    	 
+		    	 pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+		    	 
+		    	 rs = pstmt.executeQuery();
+		    	 
+		    	 
+		    	 if (rs.next()) {
+		    		 // 등록한 배송지가 있다면
+		    		 // 모든 기본배송지 설정을 해제
+		    		 sql	= " UPDATE tbl_ship SET ship_default = 0 "
+			    	 		+ " WHERE fk_user_no = ? ";
+		    			
+		    		 pstmt = conn.prepareStatement(sql);
+		    		 
+	    			 pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+	    			 
+	    			 int n = pstmt.executeUpdate();
+	    			 
+	    			 if (n == rs.getInt(1)) {
+	    				 // 새로운 배송지를 등록
+	    				 sql	= " INSERT INTO tbl_ship(ship_no, fk_user_no, ship_name, ship_postcode, ship_address, ship_detailaddress, ship_extraadress, ship_default, ship_receiver, ship_receivertel) "
+	    				 		+ " VALUES (ship_seq.nextval, ?, '기본배송지', ?, ?, ?, ?, 1, ?, ?) ";
+	 		    			
+	 		    		 pstmt = conn.prepareStatement(sql);
+	 		    		 
+	 	    			 pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+	 	    			 pstmt.setString(2, paraMap.get("postcode"));
+	 	    			 pstmt.setString(3, paraMap.get("address"));
+	 	    			 pstmt.setString(4, paraMap.get("detailaddress"));
+	 	    			 pstmt.setString(5, paraMap.get("extraaddress"));
+	 	    			 pstmt.setString(6, paraMap.get("order_receiver"));
+	 	    			 pstmt.setString(7, aes.encrypt(paraMap.get("mobile")));
+	 	    			 
+	 	    			 pstmt.executeUpdate();
+	    			 }
+	    			 
+		    	 }// end of if (rs.next())
+		    	 
+		     }// end of 기본배송지 설정
+		     
+		     // 회원 포인트 지급
+		     if (d == prod_length) {
+		    	 sql	= " UPDATE tbl_member SET point = point + ? "
+		    	 		+ "  WHERE user_no = ? ";
+		    	 
+		    	 pstmt = conn.prepareStatement(sql);
+		    	 pstmt.setInt(1, Integer.parseInt(paraMap.get("point")));
+		    	 pstmt.setInt(2, Integer.parseInt(paraMap.get("fk_user_no")));
+		     }
+		     int e = pstmt.executeUpdate();		     
+		     
+		     if (e == 1) {
+		    	 conn.commit();
+                 result = 1;
+		     }
+		     
+		     
+		 } catch (UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+		 } catch (SQLException e) {
+			 try {
+				 conn.rollback();
+			 } catch (SQLException ex) {
+				 throw new RuntimeException(ex);
+			 }
+			 e.printStackTrace();
+		 } catch (Exception e) {
+			 try {
+				 conn.rollback();
+			 } catch (SQLException ex) {
+				 throw new RuntimeException(ex);
+			 }
+			 e.printStackTrace();
+		 }
+		 finally {
+			 conn.setAutoCommit(true);	// Auto Commit 으로 복원시킨다.
+			 close();
+		 }
+		
+		 return result;
+	}// end of public int insertOrder(Map<String, String> paraMap) throws SQLException -----------------
+
+	
+	
+	@Override
+	public int isUseCoupon(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+	      
+	    try {
+	    	conn = ds.getConnection();
+	         
+	        String sql 	= " DELETE FROM tbl_coupons "
+	        			+ "  WHERE fk_user_no = ? AND coupon_no = ? ";
+
+	        pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setInt(1, Integer.parseInt(paraMap.get("fk_user_no")));
+	        pstmt.setInt(2, Integer.parseInt(paraMap.get("coupon_no")));
+	        
+	        result = pstmt.executeUpdate();
+	        
+	    } finally {
+	    	close();
+	    }
+	    return result;				
+	}// end of public int insertOrderDetail(Map<String, String> paraMap) throws SQLException ------------------------
+
     
 }

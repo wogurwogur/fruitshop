@@ -8,7 +8,30 @@
 <%@ page import="java.util.*, mypage.ship.domain.ShipVO" %>
 
 <%
-	/*  List<ShipVO> shipList = (ArrayList)request.getAttribute("shipList");*/
+	List<ShipVO> shipList = (ArrayList)request.getAttribute("shipList");
+	String ship_default = "";
+	String receiver = "";
+	String postcode = "";
+	String address = "";
+	String detailAddress = "";
+	String extraAddress = "";
+	String hp2 = "";
+	String hp3 = "";
+	
+	for (int i=0; i<shipList.size(); i++) {
+		
+		if (shipList.get(i).getShip_default() == 1) {
+			ship_default 	= "Y";
+			receiver 		= shipList.get(i).getShip_receiver();
+			postcode 		= shipList.get(i).getShip_postcode();
+			address 		= shipList.get(i).getShip_address();
+			detailAddress 	= shipList.get(i).getShip_detailAddress();
+			extraAddress 	= shipList.get(i).getShip_extraAddress();
+			hp2 			= shipList.get(i).getShip_receivertel().substring(3, 7);
+			hp3 			= shipList.get(i).getShip_receivertel().substring(7, 11);
+			break;
+		}
+	}
 %>
 
 <jsp:include page="../common/header.jsp"></jsp:include>
@@ -48,12 +71,23 @@
 			$(e.target).addClass("active");
 		});// end of $("div.shipInput_title").on("click", e => {}) --------------
 		
+		$("div.shipInput_title").eq(0).trigger("click");
 	});// end of $(document).ready(() => {}) -------------
 	
 	// 기본 배송지를 사용
 	function useUserShipDefault() {
-		// 기본배송지 지정 여부에 따라 분기한다
+		// 기본배송지 지정 여부에 따라 분기한다		
 		
+		if ("<%= ship_default%>" == "Y") {
+			$("input:text[name='name']").val("<%= receiver %>");
+			$("input#postcode").val("<%= postcode %>");
+			$("input#address").val("<%= address %>");
+			$("input#detailAddress").val("<%= detailAddress %>");
+			$("input#extraAddress").val("<%= extraAddress %>");
+			$("input#hp2").val("<%= hp2 %>");
+			$("input#hp3").val("<%= hp3 %>");
+			$("input:text[name='email']").val('${sessionScope.loginuser.email}');
+		}
 		
 	}// end of function useUserShipDefault() ----------------------- 
 	
@@ -225,8 +259,8 @@
 											<td class="receivertel">${fn:substring(mobile, 0, 3)}-${fn:substring(mobile, 3, 7)}-${fn:substring(mobile, 7, 11)}</td>
 											<td class="postcode">${shipItem.ship_postcode}</td>
 				     			 			<td class="address">${shipItem.ship_address}</td>
-				     			 			<td class="detailaddress">${shipItem.ship_detailaddress}</td>
-				     			 			<td class="extraaddress">${shipItem.ship_extraadress}</td>
+				     			 			<td class="detailaddress">${shipItem.ship_detailAddress}</td>
+				     			 			<td class="extraaddress">${shipItem.ship_extraAddress}</td>
 				     			 			<td class="ship_default">
 												<c:if test="${shipItem.ship_default == 0}">N</c:if>
 												<c:if test="${shipItem.ship_default == 1}">Y</c:if>
@@ -301,32 +335,32 @@
 						<%-- 장바구니를 통한 주문과 상품페이지 직접 주문 여부에 따라 분기한다. --%>
 						<%-- 상품 개별페이지에서 주문한 경우. --%>
 						<c:if test="${empty requestScope.cartList}">
-							<tr>
+							<tr class="productRow">
 								<td>
-									<input type="hidden" name="prod_no" value="${requestScope.pvo.prod_no}" />
+									<input type="hidden" id="prod_no" name="prod_no" value="${requestScope.pvo.prod_no}" />
 									<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${requestScope.pvo.prod_thumnail}">
 								</td>
-								<td><input type="hidden" name="prod_name" value="${requestScope.pvo.prod_name}" />${requestScope.pvo.prod_name}</td>
+								<td><input type="hidden" id="prod_name" name="prod_name" value="${requestScope.pvo.prod_name}" />${requestScope.pvo.prod_name}</td>
 								<td class="prod_count">${requestScope.prodCnt}</td>
 								<fmt:parseNumber var="count" type="number" value="${requestScope.prodCnt}" />
 								<fmt:parseNumber var="price" type="number" value="${requestScope.pvo.prod_price}" />
-								<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
+								<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /><input type="hidden" id="prod_price" name="prod_price" value="${count * price}" /></td>
 							</tr>	
 						</c:if>
 						
 						<c:if test="${!empty requestScope.cartList}">
 						<%-- 상품리스트 반복문 --%>
 							<c:forEach var="cartItem" items="${requestScope.cartList}" varStatus="status">
-								<tr>
+								<tr class="productRow">
 									<td>
-										<input type="hidden" name="prod_no" value="${cartItem.prod_no}" />
+										<input type="hidden" id="prod_no" name="prod_no" value="${cartItem.prod_no}" />
 										<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${cartItem.prod_thumnail}">
 									</td>
-									<td><input type="hidden" name="prod_name" value="${cartItem.prod_name}" />${cartItem.prod_name}</td>
+									<td><input type="hidden" id="prod_name" name="prod_name" value="${cartItem.prod_name}" />${cartItem.prod_name}</td>
 									<td class="prod_count">${cartItem.cart_prodcount}</td>
 									<fmt:parseNumber var="count" type="number" value="${cartItem.cart_prodcount}" />
 									<fmt:parseNumber var="price" type="number" value="${cartItem.prod_price}" />
-									<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /></td>
+									<td class="prod_price"><fmt:formatNumber value="${count * price}" pattern="#,###" /><input type="hidden" id="prod_price" name="prod_price" value="${count * price}" /></td>
 								</tr>							
 							</c:forEach>
 						<%-- 상품리스트 반복문 --%>
@@ -395,9 +429,10 @@
 				     			 	</thead>
 				     			 	<tbody>
 				     			 	<%-- 쿠폰리스트 반복문 --%>
+				     			 	<%-- 쿠폰 번호 가져와야? --%>
 									<c:forEach var="couponItem" items="${requestScope.couponList}" varStatus="status">
 										<tr style="cursor: pointer;">
-											<td class="coupon_name">${couponItem.coupon_name}</td>
+											<td class="coupon_name">${couponItem.coupon_name}<input type="hidden" class="coupon_no" value="${couponItem.coupon_no}"></td>
 											<td class="coupon_expdate">${couponItem.coupon_expire}</td>											
 											<fmt:parseNumber var="discount" type="number" value="${couponItem.coupon_discount}" />
 											<td class="coupon_discount"><fmt:formatNumber value="${discount}" pattern="#,###" /></td>
@@ -442,9 +477,11 @@
 			<%-- DB 전송 필요항목 숨김 태그 --%>
 			<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}" />
 			<input type="hidden" name="coupon_name" />
+			<input type="hidden" name="coupon_no" />
 			<input type="hidden" name="ordetail_count" />
 			<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
 			<input type="hidden" id="ship_default" name="ship_default" />
+			<input type="hidden" id="productArr" name="productArr" />
             
 		</form>	
 	</div>

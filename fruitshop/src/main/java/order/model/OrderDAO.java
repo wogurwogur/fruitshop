@@ -29,4 +29,10 @@ public interface OrderDAO {
 	// 주문번호 가져오기 (채번)
 	int getOrderNo() throws SQLException;
 
+	// 주문 성공 시 각 테이블에 insert
+	int insertOrder(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰 사용 시
+	int isUseCoupon(Map<String, String> paraMap) throws SQLException;
+
 }
