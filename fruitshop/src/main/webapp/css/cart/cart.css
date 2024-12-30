@@ -27,6 +27,7 @@ div.container > div.ec-base-button.gColumn{
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    margin-top: 3%;
 }
 
 div.container > div.ec-base-button.gColumn > a.btnpick,
@@ -111,6 +112,7 @@ div.container > div.xans-element-.xans-order.xans-order-basketguide.ec-base-help
 }
 
 
+
 div.container > div.cart-items > div:nth-child(1){
 	margin-top: 5%;
 }
@@ -119,3 +121,25 @@ div.container > div.cart-items > div:nth-child(1){
 div.container > div.cartsum > table > tbody > tr:nth-child(1) > td:nth-child(1){
 	margin-right: 10%;
 }
+
+
+.sum {
+    font-family: 'Noto Sans KR', sans-serif;
+    
+}
+
+.selectsum p {
+    font-size: 17pt;
+    margin-bottom: 48%;
+}
+
+.cartsum p {
+    font-size: 17pt;
+    text-align: right;
+    margin-bottom: 48%;
+}
+
+
+
+
+

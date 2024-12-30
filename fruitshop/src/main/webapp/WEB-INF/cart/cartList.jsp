@@ -116,7 +116,11 @@
                         <%-- 상품 정보 --%>
                         <div style="flex: 1;">
                         <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
-                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" class="price">${item.product.prod_price}원</p>
+                       <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" 
+					   class="price" data-price="${item.product.prod_price}">
+					   <fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원
+					</p>
+
                         </div>
 
                         <%-- 수량 조절 --%>
@@ -145,15 +149,21 @@
                 </c:forEach>
             </div>
 
-
-            <%-- 총 금액 계산 --%>
-           <div class="cartsum" style="text-align: center; margin: 5% auto; font-family: 'Noto Sans KR', sans-serif;">
-           
-	        <p style="margin-left: 70%; padding: 2% 0; font-size: 18pt;">
-	        장바구니 합계&nbsp; : &nbsp;<fmt:formatNumber value="${totalPrice}" pattern="###,###" />원
-	        </p>
-    
-		  </div>
+		
+			
+			<div class="sum" >
+		    <!-- 선택상품 합계 -->
+		    <div class="selectsum" style="float: left; margin-left: 48%; padding: 3% 0;">
+		        <p style="font-size: 17pt;">선택상품 합계&nbsp; : &nbsp;원</p>
+		    </div>
+		
+		    <!-- 장바구니 합계 -->
+		    <div class="cartsum" style="float: right; padding: 3% 0; margin-right: 3%;">
+		        <p style="font-size: 17pt;">장바구니 합계&nbsp; : &nbsp;
+		        <fmt:formatNumber value="${totalPrice}" pattern="###,###" />원</p>
+		    </div>
+		</div>
+		  
 
 	<div class="ec-base-button gColumn">
 	    <a href="#" onclick="Orderpick();" class="btnpick">선택상품 주문하기</a>  
