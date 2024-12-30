@@ -87,7 +87,7 @@ function faqDetail(faq_no){
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
-				<table class="table text-center">
+				<table class="table text-center table-hover">
 					<tr>
 						
 						<th>글 번호</th>
@@ -99,7 +99,7 @@ function faqDetail(faq_no){
 			<tbody id="notice_list">
 			<c:if test="${not empty requestScope.faqList}">
 				<c:forEach var="fvo" items="${requestScope.faqList}">
-					<tr onclick="faqDetail('${fvo.faq_no}')">						
+					<tr onclick="faqDetail('${fvo.faq_no}')" style="cursor:pointer;">						
 						<td>${fvo.faq_no}</td>						
 						<td>${fvo.faq_title}</td>						
 						<td>${fn:substring(fvo.faq_regidate,0,10)}</td>
