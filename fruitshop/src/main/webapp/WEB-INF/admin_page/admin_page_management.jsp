@@ -131,7 +131,7 @@ $(document).ready(function(){
                     
                  },
                  error: function(request, status, error){
-                 // alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    // alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                     alert("첨부된 파일의 크기의 총합이 20MB 를 초과하여 제품등록이 실패했습니다.ㅜㅜ");
                  }
                  
@@ -161,6 +161,18 @@ $(document).ready(function(){
 
 	
 });
+
+function mainImgDetail(imgno){
+	
+	const frm = document.imgFrm;
+	
+	frm.imgno.value = imgno;
+	
+	frm.action = "<%=ctxPath%>/admin/mainPageDetail.ddg";
+	
+	frm.submit();
+	
+}
 
 </script>
 
@@ -287,11 +299,15 @@ div#admin_top_nav_center{
 		</thead>
 		<tbody id="imgbody">
 			<c:forEach items="${requestScope.imgList}" var="imgs" varStatus="index">
-				<tr style="cursor:pointer;">
+				<tr style="cursor:pointer;" onclick="mainImgDetail('${imgs.imgno}')">
 					<td>${imgs.imgname}</td>
 					<td>${imgs.imgfilename}</td>
 					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
 				</tr>
+				<form name="imgFrm">
+					<input type="text" name="imgno" style="display:none;">
+					<input type="text" style="display:none;">
+				</form>
 			</c:forEach>
 		</tbody>
 	</table> 
@@ -317,7 +333,7 @@ div#admin_top_nav_center{
 	    			<tr>
 	    				
 	    				<td>사진파일</td>
-	    				<td><form name="mainPageInputFrm" id="imgForm"><input type="file" name="mainImg_file" size="8" id="imgfile"></form></td>
+	    				<td><form name="mainPageInputFrm" enctype="multipart/form-data"><input type="file" name="mainImg_file" size="8" accept='image/*' ></form></td>
 	    				
 	    			</tr>
 	    			<tr>

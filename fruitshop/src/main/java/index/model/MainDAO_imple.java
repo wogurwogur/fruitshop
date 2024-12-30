@@ -57,7 +57,7 @@ public class MainDAO_imple implements MainDAO {
 			
 			String sql  = " SELECT imgno, imgname, imgfilename "
 						+ "   FROM tbl_main_page "
-						+ " ORDER BY imgno ";
+						+ " ORDER BY imgno desc ";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
