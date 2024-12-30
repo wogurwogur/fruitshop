@@ -35,9 +35,21 @@ public class ReviewReadController extends AbstractController {
 			
 			// System.out.println("확인용"+review_no);
 			
-			ReviewListVO rvo = revdao.reviewReadall(review_no);
+			ReviewListVO rvo = revdao.reviewReadall(review_no);												
+			List<ReviewListVO> commentList = revdao.commentListAll(review_no);
 			
-			request.setAttribute("rvo", rvo);
+			if(commentList==null) {
+				
+				request.setAttribute("rvo", rvo);
+								
+			}else {
+				
+				request.setAttribute("rvo", rvo);
+				request.setAttribute("commentList", commentList);
+			}
+			
+			
+			
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/review/reviewRead.jsp");
