@@ -1,6 +1,6 @@
 package faq.domain;
 
-public class faqVO {
+public class FaqVO {
 	
 	 private int faq_no;
 	 private String faq_title;

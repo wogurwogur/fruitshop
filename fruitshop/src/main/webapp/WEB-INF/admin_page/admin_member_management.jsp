@@ -306,7 +306,7 @@ select#searchType{
 <div class="container">
 	
 	<c:if test="${!empty requestScope.member_allList}">
-		<table class="table"  style="text-align:center;">
+		<table class="table table-hover"  style="text-align:center;">
 			<thead>
 				<tr>
 					<th>회원번호</th>
@@ -318,7 +318,7 @@ select#searchType{
 			</thead>
 			<tbody>
 				<c:forEach var="memberinfo" items="${member_allList}">
-					<tr onclick="memberDetail('${memberinfo.user_no}')">
+					<tr onclick="memberDetail('${memberinfo.user_no}')" style="cursor:pointer;">
 						<td>${memberinfo.user_no}</td>
 						<td>${memberinfo.name}</td>
 						<td style="text-align:left;">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
