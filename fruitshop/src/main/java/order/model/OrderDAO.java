@@ -35,4 +35,11 @@ public interface OrderDAO {
 	// 쿠폰 사용 시
 	int isUseCoupon(Map<String, String> paraMap) throws SQLException;
 
+	// 회원의 주문내역을 가져온다.
+	String getOrderList(Map<String, String> paraMap) throws SQLException;
+
+	// 필터에 따른 전체 주문내역 개수
+	int totalOrderCount(Map<String, String> paraMap) throws SQLException;
+
+
 }

@@ -95,7 +95,7 @@ public class OrderCheckoutEnd extends AbstractController {
 				int result = odao.insertOrder(paraMap);
 				
 				// 쿠폰을 사용한 경우
-				if (!"0".equalsIgnoreCase(coupon_no)) {
+				if (!"".equalsIgnoreCase(coupon_no)) {
 					result = 0;
 					
 					result = odao.isUseCoupon(paraMap);

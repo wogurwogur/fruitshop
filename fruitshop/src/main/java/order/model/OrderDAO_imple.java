@@ -312,8 +312,8 @@ public class OrderDAO_imple implements OrderDAO {
 			 conn.setAutoCommit(false);      // 수동 커밋
 		     
 			 // 주문 테이블 처리
-			 String sql	= " INSERT INTO tbl_order(order_no, fk_user_no, order_request, order_tprice, order_postcode, order_address, order_detailaddress, order_extraadress, order_receiver) "
-					 	+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+			 String sql	= " INSERT INTO tbl_order(order_no, fk_user_no, order_request, order_tprice, order_postcode, order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel) "
+					 	+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 		         
 			 pstmt = conn.prepareStatement(sql);
 		        
@@ -326,6 +326,7 @@ public class OrderDAO_imple implements OrderDAO {
 		     pstmt.setString(7, paraMap.get("detailaddress"));   
 		     pstmt.setString(8, paraMap.get("extraaddress"));   
 		     pstmt.setString(9, paraMap.get("order_receiver"));   
+		     pstmt.setString(10, aes.encrypt(paraMap.get("mobile")));   
 		      
 		     int a = pstmt.executeUpdate();
  
@@ -427,7 +428,6 @@ public class OrderDAO_imple implements OrderDAO {
 		    	 // 주문 상품의 개수만큼 반복 해야 한다.
 		    	 for (int i=0; i<prod_length; i++) {
 		    		 
-		    		 // 장바구니에 상품이 있는지 조회
 		    		 sql	= " UPDATE tbl_products SET prod_inventory = prod_inventory - ? "
 		    		 		+ "  WHERE prod_no = ? ";
 		    		 
@@ -514,8 +514,6 @@ public class OrderDAO_imple implements OrderDAO {
 		     }
 		     
 		     
-		 } catch (UnsupportedEncodingException | GeneralSecurityException e) {
-				e.printStackTrace();
 		 } catch (SQLException e) {
 			 try {
 				 conn.rollback();
@@ -563,6 +561,129 @@ public class OrderDAO_imple implements OrderDAO {
 	    }
 	    return result;				
 	}// end of public int insertOrderDetail(Map<String, String> paraMap) throws SQLException ------------------------
+
+	
+	// 회원의 주문내역을 가져온다.
+	@Override
+	public String getOrderList(Map<String, String> paraMap) throws SQLException {
+		
+		String orderList = null;
+		
+		try {
+	    	conn = ds.getConnection();
+	         
+	        String sql 	= " SELECT C.RNO, C.order_no, C.fk_user_no, C.order_date, C.order_tprice, C.order_status, C.prod_no "
+		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver "
+		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status "
+		        		+ "   FROM  "
+		        		+ "		( "
+		        		+ "		SELECT ROWNUM AS RNO, B.order_no, B.fk_user_no, B.order_date, B.order_tprice, B.order_status, B.prod_no "
+		        		+ "		 	 , B.order_postcode, B.order_address, B.order_detailaddress, B.order_extraadress, B.order_receiver "
+		        		+ "		 	 , B.ordetail_count, B.ordetail_price, B.prod_name, B.prod_thumnail, B.order_receivertel, B.ship_status "
+		        		+ "	  	  FROM  "
+		        		+ "			( "
+		        		+ "			SELECT A.order_no, A.fk_user_no, A.order_date, A.order_tprice, A.order_status, p.prod_no "
+		        		+ "			 	 , A.order_postcode, A.order_address, A.order_detailaddress, A.order_extraadress, A.order_receiver "
+		        		+ "			 	 , A.ordetail_count, A.ordetail_price, p.prod_name, p.prod_thumnail, A.order_receivertel, A.ship_status "
+		        		+ "		  	  FROM "
+		        		+ "				( "
+		        		+ "				SELECT o.order_no, o.fk_user_no, to_char(o.order_date, 'yyyy-mm-dd') AS order_date, o.order_tprice, o.order_status, od.fk_prod_no "
+		        		+ "				 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress, o.order_receiver, od.ordetail_count, od.ordetail_price "
+		        		+ "				 	 , od.ship_status, o.order_receivertel "
+		        		+ "			  	  FROM tbl_order o JOIN tbl_orderdetail od "
+		        		+ "			    	ON o.order_no = od.fk_order_no "
+		        		+ "			 	 WHERE fk_user_no = ? AND order_status > 0 AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? "
+		        		+ "				) A JOIN tbl_products p "
+		        		+ "				ON A.fk_prod_no = p.prod_no "
+		        		+ "			ORDER BY A.order_no DESC "
+		        		+ "			) B "
+		        		+ "		) C "
+		        		+ "  WHERE RNO BETWEEN ? and ? ";
+
+	        pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setString(1, paraMap.get("user_no"));
+	        pstmt.setString(2, paraMap.get("fromDate"));
+	        pstmt.setString(3, paraMap.get("toDate"));
+	        pstmt.setString(4, paraMap.get("start"));
+	        pstmt.setString(5, paraMap.get("end"));
+	        
+	        rs = pstmt.executeQuery();
+        
+	        JSONArray jsonArr = new JSONArray();
+	        
+	        while(rs.next()) {
+	        	
+	        	JSONObject jsonObj = new JSONObject();
+	        	
+	        	jsonObj.put("order_no", rs.getString("order_no"));
+	        	jsonObj.put("fk_user_no", rs.getInt("fk_user_no"));
+	        	jsonObj.put("order_date", rs.getString("order_date"));
+	        	jsonObj.put("order_tprice", rs.getInt("order_tprice"));
+	        	jsonObj.put("order_status", rs.getInt("order_status"));
+	        	
+	        	jsonObj.put("order_postcode", rs.getString("order_postcode"));
+	        	jsonObj.put("order_address", rs.getString("order_address"));
+	        	jsonObj.put("order_detailaddress", rs.getString("order_detailaddress"));
+	        	jsonObj.put("order_extraadress", rs.getString("order_extraadress"));
+	        	jsonObj.put("order_receiver", rs.getString("order_receiver"));
+	        	jsonObj.put("order_receivertel", aes.decrypt(rs.getString("order_receivertel")));
+	        	
+	        	jsonObj.put("prod_no", rs.getInt("prod_no"));
+	        	jsonObj.put("prod_name", rs.getString("prod_name"));
+	        	jsonObj.put("prod_thumnail", rs.getString("prod_thumnail"));
+	        	
+	        	jsonObj.put("ordetail_count", rs.getInt("ordetail_count"));
+	        	jsonObj.put("ordetail_price", rs.getInt("ordetail_price"));
+	        	jsonObj.put("ship_status", rs.getInt("ship_status"));
+	        	
+	        	jsonArr.put(jsonObj);
+	        	
+	        }// end of while(rs.next()) -------------------------
+	        
+	        orderList = jsonArr.toString();
+	        
+	    } catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		} finally {
+	    	close();
+	    }
+		
+		return orderList;
+	}// end of public List<OrderVO> getOrderList(Map<String, String> paraMap) throws SQLException  --------------------------
+
+	
+	// 회원의 전체 주문 개수
+	@Override
+	public int totalOrderCount(Map<String, String> paraMap) throws SQLException {
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT count(*) "
+						+ "   FROM tbl_order o JOIN tbl_orderdetail od "
+						+ "     ON o.order_no = od.fk_order_no "
+						+ "  WHERE fk_user_no = ? AND order_status > 0 AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setString(1, paraMap.get("user_no"));
+	        pstmt.setString(2, paraMap.get("fromDate"));
+	        pstmt.setString(3, paraMap.get("toDate"));
+			
+	        rs = pstmt.executeQuery();
+	        
+	        rs.next();
+	        
+	        n = rs.getInt(1);
+	        
+		} finally {
+			close();
+		}
+		
+		return n;
+	}// end of public int totalOrderCount(Map<String, String> paraMap) throws SQLException ----------------------
 
     
 }

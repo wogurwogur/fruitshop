@@ -77,7 +77,7 @@ $(document).ready(function() {
 			
 			
         } else {
-        	
+        	// 취소했을 경우
         	$.ajax({
 				url: "<%= ctxPath %>/order/orderCheckoutEnd.ddg",
 				data: {

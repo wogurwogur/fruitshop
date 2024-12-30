@@ -12,13 +12,85 @@
 
 <script type="text/javascript">
 	$(document).ready(() => {
-
+		
 		$("div.order_title").click(e => {
 			// alert("야야호"+ $(e.target).index());
 			$("div.order_title").removeClass("active");
 			$(e.target).addClass("active");
-		});
-	});
+		});// end of $("div.order_title").click(e => {}) --------------
+		
+		/*
+		// === 필터 버튼 조회 시 이벤트 처리 시작 === //
+		$("button.btn-secondary").on("click", () => {
+			// const fromDate = $("input#fromDate").val();
+			// const toDate = $("input#toDate").val();
+			const fromDate = document.querySelector("input#fromDate").value;
+			const toDate = document.querySelector("input#toDate").value;
+			
+			// alert("시작일:"+ fromDate +"\n마지막일: "+ toDate);
+			
+			if (fromDate > toDate) {
+				alert("시작일은 마지막일보다 이후여야 합니다.");
+				return;
+			}
+			else {
+				// DB 에서 조회 해와야 함 (ajax 통신 사용할 것)
+				
+				$.ajax({
+					url: "<%= request.getContextPath()%>/order/orderList.ddg",
+					data: {"fromDate": fromDate, "toDate": toDate},
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						console.log("결과확인용: ",json);
+						
+						let html = ``;
+						
+						if (json.length == 0) {
+							html += `
+								<tr>
+									<td colspan="7">주문하신 상품이 존재하지 않습니다.</td>
+								</tr>
+							`;	
+							$("table#orderList > tbody").html(html);
+						}
+						else {
+							
+							$.each(json, function(index, item) {
+								console.log("item => ", item);
+								html += `
+									<tr>
+										<td>${item.order_no}</td>
+										<td>${item.order_date}</td>
+										<td>"${pageContext.request.contextPath}/images/product/thumnail/${item.prod_thumnail}"</td>
+										<td>${item.prod_name}</td>
+										<td>${item.order_tprice}</td>
+										<td>${item.order_status}</td>
+										<td></td>
+									</tr>
+								`;
+							});// end of $.each(json, function(index, item) {}) -------------------							
+							$("table#orderList > tbody").append(html);
+						}
+						
+						
+						
+					},
+					error: function(request, status, error){
+	               		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	               		// alert("경로를 어디로 가야함???");
+	               	}
+				});
+			}
+		});// end of $("button.btn-secondary").on("click", () => {}) -----------------------
+		// === 필터 버튼 조회 시 이벤트 처리 끝 === //
+		
+		setTimeout(() => {
+			$("button.btn-secondary").trigger("click");	
+		}, 300);
+		*/
+	});// end of $(document).ready(() => {}) -------------------------
+	
 </script>
 
 <jsp:include page="../mypage/mypage_list.jsp"></jsp:include>
@@ -84,10 +156,10 @@
 			<thead>
 				<tr>
 					<th>주문번호</th>
-					<th>이미지<br></th>
+					<th>주문일자</th>
+					<th>이미지</th>
 					<th style="padding:1%; width: 30%">상품명</th>
-					<th>수량</th>
-					<th>가격</th>
+					<th>주문금액</th>
 					<th>주문처리상태</th>
 					<th>취소/교환/반품</th>
 				</tr>
@@ -95,81 +167,32 @@
 			<tbody>
 			<%-- 상품리스트 반복문 들어와야 함 --%>
 				<tr>
+					<%--
 					<td>123</td>
+					<td>2024-12-29</td>
 					<td>이미지</td>
 					<td>딸기 5kg</td>
-					<td>1</td>
 					<td>51,000</td>
 					<td>주문완료</td>
 					<td></td>
-				</tr>
-				<tr>
-					<td>1234</td>
-					<td>이미지</td>
-					<td>딸기 5kg</td>
-					<td>1</td>
-					<td>51,000</td>
-					<td>주문완료</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>12345</td>
-					<td>이미지</td>
-					<td>딸기 5kg</td>
-					<td>1</td>
-					<td>51,000</td>
-					<td>주문완료</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>12321</td>
-					<td>이미지</td>
-					<td>딸기 5kg</td>
-					<td>1</td>
-					<td>51,000</td>
-					<td>주문완료</td>
-					<td></td>
+					 --%>
 				</tr>
 				<%-- 상품리스트 반복문 들어와야 함 --%>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3"></td>
+					<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
+					<td colspan="3"></td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 	<%-- 주문 상품 내역 보여주기 끝 --%>
 	
-	<%-- 페이징 처리 부분 --%>
-	<%--
-	<nav aria-label="Page navigation example">
-		<ul class="pagination justify-content-center">
-			<li class="page-item">
-				<a class="page-link" href="#" tabindex="-1">Previous</a>
-			</li>
-			<li class="page-item active"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item">
-				<a class="page-link" href="#">Next</a>
-			</li>
-		</ul>
-	</nav>
-	--%>
-	<div style="margin-top: 5%; display: flex;">
-		<div class="pagination">
-			<a href="#">&laquo;</a>
-			<a href="#">&lsaquo;</a>
-			<%-- 페이지 수만큼 반복문 --%>
-			<a href="#">1</a>
-			<a href="#" class="active">2</a>
-			<a href="#">3</a>
-			<a href="#">4</a>
-			<a href="#">5</a>
-			<%-- 페이지 수만큼 반복문 --%>
-			<a href="#">&rsaquo;</a>
-			<a href="#">&raquo;</a>
-		</div>
-	</div>
-
-
-	<%-- 페이징 처리 부분 --%>
+	<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
+	<input type="hidden" id="countOrder" />
+	<input type="hidden" id="totalOrderCount" />
 </div>
 
 
