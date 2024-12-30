@@ -1,12 +1,15 @@
 package review.model;
 
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,6 +17,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import review.domain.ReviewListVO;
+import util.security.Sha256;
 
 public class ReviewListDAO_imple implements ReviewListDAO {
 	
@@ -21,6 +25,9 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
+	
+	
+	
 	
 	
 	public ReviewListDAO_imple() {
@@ -60,8 +67,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 		List<ReviewListVO> revList = new ArrayList<>();
 		
-		
-		
+				
 		try {
 			
 			conn = ds.getConnection();
@@ -189,12 +195,11 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 						+ " FROM "
 						+ " ( "
 						+ " select r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, "
-						+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
+						+ " m.user_no, func_userid_block(m.userid) as userid, p.prod_name "
 						+ " from tbl_reviews r INNER JOIN tbl_member m "
 						+ " on r.fk_user_no = m.user_no "
 						+ " INNER JOIN tbl_products p "
 						+ " on r.fk_prod_no = p.prod_no "
-						+ " order by review_no desc "
 						+ " ) A "
 						+ " LEFT OUTER JOIN "
 						+ " ( "
@@ -203,7 +208,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 						+ " group by fk_review_no "
 						+ " ) B "
 						+ " ON A.review_no = B.fk_review_no "
-						+ " where substr(sysdate, 1, 5) = substr(A.review_regidate, 1, 5) "
+						+ " where substr(sysdate, 1, 5) = substr(review_regidate, 1, 5) "
 						+ " order by comment_count desc ";
 				
 			
@@ -243,7 +248,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	public ReviewListVO reviewReadall(String review_no) throws SQLException {
 		
 		
-		ReviewListVO reviewRead1 = null;	
+		ReviewListVO reviewRead = null;	
 		
 		try {
 			conn=ds.getConnection();
@@ -251,7 +256,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 		String sql = " select r.review_no, r.review_title, r.fk_user_no, r.review_contents, "
 				+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name, p.prod_price, p.prod_thumnail "
-				+ " from tbl_reviews r INNER JOIN tbl_member m "
+				+ " from tbl_reviews r "
+				+ " INNER JOIN tbl_member m "
 				+ " on r.fk_user_no = m.user_no "
 				+ " INNER JOIN tbl_products p "
 				+ " on r.fk_prod_no = p.prod_no "
@@ -265,16 +271,17 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 			
 			if (rs.next() ) {
-				// 번호 제목 글쓴이 내용 상품썸넬 상품이름 상품 가격
-				reviewRead1 = new ReviewListVO();
 				
-				reviewRead1.setReview_no(rs.getInt("review_no"));
-				reviewRead1.setReview_title(rs.getString("review_title"));
-				reviewRead1.setReview_contents(rs.getString("review_contents"));
-				reviewRead1.setUserid(rs.getString("userid"));
-				reviewRead1.setProd_thumnail(rs.getString("prod_thumnail"));
-				reviewRead1.setProd_name(rs.getString("prod_name"));
-				reviewRead1.setProd_price(rs.getInt("prod_price"));
+				reviewRead = new ReviewListVO();
+				
+				reviewRead.setReview_no(rs.getInt("review_no"));
+				reviewRead.setReview_title(rs.getString("review_title"));
+				reviewRead.setReview_contents(rs.getString("review_contents"));
+				reviewRead.setUserid(rs.getString("userid"));
+				reviewRead.setProd_thumnail(rs.getString("prod_thumnail"));
+				reviewRead.setProd_name(rs.getString("prod_name"));
+				reviewRead.setProd_price(rs.getInt("prod_price"));
+				
 				
 				
 			}
@@ -283,9 +290,306 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			close();
 		}
 		
-		return reviewRead1;
+		return reviewRead;
+	}
+	
+	// 구매후기 글 클릭시 해당 글 댓글 보여주는 메소드
+	@Override
+	public List<ReviewListVO> commentListAll(String review_no) throws SQLException {
+		
+		
+		List<ReviewListVO> commentList = new ArrayList<>();
+		
+		try {
+			
+			conn=ds.getConnection();
+		
+		String sql = " select comment_no, comment_contents, comment_pwd, comment_regidate, m.user_no, m.userid as cuserid, r.review_no "
+					+ " from tbl_comments c "
+					+ " INNER JOIN tbl_member m "
+					+ " on c.fk_user_no = m.user_no "
+					+ " INNER JOIN tbl_reviews r "
+					+ " on c.fk_review_no = r.review_no "
+					+ " where review_no = ? ";
+		
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, review_no);
+				
+				rs = pstmt.executeQuery();
+				
+				while (rs.next() ) {
+				
+				ReviewListVO cml = new ReviewListVO();
+				
+				cml.setComment_contents(rs.getString("comment_contents"));
+				cml.setComment_regidate(rs.getString("comment_regidate"));
+				cml.setCuserid(rs.getString("cuserid"));
+				cml.setComment_pwd(rs.getString("comment_pwd"));
+				cml.setReview_no(rs.getInt("review_no"));
+				
+				commentList.add(cml);
+				
+				}
+				
+		} finally {
+			close();
+		}
+		
+		
+			
+		return commentList;
+	}
+	
+	
+	
+	
+	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 게시글에 대한 총페이지수 알아오기 //
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage=0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select CEIL(COUNT(*)/?) "
+						+ " from tbl_reviews ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");	
+			
+			
+			if (!colname.isBlank() && !searchWord.isBlank()) {
+				// 검색이 있는 경우
+				sql += " where "+ colname +" = ? ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")) );
+			
+			if (!colname.isBlank() && !searchWord.isBlank()) {				
+				pstmt.setString(2, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+		
+		} finally {
+			close();
+		}
+		
+		
+		return totalPage;
 	}
 
+	
+	// 구매후기 글 페이징 처리를 한 모든 회원 목록 또는 검색되어진 회원 목록 보여주기 **** //
+	@Override
+	public List<ReviewListVO> select_Member_paging(Map<String, String> paraMap) throws SQLException {
+		
+		List<ReviewListVO> reviewList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select C.review_contents, C.RNO, C.review_no, C.review_title, C.review_viewcount, C.review_regidate, C.user_no, C.userid , C.prod_name, C.comment_count "
+					+ " FROM "
+					+ " ( "
+					+ " select A.RNO, A.review_contents, A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+					+ " FROM  "
+					+ " ( "
+					+ " select ROWNUM AS RNO, r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, r.review_contents, "
+					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
+					+ " from tbl_reviews r INNER JOIN tbl_member m "
+					+ " on r.fk_user_no = m.user_no "
+					+ " INNER JOIN tbl_products p "
+					+ " on r.fk_prod_no = p.prod_no "
+					+ " order by review_no desc "
+					+ " ) A "
+					+ " LEFT OUTER JOIN "
+					+ " ( "
+					+ " select count(comment_no) as com_count, fk_review_no "
+					+ " from tbl_comments "
+					+ " group by fk_review_no "
+					+ " ) B "
+					+ " ON A.review_no = B.fk_review_no "
+					+ " order by review_no desc "
+					+ " ) C "
+					+ " WHERE RNO between ? and ? ";
+					
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if(!colname.isBlank() && !searchWord.isBlank()) {
+		
+				sql += " and "+ colname +" like '%'||?||'%' ";
+					
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));	// 조회하고자 하는 페이지 번호
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));				// 페이지당 보여줄 행의 개수
+			
+			if (!colname.isBlank() && !searchWord.isBlank()) {
+				// 검색이 있는 경우	
+				// 검색어
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
+				pstmt.setString(3, searchWord);// 페이지 내 끝번호			
+			}
+			else {				
+				// 검색이 없는 경우
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호
+			}
+			
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ReviewListVO revvo = new ReviewListVO();
+				revvo.setReview_no(rs.getInt("review_no"));
+				revvo.setReview_title(rs.getString("review_title"));
+				revvo.setReview_viewcount(rs.getString("review_viewcount"));
+				revvo.setReview_regidate(rs.getString("review_regidate"));
+				revvo.setFk_user_no(rs.getInt("user_no"));
+				revvo.setUserid(rs.getString("userid"));
+				revvo.setProd_name(rs.getString("prod_name"));
+				revvo.setComment_count(rs.getInt("comment_count"));
+				
+				reviewList.add(revvo);
+				
+				
+				
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		
+		return reviewList;
+	}
+
+	/* >>> 뷰단(reviewList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
+    검색이 있는 또는 검색이 없는 구매후기 글 총개수 알아오기 시작 <<< */
+	@Override
+	public int getTotalMemberCount(Map<String, String> paraMap) throws SQLException {
+		
+		int totalMemberCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT COUNT(*) "
+						+ " FROM tbl_reviews ";
+			
+			String colname 	  = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if (!colname.isBlank() && !searchWord.isBlank()) {
+				// 검색이 있는 경우
+				sql += " where "+ colname +" = ? ";
+			}
+		
+			pstmt = conn.prepareStatement(sql);
+						
+			if (!colname.isBlank() && !searchWord.isBlank()) {				
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalMemberCount = rs.getInt(1);		// select 된 것들 중 첫 번째 컬럼
+			
+		} finally {
+			close();
+		}
+		
+		return totalMemberCount;
+	}
+	
+	
+	// 구매후기 글 댓글 작성하는 메소드
+	@Override
+	public int commentWrite(ReviewListVO cmw) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql  = " insert into tbl_comments(comment_no, fk_user_no, fk_review_no, comment_contents, comment_pwd, comment_regidate) "
+						+ " values ((comment_seq.nextval), ?, ?, ?, ?, sysdate) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			pstmt.setInt(1, cmw.getFk_user_no());
+			pstmt.setInt(2, cmw.getReview_no());
+			pstmt.setString(3, cmw.getComment_contents());
+			pstmt.setString(4, cmw.getComment_pwd());
+	
+			
+			n = pstmt.executeUpdate();
+			
+		
+		} finally {
+			close();
+		}
+					
+		return n;
+				
+} // end of public int commentWrite(ReviewListVO cmw) throws SQLException {
+	
+	
+	
+	// 상품 등록하기 시작 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+	
+	
+	
+	// 상품 등록하기 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+	
+	
+
+	
+	
+	
+	// 구매후기 글 제목, 내용 등록버튼 눌러 테이블에 인서트하기
+	@Override
+	public int reviewWrite(ReviewListVO reviewList) throws SQLException {
+		
+		int result = 0;
+		
+		String sql = " insert into tbl_reviews (review_no, review_title, review_contents, fk_user_no)\r\n"
+					+ "values (review_seq.nextval, ?, ?, ?) ";
+		
+		return result;
+	}	// 미완성 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	
+	
+
+
+
+
+
+	
+	
+	
 	
 	
 

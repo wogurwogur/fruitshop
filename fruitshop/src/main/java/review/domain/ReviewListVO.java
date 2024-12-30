@@ -1,6 +1,7 @@
 
 package review.domain;
 
+import product.domain.ProductVO;
 
 public class ReviewListVO {
 	
@@ -13,16 +14,35 @@ public class ReviewListVO {
 	private String 	review_viewcount;
 	private String 	review_image;
 	private String	review_regidate;
+	
+	
+	
 	private String 	userid;
 	private String 	prod_name;
 	private int 	prod_price;
 	private String  prod_thumnail;
 	private int 	comment_count;
+	private String  comment_contents;
+	private String  comment_pwd;
+	private String  cuserid;
+	private String  comment_regidate;
+	
+	
+	
+	
+	
+	private ProductVO pvo; // 상품테이블 빌려쓰기
 	
 	
 	
 	
 
+
+	
+	
+	
+	
+	
 	// 외부키 가져오는데 VO 추가해야하나 ???
 	public String getUserid() {
 		return userid;
@@ -54,6 +74,38 @@ public class ReviewListVO {
 	}
 	public void setProd_thumnail(String prod_thumnail) {
 		this.prod_thumnail = prod_thumnail;
+	}
+	
+	public ProductVO getPvo() {
+		return pvo;
+	}
+	public void setPvo(ProductVO pvo) {
+		this.pvo = pvo;
+	}
+	
+	public String getComment_contents() {
+		return comment_contents;
+	}
+	public void setComment_contents(String comment_contents) {
+		this.comment_contents = comment_contents;
+	}
+	public String getComment_pwd() {
+		return comment_pwd;
+	}
+	public void setComment_pwd(String comment_pwd) {
+		this.comment_pwd = comment_pwd;
+	}
+	public String getCuserid() {
+		return cuserid;
+	}
+	public void setCuserid(String cuserid) {
+		this.cuserid = cuserid;
+	}
+	public String getComment_regidate() {
+		return comment_regidate;
+	}
+	public void setComment_regidate(String comment_regidate) {
+		this.comment_regidate = comment_regidate;
 	}
 	
 /////////////////////////////////////////////////

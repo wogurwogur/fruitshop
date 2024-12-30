@@ -83,6 +83,10 @@ body > div {
 	
 }
 
+a:hover {
+	cursor: pointer;
+}
+
 
 /* 비밀번호 인풋태그 화살표 제거*/
 input::-webkit-outer-spin-button,
