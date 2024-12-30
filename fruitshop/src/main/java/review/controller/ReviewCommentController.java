@@ -53,7 +53,7 @@ public class ReviewCommentController extends AbstractController {
 					super.setViewPage("/WEB-INF/review/reviewRead.jsp");
 					
 					JSONObject jsonObj = new JSONObject();  // {}
-					jsonObj.put("result", result);
+					// jsonObj.put("result", result);
 					
 					String json = jsonObj.toString(); // 문자열로 변환 
 					request.setAttribute("json", json);
