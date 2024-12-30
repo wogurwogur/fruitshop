@@ -32,7 +32,7 @@ public class WishDAO_imple implements WishDAO {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-	}// end of public CartDAO_imple() --------------------
+	}// end of public WishDAO_imple() --------------------
 	
 	// 사용한 자원을 반납하는 close() 메소드 생성하기
 	private void close() {
@@ -150,7 +150,129 @@ public class WishDAO_imple implements WishDAO {
         return isDeleted;
 	}
 	
-
+	
+	// 관심상품안에 같은 상품이 있는지 정보 보기
+	@Override
+	public WishVO selectproduct(Map<String, String> paraMap) throws SQLException {
+		
+		WishVO wvo = null;
+		
+		 try {
+	            conn = ds.getConnection();
+	            String sql = " select fk_user_no, fk_prod_no "
+	            		   + " from tbl_wish "
+	            		   + " where fk_user_no = ? and fk_prod_no = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            if(rs.next()) {
+	            	
+	            	wvo = new WishVO();
+	            	
+	            	wvo.setFk_user_no(rs.getInt("fk_user_no"));
+	            	wvo.setFk_prod_no(rs.getInt("fk_prod_no"));
+	            	
+	            }
+	            
+	            
+		 } finally {
+	            close();
+	        }
+		
+		return wvo;
+	}
+	
+	
+	// 관심상품 등록
+	@Override
+	public int insertWish(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		 try {
+	            conn = ds.getConnection();
+	            String sql = " insert into tbl_wish(wish_no, fk_user_no, fk_prod_no) "
+	            		   + " values(wish_seq.nextval, ?, ?) ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            
+	            n = pstmt.executeUpdate();
+		
+		 } finally {
+	            close();
+	        }
+		
+		
+		return n;
+		
+	}
+	
+	
+	// 같은 상품 있다면 관심상품 지우기 //
+		@Override
+		public int deleteWish(Map<String, String> paraMap) throws SQLException {
+			
+			int delete = 0;
+			
+			try {
+	            conn = ds.getConnection();
+	            String sql = " delete from tbl_wish "
+	            		   + " where fk_user_no = ? and fk_prod_no = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, paraMap.get("fk_user_no"));
+	            pstmt.setString(2, paraMap.get("fk_prod_no"));
+	            
+	            delete = pstmt.executeUpdate();
+	            
+	            
+	            
+			 } finally {
+	            close();
+	         }
+			
+			return delete;
+		}
+		
+		
+		@Override
+		public int getWishCount(int user_no) throws SQLException {
+			
+			int cnt = 0;
+			
+			try {
+	            conn = ds.getConnection();
+	            String sql = " select count(*) "
+	            		   + " from tbl_wish "
+	            		   + " where fk_user_no = ? ";
+	            
+	            pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setInt(1, user_no);
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            rs.next();
+	            
+	            cnt = rs.getInt(1);
+	            
+			} finally {
+	            close();
+	         }
+			
+			
+			return cnt;
+		}
+	
+	
+	
 	
 
 }
