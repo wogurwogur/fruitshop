@@ -685,5 +685,68 @@ public class OrderDAO_imple implements OrderDAO {
 		return n;
 	}// end of public int totalOrderCount(Map<String, String> paraMap) throws SQLException ----------------------
 
+	
+	// 해당 주문번호의 상세내역을 가져온다.
+	@Override
+	public List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException {
+		List<Map<String, String>> orderDetail = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT o.order_no, o.fk_user_no, o.order_request, to_char(o.order_date, 'yyyy-mm-dd hh:mi:ss') AS order_date "
+						+ "	 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress "
+						+ "	 	 , o.order_receiver, o.order_receivertel, od.fk_prod_no, od.ordetail_count, od.ordetail_price "
+						+ "	 	 , od.ship_status, p.pay_refund "
+						+ "   FROM tbl_order o "
+						+ "   JOIN tbl_orderdetail od "
+						+ "     ON o.order_no = od.fk_order_no "
+						+ "   JOIN tbl_payments p "
+						+ "     ON o.order_no = p.fk_order_no "
+						+ "  WHERE o.order_no = ? AND o.fk_user_no = ? AND o.order_status > 0 ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setString(1, paraMap.get("order_no"));
+	        pstmt.setString(2, paraMap.get("user_no"));
+			
+	        rs = pstmt.executeQuery();
+	        
+	        while(rs.next()) {
+	        	
+	        	Map<String, String> map = new HashMap<>();
+	        	
+	        	map.put("order_no", rs.getString("order_no"));
+	        	map.put("fk_user_no", rs.getString("fk_user_no"));
+	        	map.put("order_request", rs.getString("order_request"));
+	        	map.put("order_date", rs.getString("order_date"));
+	        	
+	        	map.put("order_postcode", rs.getString("order_postcode"));
+	        	map.put("order_address", rs.getString("order_address"));
+	        	map.put("order_detailaddress", rs.getString("order_detailaddress"));
+	        	map.put("order_extraadress", rs.getString("order_extraadress"));
+	        	map.put("order_receiver", rs.getString("order_receiver"));
+	        	map.put("order_receivertel", aes.decrypt(rs.getString("order_receivertel")));
+	        	
+	        	map.put("ordetail_count", rs.getString("ordetail_count"));
+	        	map.put("ordetail_price", rs.getString("ordetail_price"));
+	        	map.put("ship_status", rs.getString("ship_status"));
+	        	map.put("pay_refund", rs.getString("pay_refund"));
+	        	
+	        	orderDetail.add(map);
+	        	
+	        }// end of while(rs.next()) ------------------ 
+			
+			
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return orderDetail;
+	}// end of public List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException  ---------------- 
+
     
 }

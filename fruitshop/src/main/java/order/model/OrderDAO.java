@@ -41,5 +41,8 @@ public interface OrderDAO {
 	// 필터에 따른 전체 주문내역 개수
 	int totalOrderCount(Map<String, String> paraMap) throws SQLException;
 
+	// 해당 주문번호의 상세내역을 가져온다.
+	List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException;
+
 
 }
