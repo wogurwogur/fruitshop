@@ -312,8 +312,9 @@ public class OrderDAO_imple implements OrderDAO {
 			 conn.setAutoCommit(false);      // 수동 커밋
 		     
 			 // 주문 테이블 처리
-			 String sql	= " INSERT INTO tbl_order(order_no, fk_user_no, order_request, order_tprice, order_postcode, order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel) "
-					 	+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+			 String sql	= " INSERT INTO tbl_order(order_no, fk_user_no, order_request, order_tprice, order_postcode, order_address "
+			 			+ " , order_detailaddress, order_extraadress, order_receiver, order_receivertel, order_usecpname, order_dicount) "
+					 	+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 		         
 			 pstmt = conn.prepareStatement(sql);
 		        
@@ -327,7 +328,9 @@ public class OrderDAO_imple implements OrderDAO {
 		     pstmt.setString(8, paraMap.get("extraaddress"));   
 		     pstmt.setString(9, paraMap.get("order_receiver"));   
 		     pstmt.setString(10, aes.encrypt(paraMap.get("mobile")));   
-		      
+		     pstmt.setString(11, paraMap.get("coupon_name"));   
+		     pstmt.setInt(12, Integer.parseInt(paraMap.get("coupon_discount")));   
+		     
 		     int a = pstmt.executeUpdate();
  
 		     
@@ -688,22 +691,24 @@ public class OrderDAO_imple implements OrderDAO {
 	
 	// 해당 주문번호의 상세내역을 가져온다.
 	@Override
-	public List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException {
-		List<Map<String, String>> orderDetail = new ArrayList<>();
+	public List<Map<String, String>> getOrderDetailList(Map<String, String> paraMap) throws SQLException {
+		List<Map<String, String>> orderDetailList = new ArrayList<>();
 		
 		try {
 			
 			conn = ds.getConnection();
 			
-			String sql 	= " SELECT o.order_no, o.fk_user_no, o.order_request, to_char(o.order_date, 'yyyy-mm-dd hh:mi:ss') AS order_date "
+			String sql 	= " SELECT o.order_no, o.fk_user_no, o.order_request, to_char(o.order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date "
 						+ "	 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress "
 						+ "	 	 , o.order_receiver, o.order_receivertel, od.fk_prod_no, od.ordetail_count, od.ordetail_price "
-						+ "	 	 , od.ship_status, p.pay_refund "
+						+ "	 	 , od.ship_status, p.pay_refund, pd.prod_name, pd.prod_thumnail "
 						+ "   FROM tbl_order o "
 						+ "   JOIN tbl_orderdetail od "
 						+ "     ON o.order_no = od.fk_order_no "
 						+ "   JOIN tbl_payments p "
-						+ "     ON o.order_no = p.fk_order_no "
+						+ "     ON o.order_no = p.fk_order_no"
+						+ "	  JOIN tbl_products pd"
+						+ "		ON od.fk_prod_no = pd.prod_no "
 						+ "  WHERE o.order_no = ? AND o.fk_user_no = ? AND o.order_status > 0 ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -729,12 +734,15 @@ public class OrderDAO_imple implements OrderDAO {
 	        	map.put("order_receiver", rs.getString("order_receiver"));
 	        	map.put("order_receivertel", aes.decrypt(rs.getString("order_receivertel")));
 	        	
+	        	map.put("fk_prod_no", rs.getString("fk_prod_no"));
+	        	map.put("prod_name", rs.getString("prod_name"));
+	        	map.put("prod_thumnail", rs.getString("prod_thumnail"));
 	        	map.put("ordetail_count", rs.getString("ordetail_count"));
 	        	map.put("ordetail_price", rs.getString("ordetail_price"));
 	        	map.put("ship_status", rs.getString("ship_status"));
 	        	map.put("pay_refund", rs.getString("pay_refund"));
 	        	
-	        	orderDetail.add(map);
+	        	orderDetailList.add(map);
 	        	
 	        }// end of while(rs.next()) ------------------ 
 			
@@ -745,8 +753,59 @@ public class OrderDAO_imple implements OrderDAO {
 			close();
 		}
 		
-		return orderDetail;
+		return orderDetailList;
 	}// end of public List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException  ---------------- 
+
+	// 해당 주문번호의 상세내역을 가져온다.
+	@Override
+	public Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException {
+		Map<String, String> orderDetail = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT order_no, to_char(order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date, order_request, order_tprice, order_status, order_postcode "
+						+ "		 , order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel, name, order_usecpname, order_dicount "
+						+ "   FROM tbl_order o JOIN tbl_member m "
+						+ "	    ON o.fk_user_no = m.user_no "
+						+ "  WHERE order_no = ? AND fk_user_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setString(1, paraMap.get("order_no"));
+	        pstmt.setString(2, paraMap.get("user_no"));
+			
+	        rs = pstmt.executeQuery();
+			
+	        if (rs.next()) {
+	        	
+	        	orderDetail = new HashMap<>();
+	        	
+	        	orderDetail.put("order_no", rs.getString("order_no"));
+	        	orderDetail.put("order_date", rs.getString("order_date"));
+	        	orderDetail.put("order_request", rs.getString("order_request"));
+	        	orderDetail.put("order_tprice", rs.getString("order_tprice"));
+	        	orderDetail.put("order_status", rs.getString("order_status"));
+	        	orderDetail.put("order_postcode", rs.getString("order_postcode"));
+	        	orderDetail.put("order_address", rs.getString("order_address"));
+	        	orderDetail.put("order_detailaddress", rs.getString("order_detailaddress"));
+	        	orderDetail.put("order_extraadress", rs.getString("order_extraadress"));
+	        	orderDetail.put("order_receiver", rs.getString("order_receiver"));
+	        	orderDetail.put("order_receivertel", aes.decrypt(rs.getString("order_receivertel")));
+	        	orderDetail.put("name", rs.getString("name"));
+	        	orderDetail.put("order_usecpname", rs.getString("order_usecpname"));
+	        	orderDetail.put("order_dicount", rs.getString("order_dicount"));
+	        	
+	        }
+	        
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return orderDetail;
+	}// end of public Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException ---------------------------
 
     
 }

@@ -51,6 +51,10 @@ public class OrderListController extends AbstractController {
 		String toDate 	= request.getParameter("toDate");
 		String start 	= request.getParameter("start");
 		String len   	= request.getParameter("len");
+		
+//		System.out.println("확인용 start: "+ start);
+//		System.out.println("확인용 len: "+ len);
+		
 		String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1);
 		
 		

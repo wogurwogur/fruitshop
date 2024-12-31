@@ -9,6 +9,7 @@
 
 <%
 	List<ShipVO> shipList = (ArrayList)request.getAttribute("shipList");
+
 	String ship_default = "";
 	String receiver = "";
 	String postcode = "";
@@ -18,19 +19,22 @@
 	String hp2 = "";
 	String hp3 = "";
 	
-	for (int i=0; i<shipList.size(); i++) {
+	if (shipList != null) {
 		
-		if (shipList.get(i).getShip_default() == 1) {
-			ship_default 	= "Y";
-			receiver 		= shipList.get(i).getShip_receiver();
-			postcode 		= shipList.get(i).getShip_postcode();
-			address 		= shipList.get(i).getShip_address();
-			detailAddress 	= shipList.get(i).getShip_detailAddress();
-			extraAddress 	= shipList.get(i).getShip_extraAddress();
-			hp2 			= shipList.get(i).getShip_receivertel().substring(3, 7);
-			hp3 			= shipList.get(i).getShip_receivertel().substring(7, 11);
-			break;
-		}
+		for (int i=0; i<shipList.size(); i++) {
+			
+			if (shipList.get(i).getShip_default() == 1) {
+				ship_default 	= "Y";
+				receiver 		= shipList.get(i).getShip_receiver();
+				postcode 		= shipList.get(i).getShip_postcode();
+				address 		= shipList.get(i).getShip_address();
+				detailAddress 	= shipList.get(i).getShip_detailAddress();
+				extraAddress 	= shipList.get(i).getShip_extraAddress();
+				hp2 			= shipList.get(i).getShip_receivertel().substring(3, 7);
+				hp3 			= shipList.get(i).getShip_receivertel().substring(7, 11);
+				break;
+			}
+		}// end of for() ---------------------------
 	}
 %>
 
@@ -478,6 +482,7 @@
 			<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}" />
 			<input type="hidden" name="coupon_name" />
 			<input type="hidden" name="coupon_no" />
+			<input type="hidden" name="coupon_discount" />
 			<input type="hidden" name="ordetail_count" />
 			<input type="hidden" id="contextPath" value="<%= request.getContextPath()%>"/>
 			<input type="hidden" id="ship_default" name="ship_default" />

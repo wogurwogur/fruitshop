@@ -49,6 +49,8 @@ public class OrderCheckoutEnd extends AbstractController {
 			String ship_default 	= request.getParameter("ship_default");		// 기본배송지설정(배송지DB)
 			String user_no 			= request.getParameter("user_no");			// 회원번호(주문DB)
 			String coupon_no 		= request.getParameter("coupon_no");		// 쿠폰번호(쿠폰DB)
+			String coupon_name 		= request.getParameter("coupon_name");		// 쿠폰명(쿠폰DB)
+			String coupon_discount 	= request.getParameter("coupon_discount");	// 할인액(쿠폰DB)
 			String point 			= request.getParameter("point");			// 포인트(회원DB)
 			String order_receiver 	= request.getParameter("order_receiver");	// 수신인(주문DB)
 			String productArr 		= request.getParameter("productArr");		// 주문상품정보(주문상세DB)
@@ -88,6 +90,8 @@ public class OrderCheckoutEnd extends AbstractController {
 			paraMap.put("point", point);			
 			paraMap.put("productArr", productArr);			
 			paraMap.put("mobile", mobile);			
+			paraMap.put("coupon_name", coupon_name);			
+			paraMap.put("coupon_discount", coupon_discount);			
 			
 			
 			try {

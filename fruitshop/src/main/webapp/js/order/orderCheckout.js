@@ -58,6 +58,8 @@ $(document).ready(() => {
 			$("td#coupon_expdate").html(coupon_expdate);
 			$("td#coupon_discount").html(coupon_discount);
 			document.querySelector("input[name='coupon_no']").value = coupon_no;	// jquery 왜 안됨?
+			document.querySelector("input[name='coupon_discount']").value = coupon_discount.split(",").join("");
+			document.querySelector("input[name='coupon_name']").value = coupon_name;
 						
 			
 			$("span#discount").html(coupon_discount+"원");
@@ -161,8 +163,8 @@ $(document).ready(() => {
 		$("input:hidden[name='point']").val(price_sum * 0.01);
 		$("span#point").text((price_sum * 0.01).toLocaleString("en")+"원");
 		
-		console.log("DB전송포인트: ", $("input:hidden[name='point']").val());
-		console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+		//console.log("DB전송포인트: ", $("input:hidden[name='point']").val());
+		//console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
 			
 		// === 주문상품 결제금액 구하기 끝 === //
 		
@@ -305,8 +307,9 @@ function deleteCoupon() {
 	$("span.total_price").html(changePrice.toLocaleString("en")+"원");
 	$("span#discount").html("");
 	$("table#couponSelect").hide();
-	$("input#coupon_no").val("");
-	
+	document.querySelector("input[name='coupon_no']").value = "";	// jquery 왜 안됨?
+	document.querySelector("input[name='coupon_discount']").value = "";
+	document.querySelector("input[name='coupon_name']").value = "";
 }// end of function deleteCoupon() ---------------------
 
 

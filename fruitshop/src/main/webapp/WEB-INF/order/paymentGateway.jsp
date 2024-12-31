@@ -86,7 +86,7 @@ $(document).ready(function() {
 					"postcode": "${requestScope.postcode}", "address": "${requestScope.address}", "detailaddress": "${requestScope.detailaddress}",
 					"extraaddress":"${requestScope.extraaddress}", "order_request": "${requestScope.order_request}", "ship_default": "${requestScope.ship_default}",
 					"point": "${requestScope.point}", "coupon_no": "${requestScope.coupon_no}", "order_receiver": "${requestScope.order_receiver}",
-					"productArr": '${requestScope.productArr}'
+					"productArr": '${requestScope.productArr}', "coupon_name": "${requestScope.coupon_name}", "coupon_discount": "${requestScope.coupon_discount}"
 				},
 				type: "POST",
 				dataType: "JSON",
@@ -123,6 +123,8 @@ $(document).ready(function() {
        	   	console.log("확인용 point => "+ "${requestScope.point}");			
        	   	console.log("확인용 prodNo => "+ "${requestScope.prodNo}");	
        	   	console.log("확인용 coupon_no => "+ "${requestScope.coupon_no}");	
+       	   	console.log("확인용 coupon_name => "+ "${requestScope.coupon_name}");	
+       	   	console.log("확인용 coupon_discount => "+ "${requestScope.coupon_discount}");	
        	   	console.log("확인용 order_receiver => "+ "${requestScope.order_receiver}");	
        	   	console.log("확인용 productArr => "+ "${requestScope.productArr}");	
 	       	 --%>

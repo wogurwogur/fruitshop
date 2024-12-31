@@ -43,7 +43,8 @@ public class OrderDetail extends AbstractController {
 		paraMap.put("user_no", String.valueOf(loginuser.getUser_no()));
 		
 		// 해당 주문번호의 상세내역을 가져온다.
-		List<Map<String, String>> orderDetailList =  odao.getOrderDetail(paraMap);
+		List<Map<String, String>> orderDetailList =  odao.getOrderDetailList(paraMap);
+		Map<String, String> orderDetail =  odao.getOrderDetail(paraMap);
 		
 		/*
 		for (int i=0; i<orderDetailList.size(); i++) {
@@ -52,7 +53,8 @@ public class OrderDetail extends AbstractController {
 		*/
 		
 		request.setAttribute("orderDetailList", orderDetailList);
-		
+		request.setAttribute("orderDetail", orderDetail);
+				
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/order/orderDetail.jsp");
 		

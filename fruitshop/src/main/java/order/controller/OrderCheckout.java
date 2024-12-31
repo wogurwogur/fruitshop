@@ -204,11 +204,20 @@ public class OrderCheckout extends AbstractController {
 			String order_tprice = request.getParameter("order_tprice");
 			String point = request.getParameter("point");
 			String productArr = request.getParameter("productArr");
+			String coupon_discount = request.getParameter("coupon_discount");
+			String coupon_name = request.getParameter("coupon_name");
 //			String[] arr_prodNo = request.getParameterValues("prod_no");
 			String[] arr_prod_name = request.getParameterValues("prod_name");
 			
 			
 			String mobile = hp1 + hp2 + hp3;
+			
+			if ("".equals(coupon_name)) {
+				coupon_name = "없음";
+			}
+			if ("".equals(coupon_discount)) {
+				coupon_discount = "0";
+			}
 			
 //			System.out.println("확인용 name => "+ name);
 //			System.out.println("확인용 postcode => "+ postcode);
@@ -221,11 +230,14 @@ public class OrderCheckout extends AbstractController {
 //			System.out.println("확인용 ship_default => "+ ship_default);
 //			System.out.println("확인용 user_no => "+ user_no);
 			System.out.println("확인용 coupon_no => "+ coupon_no);			
+			System.out.println("확인용 coupon_discount => "+ coupon_discount);			
+			System.out.println("확인용 coupon_name => "+ coupon_name);			
 //			System.out.println("확인용 order_tprice => "+ order_tprice);			
 //			System.out.println("확인용 point => "+ point);			
 //			System.out.println("확인용 arr_prodNo => "+ String.join(",", arr_prodNo));			
 //			System.out.println("확인용 arr_prod_name => "+ String.join(",", arr_prod_name));			
 //			System.out.println("확인용 productArr => "+ productArr);			
+			
 			
 			/*
 			// 상품 객체 배열을 다시 객체화
@@ -252,8 +264,6 @@ public class OrderCheckout extends AbstractController {
 			// 주문번호 생성하기 (채번) (오늘날짜-시퀀스번호)
 			int order_no = odao.getOrderNo();
 			
-//			String prodNo = String.join(",", arr_prodNo);
-			
 			String productName = (arr_prod_name.length > 1)? arr_prod_name[0] +"외 "+ (arr_prod_name.length-1)+ "건" : arr_prod_name[0];	// 결제창 표기용
 			
 			String orderNo = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance()) +"-"+ order_no;
@@ -277,6 +287,8 @@ public class OrderCheckout extends AbstractController {
 			request.setAttribute("ship_default", ship_default);		// 기본배송지설정(배송지DB)
 			request.setAttribute("user_no", user_no);				// 회원번호(주문DB)
 			request.setAttribute("coupon_no", coupon_no);			// 쿠폰번호(쿠폰DB)
+			request.setAttribute("coupon_discount", coupon_discount); // 쿠폰할인액(쿠폰DB)
+			request.setAttribute("coupon_name", coupon_name); 		// 쿠폰명(쿠폰DB)
 			request.setAttribute("point", point);					// 포인트(회원DB)
 			request.setAttribute("order_receiver", order_receiver);	// 받는사람(주문DB)
 			request.setAttribute("productArr", productArr);			// 주문상품정보(주문상세DB)

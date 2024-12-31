@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- Custom CSS --%>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/order/orderlist.css">
@@ -148,8 +149,9 @@
 	</div>
 	<%-- 기간 필터 끝 --%>
 	
+	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
-	<div style="margin-left: 1%;" class="h6 mt-5">주문 상품 정보</div>
+	<div style="margin-left: 1%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;" class="h6 mt-5">주문 상품 정보</div>
 	<hr style="border: solid 1px black;">	
 	<div>
 		<table id="orderList" class="table table-hover text-center">
