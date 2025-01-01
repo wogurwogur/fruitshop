@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -207,6 +208,36 @@ public class NoticeDAO_imple implements NoticeDAO {
 			pstmt = conn.prepareStatement(spl);
 			
 			pstmt.setString(1, notice_no);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
+	
+	// 공지사항을 수정하는 메소드
+	@Override
+	public int updateNotice(Map<String, String> map) throws SQLException{
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_notice "
+					   + " set notice_title = ?, "
+					   + " notice_contents = ? "
+					   + " where notice_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, map.get("notice_title"));
+			pstmt.setString(2, map.get("notice_contents"));
+			pstmt.setInt(3, Integer.parseInt(map.get("notice_no")));
 			
 			n = pstmt.executeUpdate();
 			

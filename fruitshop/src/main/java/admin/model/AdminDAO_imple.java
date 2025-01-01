@@ -475,6 +475,7 @@ public class AdminDAO_imple implements AdminDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select imgno, imgname, imgfilename "
+					   + " from tbl_main_page "
 					   + " where imgno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);

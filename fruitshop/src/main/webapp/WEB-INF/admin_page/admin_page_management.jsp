@@ -288,6 +288,10 @@ div#admin_top_nav_center{
 <%-- div top nav end --%>
 
 <div class="container">
+<form name="imgFrm">
+	<input type="text" name="imgno" style="display:none;">
+	<input type="text" style="display:none;">
+</form>
 	
 	<table class="table table-hover" style="text-align: center;">
 		<thead>
@@ -304,18 +308,15 @@ div#admin_top_nav_center{
 					<td>${imgs.imgfilename}</td>
 					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
 				</tr>
-				<form name="imgFrm">
-					<input type="text" name="imgno" style="display:none;">
-					<input type="text" style="display:none;">
-				</form>
+				
 			</c:forEach>
+			
 		</tbody>
 	</table> 
-		<table class="table" id="button_posi">
+		<table style="width:100%;" id="button_posi">
 		<tbody>
 			<tr>
-				<td><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
-				<td><button class="btn btn-outline-danger" id="">삭제하기</button></td>
+				<td colspan="2" style="float: right; margin-right:3%;"><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
 			</tr>
 		</tbody>
 	</table>

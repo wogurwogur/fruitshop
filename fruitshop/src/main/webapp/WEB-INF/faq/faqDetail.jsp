@@ -31,16 +31,131 @@ function deletefaq(){
 	
 }
 
+$(document).ready(function(){
+	const FaqModalUpdateOpen = document.getElementById('FaqModalUpdateOpen');
+	const FaqModalUpdateClose = document.getElementById('FaqModalUpdateClose');
+	const modal = document.getElementById('modalContainer');
+	const FaqModalUpdateSubmit = document.getElementById('FaqModalUpdateSubmit');
+
+	FaqModalUpdateOpen.addEventListener('click', () => {
+	  modal.classList.remove('hidden');
+	});
+
+	FaqModalUpdateClose.addEventListener('click', () => {
+	  modal.classList.add('hidden');
+	});	
+	
+	$("button#FaqModalUpdateSubmit").click(function(){
+		
+		
+		const faq_title = $("input:text[name='faq_title']").val();
+		const faqtitle_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,50}$/;
+		
+		if(faq_title == ""){
+			alert("자주하는질문 제목을 입력해주세요.");
+			return;
+		}
+		if(!faqtitle_Reg.test(faq_title)){
+			alert("공지사항 제목은은 한글로 2글자 이상 50글자 이하로 입력해주세요.");
+			return;
+		}
+		
+		
+		const faq_contents = $("textarea[name='faq_contents']").val();
+		const faqcontents_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,200}$/;
+		
+		if(faq_contents == ""){
+			alert("공지사항 내용을 입력해주세요.");
+			return;
+		}
+		if(!faqcontents_Reg.test(faq_contents)){
+			alert("자주하는질문 내용은 한글로 글자 이상 200 글자 이하로 입력해주세요.");
+			return;
+		}
+			
+		
+		if(!confirm("자주하는질문을 수정하시겠습니까?")){
+			return;
+		}
+		
+		$.ajax({
+              url : "${pageContext.request.contextPath}/faq/updatefaq.ddg",
+              type : "post",
+              data : {
+            	"faq_no":"${(requestScope.faqDetail).faq_no}",
+            	"faq_title":faq_title,
+            	"faq_contents":faq_contents
+              },
+              dataType:"json",
+              success:function(json){
+                 console.log("~~~ 확인용 : " + JSON.stringify(json));
+                 // ~~~ 확인용 : {"result":1}
+                 
+                 if(json.n == 1) {
+                    location.href="${pageContext.request.contextPath}/faq/faqDetail.ddg?faq_no_detail="+json.faq_no;
+                 }
+                 
+              },
+              error: function(request, status, error){
+                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                 
+              }
+              
+ 			});
+		
+		
+		
+	});
+	
+});
+
+
 </script>
 
 <style type="text/css">
 
-.delShow{
-	display:inline;
+#modalOpenButton, #modalCloseButton {
+  cursor: pointer;
 }
 
-.delHide{
-	display:none;
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 500px;
+  height: 480px;
+  padding: 15px;
+  border-radius: 20%;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContainer.hidden {
+  display: none;
 }
 
 </style>
@@ -103,6 +218,7 @@ function deletefaq(){
 				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/faq/faqList.ddg'" style="float: right; ">돌아가기</button>
 				<c:if test="${sessionScope.loginuser.role == 2}">
 				<button type="button" class="btn btn-outline-danger" onclick="deletefaq()" style="float: right; margin-right:0.8%">글삭제</button>
+				<button type="button" class="btn btn-outline-success" style="float: right; margin-right:0.8%" id="FaqModalUpdateOpen">글수정</button>
 				</c:if>
 				<form name="faqDetailForm">
 					<input type="hidden" name="faq_no">				
@@ -111,6 +227,35 @@ function deletefaq(){
 			<!-- 페이지네이션 -->
 			 
 		</div>
+	</div>
+			<div id="modalContainer" class="hidden">
+	  <div id="modalContent">
+	    <div class="container mt-5">
+	    	<table class="table" style="text-align:center;">
+	    		<thead>
+	    			<tr>
+	    				<th colspan="2">${requestScope.faqDetail.faq_title} 수정하기</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<tr>
+	    				<td>제목</td>
+	    				<td><input type="text" name="faq_title" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td>내용</td>
+	    				<td><textarea name="faq_contents"></textarea></td>
+	    			</tr>
+	    			<tr>
+	    				<td><button class="btn btn-outline-success" type="button" id="FaqModalUpdateSubmit">수정하기</button></td>
+	    				<td><button class="btn btn-outline-secondary" type="button" id="FaqModalUpdateClose">나가기</button></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	
+		    <input type="text" style="display:none;"/>
+	    </div>
+	  </div>
 	</div>
 	
 </div>

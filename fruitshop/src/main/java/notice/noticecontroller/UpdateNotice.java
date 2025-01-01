@@ -1,8 +1,8 @@
 package notice.noticecontroller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
@@ -14,7 +14,7 @@ import notice.domain.NoticeVO;
 import notice.model.NoticeDAO;
 import notice.model.NoticeDAO_imple;
 
-public class DeleteNotice extends AbstractController {
+public class UpdateNotice extends AbstractController {
 
 	NoticeDAO ndao = new NoticeDAO_imple();
 	
@@ -23,31 +23,33 @@ public class DeleteNotice extends AbstractController {
 		
 		HttpSession session = request.getSession();
 		
-		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
 		String method = request.getMethod();
 		
 		if("POST".equals(method) && loginuser.getRole() == 2) {
 			
 			String notice_no = request.getParameter("notice_no");
+			String notice_title = request.getParameter("notice_title");
+			String notice_contents = request.getParameter("notice_contents");
 			
-			int n = ndao.deleteNotice(notice_no);
+			Map<String,String> map = new HashMap<>();
 			
-			if(n == 1) {
-					
-				List<NoticeVO> noticeList = ndao.noticeSelectAll();
-				
-				request.setAttribute("noticeList", noticeList);
-				
-				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/notice/notice.jsp");
-						
-			}
-				
-				
-				
-				
+			map.put("notice_no", notice_no);
+			map.put("notice_title", notice_title);
+			map.put("notice_contents", notice_contents);
+			
+			int n = ndao.updateNotice(map);
+			
+			JSONObject json = new JSONObject();
+			
+			json.put("n", n);
+			json.put("notice_no", notice_no);
+			
+			request.setAttribute("json", json.toString());
+			
+			super.setViewPage("/WEB-INF/common/jsonview.jsp");
+			
 		}else {
 			
 			String message = "관리자만 접근이 가능합니다.";
@@ -59,7 +61,7 @@ public class DeleteNotice extends AbstractController {
 	        super.setRedirect(false);
 	        super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
-			
+
 	}
 
 }
