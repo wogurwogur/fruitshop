@@ -19,7 +19,21 @@
 <script type="text/javascript">
 
 
-	$(document).ready(function(){
+$(document).ready(function(){
+		
+	$("select[name='searchType']").val("${requestScope.searchType}");		
+	$("input:text[name='searchWord']").val("${requestScope.searchWord}");	
+	
+	$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");	
+	
+	// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** // 
+	$("select[name='sizePerPage']").bind("change", function(){
+		const frm = document.review_search_frm;
+		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+		frm.submit();
+		
+	});
 		
 	
 	$("table#reviewReadTbl tr.reviewRead").click( e=> {
@@ -39,6 +53,22 @@
 	});
 	
 	});
+	
+	
+function listSearch(){
+		
+		const searchType = $("select[name='searchType']").val();				
+		
+		if(searchType == ""){
+			alert("검색 대상을 선택하세요 !! ");
+			return; // goSearch()함수를 종료한다.
+		}
+		const frm = document.review_search_frm;
+		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+		frm.submit();
+		
+	} // end of function goSearch(){ 
 
 
 </script>
@@ -52,10 +82,10 @@
 	<div>
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
-		    <a class="nav-link mr-5" href="#" style="color: black;">공지사항</a>
+		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black; border-bottom: solid black 2px;">구매후기</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
@@ -83,39 +113,52 @@
 					</tr>
 					<%-- 글 리스트 --%>
 
-			<c:if test="${not empty requestScope.revList}">
-				
-					<tr class ="reviewRead">
-						<c:forEach var="brevvo" items="${requestScope.brevList}" varStatus="status">
-						<td class="review_no" style="border-top: none">${brevvo.review_no}</td>	 				
-						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
-						<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${brevvo.prod_name}]</a>
-							&nbsp;${brevvo.review_title}
-							<c:if test="${brevvo.comment_count ne '0'}"><span class="text-danger">[${brevvo.comment_count}]</span></c:if>							
-						</td>						
-						<td style="border-top: none">${brevvo.userid}</td>
-						<td style="border-top: none">${brevvo.review_regidate}</td>
-						<td style="border-top: none">${brevvo.review_viewcount}</td>
-						</c:forEach>
-					</tr>
+			<c:if test="${not empty requestScope.reviewList}">
+			
+				<c:forEach var="brevvo" items="${requestScope.brevList}" varStatus="status">
+					<c:if test="${brevvo.review_viewcount > 0}">
+						<tr class ="reviewRead">						
+							<td class="review_no" style="border-top: none">${brevvo.review_no}</td>	 				
+							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
+							<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${brevvo.prod_name}]</a>
+								&nbsp;${brevvo.review_title}
+								<c:if test="${brevvo.comment_count ne '0'}"><span class="text-danger">[${brevvo.comment_count}]</span></c:if>							
+							</td>						
+							<td style="border-top: none">${brevvo.userid}</td>
+							<td style="border-top: none">${brevvo.review_regidate}</td>
+							<td style="border-top: none">${brevvo.review_viewcount}</td>
+						</tr>
+					</c:if>						
+				</c:forEach>
+					
+			
 				
 				
 				<c:forEach var="crevvo" items="${requestScope.crevList}" varStatus="status">
-					<tr class ="reviewRead">
-						<td class="review_no" style="border-top: none">${crevvo.review_no}</td>	 				
-						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
-						<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${crevvo.prod_name}]</a>
-							&nbsp;${crevvo.review_title}
-							<c:if test="${crevvo.comment_count ne '0'}"><span class="text-danger">[${crevvo.comment_count}]</span></c:if>							
-						</td>						
-						<td style="border-top: none">${crevvo.userid}</td>
-						<td style="border-top: none">${crevvo.review_regidate}</td>
-						<td style="border-top: none">${crevvo.review_viewcount}</td>
-					</tr>
+					<c:if test="${crevvo.comment_count > 0}">
+						<tr class ="reviewRead">
+							<td class="review_no" style="border-top: none">${crevvo.review_no}</td>	 				
+							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
+							<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;<a href="#" class="text-body font-weight-bold">[${crevvo.prod_name}]</a>
+								&nbsp;${crevvo.review_title}
+								<c:if test="${crevvo.comment_count ne '0'}"><span class="text-danger">[${crevvo.comment_count}]</span></c:if>							
+							</td>						
+							<td style="border-top: none">${crevvo.userid}</td>
+							<td style="border-top: none">${crevvo.review_regidate}</td>
+							<td style="border-top: none">${crevvo.review_viewcount}</td>
+						</tr>
+					</c:if>
 				</c:forEach>
+			
 					
-				<c:forEach var="revvo" items="${requestScope.revList}" varStatus="status">						
-					<tr class="reviewRead">						
+				
+				
+				
+				<c:forEach var="revvo" items="${requestScope.reviewList}" varStatus="status">						
+					<tr class="reviewRead">
+					<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+                   	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" /> 
+      										
 						<td class="review_no" style="border-top: none">${revvo.review_no}</td>	 				
 						<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>
 						<td style="border-top: none"><a href="#" class="text-body font-weight-bold">[${revvo.prod_name}]</a>
@@ -125,38 +168,47 @@
 						<td style="border-top: none">${revvo.userid}</td>
 						<td style="border-top: none">${revvo.review_regidate}</td>
 						<td style="border-top: none">${revvo.review_viewcount}</td>
-					</tr>	
-								
+					</tr>									
 				</c:forEach>
-						
-			</c:if>																	
-
-				</table>
 				
-		<div id ="Listsearch">
-				<select class = "text-center" style="height:4%">
-					<option>제목</option>
-					<option>내용</option>
-					<option>작성자</option>
-					<option>글번호</option>				
+			</c:if>
+						
+			
+			
+			<c:if test="${empty requestScope.reviewList }">
+	      		<tr>
+	                <td colspan="6">데이터가 존재하지 않습니다.</td>
+	            </tr>
+      		</c:if>
+      		
+      		
+      			
+      																	
+
+			</table>
+			
+		<form name="review_search_frm">	
+			<div>
+				<select name="searchType" class = "text-center" style="height:4%">
+					<option value="">검색기준</option>
+					<option value="review_title">제목</option>
+					<option value="review_contents">내용</option>				
 				</select>
-				<input type="text" style="height:4%"></input>
-				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%">검색</button>
-				<a href="#"><button type="button" class="btn btn-outline-dark float-right" style="height:4.1%">글쓰기</button></a>
-		</div>
+				<input type="text" name="searchWord" style="height:4%"></input>
+				<input type="text" style="display: none;" />
+				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()">검색</button>
+				<a href="<%= ctxPath%>/review/reviewWrite.ddg"><button type="button" class="btn btn-outline-dark float-right" style="height:4.1%">글쓰기</button></a>
+			</div>
+		</form>
 								
 			<!-- 페이지네이션 -->
-			<nav>
-			  <ul class="pagination justify-content-center text-center pagination-sm mt-3">
-			    <li class="page-item"><a class="page-link text-body" href="#">이전</a></li>
-			    <li class="page-item"><a class="page-link text-body font-weight-bold" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">4</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">5</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">다음</a></li>
-			  </ul>
-			</nav>
+			 <div id="pageBar">
+			   	<nav>
+			   		<ul class="pagination pagination-sm justify-content-center" >
+			 			${requestScope.pageBar}
+			   		</ul>
+			   	</nav>   
+			</div>
 		</div>
 	</div>
 </div>
