@@ -274,13 +274,28 @@ function getOrderList(start) {
 					let ship_status = "";
 					switch (item.ship_status){
 						case 1:
-							ship_status = "주문완료(배송준비중)";
+							ship_status = "배송준비중";
 							break;
 						case 2:
 							ship_status = "배송중";
 							break;
 						case 3:
 							ship_status = "배송완료";
+							break;
+					}
+					let order_status = "";
+					
+					switch (item.order_status){
+						case 1:
+							order_status = "주문완료";
+							break;
+						case 2:
+						case 3:
+						case 4:
+							order_status = "교환/반품";
+							break;
+						case 5:
+							order_status = "구매확정";
 							break;
 					}
 
@@ -291,7 +306,7 @@ function getOrderList(start) {
 							<td><img src='${ctxPath}/images/product/thumnail/${item.prod_thumnail}' style="width: 80px; height: 50px;" /></td>
 							<td>${item.prod_name}</td>
 							<td>${item.order_tprice.toLocaleString('en')} 원</td>
-							<td>${ship_status}</td>
+							<td>${order_status}(${ship_status})</td>
 							<td></td>
 						</tr>
 					`;

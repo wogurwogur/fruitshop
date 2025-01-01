@@ -43,7 +43,7 @@ div.order_title:nth-child(1), div.order_title:nth-child(2), div.order_title:nth-
 
 div#order_title_nbsp {
 	border: solid 0.5px #c0c0c0;
-	width: 46%;
+	width: 64%;
 	background-color: #eee;
 }
 

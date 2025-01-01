@@ -47,5 +47,17 @@ public interface OrderDAO {
 	// 해당 주문번호의 상세내역을 가져온다.
 	List<Map<String, String>> getOrderDetailList(Map<String, String> paraMap) throws SQLException;
 
+	// 해당 주문건이 있는지 확인
+	boolean isExistOrder(String order_no) throws SQLException;
+
+	// 주문의 주문상태를 변경한다.
+	int updateOrder(Map<String, String> paraMap) throws SQLException;
+
+	// 주문의 총페이지수를 가져온다(관리자)
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자 주문관리용 주문목록을 가져온다.
+	List<Map<String, String>> getAdminOrderList(Map<String, String> paraMap) throws SQLException;
+
 
 }

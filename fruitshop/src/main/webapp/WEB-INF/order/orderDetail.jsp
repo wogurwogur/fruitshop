@@ -46,6 +46,33 @@ $(document).ready(()=> {
 		// mouserout
 	});
 	
+	
+	$("button#orderCommit").click(e => {
+		// 구매확정 시 주문 테이블의 주문 상태값을 변경한다.
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/order/orderCommit.ddg",
+			data: {"order_no":${requestScope.orderDetail.order_no}, "user_no": ${requestScope.orderDetail.user_no}},
+			type: "GET",
+			dataType: "JSON",
+			async: true,
+			success: function(json) {
+				alert("구매확정을 완료했습니다.");
+				
+				if (json.isComplete) {
+					location.href = `orderList.ddg`;				
+				}
+				
+			},
+			error: function(request, status, error){
+           		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+           		// alert("경로를 어디로 가야함???");
+           	}
+		});
+		
+		
+	});// end of $("button#orderCommit").click(e => {}) ----------------
+	
 });// end of $(document).ready(()=> {}) --------------------------- 
 
 
@@ -153,10 +180,18 @@ $(document).ready(()=> {
             	<span>적립금</span><span id="point" style="float: right"><fmt:formatNumber value="${(orderPrice - shipPirce)*0.01}" pattern="#,###" />원</span>
             </div>
             
-            <div style="width: 50%; margin: 5% auto 2% auto; display: flex;">
-	            <button type="button" class="btn btn-light requestbtn">교환/반품</button>
-	            <button style="margin-left: auto;" type="button" class="btn btn-light requestbtn">구매확정</button>
-			</div>
+            <c:choose>
+	   	        <c:when test="${requestScope.orderDetail.order_status != 5}">
+	    	        <div style="width: 50%; margin: 5% auto 2% auto; display: flex;">
+			            <button type="button" class="btn btn-light requestbtn">교환/반품</button>
+			            <button id="orderCommit" style="margin-left: auto;" type="button" class="btn btn-light requestbtn">구매확정</button>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div style="margin-top: 3% ;"></div>
+				</c:otherwise>
+			</c:choose>
+			
 	</div>
 	<%-- 주문정보 확인 및 결제 끝 --%>
 </div>

@@ -1,5 +1,6 @@
 package order.controller;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,33 +78,37 @@ public class OrderListController extends AbstractController {
 		
 		// 해당 회원이 주문한 내역을 담아 전송한다.
 		// List<OrderVO> orderList = odao.getOrderList(paraMap);
-		String json = odao.getOrderList(paraMap);
+		try {
+			String json = odao.getOrderList(paraMap);
+			
+	//		System.out.println("확인용 json :"+ json);
+			
+			/*
+				 [{"order_no":"20241228133047-37",
+				 "prod_no":33,
+				 "order_receiver":"이원모",
+				 "prod_name":"성주 꿀참외 3kg",
+				 "ordetail_price":20000,
+				 "order_tprice":22500,
+				 "order_date":"2024-12-28",
+				 "order_status":1,
+				 "order_detailaddress":"9번 출구",
+				 "prod_thumnail":"koreanmelon.png",
+				 "fk_user_no":18,"ordetail_count":1,
+				 "order_extraadress":" (동교동)",
+				 "order_address":"서울 마포구 양화로 지하 160",
+				 "order_receivertel":"01065757897",
+				 "order_postcode":"04050"},{}, {} ...
+			 */
+			
+			request.setAttribute("json", json);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/common/jsonview.jsp");
 		
-//		System.out.println("확인용 json :"+ json);
-		
-		/*
-			 [{"order_no":"20241228133047-37",
-			 "prod_no":33,
-			 "order_receiver":"이원모",
-			 "prod_name":"성주 꿀참외 3kg",
-			 "ordetail_price":20000,
-			 "order_tprice":22500,
-			 "order_date":"2024-12-28",
-			 "order_status":1,
-			 "order_detailaddress":"9번 출구",
-			 "prod_thumnail":"koreanmelon.png",
-			 "fk_user_no":18,"ordetail_count":1,
-			 "order_extraadress":" (동교동)",
-			 "order_address":"서울 마포구 양화로 지하 160",
-			 "order_receivertel":"01065757897",
-			 "order_postcode":"04050"},{}, {} ...
-		 */
-		
-		request.setAttribute("json", json);
-		
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/common/jsonview.jsp");
-		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 
 	}// end of execute() ---------------------------

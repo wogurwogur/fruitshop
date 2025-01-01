@@ -765,7 +765,7 @@ public class OrderDAO_imple implements OrderDAO {
 			conn = ds.getConnection();
 			
 			String sql 	= " SELECT order_no, to_char(order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date, order_request, order_tprice, order_status, order_postcode "
-						+ "		 , order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel, name, order_usecpname, order_dicount "
+						+ "		 , order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel, name, order_usecpname, order_dicount, user_no "
 						+ "   FROM tbl_order o JOIN tbl_member m "
 						+ "	    ON o.fk_user_no = m.user_no "
 						+ "  WHERE order_no = ? AND fk_user_no = ? ";
@@ -793,6 +793,7 @@ public class OrderDAO_imple implements OrderDAO {
 	        	orderDetail.put("order_receiver", rs.getString("order_receiver"));
 	        	orderDetail.put("order_receivertel", aes.decrypt(rs.getString("order_receivertel")));
 	        	orderDetail.put("name", rs.getString("name"));
+	        	orderDetail.put("user_no", rs.getString("user_no"));
 	        	orderDetail.put("order_usecpname", rs.getString("order_usecpname"));
 	        	orderDetail.put("order_dicount", rs.getString("order_dicount"));
 	        	
@@ -807,5 +808,259 @@ public class OrderDAO_imple implements OrderDAO {
 		return orderDetail;
 	}// end of public Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException ---------------------------
 
+	// 해당 주문건이 있는지 확인한다.
+	@Override
+	public boolean isExistOrder(String order_no) throws SQLException {
+		boolean isExistOrder = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT order_no "
+						+ "   FROM tbl_order "
+						+ "  WHERE order_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, order_no);
+			
+	        rs = pstmt.executeQuery();
+
+	        isExistOrder = rs.next();
+	        
+		} finally {
+			close();
+		}
+		
+		return isExistOrder;
+	}// end of public boolean isExistOrder(String order_no) throws SQLException -----------------------------
+
+	
+	// 주문의 주문상태를 변경한다.
+	@Override
+	public int updateOrder(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " UPDATE tbl_order SET order_status = 5 "
+						+ "  WHERE order_no = ? AND fk_user_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, paraMap.get("order_no"));
+	        pstmt.setInt(2, Integer.parseInt(paraMap.get("user_no")));
+		
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();
+		}
+		return result;
+	}// end of public int updateOrder(Map<String, String> paraMap) throws SQLException ---------------------------------
+
+	
+	// 주문의 총페이지수를 가져온다(관리자)
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " SELECT CEIL(COUNT(*)/10) "		// 페이지 당 몇 개를 보여줄 지 들어올 위치홀더
+						+ "  FROM tbl_order"
+						+ "	 WHERE to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+			
+			String orde_status = paraMap.get("searchType");
+			String order_no    = paraMap.get("searchWord");
+			
+			// 필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
+			
+			// 필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank()) {
+				sql += " AND order_status = ? ";
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' ";
+			}
+			
+			// 필터도 선택하고 주문번호도 검색했을 경우
+			if (!orde_status.isBlank() && !order_no.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
+			}
+		
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("fromDate"));
+			pstmt.setString(2, paraMap.get("toDate"));
+			
+			// 필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank()) {
+				pstmt.setString(3, orde_status);
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank()) {
+				pstmt.setString(3, order_no);
+			}
+			
+			// 필터도 선택하고 주문번호도 검색했을 경우
+			if (!orde_status.isBlank() && !order_no.isBlank()) {
+				pstmt.setString(3, order_no);
+				pstmt.setString(4, orde_status);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);		// select 된 것들 중 첫 번째 컬럼
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException ----------------------------
+
+	
+	// 관리자 주문관리용 주문목록을 가져온다.
+	@Override
+	public List<Map<String, String>> getAdminOrderList(Map<String, String> paraMap) throws SQLException {
+		
+		List<Map<String, String>> adminOrderList = new ArrayList<>();
+		
+		try {
+	    	conn = ds.getConnection();
+	         
+	        String sql 	= " SELECT C.RNO, C.order_no, C.fk_user_no, C.order_date, C.order_tprice, C.order_status, C.prod_no "
+		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver "
+		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status, C.name "
+		        		+ "   FROM  "
+		        		+ "		( "
+		        		+ "		SELECT ROWNUM AS RNO, B.order_no, B.fk_user_no, B.order_date, B.order_tprice, B.order_status, B.prod_no "
+		        		+ "		 	 , B.order_postcode, B.order_address, B.order_detailaddress, B.order_extraadress, B.order_receiver "
+		        		+ "		 	 , B.ordetail_count, B.ordetail_price, B.prod_name, B.prod_thumnail, B.order_receivertel, B.ship_status, B.name "
+		        		+ "	  	  FROM  "
+		        		+ "			( "
+		        		+ "			SELECT A.order_no, A.fk_user_no, A.order_date, A.order_tprice, A.order_status, p.prod_no "
+		        		+ "			 	 , A.order_postcode, A.order_address, A.order_detailaddress, A.order_extraadress, A.order_receiver "
+		        		+ "			 	 , A.ordetail_count, A.ordetail_price, p.prod_name, p.prod_thumnail, A.order_receivertel, A.ship_status, m.name "
+		        		+ "		  	  FROM "
+		        		+ "				( "
+		        		+ "				SELECT o.order_no, o.fk_user_no, to_char(o.order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date, o.order_tprice, o.order_status, od.fk_prod_no "
+		        		+ "				 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress, o.order_receiver, od.ordetail_count, od.ordetail_price "
+		        		+ "				 	 , od.ship_status, o.order_receivertel "
+		        		+ "			  	  FROM tbl_order o JOIN tbl_orderdetail od "
+		        		+ "			    	ON o.order_no = od.fk_order_no "
+		        		+ "			 WHERE to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+	        
+	        String orde_status = paraMap.get("searchType");
+			String order_no    = paraMap.get("searchWord");
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));	// 조회하고자 하는 페이지 번호
+			int sizePerPage = 10;				// 페이지당 보여줄 행의 개수
+			
+			// 필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
+			
+			// 필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank()) {
+				sql += " AND order_status = ? ";
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' ";
+			}
+			
+			// 필터도 선택하고 주문번호도 검색했을 경우
+			if (!orde_status.isBlank() && !order_no.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
+			}
+	        
+	        sql    	   += "			) A JOIN tbl_products p "
+		        		+ "			ON A.fk_prod_no = p.prod_no "
+		        		+ "		  JOIN tbl_member m "
+		        		+ "		    ON A.fk_user_no = m.user_no "
+		        		+ "		ORDER BY A.order_no DESC "
+		        		+ "		) B "
+		        		+ "	) C "
+		        		+ " WHERE RNO BETWEEN ? and ? ";
+	        
+
+		    pstmt = conn.prepareStatement(sql);
+		    
+			pstmt.setString(1, paraMap.get("fromDate"));
+			pstmt.setString(2, paraMap.get("toDate"));
+			
+			// 필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank()) {
+				pstmt.setString(3, orde_status);
+				pstmt.setInt(4, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank()) {
+				pstmt.setString(3, order_no);
+				pstmt.setInt(4, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+			
+			// 필터도 선택하고 주문번호도 검색했을 경우
+			if (!orde_status.isBlank() && !order_no.isBlank()) {
+				pstmt.setString(3, order_no);
+				pstmt.setString(4, orde_status);
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(6, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+			
+			// 모두 없을 경우
+			if (orde_status.isBlank() && order_no.isBlank()) {
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(4, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+			
+	        rs = pstmt.executeQuery();
+	        
+	        while(rs.next()) {
+	        	
+	        	Map<String, String> map = new HashMap<>();
+	        	
+	        	map.put("order_no", rs.getString("order_no"));
+	        	map.put("fk_user_no", rs.getString("fk_user_no"));
+	        	map.put("order_date", rs.getString("order_date"));
+	        	map.put("order_tprice", rs.getString("order_tprice"));
+	        	map.put("order_status", rs.getString("order_status"));
+	        	map.put("prod_no", rs.getString("prod_no"));
+	        	
+	        	map.put("order_postcode", rs.getString("order_postcode"));
+	        	map.put("order_address", rs.getString("order_address"));
+	        	map.put("order_detailaddress", rs.getString("order_detailaddress"));
+	        	map.put("order_extraadress", rs.getString("order_extraadress"));
+	        	map.put("order_receiver", rs.getString("order_receiver"));
+	        	map.put("ordetail_count", rs.getString("ordetail_count"));
+	        	map.put("ordetail_price", rs.getString("ordetail_price"));
+	        	map.put("prod_name", rs.getString("prod_name"));
+	        	map.put("prod_thumnail", rs.getString("prod_thumnail"));
+	        	map.put("ship_status", rs.getString("ship_status"));
+	        	map.put("name", rs.getString("name"));
+	        	
+	        	adminOrderList.add(map);
+	        	
+	        }// end of while(rs.next()) ----------------------------------
+	        
+		} finally {
+			close();
+		}
+		
+		return adminOrderList;
+	}// end of public List<Map<String, String>> getAdminOrderList(Map<String, String> paraMap) throws SQLException ---------------------------- 
+
+	
+	
     
 }

@@ -3,6 +3,8 @@
 
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/adminpage/orderManagement.css">
@@ -12,9 +14,67 @@
 <script type="text/javascript">
 
 
+$(document).ready(()=> {
+	
+	$("select[name='searchType']").val("${requestScope.searchType}");
+	$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+	
+	
+	$("select[name='searchType']").on("change", function() {
+		
+		const fromDate = $("input#fromDate").val();
+		const toDate = $("input#toDate").val();
+		
+		// alert("시작일: "+ fromDate+"\n마지막일: "+toDate);
+		
+		document.querySelector("input[name='fromDate']").value 	= fromDate;
+		document.querySelector("input[name='toDate']").value 	= toDate;
+		
+		const frm  = document.order_searchFrm;
+		// frm.action = "memberList.up";	// form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+		// frm.method = "GET";				// form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+		frm.submit();
+		
+	});// end of $("select[name='sizePerPage']").on("change", function() {}) --------------------
+});
+
+
+	//Function Declaration 
+	function goSearch() {
+		const searchType = $("select[name='searchType']").val();
+		
+		const fromDate = $("input#fromDate").val();
+		const toDate = $("input#toDate").val();
+		
+		// alert("시작일: "+ fromDate+"\n마지막일: "+toDate);
+		
+		document.querySelector("input[name='fromDate']").value 	= fromDate;
+		document.querySelector("input[name='toDate']").value 	= toDate;
+		
+		const frm  = document.order_searchType;
+		// frm.action = "memberList.up";	// form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+		// frm.method = "GET";				// form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+		frm.submit();
+			
+	}// end of function goSearch() -------------------
+	
 </script>
 
 <div id="container">
+	
+	<%-- 주문내역조회 메뉴 바 시작 --%>
+	<div id="order_filter">
+	
+		<div class="order_title active">
+			주문상태관리
+		</div>
+		<div class="order_title">
+			배송상태관리
+		</div>
+		<div id="order_title_nbsp">
+		</div>
+	</div>
+	<%-- 주문내역조회 메뉴 바 끝 --%>
 	
 	<%-- 기간 필터 시작 --%>
 	<div id="order_time">
@@ -28,10 +88,10 @@
 		
 		<div style="margin-top: 1%; padding: 1%;">
 			<form name="dateFilter">
-				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="fromDate" id="fromDate" maxlength="10" />
+				<input style="width: 120px; height: 40px; text-align: center;" type="text" id="fromDate" maxlength="10" />
 				<label style="cursor:pointer" for="fromDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
 				&nbsp;~&nbsp;&nbsp;
-				<input style="width: 120px; height: 40px; text-align: center;" type="text" name="toDate" id="toDate" maxlength="10" />
+				<input style="width: 120px; height: 40px; text-align: center;" type="text" id="toDate" maxlength="10" />
 				<label style="cursor:pointer" for="toDate"><img src="<%= request.getContextPath() %>/images/order/calendar.png" /></label>
 			</form>
 		</div>
@@ -49,16 +109,27 @@
 	<%-- 기간 필터 끝 --%>
 	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
-	<div style="margin-left: 1%;" class="h6 mt-5">
-		<span>주문 상품 정보</span> 
-		<select style="float: right;" name="ship_status">
-			<option value="">선택</option>			
-			<option value="1">주문완료(배송준비중)</option>			
-			<option value="2">배송중</option>			
-			<option value="3">배송완료</option>
-		</select>
+	
+	<div style="margin-left: 1%;" class="h6 mt-5 mb-1">
+		<form name="order_searchFrm">
+			<span>주문 상품 정보</span>
+			<select style="float: right; height: 30px;" name="searchType">
+				<option value="">필터선택</option>			
+				<option value="1">주문완료</option>			
+				<option value="2">교환/반품</option>			
+				<option value="5">구매확정</option>
+			</select>
+			
+			<button style="margin: 0 1% 0 0.5%; float: right;" type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button>
+			<input style=" height: 30px; float: right;" type="text" name="searchWord" placeholder="주문번호검색" />
+			
+			<input type="hidden" name="fromDate" />
+			<input type="hidden" name="toDate" />
+		</form>
 	</div>
-	<hr style="border: solid 1px black;">	
+	
+	<hr style="border: solid 1px black;">
+		
 	<div>
 		<table id="orderList" class="table table-hover text-center">
 			<thead>
@@ -69,26 +140,47 @@
 					<th style="width: 35%">상품명</th>
 					<th>결제금액</th>
 					<th>주문처리상태</th>
+					<th>배송상태</th>
 				</tr>
 			</thead>
 			<tbody>
-			<%-- 상품리스트 반복문 들어와야 함 --%>
-				<tr class="order_row" data-toggle="modal" data-target="#userShipInfo" data-dismiss="modal">
-					<td class="order_no">12321</td>
-					<td class="order_date">2024-12-26</td>
-					<td class="name">이원모</td>
-					<td class="prod_name">딸기 5kg</td>
-					<td class="order_tprice">51,000</td>
-					<td class="order_status">주문완료(배송준비중)<input type="hidden" class="ship_status" value="1" /></td>
-				</tr>
-				<tr class="order_row" data-toggle="modal" data-target="#userShipInfo" data-dismiss="modal">
-					<td class="order_no">12321321</td>
-					<td class="order_date">2025-12-26</td>
-					<td class="name">이원모</td>
-					<td class="prod_name">포도 5kg</td>
-					<td class="order_tprice">61,000</td>
-					<td class="order_status">배송중<input type="hidden" class="ship_status" value="2" /></td>
-				</tr>
+				<%-- 상품리스트 반복문 들어와야 함 --%>
+				<c:if test="${empty requestScope.orderList}">
+					<tr>
+						<td colspan="7">주문내역이 존재하지 않습니다.</td>
+					</tr>
+				</c:if>
+				
+				<c:if test="${!empty requestScope.orderList}">
+					<c:forEach var="orderItem" items="${requestScope.orderList}" varStatus="status">
+						<tr class="order_row" data-toggle="modal" data-target="#userShipInfo" data-dismiss="modal">
+							<td class="order_no">${orderItem.order_no}</td>
+							<td class="order_date">${orderItem.order_date}</td>
+							<td class="name">${orderItem.name}</td>
+							<td class="prod_name">${orderItem.prod_name}</td>
+							<fmt:parseNumber var="orderPrice" type="number" value="${orderItem.ordetail_price}" />
+							<td class="order_price"><fmt:formatNumber value="${orderPrice}" pattern="#,###" />원</td>
+							<td>
+								<c:if test="${orderItem.order_status == 1}">주문완료<input type="hidden" class="order_status" value="${orderItem.order_status}" /></c:if>
+								<c:if test="${orderItem.order_status == 2}">교환/반품<input type="hidden" class="order_status" value="${orderItem.order_status}" /></c:if>
+								<c:if test="${orderItem.order_status == 5}">구매확정<input type="hidden" class="order_status" value="${orderItem.order_status}" /></c:if>
+							</td>
+							<td>
+								<c:if test="${orderItem.ship_status == 1}">배송준비중<input type="hidden" class="ship_status" value="${orderItem.ship_status}" /></c:if>
+								<c:if test="${orderItem.ship_status == 2}">배송중<input type="hidden" class="ship_status" value="${orderItem.ship_status}" /></c:if>
+								<c:if test="${orderItem.ship_status == 3}">배송완료<input type="hidden" class="ship_status" value="${orderItem.ship_status}" /></c:if>
+								
+								<%-- 상세정보에 들어갈 값 넣어주기 --%>
+								<input type="hidden" class="postcode" value="${orderItem.order_postcode}" />
+								<input type="hidden" class="address" value="${orderItem.order_address}" />
+								<input type="hidden" class="detailAddress" value="${orderItem.order_detailaddress}" />
+								<input type="hidden" class="extraAddress" value="${orderItem.order_extraadress}" />
+								<input type="hidden" class="order_receiver" value="${orderItem.order_receiver}" />
+								<%-- 상세정보에 들어갈 값 넣어주기 --%>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:if>
 				<%-- 상품리스트 반복문 들어와야 함 --%>
 			</tbody>
 		</table>
@@ -114,13 +206,22 @@
 		     				
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문번호 &nbsp;</label><input id="order_no" style="width:60%;" type="text" name="order_no" readonly/>
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문자 &nbsp;</label><input id="name" style="width:60%;" type="text" name="name" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">수령인 &nbsp;</label><input id="order_receiver" style="width:60%;" type="text" name="order_receiver" readonly/>
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">상품명 &nbsp;</label><input id="prod_name" style="width:60%;" type="text" name="prod_name" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문금액 &nbsp;</label><input id="order_tprice" style="width:60%;" type="text" name="order_tprice" readonly/>
-		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문일자 &nbsp;</label><input id="order_date" style="width:60%;" type="text" name="order_date" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">상품금액 &nbsp;</label><input id="order_tprice" style="width:60%;" type="text" name="order_tprice" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문일시 &nbsp;</label><input id="order_date" style="width:60%;" type="text" name="order_date" readonly/>
 		     				<label class="text-left" style="margin-top: 2%; margin-left: 1%; width: 30%;">주문상태 &nbsp;</label>
-		     				<select id="modal_ship_status" style="width:60%;" name="ship_status">
+		     				<select id="modal_order_status" style="width:60%;" name="order_status">
 								<option value="">선택</option>			
-								<option value="1">주문완료(배송준비중)</option>			
+								<option value="1">주문완료</option>
+								<option value="2">교환/반품</option>			
+								<option value="5">구매확정</option>
+							</select>
+							
+							<label class="text-left" style="margin-top: 2%; margin-left: 1%; width: 30%;">배송상태 &nbsp;</label>
+							<select id="modal_ship_status" style="width:60%;" name="ship_status">
+								<option value="">선택</option>			
+								<option value="1">배송준비중</option>			
 								<option value="2">배송중</option>			
 								<option value="3">배송완료</option>
 							</select>
@@ -151,38 +252,9 @@
 	
 	
 	<%-- 페이징 처리 부분 --%>
-	<%--
-	<nav aria-label="Page navigation example">
-		<ul class="pagination justify-content-center">
-			<li class="page-item">
-				<a class="page-link" href="#" tabindex="-1">Previous</a>
-			</li>
-			<li class="page-item active"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item">
-				<a class="page-link" href="#">Next</a>
-			</li>
-		</ul>
-	</nav>
-	--%>
 	<div style="margin-top: 5%; display: flex;">
-		<div class="pagination">
-			<a href="#">&laquo;</a>
-			<a href="#">&lsaquo;</a>
-			<%-- 페이지 수만큼 반복문 --%>
-			<a href="#">1</a>
-			<a href="#" class="active">2</a>
-			<a href="#">3</a>
-			<a href="#">4</a>
-			<a href="#">5</a>
-			<%-- 페이지 수만큼 반복문 --%>
-			<a href="#">&rsaquo;</a>
-			<a href="#">&raquo;</a>
-		</div>
+		${requestScope.pageBar}
 	</div>
-
-
 	<%-- 페이징 처리 부분 --%>
 	
 </div>
