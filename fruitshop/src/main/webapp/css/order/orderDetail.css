@@ -52,12 +52,6 @@ div.orderInfo_title {
 	font-weight: 400;
 }
 
-table#orderList tr.productRow td:last-child {
-	/*background-color: red;*/
-}
-/* 주문상세 정보란 끝 */
-
-
 
 /* 배송정보 시작 */
 div#shipInfo span {
@@ -85,9 +79,9 @@ span#address {
 /* 배송정보 끝 */
 
 
-/* 결제하기 버튼 */
-button#payments {
-	margin-top: 3%;
-	width: 100%;
-	height: 50px;
+/* 하단 교환, 구매확정 버튼 */
+
+button.requestbtn {
+	border:solid 1px gray; 
+	width: 35%;
 }

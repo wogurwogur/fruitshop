@@ -153,8 +153,10 @@ $(document).ready(()=> {
             	<span>적립금</span><span id="point" style="float: right"><fmt:formatNumber value="${(orderPrice - shipPirce)*0.01}" pattern="#,###" />원</span>
             </div>
             
-            <button id="payments" type="button" class="btn btn-primary">구매확정</button>
-
+            <div style="width: 50%; margin: 5% auto 2% auto; display: flex;">
+	            <button type="button" class="btn btn-light requestbtn">교환/반품</button>
+	            <button style="margin-left: auto;" type="button" class="btn btn-light requestbtn">구매확정</button>
+			</div>
 	</div>
 	<%-- 주문정보 확인 및 결제 끝 --%>
 </div>
