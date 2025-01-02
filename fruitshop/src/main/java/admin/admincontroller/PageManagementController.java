@@ -27,35 +27,41 @@ public class PageManagementController extends AbstractController {
 		
 		String ctxPath = request.getContextPath();
 		
-		if(loginuser != null) {
+		if(loginuser != null && loginuser.getRole() != 1) {
 			
-			if(loginuser.getRole() != 1) {
-				try {
-					List<MainVO> imgList = maindao.imgaeSelectAll();
-					
-					if (imgList.size() > 0) {
-						request.setAttribute("imgList", imgList);
-					} 
-					
-					request.setAttribute("adminpage_val", "admin_page_management");
-					
-					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
-					
-				} catch (SQLException e) {	// 쿼리문 오류 발생 시
-					e.printStackTrace();
-					super.setRedirect(true);	// redirect 시킴
-					super.setViewPage(request.getContextPath()+"/error.ddg");
-				}
-				// 로그인 한 유저가 관리자가 아닐시
-			}else {
+			
+			try {
+				List<MainVO> imgList = maindao.imgaeSelectAll();
 				
+				if (imgList.size() > 0) {
+					request.setAttribute("imgList", imgList);
+				} 
+				
+				request.setAttribute("imgListLength", imgList.size());
+				
+				request.setAttribute("adminpage_val", "admin_page_management");
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
+				
+			} catch (SQLException e) {	// 쿼리문 오류 발생 시
+				e.printStackTrace();
+				super.setRedirect(true);	// redirect 시킴
+				super.setViewPage(request.getContextPath()+"/error.ddg");
 			}
+			
 
 			// 로그인을 안한 상태일시
 		}else {
 			
-			
+			String message = "관리자만 접근이 가능합니다.";
+	        String loc = "javascript:history.back()";
+	        
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/common/msg.jsp");
 			
 		}
 		

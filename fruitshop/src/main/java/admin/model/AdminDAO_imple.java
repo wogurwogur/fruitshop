@@ -500,6 +500,31 @@ public class AdminDAO_imple implements AdminDAO {
 		return mvo;
 	}
 
+	// 메인페이지 delete 메소드
+	@Override
+	public int mainPageDelete(String imgno) throws SQLException{
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_main_page "
+					   + " where imgno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, imgno);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
 	
 	
 	

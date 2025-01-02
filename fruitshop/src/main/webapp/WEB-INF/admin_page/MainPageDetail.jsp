@@ -35,6 +35,24 @@ $(document).ready(function(){
 	});
 });
 
+function mainPageDel(imgno, imgfilename){
+	
+	if(!confirm("정말 삭제하시겠습니까?")){
+		return;
+	}
+	
+	const frm = document.mainPageDetailFrm;
+	
+	frm.imgno.value = imgno;
+	frm.imgfilename.value = imgfilename;
+	
+	frm.action = "<%=ctxPath%>/admin/mainPageDelete.ddg";
+	
+	frm.method = "post";
+	
+	frm.submit();
+	
+}
 
 </script>
 <style>
@@ -137,34 +155,39 @@ select#searchType{
 
 <%-- div top nav start --%>
 
-<form name="updateFrm" enctype="multipart/form-data">
+<form name="mainPageDetailFrm">
+
+<input type="text" style="display:none;" name="imgno" />
+<input type="text" style="display:none;"" name="imgfilename" />
 
 <%-- div top nav end --%>
 
 <div class="container">
 	
 	<table class="table" style="text-align: center; margin-top:2%;">
+		<thead>
+			<tr>
+				<th colspan="2" style="text-align: center;">순번</th>
+				<th>현재 이미지</th>
+			</tr>
+		</thead>
 		<tbody>
 			<tr>
-				<td style="vertical-align: middle; text-align: left; margin-left:2%;" colspan="2" ><span>현재 이미지</span></td>
+				<td style="vertical-align: middle; text-align: center; margin-left:2%;" colspan="2" >${requestScope.imgcount}</td>
 				<td><img src="<%=ctxPath%>/images/index/${requestScope.mvo.imgfilename}" width="300" height="200"></td>
 			</tr>
 
 			<tr>
-				<td style="vertical-align: middle; text-align: left; margin-left:2%;"><span>수정할 이미지</span></td>
-				<td style="vertical-align: middle;"><input type="file" name="updateimg"></td>
-				<td><img width="300" height="200" id = "previewImg"></td>
-			</tr>
-			<tr>
 				<td colspan="3">
+
 					<button type="button" class="btn btn-outline-secondary" style="float: right; margin-right:5%;" onclick="history.back()">목록</button>
-					<button type="button" class="btn btn-outline-success" style="float: right; margin-right:3%;">수정</button>
-					<button type="button" class="btn btn-outline-danger" style="float: right; margin-right:3%;">삭제</button>
+					<button type="button" class="btn btn-outline-danger" style="float: right; margin-right:3%;" onclick="mainPageDel('${requestScope.mvo.imgno}','${requestScope.mvo.imgfilename}')">삭제</button>
 				</td>
+				
 			</tr>
 		</tbody>
 	</table>
-
+				
 </div>
 </form>
 

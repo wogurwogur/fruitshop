@@ -33,10 +33,8 @@ public class AdminMemberDetail extends AbstractController {
 			
 			request.setAttribute("detailMember", detailMember);
 			
-			request.setAttribute("adminpage_val", "admin_member_detail");
-			
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
+			super.setViewPage("/admin/pageManagement.ddg");
 			
 		}else {
 			

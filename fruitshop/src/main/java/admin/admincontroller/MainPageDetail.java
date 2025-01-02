@@ -20,14 +20,16 @@ public class MainPageDetail extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
-		if(loginuser.getRole() == 2) {
+		if(loginuser != null && loginuser.getRole() == 2) {
 			
 			String imgno = request.getParameter("imgno");
+			String imgcount = request.getParameter("imgcount");
 			
 			MainVO mvo = adao.MainPageDetail(imgno);
 			
 			if(mvo != null) {
 				
+				request.setAttribute("imgcount", imgcount);
 				request.setAttribute("mvo", mvo);
 				request.setAttribute("adminpage_val", "MainPageDetail");
 				
@@ -36,6 +38,15 @@ public class MainPageDetail extends AbstractController {
 				
 			}
 			
+		}else {
+			String message = "관리자만 접근이 가능합니다.";
+	        String loc = "javascript:history.back()";
+	        
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
 		
 	}

@@ -20,6 +20,17 @@ $(document).ready(function(){
 	
 	mainImgModalOpen.addEventListener('click', () => {
 		modal.classList.remove('hidden');
+		
+	const imglenght = $("input:text[name='imglength']").val();
+    	
+    	if(imglenght >= 5){
+    		
+    		modal.classList.add('hidden');
+    		alert("캐러셀 이미지는 5개까지 등록 가능합니다.");
+    		return;
+    		
+    	}
+		
 	});
 
 	mainImgModalClose.addEventListener('click', () => {
@@ -67,8 +78,9 @@ $(document).ready(function(){
 	
     $("button#mainImgModalSubmit").click(function(){
  	   
- 	   let is_infoData_OK = true;
- 	   console.log("시작부");
+    	
+    	
+ 	    let is_infoData_OK = true;
  		   
  		/* 
             FormData 객체는 ajax 로 폼 전송을 가능하게 해주는 자바스크립트 객체이다.
@@ -162,11 +174,13 @@ $(document).ready(function(){
 	
 });
 
-function mainImgDetail(imgno){
+function mainImgDetail(imgno, imgcount){
 	
 	const frm = document.imgFrm;
 	
 	frm.imgno.value = imgno;
+	
+	frm.imgcount.value = imgcount;
 	
 	frm.action = "<%=ctxPath%>/admin/mainPageDetail.ddg";
 	
@@ -290,9 +304,11 @@ div#admin_top_nav_center{
 <div class="container">
 <form name="imgFrm">
 	<input type="text" name="imgno" style="display:none;">
-	<input type="text" style="display:none;">
+	<input type="text" style="display:none;" name="imgcount">
+	<input type="text" style="display:none;" name="imglength" value="${requestScope.imgListLength}">
 </form>
-	
+
+<c:if test="${not empty requestScope.imgList}">	
 	<table class="table table-hover" style="text-align: center;">
 		<thead>
 			<tr>
@@ -302,8 +318,10 @@ div#admin_top_nav_center{
 			</tr>
 		</thead>
 		<tbody id="imgbody">
+		
 			<c:forEach items="${requestScope.imgList}" var="imgs" varStatus="index">
-				<tr style="cursor:pointer;" onclick="mainImgDetail('${imgs.imgno}')">
+				<tr style="cursor:pointer;" onclick="mainImgDetail('${imgs.imgno}','${index.count}')">
+				
 					<td>${imgs.imgname}</td>
 					<td>${imgs.imgfilename}</td>
 					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
@@ -313,6 +331,10 @@ div#admin_top_nav_center{
 			
 		</tbody>
 	</table> 
+	</c:if>
+	<c:if test="${empty requestScope.imgList}">	
+		존재하는 메인페이지가 없습니다.
+	</c:if>
 		<table style="width:100%;" id="button_posi">
 		<tbody>
 			<tr>

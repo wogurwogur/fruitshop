@@ -36,5 +36,8 @@ public interface AdminDAO {
 
 	// 메인화면 정보를 가져오는 메소드
 	MainVO MainPageDetail(String imgno) throws SQLException;
+
+	// 메인페이지 delete 메소드
+	int mainPageDelete(String imgno) throws SQLException;
 	
 }
