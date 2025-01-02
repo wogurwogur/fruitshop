@@ -35,7 +35,7 @@ public class PageManagementController extends AbstractController {
 					
 					if (imgList.size() > 0) {
 						request.setAttribute("imgList", imgList);
-					}
+					} 
 					
 					request.setAttribute("adminpage_val", "admin_page_management");
 					
