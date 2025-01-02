@@ -29,11 +29,6 @@ tr {
 	border: solid 1px #DADADA;
 }
 
-tr:hover {
-	background-color: #ddd;
-	cursor: context-menu;
-}
-
 
 td.tdTitle {
 	font-weight: bold;
