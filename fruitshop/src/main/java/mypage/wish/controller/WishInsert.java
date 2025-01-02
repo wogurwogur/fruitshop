@@ -3,7 +3,6 @@ package mypage.wish.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import cart.domain.CartVO;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,22 +49,28 @@ public class WishInsert extends AbstractController {
 	    	 	    // 관심상품안에 같은 상품이 있을때
 	    	 	    if(select != null) {
 	    	 	    	
+	    	 	    	// 관심상품에 이미 있다면 삭제
+	    	 	    	int delete = wdao.deleteWish(paraMap);
+	    	 	    	
+	    	 	    	if(delete == 1) {
+	    	 	    		super.setRedirect(true);
+	    	 	    		super.setViewPage(request.getContextPath()+ "/mypage/wishList.ddg");
+	    	 	    	}
+	    	 	    	
+	    	 	    	
 	    	 	    }
 	    	 	    else {
-	    	 	    	
+	    	 	
 	    	 	    	// 관심상품에 없다면 추가
 	    	 	    	int n = wdao.insertWish(paraMap);
 	    	 	    	
 	    	 	    	if(n == 1) {
 	    	 	    		
-	    	 	    		loginuser.setCart_cnt(wdao.getWishCount(loginuser.getUser_no()));
-	    	 	    		
 		    	 	    	super.setRedirect(true);
 		    	 	    	super.setViewPage(request.getContextPath()+ "/mypage/wishList.ddg");
 		    	 	    }
-	    	 	    	
-	    	 	    
 	    	 	    }
+	    	 	    
 	    	     } catch (Exception e) {
 	    	    	e.printStackTrace(); 
 		            super.setRedirect(true);	// redirect 시킴
