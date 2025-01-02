@@ -157,11 +157,13 @@ div.pagination a {
   transition: background-color .3s;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12pt;
+  border-radius: 5px;
 }
 
 div.pagination a.active {
-  background-color: red;
+  background-color: black;
   color: white;
+  border-radius: 5px;
 }
 
 div.pagination a:hover:not(.active) {

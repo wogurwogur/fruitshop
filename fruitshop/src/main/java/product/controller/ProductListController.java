@@ -8,6 +8,9 @@ import java.util.Map;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
+import mypage.wish.domain.WishVO;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
@@ -131,6 +134,12 @@ public class ProductListController extends AbstractController {
 			request.setAttribute("pageBar", pageBar);
 			request.setAttribute("currentShowPageNo", currentShowPageNo);
 			request.setAttribute("seasonNo", seasonNo);
+			
+			
+			// 찜 목록 확인해오기
+			List<WishVO> wishList = prdao.wishList();
+			HttpSession session = request.getSession();
+			session.setAttribute("wishList", wishList);
 
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/product/productlist.jsp");

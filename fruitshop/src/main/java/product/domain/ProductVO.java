@@ -14,21 +14,27 @@ public class ProductVO {
 	private int prod_inventory;		// 상품재고량
 	private int fk_season_no; 		// 계절 테이블 계절 번호
 	private String prod_regidate;	// 상품등록일
+	private int prod_status;		// 판매여부
 	
 	
 
 	// 타 테이블
 	
+	private int user_no;			// 멤버 번호
 	private String userid; 			// 멤버 회원아이디
 	
 	private int qna_no;				// 문의 번호
 	private String qna_title;		// 문의 제목
+	private String qna_contents;	// 문의 내용
 	private String qna_regidate;	// 문의 등록일자
 	
 	private int review_no;			// 후기 번호
 	private String review_title;	// 후기 제목
 	private String review_contents; // 후기 내용
 	private String review_regidate; // 후기 등록일자
+	
+	private int season_no; 			// 계절 번호
+	private String season_name;		// 계절명
 	
 	
 	
@@ -104,12 +110,37 @@ public class ProductVO {
 	public void setProd_regidate(String prod_regidate) {
 		this.prod_regidate = prod_regidate;
 	}
+	
+	public int getProd_status() {
+		return prod_status;
+	}
 
+	public void setProd_status(int prod_status) {
+		this.prod_status = prod_status;
+	}
 
 
 
 
 	// 타 테이블
+	public int getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
+	}
+
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	
 	public int getQna_no() {
 		return qna_no;
 	}
@@ -125,6 +156,14 @@ public class ProductVO {
 	public void setQna_title(String qna_title) {
 		this.qna_title = qna_title;
 	}
+	
+	public String getQna_contents() {
+		return qna_contents;
+	}
+
+	public void setQna_contents(String qna_contents) {
+		this.qna_contents = qna_contents;
+	}
 
 	public String getQna_regidate() {
 		return qna_regidate;
@@ -133,14 +172,7 @@ public class ProductVO {
 	public void setQna_regidate(String qna_regidate) {
 		this.qna_regidate = qna_regidate;
 	}
-
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+	
 
 	public int getReview_no() {
 		return review_no;
@@ -173,6 +205,27 @@ public class ProductVO {
 	public void setReview_regidate(String review_regidate) {
 		this.review_regidate = review_regidate;
 	}
+
+	public int getSeason_no() {
+		return season_no;
+	}
+
+	public void setSeason_no(int season_no) {
+		this.season_no = season_no;
+	}
+
+	public String getSeason_name() {
+		return season_name;
+	}
+
+	public void setSeason_name(String season_name) {
+		this.season_name = season_name;
+	}
+
+
+
+
+
 
 	
 	

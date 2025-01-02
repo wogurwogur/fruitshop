@@ -110,8 +110,7 @@
 		 	
 		 	
 		 	
-		 	// -------- 제품 등록하기 -------- //
-		 	
+		 	// -------------------------- 제품 등록하기 -------------------------- //
 		 	
 		 	$("input:button[id='btnRegister']").click(function(){
 		 		
@@ -135,17 +134,54 @@
 		 			// $("form[name='prodInputFrm']").get(0) 폼 에 작성된 모든 데이터 보내기
 		 			var formData = new FormData($("form[name='prodRegisterFrm']").get(0));
 		 			
+	 			
 		 			if (total_fileSize >= 10*1024*1024) { // 첨부 파일의 크기 총합이 10MB 이상이라면
 		 				alert("첨부 파일의 총합 크기는 최대 10MB 입니다.");
 		 				return; // 종료
 		 			}
 		 			else { // 첨부한 파일의 총합의 크기가 10MB 미만 이라면, formData 속에 첨부파일 넣어주기
-		 				
+		 				file_arr.forEach(function(item, index){
+		 					formData.append("attach"+index, item); // 첨부파일 추가하기
+		 				});
 		 			}
+		 			
+		 			$.ajax({
+		 				url: "${pageContext.request.contextPath}/admin/adminProductRegister.ddg",
+		 				type: "post",
+		 				data: formData,
+	                    processData: false,  // 파일 전송시 설정 
+	                    contentType: false,  // 파일 전송시 설정
+	                    dataType: "json",
+	                    success: function(json){
+	                    	if(json.result == 1) {
+	                         	location.href="${pageContext.request.contextPath}/product/productList.ddg"; 
+	                       }
+	                    },
+		 				error: function(request, status, error){
+                      		alert("첨부된 파일의 크기의 총합이 10MB 를 초과하여 제품등록이 실패했습니다.");
+                 		}
+		 			});
 		 			
 		 		} // end of if(prod_infoData_OK)
 		 		
-		 	}); // end of $("input:button[id='btnRegister']").click(function()
+		 	}); // end of $("input:button[id='btnRegister']").click(function() 
+		 			
+		 	// -------------------------- 제품 등록하기 끝 -------------------------- //
+		 	
+		 	
+		 	
+	     	// 취소 버튼 클릭
+	        $("input[type='reset']").click(function(){
+	           $("span.error").hide();
+	           file_arr = []; // 첨부되어진 파일 정보를 담아 둘 배열 초기화
+	           $("img#previewthumnail, img#previewdescript").hide();
+	           
+	           
+	           // 취소하기 하면 뒤로가는 거 하는중~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	           
+	           
+	        }); // end of $("input[type='reset']").click(function()
+		 	
 		 	
 		 	
 		 	
@@ -193,13 +229,33 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="tdTitle">재고</td>
+						<td>
+							<input name="prod_inventory" id="spinnerPqty" value="1" class="prod_infoData" /> 개
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="tdTitle">계절분류</td>
+						<td>
+							<select name="fk_season_no" class="prod_infoData">
+								<option value="">선택</option>	
+								<c:forEach var="seasonvo" items="${requestScope.seasonInfo}">
+									<option value="${seasonvo.season_no}">${seasonvo.season_name}</option>  
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					
+					
+					<tr>
 						<td class="tdTitle">상품 이미지(썸네일)</td>
 						<td>
 							<input type="file" name="prod_thumnail" class="thumnail_img_file prod_infoData" accept='image/*' />
 						</td>
 					</tr>
 					<tr>
-		                <td class="tdTitle">이미지(썸네일) 미리보기</td>
+		                <td class="tdTitle">이미지 미리보기</td>
 		                <td>
 	               			<img id="previewthumnail" width="300" height="300" />
 		                </td>
@@ -215,35 +271,12 @@
 		                <td>
 			            	<img id="previewdescript" width="300" height="300" />
 		                </td>
-	          		</tr>
-					
-					<tr>
-						<td class="tdTitle">재고</td>
-						<td>
-							<input name="prod_inventory" id="spinnerPqty" value="1" class="prod_infoData"> 개
-						</td>
-					</tr>
-					<tr>
-						<td class="tdTitle">계절분류</td>
-						<td>
-							<select name="fk_season_no" class="prod_infoData">
-								 <option value="">선택</option>
-			                     <option value="1">봄</option>
-			                     <option value="2">여름</option>
-			                     <option value="3">가을</option>
-			                     <option value="4">겨울</option> 
-				              
-				                 <%--  <c:forEach var="spvo" items="${requestScope.specList}">
-				                  		<option value="${spvo.snum}">${spvo.sname}</option>
-				                  </c:forEach> --%>    
-							</select>
-						</td>
-					</tr>
+	          		</tr>			
 					
 					<tr>
 	                    <td colspan="2" class="text-center" style="padding: 30px 0 10px 0;">
 	                       <input type="button" id="btnRegister" class="btn btn-success mr-5" value="등록" />
-	                       <input type="reset"  class="btn btn-danger" value="취소" onclick="" />
+	                       <input type="reset"  class="btn btnca" value="취소" />
 	                    </td>
 	                </tr>
 					
