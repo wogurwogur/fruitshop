@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 
 
 <jsp:include page="../common/header.jsp"></jsp:include>
@@ -10,13 +10,18 @@
 <%-- Custom CSS --%>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/product/productdetail.css">
 
-<%-- Custom JS --%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/product/productdetail.js"></script>
 
 
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+		/* 위치 이동을 위한 스크롤 확인
+		window.addEventListener('scroll', function() {
+		    let scrollPosition = window.scrollY;
+		    console.log("현재 스크롤 위치:", scrollPosition);
+		});
+		*/
 	
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 시작 --------- //
 	
@@ -24,34 +29,35 @@ $(document).ready(function(){
 		let prod_inventory = ${requestScope.prdvo.prod_inventory}; // 현재 상품 재고량
 		
 		
-		// 상품 상세페이지에서 - 버튼을 클릭한 경우
-	    $("button.minus").click(function(){
-			if (qty > 1 && prod_inventory != 0) {
-				qty--;
-				$("input.qty").val(qty);
-				totalPrice();
-			}
-			else if (prod_inventory == 0) {
-				alert("현재 해당 상품은 품절입니다.")
-			}
-	    });
-	
-		// 상품 상세페이지에서 + 버튼을 클릭한 경우
-		$("button.plus").click(function(){
-			if (qty < prod_inventory && prod_inventory != 0) {
-			    qty++;
-				$("input.qty").val(qty);
-				totalPrice();
-			}
-			else if (qty >= prod_inventory) {
-				alert("현재 해당 상품은 " + prod_inventory + "개 까지 구매 가능합니다.")
-				return;
-			}
-			else if (prod_inventory == 0) {
-				alert("현재 해당 상품은 품절입니다.")
-			}
-		});
-
+		if(prod_inventory != 0) { // 재고량이 0이 아닌 경우에만
+			// 상품 상세페이지에서 - 버튼을 클릭한 경우
+		    $("button.minus").click(function(){
+				if (qty > 1 && prod_inventory != 0) {
+					qty--;
+					$("input.qty").val(qty);
+					totalPrice();
+				}
+				else if (prod_inventory == 0) {
+					alert("현재 해당 상품은 품절입니다.")
+				}
+		    });
+		
+			// 상품 상세페이지에서 + 버튼을 클릭한 경우
+			$("button.plus").click(function(){
+				if (qty < prod_inventory && prod_inventory != 0) {
+				    qty++;
+					$("input.qty").val(qty);
+					totalPrice();
+				}
+				else if (qty >= prod_inventory) {
+					alert("현재 해당 상품은 " + prod_inventory + "개 까지 구매 가능합니다.")
+					return;
+				}
+				else if (prod_inventory == 0) {
+					alert("현재 해당 상품은 품절입니다.")
+				}
+			});
+		}
 		
 		totalPrice(); // 페이지 처음 들어왔을 때 총 금액 및 수량 설정
 		
@@ -66,12 +72,40 @@ $(document).ready(function(){
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 끝 --------- //
 		
 			
-		// 장바구니 클릭 
-		$("div.cart").click(function() {
-			const prdCnt = $("input.qty").val();
-			// alert(prdCnt)
-			location.href=`${pageContext.request.contextPath}/cart/cartInsert.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prdCnt=`+ prdCnt;
-		});
+	   	// 장바구니 클릭 
+	    $("div.cart").click(function() {
+	         
+         if( ${not empty sessionScope.loginuser} ) {
+         
+              $.ajax({
+                  url: `${pageContext.request.contextPath}/cart/cartInsert.ddg`,
+                  type: 'get',
+                  data: {
+                     "prodNo": "${requestScope.prdvo.prod_no}", // 상품번호
+                     "userNo": "${sessionScope.loginuser.user_no}", // 회원번호
+                     "prdCnt": $("input.qty").val()   // 상품수량
+                  },
+                  success: function(response) {
+                     if(confirm("장바구니에 상품을 추가했습니다.\n장바구니를 확인하시겠습니까?")){
+                      const prdCnt = $("input.qty").val();
+                      // alert(prdCnt)
+                      location.href=`${pageContext.request.contextPath}/cart/cartInsert.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prdCnt=`+ prdCnt;
+                   }
+                      else{
+                          location.href="javascript:history.go(0);";
+                      }
+                  },
+                  error: function(error) {
+                     alert("장바구니 추가 오류:", error);
+                  }
+              });
+         }
+         else{
+            alert("로그인 후에 상품을 장바구니에 넣을 수 있습니다 !!");
+            location.href=`${pageContext.request.contextPath}/login/login.ddg`;
+         }
+               
+	    }); // end of $("div.cart").click(function()
 	
 		
 		// 구매하기 클릭
@@ -81,6 +115,12 @@ $(document).ready(function(){
 		});
 		
 		
+	    
+	    // 상품 후기 목록 클릭 시 해당 글 페이지로 이동한다.
+	    $("tr.reviewInfo").click(function(){
+	    	location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}`;
+	    });
+	    
 		
 		// 상품후기 쓰기 클릭
 		$("div.reveiwBtn").click(function() {
@@ -94,6 +134,30 @@ $(document).ready(function(){
 			// alert("후기 모두보기 클릭")
 			location.href =`${pageContext.request.contextPath}/review/reviewList.ddg`;
 		});
+		
+		
+		
+	    // 상품 문의 목록 클릭 시 해당 글 페이지로 이동한다.
+	    $("tr.qnaInfo").click(function(){
+			
+	    	 const sessionUserno = ${sessionScope.loginuser != null ? sessionScope.loginuser.user_no : 0};
+	    	
+	    	 if(sessionUserno != 0) {
+	    		
+		    	const qnaUserno = $(this).data("userno");
+	    		
+	 	    	if(sessionUserno == qnaUserno) {
+		    		location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
+		    	}
+	 	    	else {
+		    		alert("작성자 본인만 확인할 수 있습니다.")
+		    	}
+	    	}	
+ 	    	else {
+ 	            alert("로그인 후에 확인이 가능합니다.");
+ 	    	}
+	    		    	
+	    });
 		
 		
 		// 문의하기 클릭
@@ -163,7 +227,12 @@ $(document).ready(function(){
 				<span>수량</span>
 				<span class="quantity">
 					<button type="button" class="minus">-</button>
-					<input type="text" class="qty" value="1" readonly></input>
+					<c:if test="${requestScope.prdvo.prod_inventory > 0}">
+						<input type="text" class="qty" value="1" readonly></input>
+					</c:if>
+					<c:if test="${requestScope.prdvo.prod_inventory == 0}">
+						<input type="text" class="qty" value="0" readonly></input>
+					</c:if>
 					<button type="button" class="plus">+</button>
 				</span>
 			</div>
@@ -207,25 +276,27 @@ $(document).ready(function(){
 	<div id="detailWrap2" style="max-width: 1400px;">
 		
 		<%-- 상세정보 --%>
-		<div id="detailInfo">
+		<div id="detail" class="detailEmptyDiv"></div>
+		<div id="detailInfo" class="fixed">
 			<ul style="display: flex;">
-				<li class="detail"><a href="#detail">상세정보</a></li>
-				<li><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
-				<li><a href="#inquire">문의하기</a></li>	
+				<li class="detail"><a href="#detail" class="detailBar">상세정보</a></li>
+				<li><a href="#guide" class="detailBar">이용안내</a></li>
+				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
 			</ul>
-			<p id="detail">
+			<p>
 				<img src="<%=request.getContextPath()%>/images/product/thumnail/${requestScope.prdvo.prod_thumnail}" style="width: 700px; height: 700px;">
 			</p>
 		</div>
 		
 		<%-- 이용안내 --%>
+		<div id="guide" class="guideEmptyDiv"></div>
 		<div id="guideInfo" >
 			<ul style="display: flex;">
-				<li><a href="#detail">상세정보</a></li>
-				<li class="guide"><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
-				<li><a href="#inquire">문의하기</a></li>	
+				<li><a href="#detail" class="detailBar">상세정보</a></li>
+				<li class="guide"><a href="#guide" class="detailBar">이용안내</a></li>
+				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			<div id="guide" class="guideText" style="height: auto;">
 				<span class="paymentTextTitle">상품결제정보</span>
@@ -300,12 +371,13 @@ $(document).ready(function(){
 		</div>
 		
 		<%-- 상품후기 --%>	
+		<div id="review" class="reviewEmptyDiv"></div>
 		<div id="prdReview" >
 			<ul style="display: flex;">
-				<li><a href="#detail">상세정보</a></li>
-				<li><a href="#guide">이용안내</a></li>
-				<li class="review"><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
-				<li><a href="#inquire">문의하기</a></li>	
+				<li><a href="#detail" class="detailBar">상세정보</a></li>
+				<li><a href="#guide" class="detailBar">이용안내</a></li>
+				<li class="review"><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			<div id="review" class="reviewBoard" style="height: auto;">
 				
@@ -319,15 +391,17 @@ $(document).ready(function(){
 					
 					<table class="table table-borderless">
 						<colgroup> <%-- 테이블 간 간격 설정 --%>
-						<col style="width: 10%;">
-						<col style="width: 60%;">
-						<col style="width: 10%;">
-						<col style="width: 20%;">
+						<col style="width: 5%;">
+						<col style="width: 25%;">
+						<col style="width: 40%;">
+						<col style="width: 15%;">
+						<col style="width: 15%;">
 						<colgroup>
 				        <thead>
 					        <tr class="reviewInfoTitle">
 						        <th scope="col">번호</th>
 						        <th scope="col">제목</th>
+						        <th scope="col">내용</th>
 						        <th scope="col">작성자</th>
 						        <th scope="col">작성날짜</th>
 					        </tr>
@@ -335,14 +409,30 @@ $(document).ready(function(){
 				        <tbody>
 				        	<c:forEach var="prd_review" items="${requestScope.prd_reviewList}" varStatus="status">
 					        	<tr class="reviewInfo">
-					        		<td>${prd_review.review_no}</td>
+					        		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
+					        		<td>${(requestScope.totalReviewCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
 					        		<td>${prd_review.review_title}</td>
-					        		<td>${prd_review.userid}</td>
+					        		<td class="reviewContents">${prd_review.review_contents}</td>
+					        		<td>
+					        		<c:choose>
+								        <c:when test="${fn:length(prd_review.userid) > 3}">
+								            ${fn:substring(prd_review.userid, 0, fn:length(prd_review.userid) - 3)}*** <!-- 뒤 3글자 마스킹 -->
+								        </c:when>
+								        <c:otherwise>
+								            ${prd_review.userid} <!-- 3자 이하일 경우 그대로 출력 -->
+								        </c:otherwise>
+							    	</c:choose>					     
+					        		</td>
 					        		<td>${prd_review.review_regidate}</td>
 					        	</tr>
 				        	</c:forEach>
 				        </tbody>
 			        </table>
+			        <%-- 
+					<div id="pageBar">
+						 ${requestScope.reviewPageBar}
+					</div>
+					--%>
 		        </c:if>
 		        
 		        <c:if test="${empty requestScope.prd_reviewList}"> 
@@ -370,12 +460,13 @@ $(document).ready(function(){
 		</div>			
 		
 		<%-- 문의하기 --%>	
+		<div id="inquire" class="inquireEmptyDiv"></div>
 		<div id="prdInquire" >
 			<ul style="display: flex;">
-				<li><a href="#detail">상세정보</a></li>
-				<li><a href="#guide">이용안내</a></li>
-				<li><a href="#review">상품후기</a><span class="reviewCnt">${requestScope.review_cnt}</span></li>
-				<li class="inquire"><a href="#inquire">문의하기</a></li>	
+				<li><a href="#detail" class="detailBar">상세정보</a></li>
+				<li><a href="#guide" class="detailBar">이용안내</a></li>
+				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li class="inquire"><a href="#inquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			
 			<div id="inquire" class="inquireBoard" style="height: auto;">
@@ -391,10 +482,10 @@ $(document).ready(function(){
 					
 					<table class="table table-borderless">
 						<colgroup> <%-- 테이블 간 간격 설정 --%>
-					   	<col style="width: 10%;">
-					   	<col style="width: 60%;">
-					   	<col style="width: 10%;">
-					   	<col style="width: 20%;">
+						<col style="width: 10%;">
+						<col style="width: 60%;">
+						<col style="width: 10%;">
+						<col style="width: 20%;">
 					   	<colgroup>
 				        <thead>
 					        <tr class="qnaInfoTitle">
@@ -406,10 +497,20 @@ $(document).ready(function(){
 				        </thead>
 				        <tbody>
 				        	<c:forEach var="prd_qna" items="${requestScope.prd_qnaList}" varStatus="status">
-					        	<tr class="qnaInfo">
-					        		<td>${prd_qna.qna_no}</td>
-					        		<td>${prd_qna.qna_title}</td>
-					        		<td>${prd_qna.userid}</td>
+					        	<tr class="qnaInfo" data-userno="${prd_qna.user_no}">
+					        		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
+					        		<td>${(requestScope.totalQnaCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
+					        		<td>상품 관련 문의 입니다.</td>
+					        		<td>
+					        		<c:choose>
+								        <c:when test="${fn:length(prd_qna.userid) > 3}">
+								            ${fn:substring(prd_qna.userid, 0, fn:length(prd_qna.userid) - 3)}*** <!-- 뒤 3글자 마스킹 -->
+								        </c:when>
+								        <c:otherwise>
+								            ${prd_qna.userid} <!-- 3자 이하일 경우 그대로 출력 -->
+								        </c:otherwise>
+							    	</c:choose>					    
+					        		</td>
 					        		<td>${prd_qna.qna_regidate}</td>
 					        	</tr>
 				        	</c:forEach>

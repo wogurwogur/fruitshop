@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 
 
 <%
@@ -56,10 +57,42 @@
 			
 	
 			
-	// 하트 모양 클릭 시 배경색	
-	function wishToggle(e) {
-		e.classList.toggle("fa-solid");
-	} // end of function wishToggle(e)
+	// 하트 모양 클릭 시 
+	function wishToggle(e, prodNo, userNo) {
+      
+		
+		if( ${not empty sessionScope.loginuser} ) {	// 로그인 한 경우에
+	        $.ajax({
+	              url: `${pageContext.request.contextPath}/mypage/wishInsert.ddg`,
+	              type: "post",
+	              data: {
+	                 "prodNo": prodNo,
+	                 "userNo": userNo
+	              },
+	              success: function(response) {
+	                  if ($(e).hasClass("fa-regular")) { // 흰 하트
+	                      $(e).removeClass("fa-regular").addClass("fa-solid"); // 하트 검정으로
+	                      alert("관심상품에 상품을 추가했습니다.");
+	                  } 
+	                  else { // 이미 검정 하트라면
+	                      $(e).removeClass("fa-solid").addClass("fa-regular"); // 흰 하트로
+	                      alert("관심상품에서 상품을 제거했습니다.");
+	                  }
+	              },
+	              error: function(request, status, error){
+	                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	              }
+	         });
+		}
+        else{   // 로그인 안했을때 
+           
+           alert("로그인 후에 상품을 관심상품에 넣을 수 있습니다 !!");
+           location.href=`${pageContext.request.contextPath}/login/login.ddg`;
+        }
+	          
+     }// end of if( ${not empty sessionScope.loginuser} ) {}-----------------------------------------------------
+	     
+	
 	
 	
 	
@@ -160,7 +193,22 @@
                                 <span class="mt-3 product" onclick="goDetail(${prdvo.prod_no})">${prdvo.prod_name}</span>
                             </div>
                             <div class="ml-auto">
-                                <span><i onclick="wishToggle(this)" class="fa-regular fa-heart fa-lg heart mt-3"></i></span>
+ 								
+ 								<c:set var="heartCheck" value="false"/> <%-- 하트 체크 여부 변수 --%>
+ 								
+                            	<c:if test="${not empty sessionScope.wishList}"> <%-- 세션에 저장된 wish 테이블 값이 있다면 --%>
+                           			<c:forEach var="wsvo" items="${sessionScope.wishList}">
+		                            	<c:if test="${wsvo.fk_user_no == sessionScope.loginuser.user_no && wsvo.fk_prod_no == prdvo.prod_no}"> <%-- wish 테이블 로그인 번호와 상품 번호를 세션 로그인 번호와 페이지에 뿌려진 상품번호와 대조한다. --%>
+	                            			<span><i onclick="wishToggle(this, ${prdvo.prod_no}, ${sessionScope.loginuser.user_no})" class="fa-solid fa-heart fa-lg heart mt-3"></i></span>
+	                            			<c:set var="heartCheck" value="true"/> <%-- 하트 체크 여부 체크로 변경 --%>
+		           						</c:if>
+           							</c:forEach>
+           						</c:if>
+           						
+           						<c:if test="${!heartCheck}"> <%-- 하트 체크된 적 없으면 흰 하트로 표시 한다. --%>
+					                <span><i onclick="wishToggle(this, ${prdvo.prod_no}, ${sessionScope.loginuser.user_no})" class="fa-regular fa-heart fa-lg heart mt-3"></i></span>
+					            </c:if>
+					            	
                             </div>
                         </div>
                         <span style="display: block;" class="mt-3 price">

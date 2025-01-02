@@ -28,7 +28,7 @@
 				
 				
 				
-		// 등록하기 클릭
+		// 상품등록 클릭
 		$("div#prdRegister").click(function(){
 			location.href =`${pageContext.request.contextPath}/admin/adminProductRegister.ddg`;
 		});		
@@ -62,7 +62,7 @@
 		frm.prod_no.value = prod_no; // 상품 번호 값 데이터 가지고 URL 이동
 		
 		frm.action = "adminProductOneDetail.ddg";
-		frm.method = "post"; 
+		frm.method = "get"; 
 		frm.submit();
 		
 	}//  end of function goDetail(prod_no)
@@ -70,9 +70,9 @@
 	
 	
 	// 일괄 삭제 버튼을 클릭하면 삭제 처리를 해준다.
-	function goDelete(prod_no) {	
+	function goUpdateStatus(prod_no) {	
 		
-		alert("삭제버튼 클릭했습니당")
+		alert("판매여부 업데이트 클릭~~!")
 /* 		const frm = document.productOneDetail_frm
 		frm.prod_no.value = prod_no; // 상품 번호 값 데이터 가지고 URL 이동
 		
@@ -108,9 +108,10 @@
 	<div id="table">
 		<table class="table table-borderless">
 			<colgroup> <%-- 테이블 간 간격 설정 --%>
-	    	<col style="width: 4%;">
-	    	<col style="width: 4%;">
-	    	<col style="width: 50%;">
+	    	<col style="width: 5%;">
+	    	<col style="width: 5%;">
+	    	<col style="width: 40%;">
+	    	<col style="width: 10%;">
 	    	<col style="width: 10%;">
 	    	<col style="width: 10%;">
 	    	<colgroup>
@@ -119,6 +120,7 @@
 					<th scope="col"><input type="checkbox" id="checkAll"></input></th>
 					<th scope="col">번호</th>
 					<th scope="col">상품명</th>
+					<th scope="col">판매여부</th>
 					<th scope="col">재고</th>
 					<th scope="col">등록일자</th>					
 				</tr>
@@ -130,10 +132,16 @@
 						
 							<td><input type="checkbox" id="checkEach"></td>
 							
-							<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
-							<%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
+							<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
 							<td>${(requestScope.totalProductCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
 							<td>${prdvo.prod_name}</td>
+							<td>
+							<c:choose>
+	      						<c:when test="${prdvo.prod_status == 0}">미판매</c:when>
+	      						<c:when test="${prdvo.prod_inventory == 0}">품절</c:when>
+	      						<c:otherwise>판매중</c:otherwise>
+      						</c:choose>
+      						</td>
 							<td>${prdvo.prod_inventory}</td>
 							<td>${prdvo.prod_regidate}</td>
 						</tr>
@@ -156,8 +164,8 @@
 			상품등록
 		</div>
 	
-		<div id="totalDelete" onclick="goDelete(${prdvo.prod_no})">
-			일괄삭제
+		<div id="totalDelete" onclick="goUpdateStatus(${prdvo.prod_no})">
+			판매여부 관리
 		</div>
 	</div>	
 	
