@@ -53,8 +53,9 @@ public class DeliveryStatusController extends AbstractController {
 		}
 		
 		
-		String searchType = request.getParameter("searchType");					// 검색유형
+		String searchType = request.getParameter("searchType");					// 주문상태필터
 		String searchWord = request.getParameter("searchWord");					// 검색어
+		String searchShip = request.getParameter("searchShip");					// 배송상태필터
 		String currentShowPageNo = request.getParameter("currentShowPageNo");	// 페이지 번호
 		String fromDate = request.getParameter("fromDate");						// 시작일
 		String toDate = request.getParameter("toDate");							// 마지막일
@@ -66,12 +67,19 @@ public class DeliveryStatusController extends AbstractController {
 //		System.out.println("확인용 toDate => "+ toDate);
 		
 		
+		// ship_status 필터조건
+		if (searchShip == null || 
+		   (!"1".equals(searchShip)   &&
+			!"2".equals(searchShip) && 
+			!"3".equals(searchShip))) {
+			searchShip = "";
+		}
 		
 		
 		// order_status 필터조건
 		if (searchType == null || 
 		   (!"1".equals(searchType)   &&
-			!"3".equals(searchType) && 
+			!"2".equals(searchType) && 
 			!"5".equals(searchType))) {
 			searchType = "";
 		}
@@ -83,7 +91,9 @@ public class DeliveryStatusController extends AbstractController {
 
 		// 현재 페이지
 		if (currentShowPageNo == null) {
+//			System.out.println("currentShowPageNocurrentShowPageNo => 왜안바뀜?");
 			currentShowPageNo = "1";
+//			System.out.println("currentShowPageNocurrentShowPageNo => ?"+ currentShowPageNo);
 		}
 		
 		SimpleDateFormat sdfmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -99,11 +109,7 @@ public class DeliveryStatusController extends AbstractController {
 			toDate = sdfmt.format(cal.getTime());
 		}
 		
-//		System.out.println("!!확인용 searchType => "+ searchType);
-//		System.out.println("!!확인용 searchWord => "+ searchWord);
-//		System.out.println("!!확인용 currentShowPageNo => "+ currentShowPageNo);
-//		System.out.println("!!확인용 fromDate => "+ fromDate);
-//		System.out.println("!!확인용 toDate => "+ toDate);
+		
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchType", searchType);
@@ -111,6 +117,13 @@ public class DeliveryStatusController extends AbstractController {
 		paraMap.put("currentShowPageNo", currentShowPageNo);
 		paraMap.put("fromDate", fromDate);
 		paraMap.put("toDate", toDate);
+		paraMap.put("searchShip", searchShip);
+
+//		System.out.println("!!확인용 searchType => "+ searchType);
+//		System.out.println("!!확인용 searchWord => "+ searchWord);
+//		System.out.println("!!확인용 currentShowPageNo => "+ currentShowPageNo);
+//		System.out.println("!!확인용 fromDate => "+ fromDate);
+//		System.out.println("!!확인용 toDate => "+ toDate);
 
 		
 		int totalPage = odao.getTotalPage(paraMap);
@@ -182,9 +195,12 @@ public class DeliveryStatusController extends AbstractController {
 			List<Map<String, String>> orderList = odao.getAdminOrderList(paraMap);
 			// === 데이터 목록 가져오기 끝 === //
 			
-			System.out.println("확인용 orderList.size => "+ orderList.size());
+//			System.out.println("확인용 orderList.size => "+ orderList.size());
 			
 			request.setAttribute("adminpage_val", "admin_delivery_status");
+			request.setAttribute("searchType", searchType);
+			request.setAttribute("searchWord", searchWord);
+			request.setAttribute("searchShip", searchShip);
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("pageBar", pageBar);
 			

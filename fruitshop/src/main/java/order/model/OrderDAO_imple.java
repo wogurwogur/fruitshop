@@ -756,6 +756,7 @@ public class OrderDAO_imple implements OrderDAO {
 		return orderDetailList;
 	}// end of public List<Map<String, String>> getOrderDetail(Map<String, String> paraMap) throws SQLException  ---------------- 
 
+	
 	// 해당 주문번호의 상세내역을 가져온다.
 	@Override
 	public Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException {
@@ -808,6 +809,7 @@ public class OrderDAO_imple implements OrderDAO {
 		return orderDetail;
 	}// end of public Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException ---------------------------
 
+	
 	// 해당 주문건이 있는지 확인한다.
 	@Override
 	public boolean isExistOrder(String order_no) throws SQLException {
@@ -837,7 +839,7 @@ public class OrderDAO_imple implements OrderDAO {
 	
 	// 주문의 주문상태를 변경한다.
 	@Override
-	public int updateOrder(Map<String, String> paraMap) throws SQLException {
+	public int orderCommit(Map<String, String> paraMap) throws SQLException {
 		
 		int result = 0;
 		
@@ -870,48 +872,107 @@ public class OrderDAO_imple implements OrderDAO {
 			conn = ds.getConnection();
 			
 			String sql 	= " SELECT CEIL(COUNT(*)/10) "		// 페이지 당 몇 개를 보여줄 지 들어올 위치홀더
-						+ "  FROM tbl_order"
+						+ "   FROM tbl_order o JOIN tbl_orderdetail od "
+						+ "	    ON o.order_no = od.fk_order_no "
 						+ "	 WHERE to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
 			
 			String orde_status = paraMap.get("searchType");
 			String order_no    = paraMap.get("searchWord");
+			String ship_status = paraMap.get("searchShip");
 			
-			// 필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
+			// 주문필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
 			
-			// 필터만 골랐을 경우
-			if (!orde_status.isBlank() && order_no.isBlank()) {
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_status = ? ";
 			}
 			
 			// 주문번호만 검색했을 경우
-			if (orde_status.isBlank() && !order_no.isBlank()) {
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_no LIKE '%'||?||'%' ";
 			}
 			
-			// 필터도 선택하고 주문번호도 검색했을 경우
-			if (!orde_status.isBlank() && !order_no.isBlank()) {
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND ship_status = ? ";
+			}
+			
+			
+			// 두가지 필터 시작
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
 			}
+			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND ship_status = ? ";
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
 		
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("fromDate"));
 			pstmt.setString(2, paraMap.get("toDate"));
 			
-			// 필터만 골랐을 경우
-			if (!orde_status.isBlank() && order_no.isBlank()) {
+			// 한가지 시작
+			
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, orde_status);
 			}
 			
 			// 주문번호만 검색했을 경우
-			if (orde_status.isBlank() && !order_no.isBlank()) {
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, order_no);
 			}
 			
-			// 필터도 선택하고 주문번호도 검색했을 경우
-			if (!orde_status.isBlank() && !order_no.isBlank()) {
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, ship_status);
+			}
+			
+			
+			// 두가지 선택
+			
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, order_no);
 				pstmt.setString(4, orde_status);
 			}
+			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, orde_status);
+				pstmt.setString(4, ship_status);
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, order_no);
+				pstmt.setString(4, ship_status);
+			}
+			
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, orde_status);
+				pstmt.setString(4, order_no);
+				pstmt.setString(5, ship_status);
+			}
+			
+			
 			
 			rs = pstmt.executeQuery();
 			
@@ -960,27 +1021,54 @@ public class OrderDAO_imple implements OrderDAO {
 	        
 	        String orde_status = paraMap.get("searchType");
 			String order_no    = paraMap.get("searchWord");
+			String ship_status = paraMap.get("searchShip");
 			
 			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));	// 조회하고자 하는 페이지 번호
 			int sizePerPage = 10;				// 페이지당 보여줄 행의 개수
 			
-			// 필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
+			// 주문필터만 골랐을 경우, 배송필터만 골랐을 경우, 주문번호만 검색했을 경우, 둘 다 입력한 경우
 			
-			// 필터만 골랐을 경우
-			if (!orde_status.isBlank() && order_no.isBlank()) {
+			
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_status = ? ";
 			}
 			
 			// 주문번호만 검색했을 경우
-			if (orde_status.isBlank() && !order_no.isBlank()) {
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_no LIKE '%'||?||'%' ";
 			}
 			
-			// 필터도 선택하고 주문번호도 검색했을 경우
-			if (!orde_status.isBlank() && !order_no.isBlank()) {
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND ship_status = ? ";
+			}
+			
+			
+			// 두가지 필터 시작
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
 			}
+			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND ship_status = ? ";
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
 	        
+			
+			
 	        sql    	   += "			) A JOIN tbl_products p "
 		        		+ "			ON A.fk_prod_no = p.prod_no "
 		        		+ "		  JOIN tbl_member m "
@@ -996,33 +1084,75 @@ public class OrderDAO_imple implements OrderDAO {
 			pstmt.setString(1, paraMap.get("fromDate"));
 			pstmt.setString(2, paraMap.get("toDate"));
 			
-			// 필터만 골랐을 경우
-			if (!orde_status.isBlank() && order_no.isBlank()) {
+			
+			// 한가지 시작
+			
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, orde_status);
 				pstmt.setInt(4, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
 				pstmt.setInt(5, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
 			}
 			
 			// 주문번호만 검색했을 경우
-			if (orde_status.isBlank() && !order_no.isBlank()) {
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, order_no);
 				pstmt.setInt(4, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
 				pstmt.setInt(5, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
 			}
 			
-			// 필터도 선택하고 주문번호도 검색했을 경우
-			if (!orde_status.isBlank() && !order_no.isBlank()) {
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, ship_status);
+				pstmt.setInt(4, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+
+			
+			// 두가지 선택
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setString(3, order_no);
 				pstmt.setString(4, orde_status);
 				pstmt.setInt(5, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
 				pstmt.setInt(6, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
 			}
 			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, orde_status);
+				pstmt.setString(4, ship_status);
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(6, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, order_no);
+				pstmt.setString(4, ship_status);
+				pstmt.setInt(5, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(6, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호
+			}
+			
+			
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				pstmt.setString(3, orde_status);
+				pstmt.setString(4, order_no);
+				pstmt.setString(5, ship_status);
+				pstmt.setInt(6, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
+				pstmt.setInt(7, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
+			}
+			
+			
 			// 모두 없을 경우
-			if (orde_status.isBlank() && order_no.isBlank()) {
+			if (orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
 				pstmt.setInt(3, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
 				pstmt.setInt(4, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호	
 			}
+			
 			
 	        rs = pstmt.executeQuery();
 	        
@@ -1059,6 +1189,85 @@ public class OrderDAO_imple implements OrderDAO {
 		
 		return adminOrderList;
 	}// end of public List<Map<String, String>> getAdminOrderList(Map<String, String> paraMap) throws SQLException ---------------------------- 
+
+
+	// 관리자가 주문상태를 변경한다.
+	@Override
+	public int updateOrderStatus(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			conn.setAutoCommit(false);      // 수동 커밋
+			
+			String sql 	= " UPDATE tbl_order SET order_status = ? "
+						+ "  WHERE order_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("order_status")));
+			pstmt.setString(2, paraMap.get("order_no"));
+			
+			int n = pstmt.executeUpdate();
+			
+			if (n == 1) {
+				sql 	= " UPDATE tbl_orderdetail SET ship_status = ? "
+						+ "  WHERE fk_order_no = ? AND fk_prod_no = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, Integer.parseInt(paraMap.get("ship_status")));
+				pstmt.setString(2, paraMap.get("order_no"));
+				pstmt.setInt(3, Integer.parseInt(paraMap.get("prod_no")));
+				
+				result = pstmt.executeUpdate();
+			}
+			
+			if (result == 1) {
+				conn.commit();
+			}
+			
+		} catch (Exception e) {
+			try {
+				 conn.rollback();
+			 } catch (SQLException ex) {
+				 throw new RuntimeException(ex);
+			 }
+			 e.printStackTrace();
+		}
+		finally {
+			conn.setAutoCommit(true);	// Auto Commit 으로 복원시킨다.
+			close();
+		}
+		
+		return result;
+	}// end of public int updateOrderStatus(Map<String, String> paraMap) throws SQLException ------------------------- 
+
+	
+	// 주문교환요청으로 바꾼다.
+	@Override
+	public int orderCancel(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql 	= " UPDATE tbl_order SET order_status = 2 "
+						+ "  WHERE order_no = ? AND fk_user_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, paraMap.get("order_no"));
+	        pstmt.setInt(2, Integer.parseInt(paraMap.get("user_no")));
+		
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();
+		}
+		
+		return result;
+	}// end of public int orderCancel(Map<String, String> paraMap) throws SQLException ---------------------
 
 	
 	

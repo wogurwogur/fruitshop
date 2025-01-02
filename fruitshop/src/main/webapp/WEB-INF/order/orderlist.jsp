@@ -106,7 +106,7 @@
 			주문내역조회(0)
 		</div>
 		<div class="order_title">
-			취소/반품/교환 내역(0)
+			교환/취소 내역(0)
 		</div>
 		<div class="order_title">
 			과거주문내역(0)
@@ -151,7 +151,30 @@
 	
 	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
-	<div style="margin-left: 1%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;" class="h6 mt-5">주문 상품 정보</div>
+	<div style="margin-left: 1%;" class="mt-5">
+		
+		<span id="bodyTitle">주문 상품 정보</span>
+		
+		<select style="float: right; height: 30px;" name="searchShip">
+				<option value="">배송필터</option>			
+				<option value="1">배송준비중</option>			
+				<option value="2">배송중</option>			
+				<option value="3">배송완료</option>
+			</select>
+			<select style="margin-right: 0.5%; float: right; height: 30px;" name="searchType">
+				<option value="">주문필터</option>			
+				<option value="1">주문완료</option>			
+				<option value="2">교환/반품</option>			
+				<option value="5">구매확정</option>
+			</select>
+			
+			
+			<span style="margin: 0 1% 0 0.5%; float: right;" id="goSearch" class="btn btn-secondary btn-sm">검색</span>
+			<input style=" height: 30px; float: right;" id="searchWord" type="text" name="searchWord" placeholder="주문번호검색" />
+			
+			<input type="hidden" name="fromDate" />
+			<input type="hidden" name="toDate" />
+	</div>
 	<hr style="border: solid 1px black;">	
 	<div>
 		<table id="orderList" class="table table-hover text-center">

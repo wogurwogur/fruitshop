@@ -13,18 +13,15 @@ import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import order.model.*;
 
-public class OrderCommit extends AbstractController {
+public class OrderCancel extends AbstractController {
 
 	private OrderDAO odao = new OrderDAO_imple();
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
 		
 		HttpSession session = request.getSession();
-		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-		
 		
 		if (loginuser == null) {
 //			로그인 상태가 아닌 경우
@@ -54,9 +51,7 @@ public class OrderCommit extends AbstractController {
 			return;
 		}
 		
-		
-		
-		// 주문확정 버튼을 클릭했을 경우
+		// 교환신청 버튼을 클릭했을 경우
 		String order_no = request.getParameter("order_no");
 		String user_no = request.getParameter("user_no");
 		
@@ -116,7 +111,7 @@ public class OrderCommit extends AbstractController {
 			paraMap.put("order_no", order_no);
 			paraMap.put("user_no", user_no);
 			
-			int n = odao.orderCommit(paraMap);
+			int n = odao.orderCancel(paraMap);
 			
 			if (n == 1) {
 				JSONObject jsonObj = new JSONObject();
@@ -134,8 +129,6 @@ public class OrderCommit extends AbstractController {
 			e.printStackTrace();
 		}
 		
-		
-		
-	}// end of execute() ---------------------------------
+	}// end of execute() ------------------------
 
 }

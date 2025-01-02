@@ -49,32 +49,62 @@ $(document).ready(()=> {
 	
 	$("button#orderCommit").click(e => {
 		// 구매확정 시 주문 테이블의 주문 상태값을 변경한다.
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath}/order/orderCommit.ddg",
-			data: {"order_no":${requestScope.orderDetail.order_no}, "user_no": ${requestScope.orderDetail.user_no}},
-			type: "GET",
-			dataType: "JSON",
-			async: true,
-			success: function(json) {
-				alert("구매확정을 완료했습니다.");
-				
-				if (json.isComplete) {
-					location.href = `orderList.ddg`;				
-				}
-				
-			},
-			error: function(request, status, error){
-           		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-           		// alert("경로를 어디로 가야함???");
-           	}
-		});
-		
-		
+		$("div#commitConfirm").modal();
 	});// end of $("button#orderCommit").click(e => {}) ----------------
+	
+	$("button#orderCancel").click(() => {
+		$("div#cancelConfirm").modal();
+	});// end of $("button#orderCancel").click(() => {}) -----------------
 	
 });// end of $(document).ready(()=> {}) --------------------------- 
 
+
+// 구매확정하는 함수
+function goCommit() {
+	$.ajax({
+		url: "${pageContext.request.contextPath}/order/orderCommit.ddg",
+		data: {"order_no": "${requestScope.orderDetail.order_no}", "user_no": "${requestScope.orderDetail.user_no}"},
+		type: "POST",
+		dataType: "JSON",
+		async: true,
+		success: function(json) {
+			alert("구매확정을 완료했습니다.");
+			
+			if (json.isComplete) {
+				location.href = `orderList.ddg`;				
+			}
+			
+		},
+		error: function(request, status, error){
+       		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+       		// alert("경로를 어디로 가야함???");
+       	}
+	});
+}// end of function goCommit() -------------------
+
+
+// 교환/반품 신청하는 함수
+function goCancel() {
+	$.ajax({
+		url: "${pageContext.request.contextPath}/order/orderCancel.ddg",
+		data: {"order_no": "${requestScope.orderDetail.order_no}", "user_no": "${requestScope.orderDetail.user_no}"},
+		type: "POST",
+		dataType: "JSON",
+		async: true,
+		success: function(json) {
+			alert("교환/반품 신청을 완료했습니다.");
+			
+			if (json.isComplete) {
+				location.href = `orderList.ddg`;				
+			}
+			
+		},
+		error: function(request, status, error){
+       		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+       		// alert("경로를 어디로 가야함???");
+       	}
+	});
+}// end of function goCommit() -------------------
 
 </script>
 
@@ -183,7 +213,7 @@ $(document).ready(()=> {
             <c:choose>
 	   	        <c:when test="${requestScope.orderDetail.order_status != 5}">
 	    	        <div style="width: 50%; margin: 5% auto 2% auto; display: flex;">
-			            <button type="button" class="btn btn-light requestbtn">교환/반품</button>
+			            <button id="orderCancel" type="button" class="btn btn-light requestbtn">교환/반품</button>
 			            <button id="orderCommit" style="margin-left: auto;" type="button" class="btn btn-light requestbtn">구매확정</button>
 					</div>
 				</c:when>
@@ -194,6 +224,68 @@ $(document).ready(()=> {
 			
 	</div>
 	<%-- 주문정보 확인 및 결제 끝 --%>
+	
+	<%-- 확인여부 모달 시작 --%>
+	<div class="modal fade" id="commitConfirm"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>  
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+	  		<div class="modal-content">
+	  
+	    		<!-- Modal header -->
+				<div class="modal-header">
+	  				<h4 class="modal-title text-center">구매확정</h4>
+	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
+				</div>
+	
+				<!-- Modal body -->
+				<div class="modal-body">
+	 				<div class="text-center">
+	 					구매확정을 하시겠습니까?
+	  				</div>
+				</div>
+	
+				<!-- Modal footer -->
+	      		<div class="modal-footer text-center">
+	      			<div style="width:100%; margin: 0 auto;">
+		        		<button style="margin-right: 10%;" type="button" class="btn btn-success modalFooter" onclick="goCommit()">확인</button>
+		        		<button type="button" class="btn btn-danger modalFooter" data-dismiss="modal">취소</button>
+	        		</div>
+	      		</div>
+	    	</div>
+		</div>
+	</div>
+	<%-- 확인여부 모달 시작 --%>
+	
+	<%-- 교환/반품신청 모달 시작 --%>
+	<div class="modal fade" id="cancelConfirm"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>  
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+	  		<div class="modal-content">
+	  
+	    		<!-- Modal header -->
+				<div class="modal-header">
+	  				<h4 class="modal-title text-center">교환 / 반품 신청</h4>
+	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
+				</div>
+	
+				<!-- Modal body -->
+				<div class="modal-body">
+	 				<div class="text-center">
+	 					교환 / 반품 을 신청하시겠습니까?
+	  				</div>
+				</div>
+	
+				<!-- Modal footer -->
+	      		<div class="modal-footer text-center">
+	      			<div style="width:100%; margin: 0 auto;">
+		        		<button style="margin-right: 10%;" type="button" class="btn btn-success modalFooter" onclick="goCancel()">확인</button>
+		        		<button type="button" class="btn btn-danger modalFooter" data-dismiss="modal">취소</button>
+	        		</div>
+	      		</div>
+	    	</div>
+		</div>
+	</div>
+	<%-- 교환/반품신청 모달 시작 --%>
+	
+	
 </div>
 
 

@@ -81,6 +81,8 @@ public class OrderListController extends AbstractController {
 		try {
 			String json = odao.getOrderList(paraMap);
 			
+			//int totalOrderCount = odao.getTotalOrderCount(paraMap);
+			
 	//		System.out.println("확인용 json :"+ json);
 			
 			/*

@@ -2,7 +2,7 @@
 
 
 div#container {
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
 }
 
@@ -86,6 +86,13 @@ div#filter_desc li {
 	font-size: 5px;
 }
 /* 기간설정구역 끝 */
+
+span#bodyTitle {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+}
+
 
 
 

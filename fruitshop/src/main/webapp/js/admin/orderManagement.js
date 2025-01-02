@@ -114,6 +114,7 @@ $(document).ready(()=> {
 		const detailAddress  = $(e.target).parent().find(".detailAddress").val();	// 상세주소
 		const extraAddress 	 = $(e.target).parent().find(".extraAddress").val();	// 참고사항
 		const order_receiver = $(e.target).parent().find(".order_receiver").val();	// 수령인
+		const prod_no = $(e.target).parent().find(".prod_no").val();				// 상품번호
 		
 		
 		console.log("주문번호: ", order_no);
@@ -134,6 +135,7 @@ $(document).ready(()=> {
 		$("input#detailAddress").val(detailAddress);
 		$("input#extraAddress").val(extraAddress);
 		$("input#order_receiver").val(order_receiver);
+		$("input#prod_no").val(prod_no);
 		$("select#modal_ship_status").val(ship_status);
 		$("select#modal_order_status").val(order_status);
 		
@@ -145,7 +147,9 @@ $(document).ready(()=> {
 	
 	
 	
-	
+	$(document).on("click", "button#confirm", function() {
+		$("div#updateConfirm").modal();
+	});// end of $(document).on("click", "button#confirm", function() {}) ---------------------
 	
 	
 }); // end of $(document).ready(()=> {}) ---------------------------
@@ -262,4 +266,29 @@ function getOrderCount() {
 				}
 		});
 	}
-}// end of function getOrderCount() --------------
+}// end of function getOrderCount() -------------------
+
+
+// 주문의 주문, 배송상태를 수정하는 함수
+function orderUpdate(ctxPath) {
+	
+	const order_status = $("select#modal_order_status").val();
+	const ship_status = $("select#modal_ship_status").val();
+	
+	if (order_status == "") {
+		alert("주문 상태를 선택하세요!");
+		return;
+	}
+	if (ship_status == "") {
+		alert("배송 상태를 선택하세요!");
+		return;
+	}
+	
+	const frm = document.orderInfoUpdate;
+	
+	frm.action = ctxPath+"/order/updateOrderStatus.ddg";
+	frm.method = "POST";
+	
+	frm.submit();
+	
+}// end of function orderUpdate() -----------------------
