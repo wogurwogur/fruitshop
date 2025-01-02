@@ -101,6 +101,7 @@ $(document).ready(()=> {
 						</tr>`);
 		$("input#countOrder").val("0");
 		$("table#orderList > tbody").empty();
+		getOrderCount();
 		getOrderList("1");
 	});// end of $("button.btn-secondary").on("click", () => {}) -----------------------
 	// === 필터 버튼 조회 시 이벤트 처리 끝 === //
@@ -132,11 +133,84 @@ $(document).ready(()=> {
 	});// end of $(document).on("click", "tr.orderItem", e => {}) ---------------------
 
 
+	// 주문번호 검색에 엔터 입력 시
+	$(document).on("keydown", "input#searchWord", function(e) {
+		if (e.keyCode == 13) {
+			$("table#orderList > tfoot").html(`		
+							<tr>
+								<td colspan="3"></td>
+								<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
+								<td colspan="3"></td>
+							</tr>`);
+			$("input#countOrder").val("0");
+			$("table#orderList > tbody").empty();
+			getOrderCount();
+			setTimeout(() => {
+					getOrderList("1");
+			}, 100);
+		}
+	});// end of $("input[name='searchWord']").on("keyup", e => {}) ----------------- 
+	
+	// 검색버튼 클릭 시
+	$("span#goSearch").click(() => {
+		$("table#orderList > tfoot").html(`		
+						<tr>
+							<td colspan="3"></td>
+							<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
+							<td colspan="3"></td>
+						</tr>`);
+		$("input#countOrder").val("0");
+		$("table#orderList > tbody").empty();
+		getOrderCount();
+		
+		setTimeout(() => {
+			getOrderList("1");
+		}, 100);
+		
+	});// end of $("button#goSearch").click(() => {}) ----------------
+	
+	
+	// 배송상태 변경 시 이벤트 
+	$("select[name='searchShip']").on("change", function() {
+		$("table#orderList > tfoot").html(`		
+						<tr>
+							<td colspan="3"></td>
+							<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
+							<td colspan="3"></td>
+						</tr>`);
+		$("input#countOrder").val("0");
+		$("table#orderList > tbody").empty();
+		getOrderCount();
+		setTimeout(() => {
+			getOrderList("1");
+		}, 100);
+		
+	});// end of $("select[name='searchShip']").on("change", function() {}) --------------~
+	
+	
+	// 주문상태 변경 시 이벤트 
+	$("select[name='searchType']").on("change", function() {
+		$("table#orderList > tfoot").html(`		
+						<tr>
+							<td colspan="3"></td>
+							<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
+							<td colspan="3"></td>
+						</tr>`);
+		$("input#countOrder").val("0");
+		$("table#orderList > tbody").empty();
+		getOrderCount();
+		setTimeout(() => {
+			getOrderList("1");
+		}, 100);
+		
+	});// end of $("select[name='sizePerPage']").on("change", function() {}) --------------------
+	
 }); // end of $(document).ready(()=> {}) ---------------------------
 
 
 
 // Function Declaration
+
 function getDate(index) {
 	// == 기간 별 버튼에 따라 분기 하여 해당하는 날짜를 리턴해주는 함수. == //
 	
@@ -149,7 +223,7 @@ function getDate(index) {
     // console.log(now.toLocaleString());
     // 11/11/2024, 3:09:05 PM
 	
-    const year  = now.getFullYear();     // 현재연도(2024)
+    let year  	= now.getFullYear();     // 현재연도(2024)
     let month   = now.getMonth() + 1;    // 월은 0부터 시작하므로 +1 해야 현재월(11) 이 나옴
     let date    = now.getDate();         // 현재일(11)
     
@@ -158,22 +232,41 @@ function getDate(index) {
 			break;
 			
 		case 1:		// 일주일 버튼
-			date = date - 6;
+			now.setDate(now.getDate() -6)
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 2:		// 1개월 버튼
-			month = month - 1;
-			date = date + 1;
+			now.setMonth(now.getMonth()-1);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 3:		// 3개월 버튼
-			month = month - 3;
-			date = date + 1;
+			now.setMonth(now.getMonth()-3);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 4:		// 6개월 버튼
-			month = month - 6;
-			date = date + 1;
+			now.setMonth(now.getMonth()-6);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
 			break;
 	}// end of switch -------------------
 	
@@ -185,6 +278,9 @@ function getDate(index) {
 
 	return `${year}-${month}-${date}`;
 }// end of function getDate(index) ----------------------
+
+
+
 
 
 // 현재 연월일 가져오는 함수
@@ -220,13 +316,17 @@ function getToday() {
 function getOrderList(start) {
 	// const fromDate = $("input#fromDate").val();
 	// const toDate = $("input#toDate").val();
-	const fromDate = document.querySelector("input#fromDate").value;
-	const toDate   = document.querySelector("input#toDate").value;
-	const ctxPath  = document.querySelector("input#contextPath").value;
+	const fromDate    = document.querySelector("input#fromDate").value;
+	const toDate      = document.querySelector("input#toDate").value;
+	const ctxPath     = document.querySelector("input#contextPath").value;
+	const searchWord  = document.querySelector("input#searchWord").value;
+	const searchShip  = document.querySelector("select[name='searchShip']").value;
+	const searchType  = document.querySelector("select[name='searchType']").value;
+	
 	// alert("시작일:"+ fromDate +"\n마지막일: "+ toDate);
 	const today = getToday();
 	
-	console.log("날짜 빼기?: ", toDate - fromDate);
+	// console.log("날짜 빼기?: ", toDate - fromDate);
 	
 	if (fromDate > toDate) {
 		alert("시작일은 마지막일보다 이후여야 합니다.");
@@ -245,7 +345,7 @@ function getOrderList(start) {
 	$.ajax({
 		//url: "<%= request.getContextPath()%>/order/orderList.ddg",
 		url: ctxPath+"/order/orderList.ddg",
-		data: {"fromDate": fromDate, "toDate": toDate, "len": len, "start": start},
+		data: {"fromDate": fromDate, "toDate": toDate, "len": len, "start": start, "searchShip": searchShip, "searchType": searchType, "searchWord": searchWord},
 		type: "GET",
 		dataType: "JSON",
 		success: function(json) {
@@ -306,8 +406,8 @@ function getOrderList(start) {
 							<td><img src='${ctxPath}/images/product/thumnail/${item.prod_thumnail}' style="width: 80px; height: 50px;" /></td>
 							<td>${item.prod_name}</td>
 							<td>${item.order_tprice.toLocaleString('en')} 원</td>
-							<td>${order_status}(${ship_status})</td>
-							<td></td>
+							<td>${order_status}</td>
+							<td>${ship_status}</td>
 						</tr>
 					`;
 				});// end of $.each(json, function(index, item) {}) ------------------- 
@@ -325,9 +425,9 @@ function getOrderList(start) {
 				const totalOrderCount = Number($("input#totalOrderCount").val());
 				const countOrder      = Number($("input#countOrder").val());
 
-				// console.log("totalOrderCount => ", totalOrderCount);
-				// console.log("countOrder => ", countOrder);
-				// console.log("json.length => ", json.length);
+				console.log("totalOrderCount => ", totalOrderCount);
+				console.log("countOrder => ", countOrder);
+				console.log("json.length => ", json.length);
 
 				if (totalOrderCount == countOrder) {
 					html = `
@@ -353,6 +453,9 @@ function getOrderCount() {
 	const fromDate = document.querySelector("input#fromDate").value;
 	const toDate   = document.querySelector("input#toDate").value;
 	const ctxPath  = document.querySelector("input#contextPath").value;
+	const searchWord  = document.querySelector("input#searchWord").value;
+	const searchShip  = document.querySelector("select[name='searchShip']").value;
+	const searchType  = document.querySelector("select[name='searchType']").value;
 	// alert("시작일:"+ fromDate +"\n마지막일: "+ toDate);
 	
 	if (fromDate > toDate) {
@@ -365,7 +468,7 @@ function getOrderCount() {
 		$.ajax({
 			//url: "<%= request.getContextPath()%>/order/orderList.ddg",
 			url: ctxPath+"/order/getOrderCount.ddg",
-			data: {"fromDate": fromDate, "toDate": toDate},
+			data: {"fromDate": fromDate, "toDate": toDate, "searchShip": searchShip, "searchType": searchType, "searchWord": searchWord},
 			type: "GET",
 			dataType: "JSON",
 			success: function(json) {

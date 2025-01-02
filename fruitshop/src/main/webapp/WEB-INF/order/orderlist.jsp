@@ -14,82 +14,17 @@
 <script type="text/javascript">
 	$(document).ready(() => {
 		
+		$("select[name='searchType']").val("${requestScope.searchType}");
+		$("select[name='searchShip']").val("${requestScope.searchShip}");
+		$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+		
 		$("div.order_title").click(e => {
 			// alert("야야호"+ $(e.target).index());
 			$("div.order_title").removeClass("active");
 			$(e.target).addClass("active");
 		});// end of $("div.order_title").click(e => {}) --------------
+	
 		
-		/*
-		// === 필터 버튼 조회 시 이벤트 처리 시작 === //
-		$("button.btn-secondary").on("click", () => {
-			// const fromDate = $("input#fromDate").val();
-			// const toDate = $("input#toDate").val();
-			const fromDate = document.querySelector("input#fromDate").value;
-			const toDate = document.querySelector("input#toDate").value;
-			
-			// alert("시작일:"+ fromDate +"\n마지막일: "+ toDate);
-			
-			if (fromDate > toDate) {
-				alert("시작일은 마지막일보다 이후여야 합니다.");
-				return;
-			}
-			else {
-				// DB 에서 조회 해와야 함 (ajax 통신 사용할 것)
-				
-				$.ajax({
-					url: "<%= request.getContextPath()%>/order/orderList.ddg",
-					data: {"fromDate": fromDate, "toDate": toDate},
-					type: "GET",
-					dataType: "JSON",
-					success: function(json) {
-						console.log("결과확인용: ",json);
-						
-						let html = ``;
-						
-						if (json.length == 0) {
-							html += `
-								<tr>
-									<td colspan="7">주문하신 상품이 존재하지 않습니다.</td>
-								</tr>
-							`;	
-							$("table#orderList > tbody").html(html);
-						}
-						else {
-							
-							$.each(json, function(index, item) {
-								console.log("item => ", item);
-								html += `
-									<tr>
-										<td>${item.order_no}</td>
-										<td>${item.order_date}</td>
-										<td>"${pageContext.request.contextPath}/images/product/thumnail/${item.prod_thumnail}"</td>
-										<td>${item.prod_name}</td>
-										<td>${item.order_tprice}</td>
-										<td>${item.order_status}</td>
-										<td></td>
-									</tr>
-								`;
-							});// end of $.each(json, function(index, item) {}) -------------------							
-							$("table#orderList > tbody").append(html);
-						}
-						
-						
-						
-					},
-					error: function(request, status, error){
-	               		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	               		// alert("경로를 어디로 가야함???");
-	               	}
-				});
-			}
-		});// end of $("button.btn-secondary").on("click", () => {}) -----------------------
-		// === 필터 버튼 조회 시 이벤트 처리 끝 === //
-		
-		setTimeout(() => {
-			$("button.btn-secondary").trigger("click");	
-		}, 300);
-		*/
 	});// end of $(document).ready(() => {}) -------------------------
 	
 </script>
@@ -102,17 +37,11 @@
 	<%-- 주문내역조회 메뉴 바 시작 --%>
 	<div id="order_filter">
 	
+
 		<div class="order_title active">
-			주문내역조회(0)
+			주문내역조회
 		</div>
-		<div class="order_title">
-			교환/취소 내역(0)
-		</div>
-		<div class="order_title">
-			과거주문내역(0)
-		</div>
-		<div id="order_title_nbsp">
-		</div>
+
 	</div>
 	<%-- 주문내역조회 메뉴 바 끝 --%>
 	
@@ -185,8 +114,8 @@
 					<th>이미지</th>
 					<th style="padding:1%; width: 30%">상품명</th>
 					<th>주문금액</th>
-					<th>주문처리상태</th>
-					<th>취소/교환/반품</th>
+					<th>주문상태</th>
+					<th>배송상태</th>
 				</tr>
 			</thead>
 			<tbody>

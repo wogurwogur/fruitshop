@@ -52,11 +52,38 @@ public class OrderListController extends AbstractController {
 		String toDate 	= request.getParameter("toDate");
 		String start 	= request.getParameter("start");
 		String len   	= request.getParameter("len");
-		
+		String searchType = request.getParameter("searchType");					// 주문상태필터
+		String searchWord = request.getParameter("searchWord");					// 검색어
+		String searchShip = request.getParameter("searchShip");					// 배송상태필터
 //		System.out.println("확인용 start: "+ start);
 //		System.out.println("확인용 len: "+ len);
+//		System.out.println("확인용 searchType: "+ searchType);
+//		System.out.println("확인용 searchWord: "+ searchWord);
+//		System.out.println("확인용 searchShip: "+ searchShip);
 		
 		String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1);
+		
+		// ship_status 필터조건
+		if (searchShip == null || 
+		   (!"1".equals(searchShip)   &&
+			!"2".equals(searchShip) && 
+			!"3".equals(searchShip))) {
+			searchShip = "";
+		}
+		
+		
+		// order_status 필터조건
+		if (searchType == null || 
+		   (!"1".equals(searchType)   &&
+			!"2".equals(searchType) && 
+			!"5".equals(searchType))) {
+			searchType = "";
+		}
+		
+		// 주문번호 검색조건
+		if (searchWord == null) {
+			searchWord = "";
+		}
 		
 		
 		// 유저가 정상적으로 로그인 된 경우
@@ -68,6 +95,9 @@ public class OrderListController extends AbstractController {
 		paraMap.put("start", start);
 		paraMap.put("end", end);
 		paraMap.put("len", len);
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		paraMap.put("searchShip", searchShip);
 		
 		
 //		System.out.println("fromDate: "+ fromDate);
@@ -104,6 +134,9 @@ public class OrderListController extends AbstractController {
 			 */
 			
 			request.setAttribute("json", json);
+			request.setAttribute("searchType", searchType);
+			request.setAttribute("searchWord", searchWord);
+			request.setAttribute("searchShip", searchShip);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/common/jsonview.jsp");

@@ -595,8 +595,56 @@ public class OrderDAO_imple implements OrderDAO {
 		        		+ "				 	 , od.ship_status, o.order_receivertel "
 		        		+ "			  	  FROM tbl_order o JOIN tbl_orderdetail od "
 		        		+ "			    	ON o.order_no = od.fk_order_no "
-		        		+ "			 	 WHERE fk_user_no = ? AND order_status > 0 AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? "
-		        		+ "				) A JOIN tbl_products p "
+		        		+ "			 	 WHERE fk_user_no = ? AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+	        
+	        
+	        String orde_status = paraMap.get("searchType");
+			String order_no    = paraMap.get("searchWord");
+			String ship_status = paraMap.get("searchShip");
+	        
+	        
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_status = ? ";
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' ";
+			}
+			
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND ship_status = ? ";
+			}
+			
+			
+			// 두가지 필터 시작
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
+			}
+			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND ship_status = ? ";
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
+	        
+	        
+	        
+	        
+		    sql    	   += "				) A JOIN tbl_products p "
 		        		+ "				ON A.fk_prod_no = p.prod_no "
 		        		+ "			ORDER BY A.order_no DESC "
 		        		+ "			) B "
@@ -608,9 +656,73 @@ public class OrderDAO_imple implements OrderDAO {
 	        pstmt.setString(1, paraMap.get("user_no"));
 	        pstmt.setString(2, paraMap.get("fromDate"));
 	        pstmt.setString(3, paraMap.get("toDate"));
-	        pstmt.setString(4, paraMap.get("start"));
-	        pstmt.setString(5, paraMap.get("end"));
 	        
+	        // 한가지 시작
+ 			// 주문필터만 골랐을 경우
+ 			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 				pstmt.setString(5, paraMap.get("start"));
+ 		        pstmt.setString(6, paraMap.get("end"));	
+ 			}
+ 			
+ 			// 주문번호만 검색했을 경우
+ 			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 				pstmt.setString(5, paraMap.get("start"));
+ 		        pstmt.setString(6, paraMap.get("end"));	
+ 			}
+ 			
+ 			// 배송필터만 골랐을 경우
+ 			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, ship_status);
+ 				pstmt.setString(5, paraMap.get("start"));
+ 		        pstmt.setString(6, paraMap.get("end"));
+ 			}
+
+ 			
+ 			// 두가지 선택
+ 			// 주문상태, 검색어 입력
+ 			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 				pstmt.setString(5, orde_status);
+ 				pstmt.setString(6, paraMap.get("start"));
+ 		        pstmt.setString(7, paraMap.get("end"));	
+ 			}
+ 			
+ 			// 주문상태, 배송필터 입력
+ 			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 				pstmt.setString(5, ship_status);
+ 				pstmt.setString(6, paraMap.get("start"));
+ 		        pstmt.setString(7, paraMap.get("end"));
+ 			}
+ 			
+ 			// 검색어, 배송필터 입력
+ 			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 				pstmt.setString(5, ship_status);
+ 				pstmt.setString(6, paraMap.get("start"));
+ 		        pstmt.setString(7, paraMap.get("end"));
+ 			}
+ 			
+ 			
+ 			
+ 			// 세가지 모두 입력
+ 			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 				pstmt.setString(5, order_no);
+ 				pstmt.setString(6, ship_status);
+ 				pstmt.setString(7, paraMap.get("start"));
+ 		        pstmt.setString(8, paraMap.get("end"));	
+ 			}
+ 			
+ 			
+ 			// 모두 없을 경우
+ 			if (orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, paraMap.get("start"));
+ 		        pstmt.setString(5, paraMap.get("end"));	
+ 			}
+
 	        rs = pstmt.executeQuery();
         
 	        JSONArray jsonArr = new JSONArray();
@@ -667,7 +779,50 @@ public class OrderDAO_imple implements OrderDAO {
 			String sql 	= " SELECT count(*) "
 						+ "   FROM tbl_order o JOIN tbl_orderdetail od "
 						+ "     ON o.order_no = od.fk_order_no "
-						+ "  WHERE fk_user_no = ? AND order_status > 0 AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+						+ "  WHERE fk_user_no = ? AND to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
+			
+			String orde_status = paraMap.get("searchType");
+			String order_no    = paraMap.get("searchWord");
+			String ship_status = paraMap.get("searchShip");
+	        
+	        
+			// 주문필터만 골랐을 경우
+			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_status = ? ";
+			}
+			
+			// 주문번호만 검색했을 경우
+			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' ";
+			}
+			
+			// 배송필터만 골랐을 경우
+			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND ship_status = ? ";
+			}
+			
+			
+			// 두가지 필터 시작
+			// 주문상태, 검색어 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND order_status = ? ";
+			}
+			
+			// 주문상태, 배송필터 입력
+			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND ship_status = ? ";
+			}
+			
+			// 검색어, 배송필터 입력
+			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
+			
+			
+			// 세가지 모두 입력
+			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+				sql += " AND order_status = ? AND order_no LIKE '%'||?||'%' AND ship_status = ? ";
+			}
 			
 			pstmt = conn.prepareStatement(sql);
 	        
@@ -675,6 +830,51 @@ public class OrderDAO_imple implements OrderDAO {
 	        pstmt.setString(2, paraMap.get("fromDate"));
 	        pstmt.setString(3, paraMap.get("toDate"));
 			
+	        // 한가지 시작
+ 			// 주문필터만 골랐을 경우
+ 			if (!orde_status.isBlank() && order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 			}
+ 			
+ 			// 주문번호만 검색했을 경우
+ 			if (orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 			}
+ 			
+ 			// 배송필터만 골랐을 경우
+ 			if (orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, ship_status);
+ 			}
+
+ 			
+ 			// 두가지 선택
+ 			// 주문상태, 검색어 입력
+ 			if (!orde_status.isBlank() && !order_no.isBlank() && ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 				pstmt.setString(5, orde_status);
+ 			}
+ 			
+ 			// 주문상태, 배송필터 입력
+ 			if (!orde_status.isBlank() && order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 				pstmt.setString(5, ship_status);
+ 			}
+ 			
+ 			// 검색어, 배송필터 입력
+ 			if (orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, order_no);
+ 				pstmt.setString(5, ship_status);
+ 			}
+ 			
+ 			
+ 			
+ 			// 세가지 모두 입력
+ 			if (!orde_status.isBlank() && !order_no.isBlank() && !ship_status.isBlank()) {
+ 				pstmt.setString(4, orde_status);
+ 				pstmt.setString(5, order_no);
+ 				pstmt.setString(6, ship_status);
+ 			}
+ 			       
 	        rs = pstmt.executeQuery();
 	        
 	        rs.next();

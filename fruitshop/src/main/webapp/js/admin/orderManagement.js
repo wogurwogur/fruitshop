@@ -40,26 +40,6 @@ $(document).ready(()=> {
 	
 	
 	
-	// === 필터 버튼 조회 시 이벤트 처리 시작 === //
-	$("button.btn-secondary").on("click", () => {
-		const fromDate = $("input#fromDate").val();
-		const toDate = $("input#toDate").val();
-		
-		if (fromDate > toDate) {
-			alert("시작일은 마지막일보다 이후여야 합니다.");
-			return;
-		}
-		else {
-			// DB 에서 조회 해와야 함 (ajax 통신 사용할 것)
-		}
-		
-		alert("시작일 : "+ fromDate+ "\n종료일 : "+ toDate);
-		
-		// ajax 사용하여 where 절에 활용
-	});
-	// === 필터 버튼 조회 시 이벤트 처리 끝 === //
-	
-	
 	// === 기간 필터 버튼 이벤트 처리 시작 === //
 	$("button.btn-outline-dark").on("click", e => {
 		// == 버튼 별 기간에 따라 분기하여 알맞은 날짜를 필터링 한다. == //
@@ -169,7 +149,7 @@ function getDate(index) {
     // console.log(now.toLocaleString());
     // 11/11/2024, 3:09:05 PM
 	
-    const year  = now.getFullYear();     // 현재연도(2024)
+    let year  	= now.getFullYear();     // 현재연도(2024)
     let month   = now.getMonth() + 1;    // 월은 0부터 시작하므로 +1 해야 현재월(11) 이 나옴
     let date    = now.getDate();         // 현재일(11)
     
@@ -178,22 +158,41 @@ function getDate(index) {
 			break;
 			
 		case 1:		// 일주일 버튼
-			date = date - 6;
+			now.setDate(now.getDate() -6)
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 2:		// 1개월 버튼
-			month = month - 1;
-			date = date + 1;
+			now.setMonth(now.getMonth()-1);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 3:		// 3개월 버튼
-			month = month - 3;
-			date = date + 1;
+			now.setMonth(now.getMonth()-3);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
+			
 			break;
 			
 		case 4:		// 6개월 버튼
-			month = month - 6;
-			date = date + 1;
+			now.setMonth(now.getMonth()-6);
+			now.setDate(now.getDate()+1);
+			
+			year  = now.getFullYear();
+			month = now.getMonth() + 1;
+			date  = now.getDate();
 			break;
 	}// end of switch -------------------
 	

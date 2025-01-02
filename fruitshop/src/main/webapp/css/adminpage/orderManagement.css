@@ -18,7 +18,10 @@ div#order_filter {
 }
 
 div.order_title {
-	width: 18%;
+	width: 100%;
+	border-top: solid 1px black;
+	border-left: solid 1px black;
+	border-right: solid 1px black;
 }
 
 

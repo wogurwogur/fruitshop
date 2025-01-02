@@ -21,21 +21,25 @@ $(document).ready(()=> {
 	$("input:text[name='searchWord']").val("${requestScope.searchWord}");
 	
 	
-	$("select[name='searchType']").on("change", function() {
-		/*
+	// === 필터 버튼 조회 시 이벤트 처리 시작 === //
+	$("button.btn-secondary").on("click", () => {
 		const fromDate = $("input#fromDate").val();
 		const toDate = $("input#toDate").val();
 		
-		// alert("시작일: "+ fromDate+"\n마지막일: "+toDate);
+		if (fromDate > toDate) {
+			alert("시작일은 마지막일보다 이후여야 합니다.");
+			return;
+		}
+		else {
+			// DB 에서 조회 해와야 함 (ajax 통신 사용할 것)
+			goSearch();
+		}
 		
-		document.querySelector("input[name='fromDate']").value 	= fromDate;
-		document.querySelector("input[name='toDate']").value 	= toDate;
-		
-		const frm  = document.order_searchFrm;
-		// frm.action = "memberList.up";	// form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
-		// frm.method = "GET";				// form 태그에 method 를 명기하지 않으면 "get" 방식이다.
-		frm.submit();
-		*/
+		// ajax 사용하여 where 절에 활용
+	});// end of $("button.btn-secondary").on("click", () => {}) ----------------------
+	// === 필터 버튼 조회 시 이벤트 처리 끝 === //
+	
+	$("select[name='searchType']").on("change", function() {
 		goSearch();
 		
 	});// end of $("select[name='sizePerPage']").on("change", function() {}) --------------------
@@ -91,11 +95,6 @@ $(document).ready(()=> {
 	
 		<div class="order_title active">
 			주문상태관리
-		</div>
-		<div class="order_title">
-			교환/반품관리
-		</div>
-		<div id="order_title_nbsp">
 		</div>
 	</div>
 	<%-- 주문내역조회 메뉴 바 끝 --%>
