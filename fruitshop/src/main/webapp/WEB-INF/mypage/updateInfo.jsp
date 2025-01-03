@@ -68,7 +68,7 @@
 
 						<tr>
 							<td>
-								<span class="star text-danger">*</span>
+								<span class="star text-danger"> </span>
 							</td>
 							<td style="height: 50px; vertical-align:top;">
 								<input type="password" name="passwd" id="passwd" maxlength="20" class="requiredInfo info" placeholder="비밀번호" /><br>
@@ -77,7 +77,7 @@
 
 						<tr>
 							<td>
-								<span class="star text-danger">*</span>
+								<span class="star text-danger"> </span>
 							</td>
 							<td style="height: 80px; vertical-align:top;">
 								<input type="password" id="passwdcheck" maxlength="20" class="requiredInfo info" placeholder="비밀번호 확인" /><br>

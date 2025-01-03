@@ -230,7 +230,7 @@ function goUpdate() {
 
     const frm = document.updateFrm;
 
-    frm.action = "ShipUpdate.ddg";
+    frm.action = "shipUpdate.ddg";
     frm.method = "post";
     frm.submit();
 

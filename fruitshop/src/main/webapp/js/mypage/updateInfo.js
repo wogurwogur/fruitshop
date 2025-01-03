@@ -55,10 +55,6 @@ $(()=>{
 			else {
 				if(passwd_1 != passwd_2) {
 	
-					$("input#passwd").val("").focus(); 
-	
-					$(e.target).val(""); 
-	
 					$("span#pwdError").html("비밀번호가 일치하지 않습니다.").addClass("red").removeClass("blue");
 				}
 				else {
@@ -245,7 +241,7 @@ $(()=>{
 
 
 
-// 가입하기 클릭시 goRegister() 함수
+// 수정하기 클릭시 goUpdate() 함수
 function goUpdate() {
 	
     let bool = true;
@@ -319,20 +315,24 @@ function goUpdate() {
         return false;
     }
 
-    const frm = document.updateInfoFrm
+	
+	if(confirm("정말로 수정 하시겠습니까?")) {
+		const frm = document.updateInfoFrm
 
-    frm.action = "updateInfo.ddg";
-    frm.method = "post";
-    frm.submit();
+		frm.action = "updateInfo.ddg";
+		frm.method = "post";
+		frm.submit();
+	}
+    
 
 } //
 
-// 취소하기 클릭시 리셋하는 함수
+// 취소하기 클릭시 돌아가는 함수
 function goBack() {
 
-    location.href="/fruitshop/login/login.ddg";
+    location.href="/fruitshop/mypage/mypageIndex.ddg";
 
-}// end of function goReset()---------------------
+}// end of function goBack()---------------------
 
 
 function goWithdrawal() {

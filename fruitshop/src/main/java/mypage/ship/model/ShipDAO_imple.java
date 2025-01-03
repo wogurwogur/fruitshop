@@ -20,8 +20,6 @@ import util.security.AES256;
 import util.security.SecretMyKey;
 import util.security.Sha256;
 
-
-
 public class ShipDAO_imple implements ShipDAO {
 
 	private DataSource ds; 
@@ -262,6 +260,47 @@ public class ShipDAO_imple implements ShipDAO {
 		}
 
 		return n;
+	}
+
+	@Override
+	public int shipUpdate(ShipVO svo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_ship set ship_name = ? "
+					   + "                   , SHIP_RECEIVER = ? "
+					   + "                   , SHIP_RECEIVERTEL = ?" 
+					   + "                   , ship_postcode = ? "
+	                   + "                   , ship_address = ? "
+	                   + "                   , ship_detailaddress = ? " 
+	                   + "                   , ship_extraadress = ? "
+	                   + " where ship_no = ? ";
+				
+
+			pstmt = conn.prepareStatement(sql);
+	         
+	        pstmt.setString(1, svo.getShip_name());
+	        pstmt.setString(2, svo.getShip_receiver()); 
+	        pstmt.setString(3, aes.encrypt(svo.getShip_receivertel()));
+	        pstmt.setString(4, svo.getShip_postcode());
+	        pstmt.setString(5, svo.getShip_address());
+	        pstmt.setString(6, svo.getShip_detailAddress());
+	        pstmt.setString(7, svo.getShip_extraAddress());
+	        pstmt.setInt(8, svo.getShip_no());
+	        
+	        result = pstmt.executeUpdate();
+	
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return result;
 	}
 	
 	

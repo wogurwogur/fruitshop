@@ -87,8 +87,6 @@ public class ShipAdd extends AbstractController {
 				    super.setRedirect(false);
 				    super.setViewPage("/WEB-INF/common/msg.jsp");
 				}
-				
-				
 
 			}
 			
