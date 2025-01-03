@@ -70,6 +70,12 @@ div#order_time {
 	display: flex;
 }
 
+div#order_time input {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+}
+
 div#filter_desc {
 	margin-top: 1%;
 }
@@ -88,15 +94,29 @@ div#filter_desc li {
 ::marker {
 	font-size: 5px;
 }
+
 /* 기간설정구역 끝 */
+
+/* 필터검색 메뉴 시작 */
+div#filterMenu {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+}
 
 span#bodyTitle {
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 18px;
 	font-weight: 500;
 }
+/* 필터검색 메뉴 끝 */
 
 
+table#orderList td {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+}
 
 
 /* 페이징 숫자 처리 */

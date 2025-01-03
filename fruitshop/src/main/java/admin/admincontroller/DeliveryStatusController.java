@@ -163,8 +163,9 @@ public class DeliveryStatusController extends AbstractController {
 		
 		// *** [처음]&[이전] 만들기 *** //
 		pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo=1'>&laquo;</a>";
-		pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
-		
+		if (totalPage > 10) {
+			pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
+		}
 		
 		while( !(loop > blockSize || pageNo > totalPage) ) {
 			
@@ -181,8 +182,9 @@ public class DeliveryStatusController extends AbstractController {
 		} // end of while( !(loop > blockSize || pageNo > totalPage) 
 		
 		// [다음]
-		pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>";
-
+		if (totalPage > 10) {
+			pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>";
+		}
 		// [맨마지막]
 		pageBar += "<a href='adminDeliveryStatus.ddg?searchType="+searchType+"&searchWord="+searchWord+"&fromDate="+fromDate+"&toDate="+toDate+"&currentShowPageNo="+totalPage+"'>&raquo;</a>";		
 		pageBar += "</div>";

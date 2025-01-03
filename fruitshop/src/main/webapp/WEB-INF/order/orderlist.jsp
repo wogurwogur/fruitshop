@@ -72,7 +72,7 @@
 	<div id="filter_desc">
 		<ul>
 			<li>기본적으로 최근 3개월간의 자료가 조회되며, 기간 검색시 주문처리완료 후 36개월 이내의 주문내역을 조회하실 수 있습니다.</li>
-			<li>완료 후 36개월 이상 경과한 주문은 [과거주문내역]에서 확인할 수 있습니다.</li>
+			<li>완료 후 36개월 이상 경과한 주문은 별도 고객센터로 요청해 주시기 바랍니다.</li>
 			<li>주문번호를 클릭하시면 해당 주문에 대한 상세내역을 확인하실 수 있습니다.</li>
 		</ul>
 	</div>
@@ -80,7 +80,7 @@
 	
 	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
-	<div style="margin-left: 1%;" class="mt-5">
+	<div id="filterMenu" style="margin-left: 1%;" class="mt-5">
 		
 		<span id="bodyTitle">주문 상품 정보</span>
 		
@@ -112,7 +112,7 @@
 					<th>주문번호</th>
 					<th>주문일자</th>
 					<th>이미지</th>
-					<th style="padding:1%; width: 30%">상품명</th>
+					<th style="width: 35%;">상품명</th>
 					<th>주문금액</th>
 					<th>주문상태</th>
 					<th>배송상태</th>
@@ -135,9 +135,7 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3"></td>
-					<td><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
-					<td colspan="3"></td>
+					<td colspan="7"><button id="btnMore" type="button" class="btn btn-primary" value="">더보기</button></td>
 				</tr>
 			</tfoot>
 		</table>

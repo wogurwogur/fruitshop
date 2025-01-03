@@ -94,7 +94,7 @@ $(document).ready(()=> {
 	<div id="order_filter">
 	
 		<div class="order_title active">
-			주문상태관리
+			주문/배송 상태관리
 		</div>
 	</div>
 	<%-- 주문내역조회 메뉴 바 끝 --%>
@@ -133,7 +133,7 @@ $(document).ready(()=> {
 	
 	<%-- 주문 상품 내역 보여주기 시작 --%>
 	
-	<div style="margin-left: 1%;" class="h6 mt-5 mb-1">
+	<div id="filterMenu" style="margin-left: 1%;" class="h6 mt-5 mb-1">
 		<form name="order_searchFrm">
 			<span id="bodyTitle">주문 상품 정보</span>
 			
@@ -168,7 +168,7 @@ $(document).ready(()=> {
 					<th>주문번호</th>
 					<th>주문일시</th>
 					<th>주문자</th>
-					<th style="width: 35%">상품명</th>
+					<th style="width: 35%;">상품명</th>
 					<th>결제금액</th>
 					<th>주문처리상태</th>
 					<th>배송상태</th>
