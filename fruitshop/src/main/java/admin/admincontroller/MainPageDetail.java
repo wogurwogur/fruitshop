@@ -40,7 +40,7 @@ public class MainPageDetail extends AbstractController {
 			
 		}else {
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "javascript:history.back()";
+	        String loc = request.getContextPath()+"/index.ddg";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);
