@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 
 import org.apache.catalina.connector.Request;
 
+import index.domain.MainVO;
 import member.domain.MemberVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
@@ -433,6 +434,95 @@ public class AdminDAO_imple implements AdminDAO {
 		}
 		
 		return memberCnt;
+	}
+
+	// 메인페이지 사진을 넣는 메소드
+	@Override
+	public int insertMainPageImg(MainVO mvo) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_main_page(imgno, imgname, imgfilename) "
+					   + " values(seq_main_image.nextval, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mvo.getImgname());
+			pstmt.setString(2, mvo.getImgfilename());
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		
+		return n;
+	}
+
+	// 메인화면 정보를 가져오는 메소드
+	@Override
+	public MainVO MainPageDetail(String imgno) throws SQLException {
+		
+		MainVO mvo = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select imgno, imgname, imgfilename "
+					   + " from tbl_main_page "
+					   + " where imgno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, imgno);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				mvo = new MainVO();
+				
+				mvo.setImgno(Integer.parseInt(imgno));
+				mvo.setImgname(rs.getString("imgname"));
+				mvo.setImgfilename(rs.getString("imgfilename"));
+				
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return mvo;
+	}
+
+	// 메인페이지 delete 메소드
+	@Override
+	public int mainPageDelete(String imgno) throws SQLException{
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_main_page "
+					   + " where imgno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, imgno);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
 	}
 
 	

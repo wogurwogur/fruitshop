@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cart.domain.CartVO;
 import common.controller.AbstractController;
 import coupon.domain.CouponVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -189,7 +188,7 @@ public class OrderCheckout extends AbstractController {
 		}
 		else {
 			// 결제하기 버튼을 클릭한 경우
-			String name = request.getParameter("name");
+			String order_receiver = request.getParameter("name");
 			String postcode = request.getParameter("postcode");
 			String address = request.getParameter("address");
 			String detailaddress = request.getParameter("detailaddress");
@@ -201,47 +200,82 @@ public class OrderCheckout extends AbstractController {
 			String order_request = request.getParameter("order_request");
 			String ship_default = request.getParameter("ship_default");
 			String user_no = request.getParameter("userNo");
-			String coupon_name = request.getParameter("coupon_name");
+			String coupon_no = request.getParameter("coupon_no");
 			String order_tprice = request.getParameter("order_tprice");
 			String point = request.getParameter("point");
-			String[] arr_prodNo = request.getParameterValues("prod_no");
+			String productArr = request.getParameter("productArr");
+			String coupon_discount = request.getParameter("coupon_discount");
+			String coupon_name = request.getParameter("coupon_name");
+//			String[] arr_prodNo = request.getParameterValues("prod_no");
 			String[] arr_prod_name = request.getParameterValues("prod_name");
 			
 			
 			String mobile = hp1 + hp2 + hp3;
 			
-			System.out.println("확인용 name => "+ name);
-			System.out.println("확인용 postcode => "+ postcode);
-			System.out.println("확인용 address => "+ address);
-			System.out.println("확인용 detailaddress => "+ detailaddress);
-			System.out.println("확인용 extraaddress => "+ extraaddress);
-			System.out.println("확인용 mobile => "+ mobile);
-			System.out.println("확인용 email => "+ email);
-			System.out.println("확인용 order_request => "+ order_request);
-			System.out.println("확인용 ship_default => "+ ship_default);
-			System.out.println("확인용 user_no => "+ user_no);
-			System.out.println("확인용 coupon_name => "+ coupon_name);			
-			System.out.println("확인용 order_tprice => "+ order_tprice);			
-			System.out.println("확인용 point => "+ point);			
-			System.out.println("확인용 arr_prodNo => "+ String.join(",", arr_prodNo));			
-			System.out.println("확인용 arr_prod_name => "+ String.join(",", arr_prod_name));			
+			if ("".equals(coupon_name)) {
+				coupon_name = "없음";
+			}
+			if ("".equals(coupon_discount)) {
+				coupon_discount = "0";
+			}
 			
+//			System.out.println("확인용 name => "+ name);
+//			System.out.println("확인용 postcode => "+ postcode);
+//			System.out.println("확인용 address => "+ address);
+//			System.out.println("확인용 detailaddress => "+ detailaddress);
+//			System.out.println("확인용 extraaddress => "+ extraaddress);
+//			System.out.println("확인용 mobile => "+ mobile);
+//			System.out.println("확인용 email => "+ email);
+//			System.out.println("확인용 order_request => "+ order_request);
+//			System.out.println("확인용 ship_default => "+ ship_default);
+//			System.out.println("확인용 user_no => "+ user_no);
+			System.out.println("확인용 coupon_no => "+ coupon_no);			
+			System.out.println("확인용 coupon_discount => "+ coupon_discount);			
+			System.out.println("확인용 coupon_name => "+ coupon_name);			
+//			System.out.println("확인용 order_tprice => "+ order_tprice);			
+//			System.out.println("확인용 point => "+ point);			
+//			System.out.println("확인용 arr_prodNo => "+ String.join(",", arr_prodNo));			
+//			System.out.println("확인용 arr_prod_name => "+ String.join(",", arr_prod_name));			
+//			System.out.println("확인용 productArr => "+ productArr);			
+			
+			
+			/*
+			// 상품 객체 배열을 다시 객체화
+			JSONArray jsonArr = new JSONArray(productArr);
+			
+			System.out.println("jsonArr: "+ jsonArr);
+			
+			for (int i=0; i<jsonArr.length(); i++) { 
+				JSONObject jsonObj = jsonArr.getJSONObject(i);
+				
+				String prodNo = jsonObj.getString("prod_no");
+				String prod_name = jsonObj.getString("prod_name");
+				String prod_count = jsonObj.getString("prod_count");
+				String prod_price = jsonObj.getString("prod_price");
+				
+				
+				System.out.println("확인용 prodNo => "+ prodNo);
+				System.out.println("확인용 prod_name => "+ prod_name);
+				System.out.println("확인용 prod_count => "+ prod_count);
+				System.out.println("확인용 prod_price => "+ prod_price);
+				
+			}// end of for() -------------------
+			*/
 			// 주문번호 생성하기 (채번) (오늘날짜-시퀀스번호)
 			int order_no = odao.getOrderNo();
 			
-			String prodNo = String.join(",", arr_prodNo);
-			
-			String productName = (arr_prod_name.length > 1)? arr_prod_name[0] +"외 "+ (arr_prod_name.length-1)+ "건" : arr_prod_name[0];
+			String productName = (arr_prod_name.length > 1)? arr_prod_name[0] +"외 "+ (arr_prod_name.length-1)+ "건" : arr_prod_name[0];	// 결제창 표기용
 			
 			String orderNo = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance()) +"-"+ order_no;
 			
-			System.out.println("확인용 주문번호: "+ orderNo);
-			System.out.println("확인용 상품명: "+ productName);
+//			System.out.println("확인용 주문번호: "+ orderNo);
+//			System.out.println("확인용 상품명: "+ productName);
 			
 			request.setAttribute("productName", productName);		// 주문번호(결제, DB) 상품명 결제창 용
 			request.setAttribute("order_no", orderNo);				// 주문번호(결제, DB) DB 컬럼용
 			request.setAttribute("order_tprice", Integer.parseInt(order_tprice));	// 주문금액(DB)
 			request.setAttribute("productPrice", 100);				// 실제결제금액(결제)
+//			request.setAttribute("productPrice", Integer.parseInt(order_tprice));				// 실제결제금액(결제)
 			request.setAttribute("email", email);					// 이메일(결제)
 			request.setAttribute("name", loginuser.getName());		// 주문자이름(결제)
 			request.setAttribute("mobile", mobile);					// 연락처(결제)
@@ -252,9 +286,12 @@ public class OrderCheckout extends AbstractController {
 			request.setAttribute("order_request", order_request);	// 요청사항(주문DB)
 			request.setAttribute("ship_default", ship_default);		// 기본배송지설정(배송지DB)
 			request.setAttribute("user_no", user_no);				// 회원번호(주문DB)
-			request.setAttribute("coupon_name", coupon_name);		// 쿠폰명(쿠폰DB)
+			request.setAttribute("coupon_no", coupon_no);			// 쿠폰번호(쿠폰DB)
+			request.setAttribute("coupon_discount", coupon_discount); // 쿠폰할인액(쿠폰DB)
+			request.setAttribute("coupon_name", coupon_name); 		// 쿠폰명(쿠폰DB)
 			request.setAttribute("point", point);					// 포인트(회원DB)
-			request.setAttribute("prodNo", prodNo);					// 상품번호(주문상세DB)
+			request.setAttribute("order_receiver", order_receiver);	// 받는사람(주문DB)
+			request.setAttribute("productArr", productArr);			// 주문상품정보(주문상세DB)
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/order/paymentGateway.jsp");

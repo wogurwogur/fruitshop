@@ -2,6 +2,7 @@ package faq.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import faq.domain.FaqVO;
 import notice.domain.NoticeVO;
@@ -22,5 +23,8 @@ public interface FaqDAO {
 
 	// 자주하는 질문 삭제 메소드
 	int deleteFaq(String faq_no) throws SQLException;
+
+	// 자주하는 질문 수정 메소드
+	int updateFaq(Map<String, String> map) throws SQLException;
 
 }

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -205,6 +206,35 @@ public class FaqDAO_imple implements FaqDAO {
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, faq_no);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
+	// 자주하는 질문 수정 메소드
+	@Override
+	public int updateFaq(Map<String, String> map) throws SQLException {
+int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_faq "
+					   + " set faq_title = ?, "
+					   + " faq_contents = ? "
+					   + " where faq_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, map.get("faq_title"));
+			pstmt.setString(2, map.get("faq_contents"));
+			pstmt.setInt(3, Integer.parseInt(map.get("faq_no")));
 			
 			n = pstmt.executeUpdate();
 			

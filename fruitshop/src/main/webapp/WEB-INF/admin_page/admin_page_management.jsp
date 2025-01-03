@@ -20,6 +20,17 @@ $(document).ready(function(){
 	
 	mainImgModalOpen.addEventListener('click', () => {
 		modal.classList.remove('hidden');
+		
+	const imglenght = $("input:text[name='imglength']").val();
+    	
+    	if(imglenght >= 5){
+    		
+    		modal.classList.add('hidden');
+    		alert("캐러셀 이미지는 5개까지 등록 가능합니다.");
+    		return;
+    		
+    	}
+		
 	});
 
 	mainImgModalClose.addEventListener('click', () => {
@@ -67,8 +78,9 @@ $(document).ready(function(){
 	
     $("button#mainImgModalSubmit").click(function(){
  	   
- 	   let is_infoData_OK = true;
- 	   console.log("시작부");
+    	
+    	
+ 	    let is_infoData_OK = true;
  		   
  		/* 
             FormData 객체는 ajax 로 폼 전송을 가능하게 해주는 자바스크립트 객체이다.
@@ -131,7 +143,7 @@ $(document).ready(function(){
                     
                  },
                  error: function(request, status, error){
-                 // alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    // alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                     alert("첨부된 파일의 크기의 총합이 20MB 를 초과하여 제품등록이 실패했습니다.ㅜㅜ");
                  }
                  
@@ -161,6 +173,20 @@ $(document).ready(function(){
 
 	
 });
+
+function mainImgDetail(imgno, imgcount){
+	
+	const frm = document.imgFrm;
+	
+	frm.imgno.value = imgno;
+	
+	frm.imgcount.value = imgcount;
+	
+	frm.action = "<%=ctxPath%>/admin/mainPageDetail.ddg";
+	
+	frm.submit();
+	
+}
 
 </script>
 
@@ -276,7 +302,13 @@ div#admin_top_nav_center{
 <%-- div top nav end --%>
 
 <div class="container">
-	
+<form name="imgFrm">
+	<input type="text" name="imgno" style="display:none;">
+	<input type="text" style="display:none;" name="imgcount">
+	<input type="text" style="display:none;" name="imglength" value="${requestScope.imgListLength}">
+</form>
+
+<c:if test="${not empty requestScope.imgList}">	
 	<table class="table table-hover" style="text-align: center;">
 		<thead>
 			<tr>
@@ -286,20 +318,27 @@ div#admin_top_nav_center{
 			</tr>
 		</thead>
 		<tbody id="imgbody">
+		
 			<c:forEach items="${requestScope.imgList}" var="imgs" varStatus="index">
-				<tr style="cursor:pointer;">
+				<tr style="cursor:pointer;" onclick="mainImgDetail('${imgs.imgno}','${index.count}')">
+				
 					<td>${imgs.imgname}</td>
 					<td>${imgs.imgfilename}</td>
 					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
 				</tr>
+				
 			</c:forEach>
+			
 		</tbody>
 	</table> 
-		<table class="table" id="button_posi">
+	</c:if>
+	<c:if test="${empty requestScope.imgList}">	
+		존재하는 메인페이지가 없습니다.
+	</c:if>
+		<table style="width:100%;" id="button_posi">
 		<tbody>
 			<tr>
-				<td><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
-				<td><button class="btn btn-outline-danger" id="">삭제하기</button></td>
+				<td colspan="2" style="float: right; margin-right:3%;"><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
 			</tr>
 		</tbody>
 	</table>
@@ -317,7 +356,7 @@ div#admin_top_nav_center{
 	    			<tr>
 	    				
 	    				<td>사진파일</td>
-	    				<td><form name="mainPageInputFrm" id="imgForm"><input type="file" name="mainImg_file" size="8" id="imgfile"></form></td>
+	    				<td><form name="mainPageInputFrm" enctype="multipart/form-data"><input type="file" name="mainImg_file" size="8" accept='image/*' ></form></td>
 	    				
 	    			</tr>
 	    			<tr>
