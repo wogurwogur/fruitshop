@@ -52,53 +52,86 @@ $(document).ready(function() {
 		if ( rsp.success ) { // PC 데스크탑용
 			// === 결제 성공 시 주문 테이블에 insert 완료 후 주문상세, 결제 테이블에 정보를 insert 한다 === //
 			
+			<%--
 			// 주문 테이블에 정보 등록
 			$.ajax({
-				url: <%=ctxPath %> +"/order/orderCheckoutEnd.ddg",
-				data: 
+				url: "<%= ctxPath %>/order/orderCheckoutEnd.ddg",
+				data: {
+					"name": "${requestScope.name}", "order_no": "${requestScope.order_no}", "user_no": "${requestScope.user_no}",
+					"order_tprice": "${requestScope.order_tprice}", "email": "${requestScope.email}", "mobile": "${requestScope.mobile}",
+					"postcode": "${requestScope.postcode}", "address": "${requestScope.address}", "detailaddress": "${requestScope.detailaddress}",
+					"extraaddress":"${requestScope.extraaddress}", "order_request": "${requestScope.order_request}", "ship_default": "${requestScope.ship_default}",
+					"point": "${requestScope.point}", "coupon_no": "${requestScope.coupon_no}", "order_receiver": "${requestScope.order_receiver}"
+				},
+				type: "POST",
+				dataType: "JSON",
+				success: function(json) {
+					
+				},
+				error: function(request, status, error){
+               		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+               	}
 			});
-			
+			--%>
 			
 			
 			
         } else {
+        	// 취소했을 경우
+        	$.ajax({
+				url: "<%= ctxPath %>/order/orderCheckoutEnd.ddg",
+				data: {
+					"name": "${requestScope.name}", "order_no": "${requestScope.order_no}", "user_no": "${requestScope.user_no}",
+					"order_tprice": "${requestScope.order_tprice}", "email": "${requestScope.email}", "mobile": "${requestScope.mobile}",
+					"postcode": "${requestScope.postcode}", "address": "${requestScope.address}", "detailaddress": "${requestScope.detailaddress}",
+					"extraaddress":"${requestScope.extraaddress}", "order_request": "${requestScope.order_request}", "ship_default": "${requestScope.ship_default}",
+					"point": "${requestScope.point}", "coupon_no": "${requestScope.coupon_no}", "order_receiver": "${requestScope.order_receiver}",
+					"productArr": '${requestScope.productArr}', "coupon_name": "${requestScope.coupon_name}", "coupon_discount": "${requestScope.coupon_discount}"
+				},
+				type: "POST",
+				dataType: "JSON",
+				async: false,
+				success: function(json) {
+					console.log("확인용 json", json);
+					
+					if (json.isComplete == 1) {
+						alert("주문을 성공했습니다. "+ json);
+						location.href = "${pageContext.request.contextPath}/order/orderList.ddg";
+					}
+				},
+				error: function(request, status, error){
+               		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+               		// alert("경로를 어디로 가야함???");
+               	}
+			});
         	
+        	<%--
         	console.log("확인용 name => "+ "${requestScope.name}");
        	   	console.log("확인용 order_no => "+ "${requestScope.order_no}");
        	   	console.log("확인용 productPrice => "+ "${requestScope.productPrice}");
        	   	console.log("확인용 order_tprice => "+ "${requestScope.order_tprice}");
        	 	console.log("확인용 email => "+ "${requestScope.email}");
-       	   	console.log("확인용 name => "+ "${requestScope.name}");
        	   	console.log("확인용 mobile => "+ "${requestScope.mobile}");
        	   	console.log("확인용 postcode => "+ "${requestScope.postcode}");
        	   	console.log("확인용 address => "+ "${requestScope.address}");
-       	   	console.log("확인용 detailaddress => "+ "${requestScope.extraaddress}");
+       	   	console.log("확인용 detailaddress => "+ "${requestScope.detailaddress}");
+       	   	console.log("확인용 extraaddress => "+ "${requestScope.extraaddress}");
        	   	console.log("확인용 order_request => "+ "${requestScope.order_request}");
        	   	console.log("확인용 ship_default => "+ "${requestScope.ship_default}");			
        	   	console.log("확인용 user_no => "+ "${requestScope.user_no}");
        	   	console.log("확인용 point => "+ "${requestScope.point}");			
        	   	console.log("확인용 prodNo => "+ "${requestScope.prodNo}");	
-	       	 
-            location.href="/fruitshop";
-            alert("결제에 실패하였습니다.");
+       	   	console.log("확인용 coupon_no => "+ "${requestScope.coupon_no}");	
+       	   	console.log("확인용 coupon_name => "+ "${requestScope.coupon_name}");	
+       	   	console.log("확인용 coupon_discount => "+ "${requestScope.coupon_discount}");	
+       	   	console.log("확인용 order_receiver => "+ "${requestScope.order_receiver}");	
+       	   	console.log("확인용 productArr => "+ "${requestScope.productArr}");	
+	       	 --%>
+            //location.href="/fruitshop";
+            //alert("결제에 실패하였습니다.");
        }
 
    }); // end of IMP.request_pay()----------------------------
-
-	console.log("확인용 name => "+ "${requestScope.name}");
-   	console.log("확인용 order_no => "+ "${requestScope.order_no}");
-   	console.log("확인용 productPrice => "+ "${requestScope.productPrice}");
- 	console.log("확인용 email => "+ "${requestScope.email}");
-   	console.log("확인용 name => "+ "${requestScope.name}");
-   	console.log("확인용 mobile => "+ "${requestScope.mobile}");
-   	console.log("확인용 postcode => "+ "${requestScope.postcode}");
-   	console.log("확인용 address => "+ "${requestScope.address}");
-   	console.log("확인용 detailaddress => "+ "${requestScope.extraaddress}");
-   	console.log("확인용 order_request => "+ "${requestScope.order_request}");
-   	console.log("확인용 ship_default => "+ "${requestScope.ship_default}");			
-   	console.log("확인용 user_no => "+ "${requestScope.user_no}");
-   	console.log("확인용 point => "+ "${requestScope.point}");			
-   	console.log("확인용 prodNo => "+ "${requestScope.prodNo}");	
   	 
 }); // end of $(document).ready()-----------------------------
 

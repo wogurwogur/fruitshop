@@ -54,8 +54,6 @@
 
 	<%--  전체상품 주문하기 누를때 --%>
 	function OrderAll() {
-		
-		
 		if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
 			
 			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
@@ -102,6 +100,7 @@
 				        <div style="flex: 0.1; text-align: center;">
 				        	<form id="checked">
 				            	<input type="checkbox" id="${item.cart_no}" name="selectedItems" value="${item.cart_no}">
+				            	<input type="hidden" id="selectedItem" name="selectedItem">
 				            	<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}">
 				            </form>    
 				        </div>

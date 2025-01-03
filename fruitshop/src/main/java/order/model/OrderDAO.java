@@ -29,4 +29,41 @@ public interface OrderDAO {
 	// 주문번호 가져오기 (채번)
 	int getOrderNo() throws SQLException;
 
+	// 주문 성공 시 각 테이블에 insert
+	int insertOrder(Map<String, String> paraMap) throws SQLException;
+
+	// 쿠폰 사용 시
+	int isUseCoupon(Map<String, String> paraMap) throws SQLException;
+
+	// 회원의 주문내역을 가져온다.
+	String getOrderList(Map<String, String> paraMap) throws SQLException;
+
+	// 필터에 따른 전체 주문내역 개수
+	int totalOrderCount(Map<String, String> paraMap) throws SQLException;
+
+	// 해당 주문의 정보를 가져온다.
+	Map<String, String> getOrderDetail(Map<String, String> paraMap) throws SQLException;
+
+	// 해당 주문번호의 상세내역을 가져온다.
+	List<Map<String, String>> getOrderDetailList(Map<String, String> paraMap) throws SQLException;
+
+	// 해당 주문건이 있는지 확인
+	boolean isExistOrder(String order_no) throws SQLException;
+
+	// 주문의 주문상태를 변경한다.
+	int orderCommit(Map<String, String> paraMap) throws SQLException;
+
+	// 주문의 총페이지수를 가져온다(관리자)
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자 주문관리용 주문목록을 가져온다.
+	List<Map<String, String>> getAdminOrderList(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자가 주문상태를 변경한다.
+	int updateOrderStatus(Map<String, String> paraMap) throws SQLException;
+
+	// 주문교환요청으로 바꾼다.
+	int orderCancel(Map<String, String> paraMap) throws SQLException;
+
+
 }
