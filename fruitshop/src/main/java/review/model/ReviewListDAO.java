@@ -32,12 +32,31 @@ public interface ReviewListDAO {
     검색이 있는 또는 검색이 없는 구매후기 글 총개수 알아오기 시작 <<< */
 	int getTotalMemberCount(Map<String, String> paraMap) throws SQLException;
 	
-	// 구매후기 글 제목, 내용 등록버튼 눌러 테이블에 인서트하기
+	// 구매후기 글 작성하여 테이블에 인서트하기
 	int reviewWrite(ReviewListVO reviewList) throws SQLException;
 	
+	// 구매후기 글 쓸때 상품 등록하기에서 상품리스트 보여주기 
+	List<ReviewListVO> rproductFind() throws SQLException;
 	
+	// 구매후기 글 상품등록 클릭했을때 reviewWrite로 보내주기
+	ReviewListVO productSelect(String prod_no) throws SQLException;
+	
+	// 구매후기 글 삭제하기
+	int reviewDelete(String review_no) throws SQLException;
+	
+	// 구매후기 글 수정하기
+	int reviewEdit(ReviewListVO reviewList) throws SQLException;
+		
 	// 구매후기 글 댓글 작성하는 메소드
 	int commentWrite(ReviewListVO cmw) throws SQLException;
+	
+	// 구매후기 글 댓글 삭제하는 메소드
+	int commentDelete(String comment_no, String fk_review_no, String comment_pwd) throws SQLException;
+
+
+		
+
+	
 
 	
 	

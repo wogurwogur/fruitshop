@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import review.domain.ReviewListVO;
 import review.model.ReviewListDAO;
@@ -20,50 +21,56 @@ public class ReviewCommentController extends AbstractController {
 		
 		String method = request.getMethod();
 		
-		if("GET".equalsIgnoreCase(method)) {
-					
+		if(!"POST".equalsIgnoreCase(method)) {
+				
+			System.out.println("겟방식입니다 꺼지쇼");
+			 
 			super.setRedirect(true);
 			super.setViewPage("/WEB-INF/review/reviewList.jsp");
+			
+			return;
 		
-		}else {
+		} else {                 
+			
+			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			String cuserid = loginuser.getUserid();
 		
-			String cuserid = request.getParameter("fk_userid");
-			String creview_no = request.getParameter("fk_review_no");
-			String comment_contents = request.getParameter("comment_contents");
-	        String comment_pwd = request.getParameter("comment_pwd");
-	        String comment_regidate = request.getParameter("comment_regidate");
+			
+			String review_no = request.getParameter("review_no");
+			String comment_Contents = request.getParameter("comment_Contents");
+			String commentPwd = request.getParameter("commentPwd");
+			int user_no = loginuser.getUser_no();
+			
+	        		        
+	        ReviewListVO cmw = new ReviewListVO();
 	        
-	        ReviewListVO cmw = new ReviewListVO(); // 객체 구현
-		        
 	        cmw.setUserid(cuserid);
-	        cmw.setReview_no(Integer.parseInt(creview_no));
-	        cmw.setComment_contents(comment_contents);
-	        cmw.setComment_pwd(comment_pwd);
-	        cmw.setComment_regidate(comment_regidate);
+	        cmw.setFk_user_no(user_no);
+	        cmw.setReview_no(Integer.parseInt(review_no));
+	        cmw.setComment_contents(comment_Contents);
+	        cmw.setComment_pwd(commentPwd);
+	       	             
 	        
+	        int result = revdao.commentWrite(cmw);
 	        
-	        
-	        int n = revdao.commentWrite(cmw);
+	  
+	        request.setAttribute("review_no", review_no);
+	        request.setAttribute("comment_Contents", comment_Contents);
+	        request.setAttribute("commentPwd", commentPwd);
                 
-				if(n == 1) {
+	        JSONObject jsonObj = new JSONObject();
+	        jsonObj.put("result", result);
+
+	        String json = jsonObj.toString();
+	        
+	        request.setAttribute("json", json);
 					
-					request.setAttribute("cmw", cmw);
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/common/jsonview.jsp");
 					
-					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/review/reviewRead.jsp");
-					
-					JSONObject jsonObj = new JSONObject();  // {}
-					// jsonObj.put("result", result);
-					
-					String json = jsonObj.toString(); // 문자열로 변환 
-					request.setAttribute("json", json);
-					
-				}
-				else {
-					
-					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/review/reviewList.jsp");
-				}
+				
 			
 		}
 		

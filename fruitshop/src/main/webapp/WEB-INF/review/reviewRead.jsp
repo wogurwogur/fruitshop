@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     String ctxPath = request.getContextPath();
 %>   
@@ -20,57 +21,149 @@ $(document).ready(function(){
 	
 	
 	
-	
-	
 });
 
+// 상품 상세보기
+function productDetail(prod_no){
+	
+	const frm = document.readProductFrm;
 
-function commentWrite(){
 	
-	/*
-	const cmtWt = $("textarea#comment_Contents").val().trim();
+	frm.prodNo.value = prod_no;
+	frm.method = "get";
+	frm.action = "<%=ctxPath%>/product/productDetail.ddg";
+	
+	frm.submit();
+	
+	
+}
 
-    if(comtWt == ""){
-        alert("댓글을 입력하세요")
-        return; // goRegister() 함수를 종료한다.
-    }
-    else{
-    
-	const frm = document.commentWriteFrm;
-    frm.action = "reviewRead.ddg";
-    frm.method = "post";
-    frm.submit();
-    
-    } 이전의 잔재   */
-    
-    
-	$.ajax({
-        <%-- url : "<%= ctxPath%>/shop/admin/productRegister.up", --%>
-             url : "${pageContext.request.contextPath}/review/reviewComment.ddg",
-             type : "post",
-             data : formData,
-             // processData:false,  // 파일 전송시 설정 
-             // contentType:false,  // 파일 전송시 설정
-             dataType:"json",
-             success:function(json){
-         	   	  console.log("~~~ 확인용 : " + JSON.stringify(json));
-                
-         	   	  if(json.result == 1) {
-         	         location.href="${pageContext.request.contextPath}/review/reviewRead.ddg"; 
-                  }
-                 
-             },
-             error: {
 
-		     }
-             
-         });
+/*
+const cmtWt = $("textarea#comment_Contents").val().trim();
+
+if(comtWt == ""){
+    alert("댓글을 입력하세요")
+    return; // goRegister() 함수를 종료한다.
+}
+else{
+
+const frm = document.commentWriteFrm;
+frm.action = "reviewRead.ddg";
+frm.method = "post";
+frm.submit();
+
+} 이전의 잔재   */
+
+
+
+//댓글 쓰기
+function commentWrite(reviewNo) {
+	
+
+	
+    const commentContents = document.querySelector('textarea[name="comment_Contents"]').value;
+    const commentPwd = document.querySelector('input[name="commentPwd"]').value;
+
     
-    
+    $.ajax({
+        url: "<%= ctxPath%>/review/reviewComment.ddg",
+        type: "post",
+        data: {
+            "review_no": reviewNo,
+            "comment_Contents": commentContents,
+            "commentPwd": commentPwd,
+        },
+        dataType: "json",
+        success: function (json) {
+            if (json.result == 1) {
+                alert("댓글 작성 성공!");
+                location.href="<%= ctxPath%>/review/reviewRead.ddg?review_no="+reviewNo ;
+            } else {
+                alert("댓글 작성 실패. 다시 시도해주세요.");
+            }
+        },
+        error: function (request, status, error) {
+            alert("서버와 통신 중 오류가 발생했습니다.");
+            
+        }
+    });
+}
+
+
+// 댓글 삭제하기
+function commentDelete(comment_no, review_no) {
+	
+	const commentPwdED = document.querySelectorAll('input[name="commentPwdED"]').value;
+	
+    $.ajax({
+        url: "<%= ctxPath%>/review/reviewCommentDelete.ddg",
+        type: "post",
+        data: {
+        	"review_no":review_no,
+            "comment_no": comment_no,
+            "commentPwdED": comment_PwdED,
+        },
+        dataType: "json",
+        success: function (json) {
+            if (json.result == 1) {
+                alert("댓글 삭제 성공!");
+                location.href="<%= ctxPath%>/review/reviewRead.ddg?review_no="+reviewNo ;
+            } else {
+                alert("댓글 삭제 실패 !! 다시 시도해주세요.");
+            }
+        },
+        error: function (request, status, error) {
+            alert("서버와 통신 중 오류가 발생했습니다.");
+            
+        }
+    });
 	
 	
+}
+
+
+// 구매후기 글 수정하기 버튼 누르면
+function reviewEdit(prod_no) {
 	
-} // end of function commentWrite(){ 
+	console.log(prod_no);
+	
+	const frm = document.readProductFrm;
+	
+	frm.prodNo.value = prod_no;
+	frm.method = "get";
+	frm.action = "<%=ctxPath%>/review/reviewEdit.ddg";
+	
+	frm.submit();
+
+	
+}
+
+
+// 구매후기 글 삭제하기
+function reviewDelete() {
+	
+const frm = document.commentWriteFrm;
+	
+	frm.action = "<%=ctxPath%>/review/reviewDelete.ddg";
+	frm.method = "post";
+	
+	frm.review_no.value = "${requestScope.rvo.review_no}";
+	
+	console.log(frm.review_no.value);
+	
+	if(!confirm("정말 삭제하시겠습니까?")){
+		return;
+	}
+	
+	frm.submit();
+	
+	setTimeout(() => {
+	    location.href = "<%= ctxPath %>/review/reviewList.ddg";
+	}, 100);
+	
+	
+}
 
 
 
@@ -105,21 +198,22 @@ function commentWrite(){
 	<hr style="width:84.8%;">
 	
 	<%-- <c:if test="${not empty requestScope.rvo}">--%>
-			<div id="productpage" style="display:flex; height:25%; margin-left:13%; margin-right:5%;">
-			
-				<div id = "productimg" class="mt-4 ml-5" style="display:inline-block; height:180px; width:10%">
-					<div style="text-align:center"><span style="line-height: 165px"><img src="<%= ctxPath%>/images/product/thumnail/${rvo.prod_thumnail}" style="width:100%; height: 100%;"/></span></div>			
+		<form id="readProductForm" name="readProductFrm">
+			<div id="productpage" class="justify-content-center" style="display:flex; height:10%; cursor:pointer;" onclick="productDetail('${rvo.prod_no}');" >			
+				<div id = "productimg" class="mt-3 ml-5" style="display:inline-block; height:70px; width:70px">
+					<div style="text-align:center"><span style="line-height: 150px"><img src="<%= ctxPath%>/images/product/thumnail/${rvo.prod_thumnail}" style="width:100%; height: 100%;"/></span></div>			
 				</div>
-				<div>
-					<div class=" mt-5 ml-5" style="font-size:20pt">상품명 : ${rvo.prod_name}</div>
-					<div class=" mt-5 ml-5" style="font-size:20pt">가격 : ${rvo.prod_price}원</div>
-				</div>
-				<div class="my-auto ml-5" style="line-height: 100px;">
-					<button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;">상품 상세페이지 보기</button>
+				<div class="">
+					<div class=" mt-4 ml-5" style="font-size:20pt">${rvo.prod_name}</div>
 				</div>
 				
-				
+									
 			</div>
+		
+			<input type="text" name="prodNo" style="display: none"/>
+		</form>
+		
+		
 				
 <hr style="width:63%; margin-left:15.5%;">	
 
@@ -130,7 +224,7 @@ function commentWrite(){
 						<td class="" style="border-top: none; font-size:17pt; width:12.5%;">제목</td>
 						<td class="" style="border-top: none; width:75%; margin-bottom:2%;">${rvo.review_title }</td>
 					</tr>
-					<tr><td><hr></td><td><hr></td></tr>			
+					<tr><td><hr></td><td><hr style="width:101%"></td></tr>			
 					<tr>
 						<td class="" style=" font-size:17pt; width:12.5%;">내용</td>
 						<td class="" style=" width:75%;">${rvo.review_contents}</td>
@@ -164,21 +258,17 @@ function commentWrite(){
 									<td style="width:65%; border-top: none; font-size:12pt">${cml.comment_contents}</td>
 									<td style="border-top: none;"></td>
 									<td style="border-top: none;"></td>
-									<td colspan="2" style="border-top: none;" class="pl-3">
-										<a onclick="commentEdit()"class=""><i class="fa-solid fa-pen"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-										<a onclick="commentDelete()" class=""><i class="fa-solid fa-square-xmark"></i></a>
-									</td>
+									
 								</tr>
 							</div>
 							<div class="d-flex">
 								<tr>
 									<td style="border-top: none; font-size:10pt;">작성자 : ${cml.cuserid }</td>
 									<td style="width:25%; border-top: none; font-size:9pt; ">작성일자 : ${cml.comment_regidate }</td>
-									<td class="pl-4" style="width:20%; border-top: none; font-size:10pt;">비밀번호</td>
-									<td class="pl-0" style="width:15%; border-top: none;">
-										<form style="">
-											<input type="password" style="width:100px"/>
-										</form>
+									
+									<td colspan="2" style="border-top: none;" class="pl-3">
+										<a onclick="commentEdit()"class=""><i class="fa-solid fa-pen" style="color:black"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+										<a onclick="commentDelete('${cml.comment_no}','${cml.review_no} }')" class=""><i class="fa-solid fa-square-xmark" style="color:black"></i></a>
 									</td>							
 																				
 								</tr>
@@ -196,14 +286,6 @@ function commentWrite(){
 	      	</c:if>	
       					
 		</table>
-				
-				<div class= "" style="width:70%;">
-					<div class="ml-5 " style="margin:2.2%">${rvo.review_title}</div>
-					<div class="ml-5 " style="margin:4.2%">${rvo.userid}</div>
-					<div class="ml-5 " style="margin:4.2%; margin-right: 15%;">${rvo.review_contents}
-					</div>
-				</div>
-
 			
 			</div>
 		</div>
@@ -218,33 +300,48 @@ function commentWrite(){
 								<td style="border-top: none; font-size:17pt;">댓글 쓰기</td>
 							</tr>
 							<tr>
-								<td style="border-top: none; font-size:10pt;">작성자 : 로그인ID</td>
+								<td style="border-top: none; font-size:10pt;">작성자 :&nbsp;&nbsp;${sessionScope.loginuser.userid}</td>
 							</tr>										
 						</div>
-														
+										
 				</table>
 			</div>
 			
 			<div id="writeContainer2">
 				<div>
 					<form name="commentWriteFrm" style="">
-						<div style="width: 76%; margin-left:4.5%;">
+						<div style="width: 77%; margin-left:2%;">
 							<textarea name="comment_Contents" cols="165" rows="4" style="margin-bottom:1.5%; margin-top:1.5%; width:100%; font-size:12pt; resize:none;"></textarea>				
 						</div>
-						<div class=""> 
-							<button type="submit" class="btn btn-outline-dark float-right" style="margin-right:19.5%;" onclick="commentWrite();">작성</button>
+						<div class="d-flex float-right" style="margin-right:22%;">
+							<div class="mt-2" style="width:70px; border-top: none; font-size:10pt;"><span>비밀번호</span>
+							</div>
+							<div class="mr-3" style="width:100px; border-top: none;">								
+								<input id="commentPwd" name="commentPwd" type="password" style="width:100px"/>								
+							</div>						
+							<div class=""> 
+								<button type="button" class="btn btn-outline-dark mb-1" style="width:70px; height:35px;" onclick="commentWrite('${rvo.review_no}');">작성</button>
+							</div>
 						</div>
+					<input type="text" value="${sessionScope.loginuser.userid}" style="display:none;"/>
+					<input type="text" name="review_no" style="display:none;"/>
+					
 					</form>
-				
-				
-				
+			
 				</div>
-			
-			
+
 			</div>
-		
-		
+
 		</div>
+		
+		<div style ="margin-left:15.5%;">
+			<tr>
+				<td class=""><button class="btn btn-outline-dark" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg'">목록</button></td>
+				<td class=""><button class="btn btn-outline-dark" onclick="reviewEdit('${rvo.prod_no}')">본문 수정</button></td>
+				<td class=""><button class="btn btn-outline-dark" onclick="reviewDelete()">본문 삭제</button></td>
+			</tr>						
+		</div>
+			
 		
 </div>
 							

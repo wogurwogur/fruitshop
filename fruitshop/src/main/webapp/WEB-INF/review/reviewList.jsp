@@ -47,7 +47,7 @@ $(document).ready(function(){
 		frm.action = "<%= ctxPath%>/member/memberOneDetail.up";
 		
 		frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
-		frm.method = "post"
+		frm.method = "get"
 		frm.submit();
 		
 	});
@@ -98,7 +98,7 @@ function listSearch(){
 	</div>
 		
 <div>		
-<div class="col-md-11 mx-auto my-5">
+<div class="col-md-7 mx-auto my-5">
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 

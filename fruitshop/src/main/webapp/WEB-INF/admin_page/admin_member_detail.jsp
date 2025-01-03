@@ -158,49 +158,7 @@ $(document).ready(function(){
 
 <style>
 
-#modalOpenButton, #modalCloseButton {
-  cursor: pointer;
-}
-
-#modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#modalContent {
-  position: absolute;
-  background-color: #ffffff;
-  width: 500px;
-  height: 480px;
-  padding: 15px;
-  border-radius: 20%;
-}
-
-#modalContainer.hidden {
-  display: none;
-}
-#modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#modalContainer.hidden {
-  display: none;
-}
+v
 input[type="number"]{
 	width: 5em;
 }
