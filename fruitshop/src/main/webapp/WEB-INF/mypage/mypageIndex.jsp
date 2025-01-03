@@ -97,21 +97,21 @@
 		<div class="col-md-1 text-center"></div>
 		<div class="col-md-1 text-center my-auto">
 			<div style="font-size:12pt; font-weight: bold;">준비중</div>
-			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_1}</div>
+			<div style="margin-top:20px; font-size:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_1}</div>
 		</div>
 		
 		<div class="col-md-1 text-center my-auto" style="font-size:20pt; ">▶</div>
 			
 		<div class="col-md-1 text-center my-auto">
 			<div style="font-size:12pt; font-weight: bold;" >배송중</div>
-			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_2}</div>
+			<div style="margin-top:20px; font-size:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_2}</div>
 		</div>
 		
 		<div class="col-md-1 text-center my-auto" style="font-size:20pt; ">▶</div>
 		
 		<div class="col-md-1 text-center my-auto">
 			<div style="font-size:12pt; font-weight: bold;">배송완료</div>
-			<div style="margin-top:20px; fontsize:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_3}</div>
+			<div style="margin-top:20px; font-size:20pt; font-weight: bold;" class="goOrderInfo" onclick="location.href='<%= request.getContextPath() %>/order/orderList.ddg'">${requestScope.cnt_3}</div>
 		</div>
 		
 		<div class="col-md-1 text-center"></div>
