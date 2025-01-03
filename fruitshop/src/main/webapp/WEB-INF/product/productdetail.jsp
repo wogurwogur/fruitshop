@@ -72,9 +72,9 @@ $(document).ready(function(){
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 끝 --------- //
 		
 			
-	   	// 장바구니 클릭 
-	    $("div.cart").click(function() {
-	         
+	   // 장바구니 클릭 
+       $("div.cart").click(function() {
+            
          if( ${not empty sessionScope.loginuser} ) {
          
               $.ajax({
@@ -88,11 +88,12 @@ $(document).ready(function(){
                   success: function(response) {
                      if(confirm("장바구니에 상품을 추가했습니다.\n장바구니를 확인하시겠습니까?")){
                       const prdCnt = $("input.qty").val();
-                      // alert(prdCnt)
-                      location.href=`${pageContext.request.contextPath}/cart/cartInsert.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prdCnt=`+ prdCnt;
+                      alert(prdCnt);
+                      location.href=`${pageContext.request.contextPath}/cart/cartList.ddg`;
                    }
                       else{
                           location.href="javascript:history.go(0);";
+                          alert(prdCnt);
                       }
                   },
                   error: function(error) {
@@ -105,7 +106,7 @@ $(document).ready(function(){
             location.href=`${pageContext.request.contextPath}/login/login.ddg`;
          }
                
-	    }); // end of $("div.cart").click(function()
+       }); // end of $("div.cart").click(function()
 	
 		
 		// 구매하기 클릭
@@ -118,13 +119,13 @@ $(document).ready(function(){
 	    
 	    // 상품 후기 목록 클릭 시 해당 글 페이지로 이동한다.
 	    $("tr.reviewInfo").click(function(){
-	    	location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}`;
+	    	location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
 	    });
 	    
 		
 		// 상품후기 쓰기 클릭
 		$("div.reveiwBtn").click(function() {
-			alert("상품후기쓰기 클릭") // 상품번호랑 유저번호 넘기기
+			location.href=`${pageContext.request.contextPath}/review/reviewWrite.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
 		});
 		
 	
@@ -172,6 +173,60 @@ $(document).ready(function(){
 			location.href =`${pageContext.request.contextPath}/qna/qnaList.ddg`;
 		});
 		
+		
+		
+		
+		
+		//---------------------------------------------------------------------------------------//
+		// 세션스토리지안에 있는 arr_product를 가져왔는데 이게 null 일때
+	      if(sessionStorage.getItem("arr_product") == null){ 
+	         const arr_product = []; // 새로운 상품배열을 만든다.
+	         const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+	         // 새로운 상품객체를 만든다.
+	         arr_product.push(product);
+	         // 만든 상품객체를 만든 상품의 배열에 넣어준다.
+	         sessionStorage.setItem("arr_product", JSON.stringify(arr_product));
+	         // 세션스토리지에 담아준다.
+	      }
+	      
+	      else{ // 세션스토리지안에 저장된게 있다면
+	         
+	         const arr_product = JSON.parse(sessionStorage.getItem("arr_product"));   // 저장된 것을 가져온다 ("key");
+	         
+	         let exist = false;
+	         
+	         for(let i =0; i<arr_product.length; i++){  // 중복된 상품번호가 있는지 반복문으로 알아온다. 
+	            
+	            // product = {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'};
+	             
+	            if(arr_product[i].prod_no == "${requestScope.prdvo.prod_no}"){
+	               
+	               arr_product.splice(i,1);
+	               
+	               const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+	               // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
+	               // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
+	               // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
+	               arr_product.push(product); 
+	               exist = true;
+	               break;
+	            }
+	            
+	         }// end of for---------------------
+
+	         if(!exist){
+	            const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+	            // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
+	            // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
+	            // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
+	            arr_product.push(product); 
+	         }
+	         
+	         sessionStorage.setItem("arr_product", JSON.stringify(arr_product)); // 세션스토리지에 담아준다.
+	         
+	      }
+	      
+	      console.log(JSON.parse(sessionStorage.getItem("arr_product")));		
 		
 		
 }); // end of $(document).ready(function(){

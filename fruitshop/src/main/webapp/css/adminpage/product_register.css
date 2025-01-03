@@ -31,5 +31,14 @@ tr {
 
 
 td.tdTitle {
+	width: 20%;
 	font-weight: bold;
+}
+
+td.tdContents {
+	width: 50%;
+}
+
+span.error {
+	color: red;
 }
