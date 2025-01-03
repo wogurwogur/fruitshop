@@ -19,7 +19,12 @@ div.container > div.titleArea > h3{
 }
 
 
-
+div.recent_view > div:nth-child(1) > div.thumnail,
+div.recent_view > div:nth-child(1) > div.name,
+div.recent_view > div:nth-child(1) > div.price,
+div.recent_view > div:nth-child(1) > div.number{
+	cursor: pointer;
+}
 
 
 

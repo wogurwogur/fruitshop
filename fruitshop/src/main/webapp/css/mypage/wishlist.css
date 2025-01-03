@@ -19,8 +19,6 @@ div.container > div.titleArea > h3{
 }
 
 
-
-
 div.container > div.jumbotron{
 	font-family: 'Noto Sans KR', sans-serif;
 	width: 75%;
@@ -39,7 +37,9 @@ div.container > div.ec-base-button.gColumn{
     display: flex;
     justify-content: center;
 }
-div.wish-items > div{
+div.wish-items > div:nth-child(1) > div.thumnail,
+div.wish-items > div:nth-child(1) > div.name,
+div.wish-items > div:nth-child(1) > div.price{
 	cursor: pointer;
 }
 
@@ -66,7 +66,6 @@ div.container > div.ec-base-button.gColumn > a.btnremove{
 div.container > div.ec-base-button.gColumn > a.btnremove:hover{
 	text-decoration: none;
 }
-
 
 
 

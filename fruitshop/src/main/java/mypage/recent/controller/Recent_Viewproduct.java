@@ -15,6 +15,20 @@ public class Recent_Viewproduct extends AbstractController {
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	String userid = request.getParameter("userid");
     	String message = "";
+    	
+    	String referer = request.getHeader("referer");
+		// request.getHeader("referer"); 은 이전 페이지의 URL을 가져오는 것이다.
+		
+		// System.out.println("~~~~ 확인용 referer : " + referer);
+		
+		if(referer == null) { 
+		// referer == null 은 웹브라우저 주소창에 URL을 직접 입력하고 들어온 경우이다.
+		   super.setRedirect(true);
+		   super.setViewPage(request.getContextPath()+"/");  // 홈화면으로 돌아간다.
+		   return;
+		}
+    	
+    	
     	if(loginuser != null  ) {	// 로그인 했을때
     		
     		super.setRedirect(false);

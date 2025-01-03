@@ -26,8 +26,6 @@
 			alert("선택된 상품이 없습니다.");
 		}
 		else{
-		
-			
 			
 		 	if(confirm("선택한 상품을 주문하시겠습니까?")){
 		 		
@@ -54,6 +52,8 @@
 
 	<%--  전체상품 주문하기 누를때 --%>
 	function OrderAll() {
+		
+		
 		if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
 			
 			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
@@ -65,7 +65,7 @@
 	 <%-- 장바구니 비우기 누를때 --%> 
 	function CartDeleteAll() {
 		
-		if( confirm("정말로 관심상품을 모두 비우시겠습니까?") ){
+		if( confirm("정말로 장바구니를 모두 비우시겠습니까?") ){
 			
 		const frm = document.getElementById("deleteAll");
 			frm.submit();
@@ -100,7 +100,6 @@
 				        <div style="flex: 0.1; text-align: center;">
 				        	<form id="checked">
 				            	<input type="checkbox" id="${item.cart_no}" name="selectedItems" value="${item.cart_no}">
-				            	<input type="hidden" id="selectedItem" name="selectedItem">
 				            	<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}">
 				            </form>    
 				        </div>

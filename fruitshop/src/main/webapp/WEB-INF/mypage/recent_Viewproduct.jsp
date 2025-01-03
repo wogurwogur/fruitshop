@@ -21,10 +21,18 @@ $(document).ready(function(){
     
     const arr_product = JSON.parse(sessionStorage.getItem("arr_product"));
     
-    if (arr_product.length > 0) {  // 최근본상품이 있다면
+    console.log(arr_product.length);
     
+    if (arr_product.length === 0) {  // 최근본상품이 없다면
+    
+    	$("div.info").hide();
+        html = `<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc;">최근본 상품 내역이 없습니다.</p>`;
+    
+    }
+    else { // 최근 본 상품이 있다면
+    	
     	$("div.info").show();
-    
+        
 	    arr_product.forEach(function(item, index) {
 	    	
 	    	const price = new Intl.NumberFormat('en').format(item.price);
@@ -38,7 +46,7 @@ $(document).ready(function(){
             <input type="hidden" name="prodno" value="\${item.prod_no}" />
 	        
 	            <%-- 상품 번호 --%>
-	            <div style="flex: 0.4; text-align: center;">
+	            <div class="number" style="flex: 0.4; text-align: center;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.prod_no}</p>
 	            </div>
 	
@@ -48,12 +56,12 @@ $(document).ready(function(){
 	            </div>
 	
 	            <%-- 상품 이름 --%>
-	            <div style="flex: 2; text-align: center;">
+	            <div class="name" style="flex: 2; text-align: center;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.name}</p>
 	            </div>
 	
 	            <%-- 상품 가격 --%>
-	            <div style="flex: 1.8; text-align: center;">
+	            <div class="price" style="flex: 1.8; text-align: center;">
 	            	<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${price}원</p>
 	            </div>
 	
@@ -65,15 +73,38 @@ $(document).ready(function(){
 	            </div>
 	        </div>`;
 	    });
-    
-    }
-    
-    else { // 최근 본 상품이 없다면
-    	$(".info").hide();
-        html = `<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc;">최근본 상품 내역이 없습니다.</p>`;
+    	
     }
 
     $("div.recent_view").html(html);
+    
+    // 상품 디테일로 가는 함수
+    function goProductDetail(e) {
+    	
+    	const prod_no = $(e.target).parents(".recent_product").find("input[name='prodno']").val(); // 상품번호
+		
+	    location.href = "${pageContext.request.contextPath}" + "/product/productDetail.ddg?prodNo=" + prod_no;
+    }
+
+    // 썸네일 클릭
+    $("div.number").click(function (prod_no) {
+    	goProductDetail(prod_no);
+    });
+    
+    // 썸네일 클릭
+    $("div.thumnail").click(function (prod_no) {
+    	goProductDetail(prod_no);
+    });
+
+    // 상품명 클릭
+    $("div.name").click(function (prod_no) {
+    	goProductDetail(prod_no); 
+    });
+
+    // 가격 클릭
+    $("div.price").click(function (prod_no) {
+    	goProductDetail(prod_no);
+    });
     
     
  	// X 버튼 눌렀을때 그 상품을 삭제
@@ -91,7 +122,7 @@ $(document).ready(function(){
         product.remove(); // 상품 삭제
         
         alert("상품을 삭제했습니다.");
-        
+        location.href="javascript:history.go(0)";
         
         if (arr_product.length === 0) {	// 상품이 없다면
         	$("div.info").hide();
@@ -99,22 +130,26 @@ $(document).ready(function(){
         }
         
     });
-    
-    
- // 상품 디테일로 가는 함수
-    function goProductDetail(e) {
-    	
-    	const prod_no = $(e.target).parents(".recent_product").find("input[name='prodno']").val(); // 상품번호
-    	console.log(prod_no);
-		
-	    location.href = "${pageContext.request.contextPath}" + "/product/productDetail.ddg?prodNo=" + prod_no;
-    }
-	
-     // 썸네일 클릭
-    $("div.thumnail").click(function (prod_no) {
-    	goProductDetail(prod_no);
-    });
  	
+ 	
+ 	if(arr_product.length > 5) {  // 최근본 상품안에 상품이 5개가 넘는다면 
+ 		const product = $(this).closest(".recent_product");
+        const index = product.data("index");
+
+        arr_product.splice(index, 1);
+
+        // 세션스토리지에 담아준다.
+        sessionStorage.setItem("arr_product", JSON.stringify(arr_product));
+
+        product.remove(); // 상품 삭제
+        
+        location.href="javascript:history.go(0)";
+ 	}
+ 	
+ 	
+ 
+ 	
+    
 });// end of $(document).ready(function(){}-------------------------------------------------------------
 
 

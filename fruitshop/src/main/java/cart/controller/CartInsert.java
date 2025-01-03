@@ -32,7 +32,7 @@ public class CartInsert extends AbstractController {
     		String fk_prod_no = request.getParameter("prodNo");	
 	 	    String fk_user_no = request.getParameter("userNo");	
 	 	    String cart_prodcount = request.getParameter("prdCnt");	
-
+	 	    System.out.println("수량: " + cart_prodcount);
     		
 	 	    if(loginuser.getUser_no() == Integer.parseInt(fk_user_no)){
 	 	    	
@@ -58,7 +58,6 @@ public class CartInsert extends AbstractController {
 	    	 	    		super.setRedirect(true);
 	    	 	    		super.setViewPage(request.getContextPath()+ "/cart/cartList.ddg");
 	    	 	    	}
-	    	 	    	
 	    	 	    	
 	    	 	    }
 	    	 	    else {

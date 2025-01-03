@@ -25,8 +25,6 @@ public class CartList extends AbstractController {
     	String userid = request.getParameter("userid");
     	String message = "";
     	
-		
-    	
     	if(loginuser != null) {
     		
     		try {
