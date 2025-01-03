@@ -57,7 +57,7 @@ function WishDeleteAll() {
 
 </script>
 
-<div class="container" style="margin-top: 2%;">
+<div class="container" style="margin-top: 2%; margin-bottom: 5%;">
 
     <div class="titleArea">
         <h3>관심 상품</h3>
@@ -76,7 +76,7 @@ function WishDeleteAll() {
         
         <div class="wish-items">
             <c:forEach var="item" items="${wishList}">
-                <div class="wish_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; margin-top: 1.8%;">
+                <div class="wish_item" style="display: flex; align-items: center; padding: 2% 0; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; margin-top: 1.8%; ">
                     
                     <%-- 상품 번호 숨기기 --%>
                     <input type="hidden" name="prodno" value="${item.product.prod_no}" />
@@ -121,8 +121,8 @@ function WishDeleteAll() {
         
         <%-- 관심상품이 없는 경우 --%>
         <c:otherwise>
-            <div style="border: solid 1px #cccccc; background-color: white; height: 38%; font-weight: bold; margin: 3% auto;">
-                <p align="center" style="margin: 10% auto; padding-top: 4%;">관심상품 내역이 없습니다.</p>
+            <div style="border: solid 1px #cccccc; background-color: white; height: 38%; margin: 3% auto; ">
+                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; ">관심상품 내역이 없습니다.</p>
             </div>
         </c:otherwise>
     </c:choose>
