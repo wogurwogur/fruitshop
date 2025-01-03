@@ -25,4 +25,7 @@ public interface ShipDAO {
 	// 특정 배송지를 기본배송지로 변경하는 메소드
 	int oneDefault(int ship_no) throws SQLException;
 
+	// 배송지를 수정하는 메소드
+	int shipUpdate(ShipVO svo) throws SQLException;
+
 }

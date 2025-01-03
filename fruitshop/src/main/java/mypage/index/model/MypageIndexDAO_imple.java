@@ -74,7 +74,7 @@ public class MypageIndexDAO_imple implements MypageIndexDAO {
 			
 			String sql = " select coupon_no, coupon_name, coupon_descript, to_char(coupon_expire, 'yyyy-mm-dd') as coupon_expire, coupon_discount "
 					   + " from tbl_coupons "
-					   + " where fk_user_no = ? "
+					   + " where fk_user_no = ? and coupon_expire > sysdate "
 					   + " order by coupon_expire asc ";
 			
 			pstmt = conn.prepareStatement(sql); 

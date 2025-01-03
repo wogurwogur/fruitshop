@@ -50,7 +50,7 @@
 							</td>
 							<td style="height: 80px; vertical-align:top;">
 								<input type="text" name="ship_name" id="ship_name" maxlength="40" class="requiredInfo info" placeholder="배송지명" /><br>
-								<span id="ship_nameError" class="error"></span><span class="rule">(영문소문자/숫자, 1~10자)</span>
+								<span id="ship_nameError" class="error"></span><span class="rule">(한글/영문/숫자, 1~10자)</span>
 							</td>
 						</tr>
 

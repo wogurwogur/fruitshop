@@ -39,7 +39,7 @@ $(()=>{
 	    
 	        if(!bool) { 
 
-	            $(e.target).parent().find("span.error").html("올바른 성명이 아닙니다.").addClass("red");
+	            $(e.target).parent().find("span.error").html("올바른 이름이 아닙니다.").addClass("red");
 	        }
 	        else { 
 	            $(e.target).parent().find("span.error").html("").removeClass("red");
@@ -185,7 +185,7 @@ function goAdd() {
 	const ship_receiverReg = /^[가-힣]{2,6}$/;
 	regbool = ship_receiverReg.test(ship_receiver);
 	if(!regbool) {
-		$("input#ship_name").parent().find("span.error").html("올바른 성명이 아닙니다.").addClass("red");
+		$("input#ship_name").parent().find("span.error").html("올바른 이름이 아닙니다.").addClass("red");
 		bool = false;
 	}
 	
@@ -232,8 +232,8 @@ function goAdd() {
 
 } //
 
-// 취소하기 클릭시 리셋하는 함수
-function goBack() {
+	// 취소하기 클릭시 리셋하는 함수
+	function goBack() {
 
     location.href="/fruitshop/mypage/shipManagement.ddg";
 
