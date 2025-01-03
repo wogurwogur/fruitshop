@@ -120,7 +120,7 @@ public class OrderDAO_imple implements OrderDAO {
 			
 			String sql	= " SELECT coupon_no, coupon_name, TO_CHAR(coupon_expire, 'yyyy-mm-dd') AS coupon_expire, coupon_discount "
 						+ "   FROM tbl_coupons "
-						+ "  WHERE fk_user_no = ? ";
+						+ "  WHERE fk_user_no = ? AND  AND TO_CHAR(coupon_expire, 'yyyy-mm-dd') >= TO_CHAR(sysdate, 'yyyy-mm-dd') ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("user_no"));
