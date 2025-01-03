@@ -13,31 +13,12 @@
 
 $(document).ready(()=> {
 	
-	$("table#orderList tr.productRow").css({"cursor": "pointer"}).click(function(e) {
-		const prod_no = $(e.target).parent().find("#prod_no").val();
-		const index   = $("table#orderList tr.productRow td").index($(e.target));
-		const length  = $("table#orderList tr.productRow td").length
-		//const btn_val = $("button.btn-success").val();
-		const evenvt = $(e.target);
-		
-		console.log("확인용 prod_no: "+ prod_no);
-		console.log("확인용 evenvt: "+ evenvt);
-		//console.log("확인용 btn_val: "+ btn_val);
-		console.log("확인용 length: "+ $("table#orderList tr.productRow td").length);
-		console.log("확인용 index: "+ $("table#orderList tr.productRow td").index($(e.target)));
-		// alert("확인용 prod_no"+ prod_no);
-
-		if (index != -1 && index != length-1) {	// 제일 마지막 td클릭이면
-			return;
-			// 상품후기작성으로 보내기
-			//location.href = `${pageContext.request.contextPath}`;
-		}
-		else {
-			// 상품 상세페이지로 보내기
-			//location.href = `${pageContext.request.contextPath}/product/productDetail.ddg?prodNo=`+prod_no;
-		}
-		
-	});// end of $("table#orderList tr.productRow").css({"cursor": "pointer"}).click(function(e) {}) --------
+	$("table#orderList tr.productRow").css({"cursor": "pointer"});
+	
+	$("table#orderList td.prod_name").click(function() {
+		const prod_no = $(this).parent().find("#prod_no").val();
+		location.href=`${pageContext.request.contextPath}/product/productDetail.ddg?prodNo=\${prod_no}`;
+	});// end of $("table#orderList td").click(function() {}) -----------------
 	
 
 	$("button#orderCommit").click(e => {
@@ -53,8 +34,9 @@ $(document).ready(()=> {
 
 
 // 구매후기로 가는 함수
-function goReview() {
-	
+function goReview(prod_no) {
+	alert("주문번호:"+ prod_no);
+	location.href=`${pageContext.request.contextPath}/review/reviewWrite.ddg?prod_no=\${prod_no}`;
 }// end of function goReview() ------------------- 
 
 
@@ -157,7 +139,7 @@ function goCancel() {
 									<input type="hidden" id="prod_no" name="prod_no" value="${orderItem.fk_prod_no}" />
 									<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${orderItem.prod_thumnail}">
 								</td>
-								<td>${orderItem.prod_name}</td>
+								<td class="prod_name">${orderItem.prod_name}</td>
 								<td class="prod_count">${orderItem.ordetail_count}개</td>
 								<td class="prod_price"><fmt:formatNumber value="${orderItem.ordetail_price}" pattern="#,###" />원</td>
 								<td class="prod_shipStatus">
@@ -166,7 +148,7 @@ function goCancel() {
 									<c:if test="${orderItem.ship_status == 3}">배송완료</c:if>	
 								</td>
 								<td>
-									<button type="button" class="btn btn-success btn-sm" value="후기">후기작성</button>  
+									<button type="button" class="btn btn-success btn-sm" onclick="goReview('${orderItem.fk_prod_no}')">후기작성</button>  
 								</td>
 							</tr>							
 						</c:forEach>

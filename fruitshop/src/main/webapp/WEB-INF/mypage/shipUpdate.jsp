@@ -48,7 +48,7 @@
 
 			<div class="text-center"
 				style="margin-top: 50px; margin-bottom: 50px;">
-				<h2 style="font-weight: bold;">배송지 추가</h2>
+				<h2 style="font-weight: bold;">배송지 수정</h2>
 				(<span class="star text-danger">*</span>표시는 필수입력사항)
 			</div>
 
@@ -127,7 +127,7 @@
 								<span class="star text-danger"></span>
 							</td>
 							<td class="text-center" style="height: 100px;">
-								<input type="button" class="btn btn-success btn-lg mr-5" value="변경하기" onclick="goUpdate()" />
+								<input type="button" class="btn btn-success btn-lg mr-5" value="수정하기" onclick="goUpdate()" />
 								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goBack()" />
 							</td>
 						</tr> 
@@ -138,6 +138,10 @@
 			</div>
 
 		</div>
+		
+		
+		<input type="hidden" name="ship_no" value="${requestScope.svo.ship_no}"/>
+		
 	</form>
 
 

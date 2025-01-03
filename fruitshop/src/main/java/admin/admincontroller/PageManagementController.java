@@ -45,7 +45,7 @@ public class PageManagementController extends AbstractController {
 				super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
 				
 			} catch (SQLException e) {	// 쿼리문 오류 발생 시
-				e.printStackTrace();
+				e.printStackTrace();	
 				super.setRedirect(true);	// redirect 시킴
 				super.setViewPage(request.getContextPath()+"/error.ddg");
 			}
@@ -55,7 +55,7 @@ public class PageManagementController extends AbstractController {
 		}else {
 			
 			String message = "관리자만 접근이 가능합니다.";
-	        String loc = "javascript:history.back()";
+	        String loc = request.getContextPath()+"/index.ddg";
 	        
 	        request.setAttribute("message", message);
 	        request.setAttribute("loc", loc);

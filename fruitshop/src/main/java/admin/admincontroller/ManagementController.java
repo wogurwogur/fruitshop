@@ -103,19 +103,19 @@ public class ManagementController extends AbstractController {
 	        
 	        
 	        
-	        pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+1+"'>[맨처음]</a></li>";
+	        pageBar += "<a href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>&laquo;</a>";
 	        
 	        if(pageNo != 1) {
-	        	pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+	        	pageBar += "<a href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>";
 	        }
 	        
 	         
 	        while(!(loop > blockSize ||pageNo > totalPage)) {
 	        	
 	        	if(pageNo == Integer.parseInt(currentShowPageNo)) {
-	        		pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+ pageNo +"</li>";
+	        		pageBar += "<a href='#' class='active'>"+ pageNo +"</a>";
 	        	}else {
-	        		pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a></li>";
+	        		pageBar += "<a href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a>";
 	        	}
 	        	
 
@@ -130,11 +130,11 @@ public class ManagementController extends AbstractController {
 	        // 다음 마지막 만들기
 	        
 	        if(pageNo <= totalPage ) {
-	        	pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+	        	pageBar += "<a href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>";
 	        }
 	        
 	        
-	        pageBar += "<li class='page-item'><a class='page-link' href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+	        pageBar += "<a href='"+request.getContextPath()+"/admin/adminManagement.ddg?searchType="+searchType+"&sizePerPage="+sizePerPage+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'>&raquo;</a>";
 			
 	        
 	        
@@ -155,6 +155,8 @@ public class ManagementController extends AbstractController {
 			request.setAttribute("searchWord", searchWord);
 			
 			request.setAttribute("sizePerPage", sizePerPage);
+			
+			request.setAttribute("currentShowPageNo", currentShowPageNo);
 			
 			request.setAttribute("userid", userid);
 			

@@ -12,12 +12,13 @@
 <script src="<%=ctxPath %>/js/admin/admin_member_detail.js"></script>
 <script type="text/javascript">
 
-function memberDetail(user_no){
+function memberDetail(user_no, currentShowPageNo){
 	
 	const memberfrm = document.member_management_frm;
 	
 	
 	memberfrm.detail_user_no.value = user_no;
+	memberfrm.currentShowPageNo.value = currentShowPageNo;
 	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
 	memberfrm.method = "post";
 	
@@ -249,18 +250,33 @@ select#searchType{
 	margin-right: 1%;
 }
 
-   div#pageBar {
-      border: solid 0px red;
-      width: 80%;
-      margin: 3% auto 0 auto;
-      display: flex;
-   }
-   
-   div#pageBar > nav {
-      margin: auto;
-   }
 
-/* search end  */
+
+/* 페이징 숫자 처리 시작 */
+div.pagination {
+	border:solid 0px red;
+	display: inline-block;
+	margin: 0 auto;
+}
+
+div.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border-radius: 5px;
+}
+
+div.pagination a.active {
+  /*background-color: #4CAF50;*/
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+div.pagination a:hover:not(.active) {background-color: #ddd;}
+
 </style>
 
 <%-- div top nav start --%>
@@ -318,7 +334,7 @@ select#searchType{
 			</thead>
 			<tbody>
 				<c:forEach var="memberinfo" items="${member_allList}">
-					<tr onclick="memberDetail('${memberinfo.user_no}')" style="cursor:pointer;">
+					<tr onclick="memberDetail('${memberinfo.user_no}','${requestScope.currentShowPageNo}')" style="cursor:pointer;">
 						<td>${memberinfo.user_no}</td>
 						<td>${memberinfo.name}</td>
 						<td style="text-align:left;">${memberinfo.address}&nbsp;${memberinfo.detailaddress}&nbsp;${memberinfo.extraaddress}</td>
@@ -333,11 +349,13 @@ select#searchType{
 	<c:if test="${empty requestScope.member_allList}">
 		<span>등록된 회원이 없습니다.</span>
 	</c:if>
-	<div id="pageBar">
-       <nav>
-          <ul class="pagination">${requestScope.pageBar}</ul>
-       </nav>
-   </div>
+	
+	<div style="margin-top: 5%; display: flex;">
+		<div class='pagination'>
+			${requestScope.pageBar}
+		</div>
+	</div>
+	
    	<div id="modalContainer" class="hidden">
 	  <div id="modalContent">
 	    <div class="container mt-5">
@@ -371,7 +389,7 @@ select#searchType{
 	    		</tbody>
 	    	</table>
 	    	
-		    <input type="text" style="display:none;"/>
+		    <input type="text" name="currentShowPageNo" style="display:none;"/>
 	    </div>
 	  </div>
 	</div>

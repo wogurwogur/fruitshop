@@ -72,8 +72,14 @@ public class MypageIndex extends AbstractController {
 			
 		}
 		else {
-			super.setRedirect(true);
-			super.setViewPage(request.getContextPath()+"/index.ddg");
+			String message = "로그인 후 이용가능합니다!";
+			String loc = request.getContextPath()+"/login/login.ddg";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
 		
 
