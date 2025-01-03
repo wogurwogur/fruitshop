@@ -18,9 +18,12 @@ public class ReviewListVO {
 	
 	
 	private String 	userid;
+	private int 	prod_no;
 	private String 	prod_name;
 	private int 	prod_price;
 	private String  prod_thumnail;
+	private int 	comment_no;
+
 	private int 	comment_count;
 	private String  comment_contents;
 	private String  comment_pwd;
@@ -108,6 +111,19 @@ public class ReviewListVO {
 		this.comment_regidate = comment_regidate;
 	}
 	
+	public int getProd_no() {
+		return prod_no;
+	}
+	public void setProd_no(int prod_no) {
+		this.prod_no = prod_no;
+	}
+	
+	public int getComment_no() {
+		return comment_no;
+	}
+	public void setComment_no(int comment_no) {
+		this.comment_no = comment_no;
+	}
 /////////////////////////////////////////////////
 	
 

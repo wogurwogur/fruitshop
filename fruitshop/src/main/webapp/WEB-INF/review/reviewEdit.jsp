@@ -191,23 +191,22 @@ function rvRegister(){
 	
 		<div class="" style="display:flex; width:70%; height:250px;">
 			
+			<c:if test="${not empty requestScope.productList }"></c:if>
 			<%-- 상품 썸네일 --%>
-			
-			
-			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+			<div class=" ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<i class="fa-regular fa-image" style=""></i>					
+						<img src = "<%= ctxPath%>/images/product/thumnail/${rvo.prod_thumnail}" width="200px" height="200px";"/>					
 				</div>				
 			</div>
 			<%-- 상품 이름 --%>
 			<div class="" style="width:50%; height:80%;">
 				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
-					<span style="font-size:17pt;"></span>			
+					<span style="font-size:17pt;">${rvo.prod_name }</span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
 				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
-					<span style="font-size:17pt;"></span>
+					<span style="font-size:17pt;">${rvo.prod_price }</span>
 				</div>
 			</div>
 			
@@ -279,7 +278,7 @@ function rvRegister(){
 			<button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg'">목록</button>	
 				
 			<div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;" >
-				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister()">등록</button>
+				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister()">수정</button>
 				<button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
 			</div>					
 		</div>	
