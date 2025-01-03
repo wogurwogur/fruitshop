@@ -100,10 +100,6 @@ $(()=>{
 		else {
 			if(passwd_1 != passwd_2) {
 
-				$("input#passwd").val("").focus(); 
-
-			    $(e.target).val(""); 
-
 			    $("span#pwdError").html("비밀번호가 일치하지 않습니다.").addClass("red");
 			}
 			else {

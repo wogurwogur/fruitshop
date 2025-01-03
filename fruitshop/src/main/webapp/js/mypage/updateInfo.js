@@ -50,8 +50,8 @@ $(()=>{
 		}
 		else {
 			if(!bool) {
-						$("span#pwdError").html("올바른 비밀번호가 아닙니다.").addClass("red").removeClass("blue");	
-					}
+				$("span#pwdError").html("올바른 비밀번호가 아닙니다.").addClass("red").removeClass("blue");	
+			}
 			else {
 				if(passwd_1 != passwd_2) {
 	
