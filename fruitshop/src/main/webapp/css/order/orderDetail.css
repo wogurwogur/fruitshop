@@ -3,7 +3,7 @@
 
 div#container {
 	border: solid 0.5px #c0c0c0;
-	width: 40%;
+	width: 45%;
 	margin: 0 auto;
 }
 
@@ -77,6 +77,12 @@ span#address {
 	color: #555555;
 }
 /* 배송정보 끝 */
+
+
+span#goReview {
+	width: 80px;
+	height: 50px;                                            
+}
 
 
 /* 하단 교환, 구매확정 버튼 */

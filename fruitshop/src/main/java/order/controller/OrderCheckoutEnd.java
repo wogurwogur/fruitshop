@@ -22,6 +22,17 @@ public class OrderCheckoutEnd extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		String referer = request.getHeader("referer");
+		// request.getHeader("referer"); 은 이전 페이지의 URL을 가져오는 것이다.
+		
+//		System.out.println("~~~~~ 확인용 referer => "+ referer);
+		
+		if (referer == null) {
+			// referer == null 은 웹브라우저 주소창에 직접 URL을 입력하여 들어온 것이다.
+			super.setRedirect(true);
+			super.setViewPage(request.getContextPath()+ "/index.ddg");
+			return;
+		}
 		
 		if (!"POST".equalsIgnoreCase(request.getMethod())) {
 			// 비정상적으로 접근했을 경우
@@ -119,7 +130,7 @@ public class OrderCheckoutEnd extends AbstractController {
 				jsonObj.put("isComplete", result);	// "{"isComplete": 1}
 				
 				String json = jsonObj.toString();
-				System.out.println("확인용: "+ json);
+//				System.out.println("확인용: "+ json);
 				
 				
 				request.setAttribute("json", json);

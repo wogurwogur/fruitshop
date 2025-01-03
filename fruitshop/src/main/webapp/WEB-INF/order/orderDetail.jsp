@@ -17,36 +17,29 @@ $(document).ready(()=> {
 		const prod_no = $(e.target).parent().find("#prod_no").val();
 		const index   = $("table#orderList tr.productRow td").index($(e.target));
 		const length  = $("table#orderList tr.productRow td").length
+		//const btn_val = $("button.btn-success").val();
+		const evenvt = $(e.target);
 		
-		// console.log("확인용 prod_no: "+ prod_no);
-		// console.log("확인용 length: "+ $("table#orderList tr.productRow td").length);
-		// console.log("확인용 index: "+ $("table#orderList tr.productRow td").index($(e.target)));
+		console.log("확인용 prod_no: "+ prod_no);
+		console.log("확인용 evenvt: "+ evenvt);
+		//console.log("확인용 btn_val: "+ btn_val);
+		console.log("확인용 length: "+ $("table#orderList tr.productRow td").length);
+		console.log("확인용 index: "+ $("table#orderList tr.productRow td").index($(e.target)));
 		// alert("확인용 prod_no"+ prod_no);
-		
-		if (index == length-1) {
+
+		if (index != -1 && index != length-1) {	// 제일 마지막 td클릭이면
+			return;
 			// 상품후기작성으로 보내기
-			location.href = `${pageContext.request.contextPath}`;
+			//location.href = `${pageContext.request.contextPath}`;
 		}
 		else {
 			// 상품 상세페이지로 보내기
-			location.href = `${pageContext.request.contextPath}/product/productDetail.ddg?prodNo=`+prod_no;
+			//location.href = `${pageContext.request.contextPath}/product/productDetail.ddg?prodNo=`+prod_no;
 		}
 		
 	});// end of $("table#orderList tr.productRow").css({"cursor": "pointer"}).click(function(e) {}) --------
 	
 
-	$("table#orderList tr.productRow td:last-child").addClass("btn");
-	$("table#orderList tr.productRow td:last-child").addClass("btn-sm");
-	$("table#orderList tr.productRow td:last-child").addClass("btn-success");
-	
-	$("table#orderList tr.productRow td:last-child").hover(function(){
-		// mouseover
-		
-	}, function() {
-		// mouserout
-	});
-	
-	
 	$("button#orderCommit").click(e => {
 		// 구매확정 시 주문 테이블의 주문 상태값을 변경한다.
 		$("div#commitConfirm").modal();
@@ -57,6 +50,13 @@ $(document).ready(()=> {
 	});// end of $("button#orderCancel").click(() => {}) -----------------
 	
 });// end of $(document).ready(()=> {}) --------------------------- 
+
+
+// 구매후기로 가는 함수
+function goReview() {
+	
+}// end of function goReview() ------------------- 
+
 
 
 // 구매확정하는 함수
@@ -104,7 +104,7 @@ function goCancel() {
        		// alert("경로를 어디로 가야함???");
        	}
 	});
-}// end of function goCommit() -------------------
+}// end of function goCancel() -------------------
 
 </script>
 
@@ -141,7 +141,7 @@ function goCancel() {
 				<table id="orderList" class="table table-border text-center">
 					<thead>
 						<tr>
-							<th></th>
+							<th>이미지</th>
 							<th style="width: 50%">상품명</th>
 							<th>수량</th>
 							<th>가격</th>
@@ -165,7 +165,9 @@ function goCancel() {
 									<c:if test="${orderItem.ship_status == 2}">배송중</c:if>	
 									<c:if test="${orderItem.ship_status == 3}">배송완료</c:if>	
 								</td>
-								<td>후기작성</td>
+								<td>
+									<button type="button" class="btn btn-success btn-sm" value="후기">후기작성</button>  
+								</td>
 							</tr>							
 						</c:forEach>
 						<%-- 상품리스트 반복문 --%>

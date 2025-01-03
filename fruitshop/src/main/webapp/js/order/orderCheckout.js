@@ -41,18 +41,20 @@ $(document).ready(() => {
 		// === 모달창 쿠폰 고르기 이벤트 시작 === //
 		$("table#couponInfo tr").on("dblclick", e => {
 			deleteCoupon();
+			let dcPrice = 0;
 			
 			const coupon_name 	  = $(e.target).parent().children(".coupon_name").text();
 			const coupon_expdate  = $(e.target).parent().children(".coupon_expdate").text();
 			const coupon_discount = $(e.target).parent().children(".coupon_discount").text();
 			const coupon_no 	  = $(e.target).parent().children().find(".coupon_no").val();
+			const index = $("span.total_price").text().indexOf("원");
 			
 			//console.log("coupon_name : ", coupon_name);
 			//console.log("coupon_expdate : ", coupon_expdate);
 			//console.log("coupon_discount : ", coupon_discount);
-			console.log("coupon_no : ", coupon_no);
+			// console.log("coupon_no : ", coupon_no);
 			// console.log("입력된 쿠폰번호:", $("input:hidden[name='coupon_no']").val());
-			console.log("입력된 쿠폰번호:", document.querySelector("input[name='coupon_no']").value);
+			// console.log("입력된 쿠폰번호:", document.querySelector("input[name='coupon_no']").value);
 			
 			$("td#coupon_name").html(coupon_name);
 			$("td#coupon_expdate").html(coupon_expdate);
@@ -65,9 +67,14 @@ $(document).ready(() => {
 			$("span#discount").html(coupon_discount+"원");
 			
 			const discount 	= Number(coupon_discount.split(",").join(""));
-			const tprice 	= Number($("input:hidden[name='order_tprice']").val());
+			//const tprice 	= Number($("input:hidden[name='order_tprice']").val());
+			const tprice 	= Number($("span.total_price").text().substring(0, index).split(",").join(""));;
+			console.log("discount: ", discount);
+			console.log("tprice: ", tprice);
 			
-			let dcPrice = tprice - discount;
+			
+			dcPrice = tprice - discount;
+			console.log("dcPrice: ", dcPrice);
 			
 			if (dcPrice < 0) {
 				dcPrice = 0;
@@ -75,7 +82,8 @@ $(document).ready(() => {
 			
 			// DB에 넘어갈 값 추가
 			$("input:hidden[name='order_tprice']").val(dcPrice);
-			console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+			//console.log("DB전송 총결제금액", $("input:hidden[name='order_tprice']").val());
+			// console.log("dcPrice: ", dcPrice);
 			
 			// 총금액들에 추가
 			$("span.total_price").html(dcPrice.toLocaleString("en")+"원");
@@ -158,6 +166,7 @@ $(document).ready(() => {
 		});// end of $("table#orderList td.prod_price").each((index, element) => {}) ----------------- 
 		
 		
+		//여기손봐야함
 		// 실제 DB에 들어갈 값 지정하기			
 		$("input:hidden[name='order_tprice']").val(price_sum + price_ship);
 		$("input:hidden[name='point']").val(price_sum * 0.01);
@@ -288,7 +297,6 @@ function deleteCoupon() {
 	const currentPrice = Number($("span.total_price").text().substring(0, index).split(",").join(""));
 	let changePrice = 0;
 	console.log("currentPrice: ", currentPrice);
-	
 	
 	// 쿠폰 금액이 주문 금액보다 컸을 경우
 	if (currentPrice == 0) {
