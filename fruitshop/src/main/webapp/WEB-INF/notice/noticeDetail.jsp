@@ -33,18 +33,133 @@ function deleteNotice(){
 	
 }
 
+$(document).ready(function(){
+	const NoticeModalUpdateOpen = document.getElementById('NoticeModalUpdateOpen');
+	const NoticeModalUpdateClose = document.getElementById('NoticeModalUpdateClose');
+	const modal = document.getElementById('modalContainer');
+	const NoticeModalUpdateSubmit = document.getElementById('NoticeModalUpdateSubmit');
+
+	NoticeModalUpdateOpen.addEventListener('click', () => {
+	  modal.classList.remove('hidden');
+	});
+
+	NoticeModalUpdateClose.addEventListener('click', () => {
+	  modal.classList.add('hidden');
+	});	
+	
+	$("button#NoticeModalUpdateSubmit").click(function(){
+		
+		
+		const notice_title = $("input:text[name='notice_title']").val();
+		const noticetitle_Reg = /^[가-힣]{2,50}$/;
+		
+		if(notice_title == ""){
+			alert("공지사항 제목을 입력해주세요.");
+			return;
+		}
+		if(!noticetitle_Reg.test(notice_title)){
+			alert("공지사항 제목은은 한글로 2글자 이상 50글자 이하로 입력해주세요.");
+			return;
+		}
+		
+		
+		const notice_contents = $("textarea[name='notice_contents']").val();
+		const noticecontents_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,200}$/;
+		
+		if(notice_contents == ""){
+			alert("공지사항 내용을 입력해주세요.");
+			return;
+		}
+		if(!noticecontents_Reg.test(notice_contents)){
+			alert("공지사항 내용은 한글로 글자 이상 200 글자 이하로 입력해주세요.");
+			return;
+		}
+			
+		
+		if(!confirm("공지사항을 수정하시겠습니까?")){
+			return;
+		}
+		
+		$.ajax({
+              url : "${pageContext.request.contextPath}/notice/updateNotice.ddg",
+              type : "post",
+              data : {
+            	"notice_no":"${(requestScope.noticeDetail).notice_no}",
+            	"notice_title":notice_title,
+            	"notice_contents":notice_contents
+              },
+              dataType:"json",
+              success:function(json){
+                 console.log("~~~ 확인용 : " + JSON.stringify(json));
+                 // ~~~ 확인용 : {"result":1}
+                 
+                 if(json.n == 1) {
+                    location.href="${pageContext.request.contextPath}/notice/detailNotice.ddg?notice_no_detail="+json.notice_no;
+                 }
+                 
+              },
+              error: function(request, status, error){
+                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                 
+              }
+              
+ 			});
+		
+		
+		
+	});
+	
+});
+
+
 </script>
 
 <style type="text/css">
 
-.delShow{
-	display:inline;
+
+#modalOpenButton, #modalCloseButton {
+  cursor: pointer;
 }
 
-.delHide{
-	display:none;
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
 }
 
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 500px;
+  height: 480px;
+  padding: 15px;
+  border-radius: 20%;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContainer.hidden {
+  display: none;
+}
 </style>
 
 
@@ -58,7 +173,7 @@ function deleteNotice(){
 	<div>
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
-		    <a class="nav-link mr-5" href="/notice/noticeList.ddg" style="color: black; border-bottom: solid black 2px;">공지사항</a>
+		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black; border-bottom: solid black 2px;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
@@ -105,6 +220,7 @@ function deleteNotice(){
 				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg'" style="float: right; ">돌아가기</button>
 				<c:if test="${sessionScope.loginuser.role == 2}">
 				<button type="button" class="btn btn-outline-danger" onclick="deleteNotice()" style="float: right; margin-right:0.8%">글삭제</button>
+				<button type="button" class="btn btn-outline-success" style="float: right; margin-right:0.8%" id="NoticeModalUpdateOpen">글수정</button>
 				</c:if>
 				<form name="noticeDetailForm">
 					<input type="hidden" name="notice_no">				
@@ -114,7 +230,35 @@ function deleteNotice(){
 			 
 		</div>
 	</div>
-	
+		<div id="modalContainer" class="hidden">
+	  <div id="modalContent">
+	    <div class="container mt-5">
+	    	<table class="table" style="text-align:center;">
+	    		<thead>
+	    			<tr>
+	    				<th colspan="2">${requestScope.noticeDetail.notice_title} 수정하기</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<tr>
+	    				<td>제목</td>
+	    				<td><input type="text" name="notice_title" size="8"></td>
+	    			</tr>
+	    			<tr>
+	    				<td>내용</td>
+	    				<td><textarea name="notice_contents"></textarea></td>
+	    			</tr>
+	    			<tr>
+	    				<td><button class="btn btn-outline-success" type="button" id="NoticeModalUpdateSubmit">수정하기</button></td>
+	    				<td><button class="btn btn-outline-secondary" type="button" id="NoticeModalUpdateClose">나가기</button></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	
+		    <input type="text" style="display:none;"/>
+	    </div>
+	  </div>
+	</div>
 </div>
 </div>
 

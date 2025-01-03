@@ -2,6 +2,7 @@ package notice.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import notice.domain.NoticeVO;
 
@@ -21,6 +22,9 @@ public interface NoticeDAO {
 
 	// 권한을 확인후 조회수를 업데이트 하는 메소드
 	int setViewCount(String notice_no) throws SQLException;
+
+	// 공지사항을 수정하는 메소드
+	int updateNotice(Map<String, String> map) throws SQLException;
 	
 	
 

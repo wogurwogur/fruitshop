@@ -39,9 +39,6 @@ public class DetailNotice extends AbstractController {
 		}
 		
 		
-		
-		System.out.println(noticeDetail.getNotice_title());
-		
 		request.setAttribute("loginuser", loginuser);
 		
 		noticeDetail.setNotice_contents(noticeDetail.getNotice_contents().replaceAll("\r\n", "<br>"));

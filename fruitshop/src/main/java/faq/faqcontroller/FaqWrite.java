@@ -1,55 +1,54 @@
-package notice.noticecontroller;
-
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+package faq.faqcontroller;
 
 import common.controller.AbstractController;
+import faq.model.FaqDAO;
+import faq.model.FaqDAO_imple;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
-import notice.domain.NoticeVO;
-import notice.model.NoticeDAO;
-import notice.model.NoticeDAO_imple;
 
-public class DeleteNotice extends AbstractController {
+public class FaqWrite extends AbstractController {
 
-	NoticeDAO ndao = new NoticeDAO_imple();
+	FaqDAO fdao = new FaqDAO_imple();
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		HttpSession session = request.getSession();
 		
-		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
-		
 		String method = request.getMethod();
 		
-		if("POST".equals(method) && loginuser.getRole() == 2) {
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		if(loginuser.getRole() == 2 && "POST".equals(method)) {
 			
-			String notice_no = request.getParameter("notice_no");
+			String faq_title = request.getParameter("faq_title");
+			String faq_contents = request.getParameter("faq_contents");
 			
-			int n = ndao.deleteNotice(notice_no);
+			
+			
+			int n = fdao.FaqWrite(faq_title, faq_contents);
 			
 			if(n == 1) {
-					
-				List<NoticeVO> noticeList = ndao.noticeSelectAll();
 				
-				request.setAttribute("noticeList", noticeList);
-				
+				System.out.println("sql문 성공");
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/notice/notice.jsp");
-						
+				super.setViewPage("/faq/faqList.ddg");
+				
+			}else {
+				System.out.println("sql문 실패");
 			}
-				
-				
-				
-				
-		}else {
 			
+			
+			
+		}else if(loginuser.getRole() == 2 && "GET".equals(method)) {
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/faq/faqWrite.jsp");
+			
+		}else {
 			String message = "관리자만 접근이 가능합니다.";
 	        String loc = "javascript:history.back()";
 	        
@@ -59,7 +58,7 @@ public class DeleteNotice extends AbstractController {
 	        super.setRedirect(false);
 	        super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
-			
+
 	}
 
 }

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import index.domain.MainVO;
 import member.domain.MemberVO;
 
 public interface AdminDAO {
@@ -29,5 +30,14 @@ public interface AdminDAO {
 	
 	// 관리자가 아닌 회원의 수를 가져오는 메소드
 	int memberAllCount() throws SQLException;
+
+	// 메인페이지 사진을 넣는 메소드
+	int insertMainPageImg(MainVO mvo) throws SQLException;
+
+	// 메인화면 정보를 가져오는 메소드
+	MainVO MainPageDetail(String imgno) throws SQLException;
+
+	// 메인페이지 delete 메소드
+	int mainPageDelete(String imgno) throws SQLException;
 	
 }

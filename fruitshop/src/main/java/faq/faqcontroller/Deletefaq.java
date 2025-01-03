@@ -1,22 +1,20 @@
-package notice.noticecontroller;
+package faq.faqcontroller;
 
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import common.controller.AbstractController;
+import faq.domain.FaqVO;
+import faq.model.FaqDAO;
+import faq.model.FaqDAO_imple;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import notice.domain.NoticeVO;
-import notice.model.NoticeDAO;
-import notice.model.NoticeDAO_imple;
 
-public class DeleteNotice extends AbstractController {
+public class Deletefaq extends AbstractController {
 
-	NoticeDAO ndao = new NoticeDAO_imple();
+	FaqDAO fdao = new FaqDAO_imple();
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -29,21 +27,21 @@ public class DeleteNotice extends AbstractController {
 		
 		if("POST".equals(method) && loginuser.getRole() == 2) {
 			
-			String notice_no = request.getParameter("notice_no");
+			String faq_no = request.getParameter("faq_no");
 			
-			int n = ndao.deleteNotice(notice_no);
+			int n = fdao.deleteFaq(faq_no);
 			
 			if(n == 1) {
 					
-				List<NoticeVO> noticeList = ndao.noticeSelectAll();
+				List<FaqVO> faqList = fdao.faqListAll();
 				
-				request.setAttribute("noticeList", noticeList);
+				request.setAttribute("faqList", faqList);
 				
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/notice/notice.jsp");
+				super.setViewPage("/WEB-INF/faq/faqList.jsp");
 						
-			}
+				}
 				
 				
 				
@@ -59,7 +57,7 @@ public class DeleteNotice extends AbstractController {
 	        super.setRedirect(false);
 	        super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
-			
+
 	}
 
 }
