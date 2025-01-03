@@ -158,7 +158,7 @@ select#searchType{
 <form name="mainPageDetailFrm">
 
 <input type="text" style="display:none;" name="imgno" />
-<input type="text" style="display:none;"" name="imgfilename" />
+<input type="text" style="display:none;" name="imgfilename" />
 
 <%-- div top nav end --%>
 
