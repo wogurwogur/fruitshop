@@ -298,7 +298,7 @@ input[type="number"]{
 				<!-- <td><button type="button" class="btn btn-outline-success" id="couponModal">징계처분</button></td> -->
 				<c:if test="${requestScope.detailMember.role eq '1'}"><td><button type="button" class="btn btn-outline-success" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no}')">관리자권한부여</button></td></c:if>
 				<c:if test="${requestScope.detailMember.role eq '2'}"><td><button type="button" class="btn btn-outline-danger" onclick="adminRoleAddandRemove('${requestScope.detailMember.role}','${requestScope.detailMember.user_no}')">관리자권한박탈</button></td></c:if>
-				<td><button type="button" class="btn btn-outline-secondary" onclick="javascript:location.href='<%=ctxPath%>/admin/adminManagement.ddg'">돌아가기</button></td>
+				<td><button type="button" class="btn btn-outline-secondary" onclick="javascript:location.href='<%=ctxPath%>/admin/adminManagement.ddg?searchType=&sizePerPage=10&searchWord=&currentShowPageNo=${requestScope.currentShowPageNo}'">돌아가기</button></td>
 			</tr>
 		</tbody>
 	</table>
