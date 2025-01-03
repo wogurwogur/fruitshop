@@ -55,8 +55,10 @@ public class AdminProductOneDetail extends AbstractController {
 				List<ProductVO> seasonInfo = prdao.seasonInfo();
 				request.setAttribute("seasonInfo", seasonInfo);
 				
-
+				ProductVO prdvo = prdao.prdDetails(prod_no); // 상품 정보 출력을 위해 기존 상세페이지 출력하던 메소드를 다시 불러온다.
+				
 				request.setAttribute("prod_no", prod_no); // 상품 번호 디테일 페이지에 전달
+				request.setAttribute("prdvo", prdvo);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/admin_page/admin_product_onedetail.jsp");
@@ -114,8 +116,8 @@ public class AdminProductOneDetail extends AbstractController {
 								part.delete();
 							
 								prod_descript = newFilename;
-							}
-							
+								
+							} 
 
 						} // end of if(part.getSize() > 0)
 

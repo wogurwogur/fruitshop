@@ -19,8 +19,12 @@
 
 	$(document).ready(function(){
 		
+		
 		   // 처음 페이지 들어오면 에러 문구 숨기기 	
 		   $("span.error").hide();
+		   
+			// 상품명에 포커스
+			$("input#prod_name").focus();
 		   
 		   // "제품수량" 에 스피너 달아주기
 		   $("input#spinnerPqty").spinner({
@@ -103,29 +107,99 @@
 		    }); // end of $(document).on("change", "input.img_file", function(e)	
 		    		
 		 	// -------- 썸네일 이미지 및 상세이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 끝 -------- //
-		   
-		   	
+
+		 	
+		 	
 		 	
 		 	
 		 	// -------------------------- 제품 수정하기 -------------------------- //
 		    
 		 	$("input:button[id='btnUpdate']").click(function(){
+		 				 		
+		 		$("span.error").hide();	 	
 		 		
-		 		$("span.error").hide();
+		 		// ------------------ 유효성 검사 ------------------ //
+		 		let prod_infoData_OK = true; // 유효성 여부 확인하는 용도
 		 		
-		 		let prod_infoData_OK = true;
 		 		
-		 		$(".prod_infoData").each(function(index, elmt){
-		 			const val = $(elmt).val().trim();
-		 			if(val == "") {
-		 				$(elmt).next().show(); // span 태그의 에러 보여준다.
+		 		// 상품명 확인
+		 		const prod_name = $("input#prod_name").val().trim();
+		 		if (prod_name == "") {
+		 			$("input#prod_name").parent().find("span.error").show();
+		 			prod_infoData_OK = false;
+      				return false;
+		 		}
+		 		
+		 		
+		 		// 원가 확인
+		 		const regExp_prod_cost = /^[0-9]+$/g;
+				const prod_cost = regExp_prod_cost.test($("input#prod_cost").val());
+				if(!prod_cost) {
+					$("input#prod_cost").parent().find("span.error").show();
+					prod_infoData_OK = false;
+      				return false;
+				}
+				
+				
+				// 가격확인
+				const regExp_prod_price = /^[0-9]+$/g;
+				const prod_price = regExp_prod_price.test($("input#prod_price").val())
+				
+				if(!prod_price) {
+					$("input#prod_price").parent().find("span.error").show();
+					prod_infoData_OK = false;
+      				return false;
+				}
+		 		
+				
+				// 재고확인
+				const regExp_spinnerPqty = /^[0-9]+$/g;
+				const spinnerVal = $("input#spinnerPqty").val();
+				const prod_inventory = regExp_spinnerPqty.test($("input#spinnerPqty").val())
+				
+		 		if(!prod_inventory) {
+		 			$("span#prod_inventory").show();
+		 			prod_infoData_OK = false;
+		 			return false;
+		 		}
+		 		else {
+		 			if(spinnerVal > 100 || spinnerVal < 1) {
+		 				alert("재고는 최소 1개 이상 최대 100개 이하까지 가능합니다.");
 		 				prod_infoData_OK = false;
+		 				return false;
+		 			}	
+		 		}
+				
+				
+				// 계절값
+				const fk_season_no = $("select#fk_season_no").val();
+				if(fk_season_no == 0) {
+					$("select#fk_season_no").parent().find("span.error").show();
+					prod_infoData_OK = false;
+					return false;
+				}
+				
+				if (total_fileSize > 0) {
+					// 상품이미지
+					const prod_thumnail = $("input#prod_thumnail").val();
+					if(prod_thumnail == "") {
+						$("input#prod_thumnail").parent().find("span.error").show();
+			 			prod_infoData_OK = false;
 	      				return false;
-		 			}
-		 			
-		 		}); // end of $(".prod_infoData").each(function(index, elmt)
-		 		
-		 				
+					}
+					
+					
+					// 상품 상세이미지
+					const prod_descript = $("input#prod_descript").val();
+					if(prod_descript == "") {
+						$("input#prod_descript").parent().find("span.error").show();
+			 			prod_infoData_OK = false;
+	      				return false;
+					}
+				}
+				
+				// ------------------ 유효성 검사 끝 ------------------ //
+							
 		 		// form 태그 전송하기		
 		 		if(prod_infoData_OK) {
 		 			
@@ -143,22 +217,44 @@
 		 				});
 		 			}
 		 			
-		 			$.ajax({
-		 				url: "${pageContext.request.contextPath}/admin/adminProductOneDetail.ddg",
-		 				type: "post",
-		 				data: formData,
-	                    processData: false,  // 파일 전송시 설정 
-	                    contentType: false,  // 파일 전송시 설정
-	                    dataType: "json",
-	                    success: function(json){
-	                    	if(json.result == 1) {
-	                         	location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg"; 
-	                       }
-	                    },
-		 				error: function(request, status, error){
-                      		alert("첨부된 파일의 크기의 총합이 10MB 를 초과하여 제품등록이 실패했습니다.");
-                 		}
-		 			});
+		 			
+		 			if (total_fileSize > 0) {
+			 			$.ajax({
+			 				url: "${pageContext.request.contextPath}/admin/adminProductOneDetail.ddg",
+			 				type: "post",
+			 				data: formData,
+		                    processData: false,  // 파일 전송시 설정 
+		                    contentType: false,  // 파일 전송시 설정
+		                    dataType: "json",
+		                    success: function(json){
+		                    	if(json.result == 1) {
+		                         	location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg"; 
+		                       }
+		                    },
+			 				error: function(request, status, error){
+	                      		alert("첨부된 파일의 크기의 총합이 10MB 를 초과하여 제품등록이 실패했습니다.");
+	                 		}
+			 			});
+		 			} 
+		 			
+		 			else { // 이미지 파일 첨부가 없는 경우에
+		 				$.ajax({
+			 				url: "${pageContext.request.contextPath}/admin/adminProductNoImgUpdate.ddg",
+			 				type: "post",
+			 				data: formData,
+		                    processData: false,  // 파일 전송시 설정 
+		                    contentType: false,  // 파일 전송시 설정
+		                    dataType: "json",
+		                    success: function(json){
+		                    	if(json.result == 1) {
+		                         	location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg"; 
+		                       }
+		                    },
+			 				error: function(request, status, error){
+	                      		alert("상품 수정에 실패하였습니다.");
+	                 		}
+			 			});
+		 			}
 		 			
 		 		} // end of if(prod_infoData_OK)
 		 		
@@ -167,6 +263,13 @@
 		 	// -------------------------- 제품 수정하기 끝 -------------------------- //
 		 				   
 	}); // $(document).ready(function()   
+			
+			
+	function goReset() { // 취소 버튼 클릭
+
+	    location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg";
+
+	}// end of function goReset()---------------------	
 
 
 
@@ -183,90 +286,93 @@
 	<form name="prodUpdateFrm" enctype="multipart/form-data">
 		<div id="table">
 			<table class="table table-borderless">
-				<colgroup>
-				<col style="width: 20%;">
-				<col style="width: 80%;">
-				<colgroup>
 				<tbody>
 					<tr>
 						<td class="tdTitle">상품명</td>
-						<td>
-							<input type="text" name="prod_name" id="prod_name" maxlength="20" class="prod_infoData" />
+						<td class="tdContents">
+							<input type="text" name="prod_name" id="prod_name" maxlength="20" class="prod_infoData" value="${requestScope.prdvo.prod_name}"/>
 							<span class="error">상품명은 필수입력 사항입니다.</span>
 						</td>
 					</tr>
 					<tr>	
 						<td class="tdTitle">원가</td>
-						<td>
-							<input type="text" name="prod_cost" id="prod_cost" class="prod_infoData" />
-							<span class="error">원가는 필수입력 사항입니다.</span>
+						<td class="tdContents">
+							<input type="text" name="prod_cost" id="prod_cost" class="prod_infoData" value="${requestScope.prdvo.prod_cost}" />
+							<span class="error">원가는 필수 입력사항이며, 숫자로만 입력 가능합니다.</span>
 						</td>
 					</tr>
 					<tr>
 						<td class="tdTitle">가격</td>
-						<td>
-							<input type="text" name="prod_price" id="prod_price" class="prod_infoData" />
-							<span class="error">가격은 필수입력 사항입니다.</span>
+						<td class="tdContents">
+							<input type="text" name="prod_price" id="prod_price" class="prod_infoData" value="${requestScope.prdvo.prod_price}" />
+							<span class="error">가격은 필수 입력사항이며, 숫자로만 입력 가능합니다.</span>
 						</td>
 					</tr>
 					<tr>
 						<td class="tdTitle">재고</td>
-						<td>
-							<input name="prod_inventory" id="spinnerPqty" value="1" class="prod_infoData" /> 개
+						<td lass="tdContents">
+							<input name="prod_inventory" id="spinnerPqty" value="${requestScope.prdvo.prod_inventory}" class="prod_infoData" />
+							<span id="prod_inventory" class="error">재고는 필수 입력사항이며, 숫자로만 입력 가능합니다.</span>
 						</td>
 					</tr>
 					<tr>
 						<td class="tdTitle">계절분류</td>
-						<td>
+						<td class="tdContents">
 							<select name="fk_season_no" class="prod_infoData" >
 								<option value="">선택</option>	
 								<c:forEach var="seasonvo" items="${requestScope.seasonInfo}">
 									<option value="${seasonvo.season_no}">${seasonvo.season_name}</option>  
 								</c:forEach>  
 							</select>
+							<span class="error">계절분류는 필수 입력사항입니다.</span>
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="tdTitle">판매여부</td>
-						<td>
+						<td class="tdContents">
 							<select name="prod_status" class="prod_infoData" >
 								 <option value="">선택</option>
 								 <option value="0">미판매</option> 
 								 <option value="1">판매중</option> 
 							</select>
+							<span class="error">판매여부는 필수 입력사항입니다.</span>
 						</td>
 					</tr>
 	
 					<tr>
 						<td class="tdTitle">상품이미지</td>
-						<td>
-							<input type="file" name="prod_thumnail" class="thumnail_img_file prod_infoData" accept='image/*' />
+						<td class="tdContents">
+							<input type="file" id="prod_thumnail" name="prod_thumnail" class="thumnail_img_file prod_infoData" accept='image/*' />
+							<input type="hidden" name ="org_prod_thumnail" value="${requestScope.prdvo.prod_thumnail}" />
+							<span class="error">상품 이미지는 필수 입력사항입니다.</span>
 						</td>
 					</tr>
 					<tr>
 		                <td class="tdTitle">이미지 미리보기</td>
-		                <td>
-	               			<img id="previewthumnail" width="300" height="300" />
+		                <td class="tdContents">
+	               			<img id="previewthumnail" width="300" height="300" src="<%=request.getContextPath()%>/images/product/thumnail/${requestScope.prdvo.prod_thumnail}" />
 		                </td>
 		          	</tr>
 					<tr>
 						<td class="tdTitle">상품상세이미지</td>
-						<td>
+						<td class="tdContents"> 
 							<input type="file" name="prod_descript" class="prodDescript_img_file prod_infoData" accept='image/*' />
+							<input type="hidden" name ="org_prod_descript" value="${requestScope.prdvo.prod_descript}" />
+							<span class="error">상품 상세이미지는 필수 입력사항입니다.</span>
 						</td>
 					</tr>
 					<tr>
 		                <td class="tdTitle">상세이미지 미리보기</td>
-		                <td>
-			            	<img id="previewdescript" width="300" height="300" />
+		                <td class="tdContents">
+			            	<img id="previewdescript" width="300" height="300" src="<%=request.getContextPath()%>/images/product/description/${requestScope.prdvo.prod_descript}"/>
 		                </td>
 	          		</tr>
 					
 					<tr>
 	                    <td colspan="2" class="text-center" style="padding: 30px 0 10px 0;">
 	                       <input type="button" id="btnUpdate" class="btn btn-success mr-5" value="수정하기" />
-	                       <input type="reset"  class="btn btn-danger" value="돌아가기" />
+	                       <input type="reset"  class="btn btn-danger" value="돌아가기" onclick="goReset()" />
 	                    </td>
 	                </tr>
 					
