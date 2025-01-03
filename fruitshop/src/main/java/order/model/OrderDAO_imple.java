@@ -1046,7 +1046,7 @@ public class OrderDAO_imple implements OrderDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql 	= " UPDATE tbl_order SET order_status = 5 "
+			String sql 	= " UPDATE tbl_order SET order_status = 5 , order_changedate = sysdate "
 						+ "  WHERE order_no = ? AND fk_user_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -1198,23 +1198,24 @@ public class OrderDAO_imple implements OrderDAO {
 	    	conn = ds.getConnection();
 	         
 	        String sql 	= " SELECT C.RNO, C.order_no, C.fk_user_no, C.order_date, C.order_tprice, C.order_status, C.prod_no "
-		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver "
-		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status, C.name "
+		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver, C.delivery_date "
+		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status, C.name, C.order_changedate "
 		        		+ "   FROM  "
 		        		+ "		( "
 		        		+ "		SELECT ROWNUM AS RNO, B.order_no, B.fk_user_no, B.order_date, B.order_tprice, B.order_status, B.prod_no "
-		        		+ "		 	 , B.order_postcode, B.order_address, B.order_detailaddress, B.order_extraadress, B.order_receiver "
-		        		+ "		 	 , B.ordetail_count, B.ordetail_price, B.prod_name, B.prod_thumnail, B.order_receivertel, B.ship_status, B.name "
+		        		+ "		 	 , B.order_postcode, B.order_address, B.order_detailaddress, B.order_extraadress, B.order_receiver, B.delivery_date "
+		        		+ "		 	 , B.ordetail_count, B.ordetail_price, B.prod_name, B.prod_thumnail, B.order_receivertel, B.ship_status, B.name, B.order_changedate "
 		        		+ "	  	  FROM  "
 		        		+ "			( "
-		        		+ "			SELECT A.order_no, A.fk_user_no, A.order_date, A.order_tprice, A.order_status, p.prod_no "
+		        		+ "			SELECT A.order_no, A.fk_user_no, A.order_date, A.order_tprice, A.order_status, p.prod_no, A.delivery_date "
 		        		+ "			 	 , A.order_postcode, A.order_address, A.order_detailaddress, A.order_extraadress, A.order_receiver "
-		        		+ "			 	 , A.ordetail_count, A.ordetail_price, p.prod_name, p.prod_thumnail, A.order_receivertel, A.ship_status, m.name "
+		        		+ "			 	 , A.ordetail_count, A.ordetail_price, p.prod_name, p.prod_thumnail, A.order_receivertel, A.ship_status, m.name, A.order_changedate "
 		        		+ "		  	  FROM "
 		        		+ "				( "
 		        		+ "				SELECT o.order_no, o.fk_user_no, to_char(o.order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date, o.order_tprice, o.order_status, od.fk_prod_no "
 		        		+ "				 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress, o.order_receiver, od.ordetail_count, od.ordetail_price "
-		        		+ "				 	 , od.ship_status, o.order_receivertel "
+		        		+ "				 	 , od.ship_status, o.order_receivertel, to_char(o.order_changedate, 'yyyy-mm-dd hh24:mi:ss') AS order_changedate"
+		        		+ "					 , to_char(od.delivery_date, 'yyyy-mm-dd hh24:mi:ss') AS delivery_date "
 		        		+ "			  	  FROM tbl_order o JOIN tbl_orderdetail od "
 		        		+ "			    	ON o.order_no = od.fk_order_no "
 		        		+ "			 WHERE to_char(order_date, 'yyyy-mm-dd') BETWEEN ? AND ? ";
@@ -1372,12 +1373,16 @@ public class OrderDAO_imple implements OrderDAO {
 	        	map.put("order_detailaddress", rs.getString("order_detailaddress"));
 	        	map.put("order_extraadress", rs.getString("order_extraadress"));
 	        	map.put("order_receiver", rs.getString("order_receiver"));
+	        	
 	        	map.put("ordetail_count", rs.getString("ordetail_count"));
 	        	map.put("ordetail_price", rs.getString("ordetail_price"));
 	        	map.put("prod_name", rs.getString("prod_name"));
 	        	map.put("prod_thumnail", rs.getString("prod_thumnail"));
 	        	map.put("ship_status", rs.getString("ship_status"));
 	        	map.put("name", rs.getString("name"));
+	        	
+	        	map.put("delivery_date", rs.getString("delivery_date"));
+	        	map.put("order_changedate", rs.getString("order_changedate"));
 	        	
 	        	adminOrderList.add(map);
 	        	
@@ -1401,7 +1406,7 @@ public class OrderDAO_imple implements OrderDAO {
 			
 			conn.setAutoCommit(false);      // 수동 커밋
 			
-			String sql 	= " UPDATE tbl_order SET order_status = ? "
+			String sql 	= " UPDATE tbl_order SET order_status = ?, order_changedate = sysdate "
 						+ "  WHERE order_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -1412,15 +1417,29 @@ public class OrderDAO_imple implements OrderDAO {
 			int n = pstmt.executeUpdate();
 			
 			if (n == 1) {
-				sql 	= " UPDATE tbl_orderdetail SET ship_status = ? "
-						+ "  WHERE fk_order_no = ? AND fk_prod_no = ? ";
 				
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setInt(1, Integer.parseInt(paraMap.get("ship_status")));
-				pstmt.setString(2, paraMap.get("order_no"));
-				pstmt.setInt(3, Integer.parseInt(paraMap.get("prod_no")));
-				
+				// 배송완료 처리 됐을 경우
+				if (Integer.parseInt(paraMap.get("ship_status")) == 3) {
+					sql 	= " UPDATE tbl_orderdetail SET ship_status = ?, delivery_date = sysdate "
+							+ "  WHERE fk_order_no = ? AND fk_prod_no = ? ";
+					
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setInt(1, Integer.parseInt(paraMap.get("ship_status")));
+					pstmt.setString(2, paraMap.get("order_no"));
+					pstmt.setInt(3, Integer.parseInt(paraMap.get("prod_no")));
+					
+				}
+				else {
+					sql 	= " UPDATE tbl_orderdetail SET ship_status = ? "
+							+ "  WHERE fk_order_no = ? AND fk_prod_no = ? ";
+					
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setInt(1, Integer.parseInt(paraMap.get("ship_status")));
+					pstmt.setString(2, paraMap.get("order_no"));
+					pstmt.setInt(3, Integer.parseInt(paraMap.get("prod_no")));
+				}
 				result = pstmt.executeUpdate();
 			}
 			
@@ -1453,7 +1472,7 @@ public class OrderDAO_imple implements OrderDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql 	= " UPDATE tbl_order SET order_status = 2 "
+			String sql 	= " UPDATE tbl_order SET order_status = 2, order_changedate = sysdate "
 						+ "  WHERE order_no = ? AND fk_user_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);

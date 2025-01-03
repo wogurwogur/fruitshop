@@ -20,6 +20,46 @@ $(document).ready(()=> {
 	$("select[name='searchShip']").val("${requestScope.searchShip}");
 	$("input:text[name='searchWord']").val("${requestScope.searchWord}");
 	
+	$("input#fromDate").val("${requestScope.fromDate}");
+	$("input#toDate").val("${requestScope.toDate}");
+	
+	$(function() {
+        //모든 datepicker에 대한 공통 옵션 설정
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd' //Input Display Format 변경
+            ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+            ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+            ,changeYear: true //콤보박스에서 년 선택 가능
+            ,changeMonth: true //콤보박스에서 월 선택 가능                
+        // ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시됨. both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시됨.  
+        // ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        // ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
+        // ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+            ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+            ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+            ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+            ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+        // ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        // ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                    
+        });
+
+        // input을 datepicker로 선언
+        $("input#fromDate").datepicker();                    
+        $("input#toDate").datepicker();
+        
+        
+        if (${empty requestScope.fromDate}){
+	        // From의 초기값을 3개월 전으로 설정
+	        $('input#fromDate').datepicker('setDate', '-3M+1D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+        }
+        
+        if (${empty requestScope.fromDate}){
+            // To의 초기값을 오늘로 설정
+	        $('input#toDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+        }
+
+    });
 	
 	// === 필터 버튼 조회 시 이벤트 처리 시작 === //
 	$("button.btn-secondary").on("click", () => {
@@ -208,6 +248,8 @@ $(document).ready(()=> {
 								<input type="hidden" class="extraAddress" value="${orderItem.order_extraadress}" />
 								<input type="hidden" class="order_receiver" value="${orderItem.order_receiver}" />
 								<input type="hidden" class="prod_no" value="${orderItem.prod_no}" />
+								<input type="hidden" class="order_changedate" value="${orderItem.order_changedate}" />
+								<input type="hidden" class="delivery_date" value="${orderItem.delivery_date}" />
 								<%-- 상세정보에 들어갈 값 넣어주기 --%>
 							</td>
 						</tr>
@@ -242,6 +284,8 @@ $(document).ready(()=> {
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">상품명 &nbsp;</label><input id="prod_name" style="width:60%;" type="text" readonly/>
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">상품금액 &nbsp;</label><input id="order_tprice" style="width:60%;" type="text" readonly/>
 		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문일시 &nbsp;</label><input id="order_date" style="width:60%;" type="text" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">주문상태변경일시 &nbsp;</label><input id="order_changedate" style="width:60%;" type="text" readonly/>
+		     				<label class="text-left" style="margin: 2% 0.6% 2% 1%; width: 30%;">배송완료시간 &nbsp;</label><input id="delivery_date" style="width:60%;" type="text" readonly/>
 		     				<label class="text-left" style="margin-top: 2%; margin-left: 1%; width: 30%;">주문상태 &nbsp;</label>
 		     				<select id="modal_order_status" style="width:60%;" name="order_status">
 								<option value="">선택</option>			

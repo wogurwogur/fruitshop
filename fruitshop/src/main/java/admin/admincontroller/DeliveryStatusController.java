@@ -205,6 +205,8 @@ public class DeliveryStatusController extends AbstractController {
 			request.setAttribute("searchShip", searchShip);
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("pageBar", pageBar);
+			request.setAttribute("fromDate", fromDate);
+			request.setAttribute("toDate", toDate);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
