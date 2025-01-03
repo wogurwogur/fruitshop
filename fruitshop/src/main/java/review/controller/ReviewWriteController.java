@@ -22,13 +22,14 @@ public class ReviewWriteController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		HttpSession session = request.getSession();		
+		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));	
+		
 		// === 로그인 유무 검사하기 === //
-	      if( !super.checkLogin(request) ) {
-	         // 로그인을 하지 않은 상태이라면 
-	         
-	    	 // http://localhost:9090/fruitshop/login/login.ddg
+	      if( loginuser == null) {
+	         	    	  
 	    	  
-	         request.setAttribute("message", "로그인이 필요합니다 !!");
+	    	 request.setAttribute("message", "로그인이 필요합니다 !!");
 	         request.setAttribute("loc", "javascript:history.back()");
 	         
 	         super.setRedirect(false);
@@ -43,9 +44,6 @@ public class ReviewWriteController extends AbstractController {
 		if(!"GET".equalsIgnoreCase(method)) {
 		
 	
-			
-			HttpSession session  = request.getSession();
-			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 			
 			String review_title = request.getParameter("review_title");
 			String review_contents = request.getParameter("review_contents");
