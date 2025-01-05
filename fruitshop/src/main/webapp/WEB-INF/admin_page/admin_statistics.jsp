@@ -12,15 +12,50 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/adminpage/statistics.css">
 <script type="text/javascript" src="<%= request.getContextPath()%>/js/admin/statistics.js"></script>
 
+<%-- chart.js --%>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(() => {
 	
+		<%-- 차트 그리기 시작 --%>
+		const ctx = document.getElementById('myChart');
+
+		  new Chart(ctx, {
+		    type: 'line',
+		    data: {
+		      labels: ['6개월전', '5개월전', '4개월전', '3개월전', '2개월전', '1개월전', '이번달'],
+		      datasets: [{
+		        label: '월간 가입자수 추이',
+		        data: [12, 19, 3, 5, 2, 3, 30],
+		        borderWidth: 1
+		      }]
+		    },
+		    options: {
+		      scales: {
+		        y: {
+		          beginAtZero: true
+		        }
+		      }
+		    }
+		  });// end of new Chart(ctx, {}) ---------------------------
+	  <%-- 차트 그리기 시작 --%>
+		
+		
 		$("div.order_title").click(e => {
 			// alert("야야호"+ $(e.target).index());
 			$("div.order_title").removeClass("active");
 			$(e.target).addClass("active");
 		});
-	});
+	});// end of $(document).ready(() => {}) -------------------------
+	
+	function getUserRegister() {
+		
+		
+		
+	}// end of function getUserRegister() ------------------------------------
+	
+	
 </script>
 
 <div style="margin-top: 3%;" id="container">
@@ -86,7 +121,9 @@
 	<hr style="border: solid 1px black;">	
 	<div style="display: flex;">
 		<div class="" style="width: 50%; border: solid 1px green;">
-			꺾은선 차트
+			<div>
+  				<canvas id="myChart"></canvas>
+			</div>
 		</div>
 		<div class="" style="width: 50%; border: solid 1px green;">
 			파이 차트
