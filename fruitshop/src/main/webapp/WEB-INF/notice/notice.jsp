@@ -17,8 +17,15 @@
 function noticeDetail(notice_no){
 	
 	const frm = document.noticeForm;
-	
+	const searchWord = $("input:text[name='searchWord']").val();
+	const searchType = $("select[name='searchType']").val();
 	frm.notice_no_detail.value = notice_no;
+	
+	frm.searchType.value = searchType;
+	
+	frm.searchWord.value = searchWord;
+	
+	frm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
 	
 	frm.action = "<%=ctxPath%>/notice/detailNotice.ddg";
 	
@@ -26,17 +33,81 @@ function noticeDetail(notice_no){
 	
 }
 
+function noticeSearch(){
+	
+	const searchType = $("select[name='searchType']").val();
+	
+	if(searchType == ""){
+		alert("검색대상을 선택하세요!!");
+		return;
+	}
+	
+	const searchWord = $("input:text[name='searchWord']").val();
+	
+	if(searchWord.trim() == ""){
+		alert("검색어를 입력하세요!!");
+		return;
+	}
+	
+	
+	
+	const noticefrm = document.noticeForm;
+	
+	
+	noticefrm.searchType.value = searchType;
+	noticefrm.searchWord.value = searchWord;
+	noticefrm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
+	noticefrm.action = "<%=ctxPath%>/notice/noticeList.ddg";
+	noticefrm.submit();
+	
+}
+
 </script>
 
 <style type="text/css">
 
-.delShow{
-	display:inline;
+select#searchType{
+	height: 36px;
+	vertical-align: middle;
 }
 
-.delHide{
-	display:none;
+#searchTypeWord{
+	vertical-align: middle;
+	height: 36px;
+	padding: 0px;
 }
+#searchButton{
+	vertical-align: middle;
+	height: 36px;
+	width: 35px;
+	border: 0px;
+}
+
+
+/* 페이징 숫자 처리 시작 */
+div.pagination {
+	border:solid 0px red;
+	display: inline-block;
+	margin: 0 auto;
+}
+
+div.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border-radius: 5px;
+}
+
+div.pagination a.active {
+  /*background-color: #4CAF50;*/
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+div.pagination a:hover:not(.active) {background-color: #ddd;}
 
 </style>
 
@@ -67,19 +138,26 @@ function noticeDetail(notice_no){
 </div>
 
 		
-<div>		
+<div>	
+	
 <div class="container mt-4">
-		<div style="float: right;">
-				<select class = "text-center" style="height:4%">
-					<option>제목</option>
-					<option>내용</option>
-					<option>작성자</option>
-					<option>글번호</option>				
-				</select>
-				<input type="text" style="height:4%"></input>
-				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%; margin-right: auto;">검색</button>
-		</div>
 <form name="noticeForm">
+<input type="text" name="currentShowPageNo" style="display:none;"/>
+		<div style="float: right; display:flex;">
+			<div>
+				<select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
+				    <option value="">검색대상</option>
+				    <option value="notice_title">제목</option>
+				    <option value="notice_contents">내용</option> 
+				</select>
+			</div>
+			<div>
+			  <input type="text" placeholder="입력란" name="searchWord" id="searchTypeWord">
+			  <button type="button" onclick="noticeSearch()" id="searchButton"><i class="fa fa-search"></i></button>
+			  <input type="hidden" name="detail_user_no">
+			</div>
+		</div>
+
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
@@ -93,8 +171,8 @@ function noticeDetail(notice_no){
 					</tr>
 					<%-- 글 리스트 --%>	
 			<tbody id="notice_list">
-			<c:if test="${not empty requestScope.noticeList}">
-				<c:forEach var="nvo" items="${requestScope.noticeList}" varStatus="status">
+			<c:if test="${not empty requestScope.notice_allList}">
+				<c:forEach var="nvo" items="${requestScope.notice_allList}" varStatus="status">
 					<tr onclick="noticeDetail('${nvo.notice_no}')" style="cursor:pointer;">						
 						<td>${nvo.notice_no}</td>						
 						<td>${nvo.notice_title}</td>						
@@ -104,7 +182,7 @@ function noticeDetail(notice_no){
 				</c:forEach>			
 			</c:if>																	
 			</tbody>
-			<c:if test="${empty requestScope.noticeList}">
+			<c:if test="${empty requestScope.notice_allList}">
 				<tr>
 					<td colspan="5">존재하는 글이 없습니다.</td>
 				</tr>
@@ -128,17 +206,11 @@ function noticeDetail(notice_no){
 		</div>
 								
 			<!-- 페이지네이션 -->
-			<nav>
-			  <ul class="pagination justify-content-center text-center pagination-sm mt-3">
-			    <li class="page-item"><a class="page-link text-body" href="#">이전</a></li>
-			    <li class="page-item"><a class="page-link text-body font-weight-bold" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">4</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">5</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">다음</a></li>
-			  </ul>
-			</nav>
+			<div style="margin-top: 5%; display: flex;">
+		<div class='pagination'>
+			${requestScope.pageBar}
+		</div>
+		</div>
 		</div>
 		</form>
 	</div>

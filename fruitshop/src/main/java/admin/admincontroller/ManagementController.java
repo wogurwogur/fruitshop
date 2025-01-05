@@ -54,6 +54,10 @@ public class ManagementController extends AbstractController {
 			String userid = loginuser.getUserid();
 			String sizePerPage = "10";
 			
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			
 			if(searchType == null ||
 					(!"name".equals(searchType))&&(!"userid".equals(searchType)) && (!"email".equals(searchType))&& (!"user_no".equals(searchType))) {
 				searchType = "";
@@ -63,15 +67,12 @@ public class ManagementController extends AbstractController {
 				searchWord = "";
 			}
 			
-			if(currentShowPageNo == null) {
-				currentShowPageNo = "1";
-			}
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("sizePerPage", sizePerPage);
 			paraMap.put("searchType", searchType);
 			paraMap.put("searchWord", searchWord);			
-			paraMap.put("currentShowPageNo", currentShowPageNo); // 한페이지당 보여줄 행의 갯수
+			paraMap.put("currentShowPageNo", currentShowPageNo);
 			paraMap.put("userid", userid);
 			List<MemberVO> member_allList = null;
 			
@@ -151,6 +152,8 @@ public class ManagementController extends AbstractController {
 			request.setAttribute("pageBar", pageBar);
 			
 			request.setAttribute("member_allList", member_allList);
+			
+			request.setAttribute("searchType", searchType);
 			
 			request.setAttribute("searchWord", searchWord);
 			

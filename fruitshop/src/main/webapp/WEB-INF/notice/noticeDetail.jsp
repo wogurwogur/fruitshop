@@ -19,6 +19,7 @@ function deleteNotice(){
 	const frm = document.noticeDetailForm;
 	
 	frm.action = "<%=ctxPath%>/notice/deleteNotice.ddg";
+	
 	frm.method = "post";
 	
 	frm.notice_no.value = '${requestScope.noticeDetail.notice_no}';
@@ -34,6 +35,7 @@ function deleteNotice(){
 }
 
 $(document).ready(function(){
+	
 	const NoticeModalUpdateOpen = document.getElementById('NoticeModalUpdateOpen');
 	const NoticeModalUpdateClose = document.getElementById('NoticeModalUpdateClose');
 	const modal = document.getElementById('modalContainer');
@@ -217,7 +219,7 @@ $(document).ready(function(){
 					</tbody>
 				
 				</table>				
-				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg'" style="float: right; ">돌아가기</button>
+				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg?searchType=${requestScope.searchType}&sizePerPage=10&searchWord=${requestScope.searchWord}&currentShowPageNo=${requestScope.currentShowPageNo}'" style="float: right; ">돌아가기</button>
 				<c:if test="${sessionScope.loginuser.role == 2}">
 				<button type="button" class="btn btn-outline-danger" onclick="deleteNotice()" style="float: right; margin-right:0.8%">글삭제</button>
 				<button type="button" class="btn btn-outline-success" style="float: right; margin-right:0.8%" id="NoticeModalUpdateOpen">글수정</button>
@@ -254,8 +256,7 @@ $(document).ready(function(){
 	    			</tr>
 	    		</tbody>
 	    	</table>
-	    	
-		    <input type="text" style="display:none;"/>
+	    	<input type="text" style="display:none;"/>
 	    </div>
 	  </div>
 	</div>

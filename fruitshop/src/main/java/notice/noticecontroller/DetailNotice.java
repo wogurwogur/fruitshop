@@ -22,6 +22,11 @@ public class DetailNotice extends AbstractController {
 		
 		String notice_no = request.getParameter("notice_no_detail");
 		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		String sizePerPage = "10";
+		
 		String method = request.getContextPath();
 			
 		NoticeVO noticeDetail = ndao.oneNoticeDetail(notice_no);
@@ -38,8 +43,17 @@ public class DetailNotice extends AbstractController {
 			
 		}
 		
+		request.setAttribute("searchType", searchType);
+		
+		request.setAttribute("searchWord", searchWord);
+		
+		request.setAttribute("sizePerPage", sizePerPage);
+		
+		request.setAttribute("currentShowPageNo", currentShowPageNo);
 		
 		request.setAttribute("loginuser", loginuser);
+		
+		System.out.println("searchType => "+searchType);
 		
 		noticeDetail.setNotice_contents(noticeDetail.getNotice_contents().replaceAll("\r\n", "<br>"));
 		
