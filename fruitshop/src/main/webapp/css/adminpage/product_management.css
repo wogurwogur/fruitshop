@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 div#container {
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
 	font-family: 'Noto Sans KR', sans-serif;
 /* 	border: solid 1px red; */
@@ -25,6 +25,7 @@ th, td {
 	text-align: center;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 12pt;
+	font-weight: 400;
 }
 
 
@@ -55,17 +56,15 @@ tr.prdInfo:hover {
 
 
 
-/* 상품등록 및 일괄삭제 전체 div */
+/* 상품등록 전체 div */
 div#prdmanageBtn {
 	margin-top: 1%;
 	justify-content: right;
-	cursor: pointer;
 }
 
 
 /* 상품등록 div */
 div#prdRegister {
-	margin-right: 1%;
 	background-color: black;
 	color: white;
 	font-size: 12pt;
@@ -75,19 +74,7 @@ div#prdRegister {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-
-/* 일괄삭제 div */
-div#totalDelete {
-	border: solid 1px black;
-	font-size: 12pt;
-	font-weight: bold;	
-	width: 7%;
-	height: 45px;
-	display: flex;
-    justify-content: center;
-    align-items: center;
+    cursor: pointer;
 }
 
 

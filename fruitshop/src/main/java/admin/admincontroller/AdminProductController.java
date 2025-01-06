@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
+import my.util.MyUtil;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
@@ -89,9 +90,12 @@ public class AdminProductController extends AbstractController {
 			
 			// [맨처음]
 			pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo=1'>&laquo;</a>"; 
+			
+			/*
 			// [이전]
 			
 			pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
+			*/
 			
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -109,10 +113,10 @@ public class AdminProductController extends AbstractController {
 				
 			} // end of while( !(loop > blockSize || pageNo > totalPage) 
 			
-			
+			/*
 			// [다음]
 			pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>"; 
-	
+			*/
 			
 			// [맨마지막]
 			pageBar += "<a href='adminProduct.ddg?searchFruit="+searchFruit+"&currentShowPageNo="+totalPage+"'>&raquo;</a>"; 
@@ -124,8 +128,9 @@ public class AdminProductController extends AbstractController {
 			
 			
 			// *** ====== 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 ======= *** //
-			
-			
+			String currentURL = MyUtil.getCurrentURL(request);
+			         
+			// System.out.println("currentURL : " + currentURL);
 			// 검색하고 나서 특정 상품 클릭 하고 나서 다시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임.
 	
 			
@@ -136,6 +141,7 @@ public class AdminProductController extends AbstractController {
 				request.setAttribute("searchFruit", searchFruit);
 				request.setAttribute("pageBar", pageBar);
 				request.setAttribute("currentShowPageNo", currentShowPageNo);
+				request.setAttribute("currentURL", currentURL);
 				
 				
 				

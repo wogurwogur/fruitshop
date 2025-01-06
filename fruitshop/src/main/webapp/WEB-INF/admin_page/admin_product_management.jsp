@@ -26,52 +26,10 @@
 			
 		}); // end of $("input[name='searchFruit']").bind("keydown", function(e)
 		
-				
-	 	// 상품번호의 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다.
-	    $("input:checkbox[id='checkEach']").click(function(){
-	         
-	         let bFlag = false;
-	         
-	    $("input:checkbox[id='checkEach']").each(function(index, elmt){
-	            const is_checked = $(elmt).prop("checked");
-	            if(!is_checked){
-	               $("input:checkbox[id='checkAll']").prop("checked", false); 
-	               bFlag = true;
-	               return false;
-	            }
-	    });
-	         
-	    if(!bFlag){
-	            $("input:checkbox[id='checkAll']").prop("checked", true); 
-	         }
-	         
-	    });// end of $("input:checkbox[name='pnum']").click(function(){})
-	    
-	    
-				
-		// 상품등록 클릭
-		$("div#prdRegister").click(function(){
-			location.href =`${pageContext.request.contextPath}/admin/adminProductRegister.ddg`;
-		});		
-	
-	
+
 	}); // end of $(document).ready(function()
-			
-	// 전체선택/전체해제
-	function allCheckBox(){
-	      
-      const bool = $("input:checkbox[id='checkAll']").is(":checked");
-      /*
-         $("input:checkbox[id='allCheckOrNone']").is(":checked"); 은
-           선택자 $("input:checkbox[id='allCheckOrNone']") 이 체크되어지면 true를 나타내고,
-           선택자 $("input:checkbox[id='allCheckOrNone']") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
-      */
-      
-      $("input:checkbox[id='checkEach']").prop("checked", bool);
-         
-	}// end of function allCheckBox()---------------------------		
-			
-			
+		
+				
 			
 	// 상품을 검색한다.
 	function goSearch() {
@@ -105,19 +63,17 @@
 	}//  end of function goDetail(prod_no)
 	
 	
-	
-	// 일괄 삭제 버튼을 클릭하면 삭제 처리를 해준다.
-	function goUpdateStatus(prod_no) {	
+	// 상품 등록을 클릭한다.
+	function goRegister() {	
 		
-		alert("판매여부 업데이트 클릭~~!")
-/* 		const frm = document.productOneDetail_frm
-		frm.prod_no.value = prod_no; // 상품 번호 값 데이터 가지고 URL 이동
+		const frm = document.productRegister_frm
 		
-		frm.action = "adminProductOneDetail.ddg";
-		frm.method = "post"; 
-		frm.submit(); */
+		frm.action = "adminProductRegister.ddg";
+		frm.method = "get"; 
+		frm.submit();
 		
 	}//  end of function goDetail(prod_no)
+	
 	
 
 </script>
@@ -146,15 +102,13 @@
 		<table class="table table-borderless">
 			<colgroup> <%-- 테이블 간 간격 설정 --%>
 	    	<col style="width: 5%;">
+	    	<col style="width: 45%;">
+	    	<col style="width: 10%;">
 	    	<col style="width: 5%;">
-	    	<col style="width: 40%;">
-	    	<col style="width: 10%;">
-	    	<col style="width: 10%;">
-	    	<col style="width: 10%;">
+	    	<col style="width: 15%;">
 	    	<colgroup>
 			<thead>
 				<tr class="prdInfoTitle">	
-					<th scope="col"><input type="checkbox" id="checkAll" onclick="allCheckBox()"></input></th>
 					<th scope="col">번호</th>
 					<th scope="col">상품명</th>
 					<th scope="col">판매여부</th>
@@ -167,19 +121,21 @@
 					<c:forEach var="prdvo" items="${requestScope.prdList}" varStatus="status">
 						<tr class="prdInfo">	
 						
-							<td><input type="checkbox" id="checkEach"></td>
-							
 							<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
 							<td onclick="goDetail(${prdvo.prod_no})">${(requestScope.totalProductCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
 							<td onclick="goDetail(${prdvo.prod_no})">${prdvo.prod_name}</td>
 							<td onclick="goDetail(${prdvo.prod_no})">
-							<c:choose>
-	      						<c:when test="${prdvo.prod_status == 0}">미판매</c:when>
-	      						<c:when test="${prdvo.prod_inventory == 0}">품절</c:when>
-	      						<c:otherwise>판매중</c:otherwise>
-      						</c:choose>
+								<c:choose>
+		      						<c:when test="${prdvo.prod_status == 0}">미판매</c:when>
+		      						<c:otherwise>판매중</c:otherwise>
+	      						</c:choose>
       						</td>
-							<td onclick="goDetail(${prdvo.prod_no})">${prdvo.prod_inventory}</td>
+							<td onclick="goDetail(${prdvo.prod_no})">
+								<c:choose>
+		      						<c:when test="${prdvo.prod_inventory == 0}">품절</c:when>
+		      						<c:otherwise>${prdvo.prod_inventory}</c:otherwise>
+	      						</c:choose>
+							</td>
 							<td onclick="goDetail(${prdvo.prod_no})">${prdvo.prod_regidate}</td>
 						</tr>
 					</c:forEach>
@@ -197,12 +153,8 @@
 	
 	
 	<div id="prdmanageBtn" style="display: flex;">
-		<div id="prdRegister">
+		<div id="prdRegister" onclick="goRegister()">
 			상품등록
-		</div>
-	
-		<div id="totalDelete" onclick="goUpdateStatus(${prdvo.prod_no})">
-			판매여부 관리
 		</div>
 	</div>	
 	
@@ -216,11 +168,16 @@
 
 </div>
 
-
+<%-- 상품 상세정보 form --%>
 <form name="productOneDetail_frm">
 	<input type="hidden" name="prod_no" />
 	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}" />
 </form>
 
+
+<%-- 상품 등록 form --%>
+<form name="productRegister_frm">
+	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}" />
+</form>
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

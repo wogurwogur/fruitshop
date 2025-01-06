@@ -51,6 +51,9 @@ public class AdminProductRegister extends AbstractController {
 				// 계절 테이블 정보를 알아온다.
 				List<ProductVO> seasonInfo = prdao.seasonInfo();
 				request.setAttribute("seasonInfo", seasonInfo);
+				
+				String goBackURL = request.getParameter("goBackURL");
+				request.setAttribute("goBackURL", goBackURL);
 
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/admin_page/admin_product_register.jsp");
@@ -88,7 +91,7 @@ public class AdminProductRegister extends AbstractController {
 								
 								// 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다.
 								ServletContext svlCtx = session.getServletContext();
-								String uploadFileDir = svlCtx.getRealPath("/images/product/thumnail");
+								String uploadFileDir = svlCtx.getRealPath("/images/product/thumnail"); 
 								
 								// 파일을 지정된 디스크 경로에 저장해준다. 이것이 파일을 업로드 해주는 작업이다.
 								part.write(uploadFileDir + File.separator + newFilename);

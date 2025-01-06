@@ -149,7 +149,7 @@ div#detailInfo,
 div#guideInfo,
 div#prdReview,
 div#prdInquire {
-	margin-top: 4%;
+	margin-top: 8%;
 }
 
 
@@ -246,7 +246,7 @@ td {
 	line-height: 2.4em;
 }
 
-td.reviewContents {
+td.reviewTitle {
     display: -webkit-box;
     -webkit-line-clamp: 1; /* 두 줄까지만 표시 */
     -webkit-box-orient: vertical;
@@ -254,6 +254,7 @@ td.reviewContents {
     text-overflow: ellipsis; /* 넘치는 부분에 "..." 표시 */
     line-height: 2.4em; /* 줄 간격 */
 }
+
 
 tr.reviewInfo:hover {
 	cursor: pointer
@@ -367,43 +368,39 @@ a.inquireAllsee:hover */ {
 
 /* 바 위치 이동을 위한 빈 DIV 시작 */
 div.detailEmptyDiv {
-    position: absolute;  
-    top: 858px;        
-    width: 0;
-    height: 0;
+    position: absolute; 
+    width: 100px;
+    height: 0px;
     background: none; 
-    border: none;
-}
+    border: solid 0px red;
+} 
 
 
 div.guideEmptyDiv {
-    position: absolute;  
-    top: 1706px;         
-    width: 0;
-    height: 0;
+    position: absolute;       
+    width: 100px;
+    height: 0px;
     background: none; 
-    border: none;
+    border: solid 0px red;;
 }
 
 
 div.reviewEmptyDiv {
-    position: absolute;  
-    top: 3162px;         
-    width: 0;
-    height: 0;
+    position: absolute;          
+    width: 100px;
+    height: 0px;
     background: none; 
-    border: none;
+    border: solid 0px red;;
 }
 
 
 
 div.inquireEmptyDiv {
-    position: absolute;  
-    top: 3690px;             
-    width: 0;
-    height: 0;
+    position: absolute;           
+    width: 100px;
+    height: 0px;
     background: none; 
-    border: none;
+    border: solid 0px red;;
 }
 
 

@@ -68,10 +68,10 @@
 			    };
 				
 			 	// 첨부한 파일의 총량을 누적하는 용도
-			 	total_fileSize += input_file.files[0].size;
+			 	total_fileSize = input_file.files[0].size;
 			 	
 			 	// 첨부 파일 정보 담는다.
-			 	file_arr.push(input_file.files[0]);
+			 	file_arr = [input_file.files[0]];
 			 
 			 			    	
 		    }); // end of $(document).on("change", "input.img_file", function(e)
@@ -98,10 +98,10 @@
 			    };
  
 			 	// 첨부한 파일의 총량을 누적하는 용도
-			    total_fileSize += input_file.files[0].size;
+			    total_fileSize = input_file.files[0].size;
 			 	
 			 	// 첨부 파일 정보 담는다.
-			    file_arr.push(input_file.files[0]);
+			    file_arr = [input_file.files[0]];
 				
 			 	
 		    }); // end of $(document).on("change", "input.img_file", function(e)	
@@ -163,8 +163,8 @@
 		 			return false;
 		 		}
 		 		else {
-		 			if(spinnerVal > 100 || spinnerVal < 1) {
-		 				alert("재고는 최소 1개 이상 최대 100개 이하까지 가능합니다.");
+		 			if(spinnerVal > 100 || spinnerVal < 0) {
+		 				alert("재고 설정은 최소 0개(품절 설정) 부터 최대 100개 이하까지 가능합니다.");
 		 				prod_infoData_OK = false;
 		 				return false;
 		 			}	
@@ -179,24 +179,46 @@
 					return false;
 				}
 				
-				if (total_fileSize > 0) {
-					// 상품이미지
-					const prod_thumnail = $("input#prod_thumnail").val();
-					if(prod_thumnail == "") {
-						$("input#prod_thumnail").parent().find("span.error").show();
-			 			prod_infoData_OK = false;
-	      				return false;
-					}
-					
-					
-					// 상품 상세이미지
-					const prod_descript = $("input#prod_descript").val();
-					if(prod_descript == "") {
-						$("input#prod_descript").parent().find("span.error").show();
-			 			prod_infoData_OK = false;
-	      				return false;
-					}
-				}
+				
+				// 썸네일 이미지가 선택된 경우에만 유효성 검사
+		        const isThumbnailImageChanged = $("input#prod_thumnail").val() !== "";
+		        const isDescriptImageChanged = $("input#prod_descript").val() !== "";
+		        
+		        // 썸네일 이미지가 변경된 경우, 유효성 검사
+		        if (isThumbnailImageChanged) {
+		            if ($("input#prod_thumnail").val() == "") {
+		                $("input#prod_thumnail").parent().find("span.error").show();
+		                prod_infoData_OK = false;
+		                return false;
+		            }
+		        } else { // 썸네일 이미지가 변경되지 않으면, 기존 값 그대로 사용
+		            const org_prod_thumnail = $("input[name='org_prod_thumnail']").val();
+		            if (org_prod_thumnail === "") {
+		                $("input#prod_thumnail").parent().find("span.error").show();
+		                prod_infoData_OK = false;
+		                return false;
+		            }
+		        }
+				
+		        
+		        // 상세 이미지가 변경된 경우, 유효성 검사
+		        if (isDescriptImageChanged) {
+		            const prod_descript = $("input#prod_descript").val();
+		            if (prod_descript == "") {
+		                $("input#prod_descript").parent().find("span.error").show();
+		                prod_infoData_OK = false;
+		                return false;
+		            }
+		        } else { // 상세 이미지가 변경되지 않으면, 기존 값 그대로 사용
+		            const org_prod_descript = $("input[name='org_prod_descript']").val();
+		            if (org_prod_descript === "") {
+		                $("input#prod_descript").parent().find("span.error").show();
+		                prod_infoData_OK = false;
+		                return false;
+		            }
+		        }
+		        
+		        
 				
 				// ------------------ 유효성 검사 끝 ------------------ //
 							
@@ -237,7 +259,7 @@
 			 			});
 		 			} 
 		 			
-		 			else { // 이미지 파일 첨부가 없는 경우에
+ 		 			else { // 이미지 파일 첨부가 없는 경우에
 		 				$.ajax({
 			 				url: "${pageContext.request.contextPath}/admin/adminProductNoImgUpdate.ddg",
 			 				type: "post",
@@ -263,13 +285,6 @@
 		 	// -------------------------- 제품 수정하기 끝 -------------------------- //
 		 				   
 	}); // $(document).ready(function()   
-			
-			
-	function goReset() { // 취소 버튼 클릭
-
-	    location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg";
-
-	}// end of function goReset()---------------------	
 
 
 
@@ -318,10 +333,10 @@
 					<tr>
 						<td class="tdTitle">계절분류</td>
 						<td class="tdContents">
-							<select name="fk_season_no" class="prod_infoData" >
+							<select name="fk_season_no" class="prod_infoData" style="width: 79.4px;">
 								<option value="">선택</option>	
 								<c:forEach var="seasonvo" items="${requestScope.seasonInfo}">
-									<option value="${seasonvo.season_no}">${seasonvo.season_name}</option>  
+									<option value="${seasonvo.season_no}" <c:if test="${seasonvo.season_no == requestScope.prdvo.fk_season_no}">selected</c:if> > ${seasonvo.season_name}</option>  
 								</c:forEach>  
 							</select>
 							<span class="error">계절분류는 필수 입력사항입니다.</span>
@@ -331,10 +346,10 @@
 					<tr>
 						<td class="tdTitle">판매여부</td>
 						<td class="tdContents">
-							<select name="prod_status" class="prod_infoData" >
+							<select name="prod_status" class="prod_infoData" style="width: 79.4px;">
 								 <option value="">선택</option>
-								 <option value="0">미판매</option> 
-								 <option value="1">판매중</option> 
+								 <option value="0" <c:if test="${requestScope.prdvo.prod_status == 0}">selected</c:if>>미판매</option> 
+								 <option value="1" <c:if test="${requestScope.prdvo.prod_status == 1}">selected</c:if>>판매중</option> 
 							</select>
 							<span class="error">판매여부는 필수 입력사항입니다.</span>
 						</td>
@@ -365,14 +380,14 @@
 					<tr>
 		                <td class="tdTitle">상세이미지 미리보기</td>
 		                <td class="tdContents">
-			            	<img id="previewdescript" width="300" height="300" src="<%=request.getContextPath()%>/images/product/description/${requestScope.prdvo.prod_descript}"/>
+			            	<img id="previewdescript" width="300" height="300" style="object-fit: contain;" src="<%=request.getContextPath()%>/images/product/description/${requestScope.prdvo.prod_descript}"/>
 		                </td>
 	          		</tr>
 					
-					<tr>
-	                    <td colspan="2" class="text-center" style="padding: 30px 0 10px 0;">
-	                       <input type="button" id="btnUpdate" class="btn btn-success mr-5" value="수정하기" />
-	                       <input type="reset"  class="btn btn-danger" value="돌아가기" onclick="goReset()" />
+					<tr id="lastTr">
+	                    <td colspan="2" class="text-center" style="padding: 50px 0 10px 0;">
+	                       <input type="button" id="btnUpdate" value="수정" />
+	                       <input type="reset" 	id="btnReset" value="취소" onclick="javascript:location.href='${pageContext.request.contextPath}${requestScope.goBackURL}'" />
 	                    </td>
 	                </tr>
 					

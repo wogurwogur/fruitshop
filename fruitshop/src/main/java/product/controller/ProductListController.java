@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
+import my.util.MyUtil;
 import mypage.wish.domain.WishVO;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
@@ -18,11 +19,12 @@ import product.model.ProductDAO_imple;
 public class ProductListController extends AbstractController {
 	
 	private ProductDAO prdao = new ProductDAO_imple();
+	
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		
+
 		//*** 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 ***//
 	
 		String searchFruit = request.getParameter("searchFruit"); 			  // 과일 검색명
@@ -94,10 +96,12 @@ public class ProductListController extends AbstractController {
 		// [맨처음]
 		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo=1'>&laquo;</a>"; 
 		
+		
+		/*
 		// [이전]
 		
 		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>"; 
-		
+		*/
 	
 		
 		while( !(loop > blockSize || pageNo > totalPage2) ) {
@@ -115,15 +119,18 @@ public class ProductListController extends AbstractController {
 			
 		} // end of while( !(loop > blockSize || pageNo > totalPage2) 
 		
+		/*
 		// [다음]
 		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>"; 
-
+		*/
 		
 		// [맨마지막]
 		pageBar += "<a href='productList.ddg?searchFruit="+searchFruit+"&seasonNo="+seasonNo+"&currentShowPageNo="+totalPage2+"'>&raquo;</a>"; 
 		
 		
 		pageBar += "</div>";
+		
+
 		
 		try {
 			// List<ProductVO> prdList = prdao.productListSelectAll();
