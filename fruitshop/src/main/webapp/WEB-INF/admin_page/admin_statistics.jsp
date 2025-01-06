@@ -61,9 +61,9 @@
 	    });
 	
 		<%-- 주간 가입자 수 추이 차트 그리기 시작 --%>
-		const ctx = document.getElementById('visitUserWeek');
+		const ctx1 = document.getElementById('visitUserWeek');
 
-	  	new Chart(ctx, {
+	  	new Chart(ctx1, {
 	    	type: 'line',
 	    	data: {
 	      	labels: ['6일전', '5일전', '4일전', '3일전', '2일전', '1일전', '오늘'],
@@ -89,18 +89,22 @@
 		
 	  	
 	  	<%-- 주간 가입자 수 비교 차트 그리기 시작 --%>
-		const ctx = document.getElementById('visitUserWeek');
+		const ctx2 = document.getElementById('userWeekcompare');
 
-	  	new Chart(ctx, {
-	    	type: 'line',
+	  	new Chart(ctx2, {
+	    	type: 'bar',
 	    	data: {
 	      	labels: ['6일전', '5일전', '4일전', '3일전', '2일전', '1일전', '오늘'],
 	      	datasets: [{
 	        label: '전주 대비 가입자 수 증감률',
 	        data: [
-	        	"${requestScope.visitUserWeek.before_6days}", "${requestScope.visitUserWeek.before_5days}", "${requestScope.visitUserWeek.before_4days}",
-	        	"${requestScope.visitUserWeek.before_3days}", "${requestScope.visitUserWeek.before_2days}", "${requestScope.visitUserWeek.before_1days}",
-	        	"${requestScope.visitUserWeek.today}"
+	        	Number("${requestScope.visitUserWeek.before_6days}") - Number("${requestScope.visitUser2Week.before_13days}"),
+	        	Number("${requestScope.visitUserWeek.before_5days}") - Number("${requestScope.visitUser2Week.before_12days}"),
+	        	Number("${requestScope.visitUserWeek.before_4days}") - Number("${requestScope.visitUser2Week.before_11days}"),
+	        	Number("${requestScope.visitUserWeek.before_3days}") - Number("${requestScope.visitUser2Week.before_10days}"),
+	        	Number("${requestScope.visitUserWeek.before_2days}") - Number("${requestScope.visitUser2Week.before_9days}"),
+	        	Number("${requestScope.visitUserWeek.before_1days}") - Number("${requestScope.visitUser2Week.before_8days}"),
+	        	Number("${requestScope.visitUserWeek.today}") - Number("${requestScope.visitUser2Week.before_7days}"),
 	        ],
 	        borderWidth: 1
 	      	}]

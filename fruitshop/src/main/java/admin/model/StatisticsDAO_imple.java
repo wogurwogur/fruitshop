@@ -102,7 +102,7 @@ public class StatisticsDAO_imple implements StatisticsDAO {
 	// 2주전 가입자 수 통계
 	@Override
 	public Map<String, Integer> getvisitUser2Week() throws SQLException {
-Map<String, Integer> map = null;
+		Map<String, Integer> map = null;
 		
 		try {
 			

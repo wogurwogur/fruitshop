@@ -66,6 +66,7 @@ public class AdminStatisticsController extends AbstractController {
 		
 		request.setAttribute("adminpage_val", "admin_statistics");
 		request.setAttribute("visitUserWeek", visitUserWeek);
+		request.setAttribute("visitUser2Week", visitUser2Week);
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
