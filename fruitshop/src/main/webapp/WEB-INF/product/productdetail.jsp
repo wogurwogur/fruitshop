@@ -16,12 +16,12 @@
 
 $(document).ready(function(){
 	
-		/* 위치 이동을 위한 스크롤 확인
+/* 		//위치 이동을 위한 스크롤 확인
 		window.addEventListener('scroll', function() {
 		    let scrollPosition = window.scrollY;
 		    console.log("현재 스크롤 위치:", scrollPosition);
-		});
-		*/
+		}); */
+
 	
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 시작 --------- //
 	
@@ -72,7 +72,7 @@ $(document).ready(function(){
 		// --------- 수량 증감에 따라 총 금액 및 수량 알아오기 끝 --------- //
 		
 			
-	   // 장바구니 클릭 
+		// 장바구니 클릭 
        $("div.cart").click(function() {
             
          if( ${not empty sessionScope.loginuser} ) {
@@ -88,12 +88,10 @@ $(document).ready(function(){
                   success: function(response) {
                      if(confirm("장바구니에 상품을 추가했습니다.\n장바구니를 확인하시겠습니까?")){
                       const prdCnt = $("input.qty").val();
-                      alert(prdCnt);
                       location.href=`${pageContext.request.contextPath}/cart/cartList.ddg`;
                    }
                       else{
                           location.href="javascript:history.go(0);";
-                          alert(prdCnt);
                       }
                   },
                   error: function(error) {
@@ -109,27 +107,31 @@ $(document).ready(function(){
        }); // end of $("div.cart").click(function()
 	
 		
+		   
 		// 구매하기 클릭
 		$("div.purchase").click(function() {
 			const prodCnt = $("input.qty").val();
 			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prodCnt=`+ prodCnt;
 		});
 		
-		
-	    
-	    // 상품 후기 목록 클릭 시 해당 글 페이지로 이동한다.
-	    $("tr.reviewInfo").click(function(){
-	    	location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
-	    });
 	    
 		
 		// 상품후기 쓰기 클릭
 		$("div.reveiwBtn").click(function() {
-			location.href=`${pageContext.request.contextPath}/review/reviewWrite.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
+			
+			if (${not empty sessionScope.loginuser.user_no}) {
+			
+				const prod_no = ${requestScope.prdvo.prod_no};
+				
+				location.href=`${pageContext.request.contextPath}/review/reviewWrite.ddg?prod_no=${prod_no}&user_no=${sessionScope.loginuser.user_no}`;
+			}
+			else {
+				alert ("로그인 후에 상품 후기를 작성하실 수 있습니다.")
+				location.href=`${pageContext.request.contextPath}/login/login.ddg`;	
+			}
 		});
 		
 	
-		
 		// 상품후기 모두보기 클릭
 		$("div.reveiwAllsee").click(function(){
 			// alert("후기 모두보기 클릭")
@@ -138,32 +140,19 @@ $(document).ready(function(){
 		
 		
 		
-	    // 상품 문의 목록 클릭 시 해당 글 페이지로 이동한다.
-	    $("tr.qnaInfo").click(function(){
-			
-	    	 const sessionUserno = ${sessionScope.loginuser != null ? sessionScope.loginuser.user_no : 0};
-	    	
-	    	 if(sessionUserno != 0) {
-	    		
-		    	const qnaUserno = $(this).data("userno");
-	    		
-	 	    	if(sessionUserno == qnaUserno) {
-		    		location.href=`${pageContext.request.contextPath}/review/reviewRead.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}`;
-		    	}
-	 	    	else {
-		    		alert("작성자 본인만 확인할 수 있습니다.")
-		    	}
-	    	}	
- 	    	else {
- 	            alert("로그인 후에 확인이 가능합니다.");
- 	    	}
-	    		    	
-	    });
-		
 		
 		// 문의하기 클릭
 		$("div.inquireBtn").click(function() {
-			alert("문의하기쓰기 클릭")  // 상품번호랑 유저번호 넘기기
+			
+			if (${not empty sessionScope.loginuser.user_no}) {
+				const prod_no = ${requestScope.prdvo.prod_no};
+				
+				location.href=`${pageContext.request.contextPath}/qna/주소알려주세요~~.ddg?prod_no=${prod_no}&user_no=${sessionScope.loginuser.user_no}`;
+			}
+			else {
+				alert ("로그인 후에 상품 문의를 작성하실 수 있습니다.")
+				location.href=`${pageContext.request.contextPath}/login/login.ddg`;	
+			}
 		});
 		
 		
@@ -178,58 +167,76 @@ $(document).ready(function(){
 		
 		
 		//---------------------------------------------------------------------------------------//
-		// 세션스토리지안에 있는 arr_product를 가져왔는데 이게 null 일때
-	      if(sessionStorage.getItem("arr_product") == null){ 
-	         const arr_product = []; // 새로운 상품배열을 만든다.
-	         const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
-	         // 새로운 상품객체를 만든다.
-	         arr_product.push(product);
-	         // 만든 상품객체를 만든 상품의 배열에 넣어준다.
-	         sessionStorage.setItem("arr_product", JSON.stringify(arr_product));
-	         // 세션스토리지에 담아준다.
-	      }
-	      
-	      else{ // 세션스토리지안에 저장된게 있다면
-	         
-	         const arr_product = JSON.parse(sessionStorage.getItem("arr_product"));   // 저장된 것을 가져온다 ("key");
-	         
-	         let exist = false;
-	         
-	         for(let i =0; i<arr_product.length; i++){  // 중복된 상품번호가 있는지 반복문으로 알아온다. 
-	            
-	            // product = {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'};
-	             
-	            if(arr_product[i].prod_no == "${requestScope.prdvo.prod_no}"){
-	               
-	               arr_product.splice(i,1);
-	               
-	               const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
-	               // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
-	               // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
-	               // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
-	               arr_product.push(product); 
-	               exist = true;
-	               break;
-	            }
-	            
-	         }// end of for---------------------
+		if( ${not empty sessionScope.loginuser} ) {  // 로그인했을때
+      
+      	// 세션스토리지안에 있는 arr_product를 가져왔는데 이게 null 일때
+         if(sessionStorage.getItem("arr_product") == null){ 
+            const arr_product = []; // 새로운 상품배열을 만든다.
+            const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+            // 새로운 상품객체를 만든다.
+            arr_product.push(product);
+            // 만든 상품객체를 만든 상품의 배열에 넣어준다.
+            sessionStorage.setItem("arr_product", JSON.stringify(arr_product));
+            // 세션스토리지에 담아준다.
+         }
+         
+         else{ // 세션스토리지안에 저장된게 있다면
+            
+            const arr_product = JSON.parse(sessionStorage.getItem("arr_product"));   // 저장된 것을 가져온다 ("key");
+            
+            let exist = false;
+            
+            for(let i =0; i<arr_product.length; i++){  // 중복된 상품번호가 있는지 반복문으로 알아온다. 
+               
+               // product = {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'};
+                
+               if(arr_product[i].prod_no == "${requestScope.prdvo.prod_no}"){
+                  
+                  arr_product.splice(i,1);
+                  
+                  const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+                  // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
+                  // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
+                  // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
+                  arr_product.push(product); 
+                  exist = true;
+                  break;
+               }
+               
+            }// end of for---------------------
 
-	         if(!exist){
-	            const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
-	            // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
-	            // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
-	            // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
-	            arr_product.push(product); 
-	         }
-	         
-	         sessionStorage.setItem("arr_product", JSON.stringify(arr_product)); // 세션스토리지에 담아준다.
-	         
-	      }
-	      
-	      console.log(JSON.parse(sessionStorage.getItem("arr_product")));		
+            if(!exist){
+               const product = {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"};
+               // {prod_no: '35', thumbnail: 'melon.png', name: '국내산 고당도 멜론 개당 1.6kg', price: '18500'}
+               // {prod_no: '34', thumbnail: 'koreanmelon.png', name: '성주 꿀참외 5kg', price: '26000'}
+               // {prod_no:"${requestScope.prdvo.prod_no}", thumbnail:"${requestScope.prdvo.prod_thumnail}", name:"${requestScope.prdvo.prod_name}", price:"${requestScope.prdvo.prod_price}"}
+               arr_product.push(product); 
+            }
+            
+            sessionStorage.setItem("arr_product", JSON.stringify(arr_product)); // 세션스토리지에 담아준다.
+            
+         }
+         
+         console.log(JSON.parse(sessionStorage.getItem("arr_product")));      
+       }	
 		
 		
 }); // end of $(document).ready(function(){
+	
+	
+// 상품 후기 글 클릭 시 리뷰 페이지로 넘어가기
+function goReview(click_review_no) {
+	const review_no = click_review_no;
+	location.href =`${pageContext.request.contextPath}/review/reviewRead.ddg?review_no=`+review_no;
+}
+
+
+// 상품 문의 글 클릭 시 문의 페이지로 넘어가기
+function goQna(click_qna_no) {
+	const qna_no = click_qna_no;
+	location.href =`${pageContext.request.contextPath}/qna/주소알려주세요~~.ddg?qna_no=`+qna_no;
+}
+
 	
 
 </script>
@@ -243,7 +250,9 @@ $(document).ready(function(){
 		<%-- 썸네일 --%>
 		<div id="prod_thumnail" style="flex: 1; max-width: 700px;">
 			<img src="<%=request.getContextPath()%>/images/product/thumnail/${requestScope.prdvo.prod_thumnail}" style="width: 700px; height: 700px;">
+			
 		</div>
+			
 		
 		<%-- 상품정보 --%>
 		<div id="prod_info" style="flex: 1; max-width: 700px;">
@@ -320,38 +329,41 @@ $(document).ready(function(){
 					</div>
 				</c:if>
 				<%-- 재고 0일 경우 SOLD OUT 끝 --%>
+				
+				
 			</div>
 		</div>
 		
 	</div>
 	<%-- 상품 정보 끝 --%>
 	
+	<div id="godetail" class="detailEmptyDiv"></div>
 	
 	<%-- 상세정보 / 이용안내 / 상품후기 / 문의하기 시작--%>
 	<div id="detailWrap2" style="max-width: 1400px;">
 		
 		<%-- 상세정보 --%>
-		<div id="detail" class="detailEmptyDiv"></div>
 		<div id="detailInfo" class="fixed">
 			<ul style="display: flex;">
-				<li class="detail"><a href="#detail" class="detailBar">상세정보</a></li>
-				<li><a href="#guide" class="detailBar">이용안내</a></li>
-				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
-				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
+				<li class="detail"><a href="#godetail" class="detailBar">상세정보</a></li>
+				<li><a href="#goguide" class="detailBar">이용안내</a></li>
+				<li><a href="#goreview" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#goinquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			<p>
-				<img src="<%=request.getContextPath()%>/images/product/thumnail/${requestScope.prdvo.prod_thumnail}" style="width: 700px; height: 700px;">
+				<img src="<%=request.getContextPath()%>/images/product/description/${requestScope.prdvo.prod_descript}" style="width: 850px; height: auto;">
+				<div id="goguide" class="guideEmptyDiv"></div>	
 			</p>
 		</div>
 		
+		
 		<%-- 이용안내 --%>
-		<div id="guide" class="guideEmptyDiv"></div>
 		<div id="guideInfo" >
 			<ul style="display: flex;">
-				<li><a href="#detail" class="detailBar">상세정보</a></li>
-				<li class="guide"><a href="#guide" class="detailBar">이용안내</a></li>
-				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
-				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
+				<li><a href="#godetail" class="detailBar">상세정보</a></li>
+				<li class="guide"><a href="#goguide" class="detailBar">이용안내</a></li>
+				<li><a href="#goreview" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#goinquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			<div id="guide" class="guideText" style="height: auto;">
 				<span class="paymentTextTitle">상품결제정보</span>
@@ -425,14 +437,15 @@ $(document).ready(function(){
 			</div>
 		</div>
 		
+		<div id="goreview" class="reviewEmptyDiv"></div>
+		
 		<%-- 상품후기 --%>	
-		<div id="review" class="reviewEmptyDiv"></div>
 		<div id="prdReview" >
 			<ul style="display: flex;">
-				<li><a href="#detail" class="detailBar">상세정보</a></li>
-				<li><a href="#guide" class="detailBar">이용안내</a></li>
-				<li class="review"><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
-				<li><a href="#inquire" class="detailBar">문의하기</a></li>	
+				<li><a href="#godetail" class="detailBar">상세정보</a></li>
+				<li><a href="#goguide" class="detailBar">이용안내</a></li>
+				<li class="review"><a href="#goreview" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li><a href="#goinquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			<div id="review" class="reviewBoard" style="height: auto;">
 				
@@ -446,28 +459,25 @@ $(document).ready(function(){
 					
 					<table class="table table-borderless">
 						<colgroup> <%-- 테이블 간 간격 설정 --%>
-						<col style="width: 5%;">
-						<col style="width: 25%;">
-						<col style="width: 40%;">
-						<col style="width: 15%;">
-						<col style="width: 15%;">
+						<col style="width: 10%;">
+						<col style="width: 60%;">
+						<col style="width: 10%;">
+						<col style="width: 20%;">
 						<colgroup>
 				        <thead>
 					        <tr class="reviewInfoTitle">
 						        <th scope="col">번호</th>
 						        <th scope="col">제목</th>
-						        <th scope="col">내용</th>
 						        <th scope="col">작성자</th>
 						        <th scope="col">작성날짜</th>
 					        </tr>
 				        </thead>
 				        <tbody>
 				        	<c:forEach var="prd_review" items="${requestScope.prd_reviewList}" varStatus="status">
-					        	<tr class="reviewInfo">
+					        	<tr class="reviewInfo" onclick="goReview('${prd_review.review_no}')">
 					        		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
 					        		<td>${(requestScope.totalReviewCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
-					        		<td>${prd_review.review_title}</td>
-					        		<td class="reviewContents">${prd_review.review_contents}</td>
+					        		<td class="reviewTitle">${prd_review.review_title}</td>
 					        		<td>
 					        		<c:choose>
 								        <c:when test="${fn:length(prd_review.userid) > 3}">
@@ -512,16 +522,17 @@ $(document).ready(function(){
 					</div>
 				</div>
 			</div>
-		</div>			
+		</div>		
+		
+		<div id="goinquire" class="inquireEmptyDiv"></div>	
 		
 		<%-- 문의하기 --%>	
-		<div id="inquire" class="inquireEmptyDiv"></div>
 		<div id="prdInquire" >
 			<ul style="display: flex;">
-				<li><a href="#detail" class="detailBar">상세정보</a></li>
-				<li><a href="#guide" class="detailBar">이용안내</a></li>
-				<li><a href="#review" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
-				<li class="inquire"><a href="#inquire" class="detailBar">문의하기</a></li>	
+				<li><a href="#godetail" class="detailBar">상세정보</a></li>
+				<li><a href="#goguide" class="detailBar">이용안내</a></li>
+				<li><a href="#goreview" class="detailBar">상품후기<span class="reviewCnt">${requestScope.review_cnt}</span></a></li>
+				<li class="inquire"><a href="#goinquire" class="detailBar">문의하기</a></li>	
 			</ul>
 			
 			<div id="inquire" class="inquireBoard" style="height: auto;">
@@ -552,10 +563,10 @@ $(document).ready(function(){
 				        </thead>
 				        <tbody>
 				        	<c:forEach var="prd_qna" items="${requestScope.prd_qnaList}" varStatus="status">
-					        	<tr class="qnaInfo" data-userno="${prd_qna.user_no}">
+					        	<tr class="qnaInfo" onclick="goQna('${prd_qna.qna_no}')">
 					        		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" /> <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
 					        		<td>${(requestScope.totalQnaCount) - (currentShowPageNo - 1) * 10 - (status.index)}</td> <%-- 10개씩 보여줌 --%>
-					        		<td>상품 관련 문의 입니다.</td>
+					        		<td>${prd_qna.qna_title}</td>
 					        		<td>
 					        		<c:choose>
 								        <c:when test="${fn:length(prd_qna.userid) > 3}">

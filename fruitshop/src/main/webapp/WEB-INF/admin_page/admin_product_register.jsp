@@ -238,13 +238,6 @@
 	}); // end of $(document).ready(function()
 	
 
-	function goReset() { // 취소 버튼 클릭
-
-	    location.href="${pageContext.request.contextPath}/admin/adminProduct.ddg";
-
-	}// end of function goReset()---------------------			
-			
-
 </script>
 
     
@@ -292,7 +285,7 @@
 					<tr>
 						<td class="tdTitle">계절분류</td>
 						<td class="tdContents">
-							<select name="fk_season_no" id="fk_season_no" class="prod_infoData">
+							<select name="fk_season_no" id="fk_season_no" class="prod_infoData" style="width: 79.4px;">
 								<option value="0">선택</option>	
 								<c:forEach var="seasonvo" items="${requestScope.seasonInfo}">
 									<option value="${seasonvo.season_no}">${seasonvo.season_name}</option>  
@@ -330,10 +323,10 @@
 		                </td>
 	          		</tr>			
 					
-					<tr>
-	                    <td colspan="2" class="text-center" style="padding: 30px 0 10px 0;">
-	                       <input type="button" id="btnRegister" class="btn btn-success mr-5" value="등록" />
-	                       <input type="reset" value="취소" class="btn btn-danger mr-5" onclick="goReset()" />
+					<tr id="lastTr">
+	                    <td colspan="2" class="text-center" style="padding: 50px 0 10px 0;">
+	                       <input type="button" id="btnRegister"  value="등록" /> 
+	                       <input type="reset" id="btnReset" value="취소" onclick="javascript:location.href='${pageContext.request.contextPath}${requestScope.goBackURL}'" />
 	                    </td>
 	                </tr>
 				</tbody>

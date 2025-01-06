@@ -29,6 +29,10 @@ tr {
 	border: solid 1px #DADADA;
 }
 
+tr#lastTr {
+	border: none;
+}
+
 
 td.tdTitle {
 	width: 20%;
@@ -38,6 +42,49 @@ td.tdTitle {
 td.tdContents {
 	width: 50%;
 }
+
+/* 재고 설정 칸 */
+#prodRegister > tbody > tr:nth-child(4) > td.tdContents > span.ui-spinner.ui-corner-all.ui-widget.ui-widget-content {
+	width: 223px;
+	
+}
+
+input#spinnerPqty {
+	width: 182px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+/* 재고 설정 칸 끝 */
+
+
+
+/* 등록 버튼  */
+input#btnRegister {
+	border: none;
+	background-color: black;
+	color: white;
+	font-size: 12pt;
+	font-weight: bold;	
+	width: 7%;
+	height: 45px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 취소 버튼  */
+input#btnReset {
+	margin-left: 1%;
+	border: solid 1px black;
+	background-color: white;
+	color: black;
+	font-size: 12pt;
+	font-weight: bold;	
+	width: 7%;
+	height: 45px;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 span.error {
 	color: red;

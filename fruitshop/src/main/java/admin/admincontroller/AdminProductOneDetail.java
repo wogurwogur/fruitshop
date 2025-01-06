@@ -55,10 +55,14 @@ public class AdminProductOneDetail extends AbstractController {
 				List<ProductVO> seasonInfo = prdao.seasonInfo();
 				request.setAttribute("seasonInfo", seasonInfo);
 				
+			
 				ProductVO prdvo = prdao.prdDetails(prod_no); // 상품 정보 출력을 위해 기존 상세페이지 출력하던 메소드를 다시 불러온다.
-				
 				request.setAttribute("prod_no", prod_no); // 상품 번호 디테일 페이지에 전달
 				request.setAttribute("prdvo", prdvo);
+				
+				String goBackURL = request.getParameter("goBackURL");
+				request.setAttribute("goBackURL", goBackURL);
+				
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/admin_page/admin_product_onedetail.jsp");
@@ -140,6 +144,8 @@ public class AdminProductOneDetail extends AbstractController {
 				String prod_status = request.getParameter("prod_status"); // 판매여부 번호
 				
 				
+				
+				
 				ProductVO prdvo = new ProductVO();
 				prdvo.setProd_name(prod_name); // 상품명
 				prdvo.setProd_cost(Integer.parseInt(prod_cost)); // 원가
@@ -147,8 +153,10 @@ public class AdminProductOneDetail extends AbstractController {
 				prdvo.setProd_inventory(Integer.parseInt(prod_inventory)); // 재고
 				prdvo.setFk_season_no(Integer.parseInt(fk_season_no)); // 계절번호
 				prdvo.setProd_status((Integer.parseInt(prod_status))); // 판매여부 번호
-				prdvo.setProd_thumnail(prod_thumnail); // 썸네일 이미지
-				prdvo.setProd_descript(prod_descript); // 상세 이미지
+				
+	            // 업로드된 파일이 있으면 파일명을 설정하고, 없으면 기존 파일명 유지
+	            prdvo.setProd_thumnail(prod_thumnail != null ? prod_thumnail : request.getParameter("org_prod_thumnail"));
+	            prdvo.setProd_descript(prod_descript != null ? prod_descript : request.getParameter("org_prod_descript"));
 				
 				
 				// 상품 테이블에 제품 정보 Update 하기
