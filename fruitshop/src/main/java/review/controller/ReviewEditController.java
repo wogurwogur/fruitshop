@@ -32,6 +32,7 @@ public class ReviewEditController extends AbstractController {
 			String review_contents = request.getParameter("review_contents");
 			int fk_user_no = loginuser.getUser_no();
 			String prod_no = request.getParameter("prodNo");
+			String review_no = request.getParameter("reviewNo");
 					
 			
 			String review_contents_result = review_contents.replaceAll("\r\n", "<br>");
@@ -43,7 +44,7 @@ public class ReviewEditController extends AbstractController {
 			reviewList.setReview_contents(review_contents_result);
 			reviewList.setFk_user_no(fk_user_no);
 			reviewList.setProd_no(Integer.parseInt(prod_no));
-			
+			reviewList.setReview_no(Integer.parseInt(review_no));
 						
 			try {
 		         
@@ -97,12 +98,7 @@ public class ReviewEditController extends AbstractController {
 		}
 		
 		
-		
-		
-		
-		
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/review/reviewEdit.jsp");
+
 
 	}
 

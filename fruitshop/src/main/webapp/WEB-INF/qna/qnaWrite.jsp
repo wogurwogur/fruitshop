@@ -1,24 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
     String ctxPath = request.getContextPath();
-%>   
- 
-<% 
-    String reviewNo = request.getParameter("review_no");
-%>
+%> 
 
-<%-- Custom CSS
-<link rel="stylesheet" href="<%= request.getContextPath()%>/css/reviewWrite/reviewWrite.css"> --%>
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<script type="text/javascript" src="<%= ctxPath%>/js/review/reviewWrite.js"></script>
 <script type="text/javascript">
+
 
 $(document).ready(function(){
 	const writeModalOpen = document.getElementById('writeModalOpen');
@@ -39,8 +32,11 @@ $(document).ready(function(){
 function productSelect(prod_no){
 	
 	const modal = document.getElementById('modalContainer');
+	// alert(prod_no)
 	
 	$.ajax({
+		
+		
 		
 		url: "<%= ctxPath%>/community/productSelect.ddg",
 		type:"get",		
@@ -72,12 +68,9 @@ function productSelect(prod_no){
 			
 			
 			
-			const frm = document.reviewWriteFrm;
-			
-			console.log(json.prod_no)
+			const frm = document.qnaWriteFrm;
 			
 			frm.prodNo.value = json.prod_no;
-
 			 
 			
 			
@@ -95,28 +88,18 @@ function productSelect(prod_no){
 };
 
 
-function rvRegister(review_no){
+function rvRegister(){
 	
-	const frm = document.reviewWriteFrm;
-
-	// console.log(prod_no);
-	console.log(review_no);
+	const frm = document.qnaWriteFrm;
+	    frm.action = "<%=ctxPath%>/qna/qnaWrite.ddg";
+	    frm.method = "post";
+	    alert("QnA 작성 완료 !!")
+	  	    
+	    frm.submit();
+	    
+	    location.href="<%= ctxPath%>/qna/qnaList.ddg"
 	
-	
-	// frm.prodNo.value = prod_no;
-	frm.reviewNo.value = review_no;
-
-	frm.method = "post";
-	frm.action = "<%=ctxPath%>/review/reviewEdit.ddg";	
-	frm.submit();
-	
-	alert("구매후기 수정 완료 !!")
-	
-	setTimeout(() => {
-	    location.href = "<%= ctxPath %>/review/reviewList.ddg";
-	}, 100);
-	
-}
+};
 
 
 </script>
@@ -167,6 +150,7 @@ function rvRegister(review_no){
 }
 </style>
 
+
 <div class="container-fluid">
 
 	<div>
@@ -179,10 +163,10 @@ function rvRegister(review_no){
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black; border-bottom: solid black 2px;">구매후기</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black; border-bottom: solid black 2px;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
 		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
@@ -190,10 +174,7 @@ function rvRegister(review_no){
 		</ul>
 		
 	</div>
-
-
-
-
+	
 <hr style="width:63%; margin-left:15.5%;">
 
 
@@ -201,22 +182,23 @@ function rvRegister(review_no){
 	
 		<div class="" style="display:flex; width:70%; height:250px;">
 			
-			<c:if test="${not empty requestScope.productList }"></c:if>
 			<%-- 상품 썸네일 --%>
-			<div class=" ml-4 d-flex" style="width:15%; height:80%;">		
+			
+			
+			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<img src = "<%= ctxPath%>/images/product/thumnail/${rvo.prod_thumnail}" width="200px" height="200px";"/>					
+						<i class="fa-regular fa-image" style=""></i>					
 				</div>				
 			</div>
 			<%-- 상품 이름 --%>
 			<div class="" style="width:50%; height:80%;">
 				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
-					<span style="font-size:17pt;">${rvo.prod_name }</span>			
+					<span style="font-size:17pt;"></span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
-					<span style="font-size:17pt;">${rvo.prod_price }</span>
+				<div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
+					<span style="font-size:17pt;"></span>
 				</div>
 			</div>
 			
@@ -242,11 +224,11 @@ function rvRegister(review_no){
 					</tr>
 	    		</thead>
 	    		<tbody style="text-align:center;">
-	    			<c:forEach var="rpl" items="${requestScope.rproductList}">
-		    			<tr onclick="productSelect('${rpl.prod_no}')">
-							<td><img src="<%= ctxPath%>/images/product/thumnail/${rpl.prod_thumnail}" width="50" height="50"/></td>
-							<td>${rpl.prod_name}</td>	
-							<td><fmt:formatNumber pattern="###,###">${rpl.prod_price}</fmt:formatNumber>원</td>
+	    			<c:forEach var="qpl" items="${requestScope.qproductList}">
+		    			<tr onclick="productSelect('${qpl.prod_no}')">
+							<td><img src="<%= ctxPath%>/images/product/thumnail/${qpl.prod_thumnail}" width="50" height="50"/></td>
+							<td>${qpl.prod_name}</td>	
+							<td><fmt:formatNumber pattern="###,###">${qpl.prod_price}</fmt:formatNumber>원</td>
 						</tr>
 					</c:forEach>	
 					<tr>
@@ -262,11 +244,11 @@ function rvRegister(review_no){
 
 
 <%-- 제목 --%>
-<form name="reviewWriteFrm">
+<form name="qnaWriteFrm">
 	<div id="title">	
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
-			<textarea name="review_title" cols="80" rows="1" style="resize:none;"></textarea>
+			<textarea name="qna_title" cols="80" rows="1" style="resize:none;"></textarea>
 			<span class="ml-5 mt-1" style="font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
 		</div>	
 	</div>
@@ -278,18 +260,17 @@ function rvRegister(review_no){
 	<div id="contents">
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">내용</span>
-			<textarea name="review_contents" cols="130" rows="20" style="resize:none;"></textarea>
+			<textarea name="qna_contents" cols="130" rows="20" style="resize:none;"></textarea>
 		</div>	
 	</div>
 	<input type="hidden" name="prodNo"/>
-	<input type="hidden" name="reviewNo"/>
 </form>
 	<div id="buttons">
 		<div class="d-flex" style="margin-left:25%;">
 			<button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg'">목록</button>	
 				
 			<div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;" >
-				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister('<%= reviewNo%>')">수정</button>
+				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister()">등록</button>
 				<button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
 			</div>					
 		</div>	
@@ -311,7 +292,6 @@ function rvRegister(review_no){
 
 
 </div>
-
 
 
 

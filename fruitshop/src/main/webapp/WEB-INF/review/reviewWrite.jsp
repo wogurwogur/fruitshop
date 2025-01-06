@@ -6,7 +6,11 @@
 
 <%
     String ctxPath = request.getContextPath();
-%>   
+%>  
+
+<% 
+    String prod_no = request.getParameter("prod_no");
+%> 
  
 
 <%-- Custom CSS
@@ -21,9 +25,7 @@ $(document).ready(function(){
 	const writeModalOpen = document.getElementById('writeModalOpen');
 	const writeModalClose = document.getElementById('writeModalClose');
 	const modal = document.getElementById('modalContainer');
-	const couponModalSubmit = document.getElementById('getElementById');
-	let coupon_discount_ck = false;
-	let coupon_discount_result;
+
 
 	writeModalOpen.addEventListener('click', () => {
 	  modal.classList.remove('hidden');
@@ -163,13 +165,13 @@ function rvRegister(){
 		<div class="text-center" style="margin-top: 4%; font-size:40pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">여러분의 이야기를 들려주세요</div>
 	</div>
-	<div>
+	<div style="font-size:14pt; font-weight:500;">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
-		    <a class="nav-link mr-5" href="#" style="color: black;">공지사항</a>
+		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black;">구매후기</a>
+		    <a class="nav-link mx-5" href="<%= ctxPath%>/review/reviewList.ddg" style="color: black; border-bottom: solid black 2px;">구매후기</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black;">QnA</a>
@@ -191,9 +193,11 @@ function rvRegister(){
 	
 		<div class="" style="display:flex; width:70%; height:250px;">
 			
-			<%-- 상품 썸네일 --%>
 			
 			
+			
+			
+			<%-- 상품 썸네일 --%>						
 			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
 						<i class="fa-regular fa-image" style=""></i>					
