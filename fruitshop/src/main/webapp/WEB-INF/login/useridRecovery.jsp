@@ -106,7 +106,7 @@ function goFind() {
 
 </script>
 
-<div class="container" style="margin:100px 0; height:500px;">
+<div class="container" style="height:500px;">
 
 	<form name="emailAuthenticationFrm" action="<%=request.getContextPath()%>/useridRecovery.ddg" method="post">
 	
