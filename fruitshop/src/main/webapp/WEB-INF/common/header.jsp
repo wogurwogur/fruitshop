@@ -59,7 +59,14 @@
             <a href="#">Team Story</a>
             <a href="<%= request.getContextPath()%>/notice/noticeList.ddg">Community</a>
             <br>
-            <a href="<%= request.getContextPath()%>/login/login.ddg">Login</a>
+            
+            <c:if test="${empty sessionScope.loginuser}">
+            	<a href="<%= request.getContextPath()%>/login/login.ddg">Login</a>
+            </c:if>
+            <c:if test="${!empty sessionScope.loginuser}">
+            	<a href="<%= request.getContextPath()%>/login/logout.ddg">Logout</a>
+            </c:if>
+            
             <c:if test="${empty sessionScope.loginuser or sessionScope.loginuser.role == 1}">
 	            <a href="<%= request.getContextPath()%>/mypage/mypageIndex.ddg">My Page</a>
             </c:if>

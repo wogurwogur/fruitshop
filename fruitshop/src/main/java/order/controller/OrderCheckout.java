@@ -47,8 +47,9 @@ public class OrderCheckout extends AbstractController {
 //		for (int i=0; i<)
 		
 //		System.out.println("확인용 userno :"+ user_no);
-//		System.out.println("확인용 selectedItems :"+ selectedItems);
-//		System.out.println("확인용 cartTotal :"+ cartTotal);
+		System.out.println("확인용 selectedItems :"+ selectedItems);
+		System.out.println("확인용 cartTotal :"+ cartTotal);
+		System.out.println("확인용 prod_no :"+ prod_no);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
