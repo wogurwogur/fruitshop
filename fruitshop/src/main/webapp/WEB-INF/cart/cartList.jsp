@@ -99,6 +99,7 @@
                           <%-- 각각의 상품 체크박스 --%>
 				        <div style="flex: 0.1; text-align: center;">
 				        	<form id="checked">
+				        	    <input type="hidden" id="selectedItem" name="selectedItem">
 				            	<input type="checkbox" id="${item.cart_no}" name="selectedItems" value="${item.cart_no}">
 				            	<input type="hidden" name="userNo" value="${sessionScope.loginuser.user_no}">
 				            </form>    
