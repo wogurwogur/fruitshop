@@ -14,6 +14,17 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	$("input:text[name='searchWord']").bind("keydown", function(e){
+		
+		if(e.keyCode == 13){
+			noticeSearch();
+		}
+		
+	});
+	
+});
+
 function noticeDetail(notice_no){
 	
 	const frm = document.noticeForm;

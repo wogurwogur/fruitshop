@@ -17,31 +17,36 @@ div.title {
 }
 
 #Adminpage > a {
+	font-family: 'Noto Sans KR', sans-serif;
+	/* font-style: regular; */
+	font-weight: 500;
 	color: #464646;
-	margin: 0 4%;
+	margin: 0 2%;
+	font-size: 14pt;
+	text-decoration: none;
 }
 
 td{
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 }
 
 select{
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 }
 
 option{
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 }
 button{
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 }
 
 span{
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 }
 
@@ -53,7 +58,7 @@ select#searchType{
 
 button{
 	
-	font-size: 15px;
+	font-size: 12pt;
 	font-weight: 300;
 	
 }

@@ -26,6 +26,14 @@ $(document).ready(function(){
 		$("select[name='searchType']")
 	}
 	
+	$("input:text[name='searchWord']").bind("keydown", function(e){
+		
+		if(e.keyCode == 13){
+			memberSearch();
+		}
+		
+	});
+	
 });
 
 function memberDetail(user_no, currentShowPageNo){
