@@ -127,8 +127,8 @@
 								<span class="star text-danger"></span>
 							</td>
 							<td class="text-center" style="height: 100px;">
-								<input type="button" class="btn btn-success btn-lg mr-5" value="수정하기" onclick="goUpdate()" />
-								<input type="button" class="btn btn-danger btn-lg" value="취소하기" onclick="goBack()" />
+								<input type="button" class="btn btn-outline-success btn-lg mr-5" value="수정하기" onclick="goUpdate()" />
+								<input type="button" class="btn btn-outline-danger btn-lg" value="취소하기" onclick="goBack()" />
 							</td>
 						</tr> 
 
