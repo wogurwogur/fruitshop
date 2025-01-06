@@ -141,16 +141,16 @@
 						</tr>
 					</thead>
 					
-		    		<tbody>
+		    		<tbody style="font-size:12pt;">
 		    		
 		    			<c:if test="${!empty requestScope.couponList}">
 		    			
 							<c:forEach var="cvo" items="${requestScope.couponList}">
 								<tr>
-									<th>${cvo.coupon_name}</th>
-									<th>${cvo.coupon_descript}</th>
-									<th><fmt:formatNumber value="${cvo.coupon_discount}" pattern="#,###" />&nbsp;원</th>
-									<th>${cvo.coupon_expire}</th>
+									<td>${cvo.coupon_name}</td>
+									<td>${cvo.coupon_descript}</td>
+									<td><fmt:formatNumber value="${cvo.coupon_discount}" pattern="#,###" />&nbsp;원</td>
+									<td>${cvo.coupon_expire}</td>
 								</tr>
 							</c:forEach>
 							
