@@ -30,11 +30,11 @@ public class ReviewCommentDeleteController extends AbstractController {
 			
 			String comment_no = request.getParameter("comment_no");
 			String review_no = request.getParameter("review_no");			
-			String commentPwdED = request.getParameter("commentPwdED");
+			String comment_PwdD = request.getParameter("comment_PwdD");
 						
 			
 			
-			int n = revdao.commentDelete(comment_no, review_no, commentPwdED);
+			int n = revdao.commentDelete(comment_no, review_no, comment_PwdD);
 			
 			
 			if(n == 1) {
@@ -46,8 +46,7 @@ public class ReviewCommentDeleteController extends AbstractController {
 			}
 			else {
 				
-				
-					
+								
 				String message = "수정실패";
 		        String loc = request.getContextPath()+"/review/reviewLRead.ddg";
 		        

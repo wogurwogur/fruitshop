@@ -1,4 +1,4 @@
-package review.controller;
+package qna.controller;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -8,15 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
-import review.domain.ReviewListVO;
-import review.model.ReviewListDAO;
-import review.model.ReviewListDAO_imple;
+import qna.domain.QnaListVO;
+import qna.model.*;
 
-public class ReviewWriteController extends AbstractController {
+
+public class QnaWriteController extends AbstractController {
 	
 	
-	private ReviewListDAO revdao = new ReviewListDAO_imple();
-	
+	private QnaListDAO qdao = new QnaListDAO_imple();
 	
 	
 	@Override
@@ -44,34 +43,34 @@ public class ReviewWriteController extends AbstractController {
 		
 	
 			
-			String review_title = request.getParameter("review_title");
-			String review_contents = request.getParameter("review_contents");
+			String qna_title = request.getParameter("qna_title");
+			String qna_contents = request.getParameter("qna_contents");
 			int fk_user_no = loginuser.getUser_no();
 			int prod_no = Integer.parseInt(request.getParameter("prodNo"));
 					
 			
-			String review_contents_result = review_contents.replaceAll("\r\n", "<br>");
+			String qna_contents_result = qna_contents.replaceAll("\r\n", "<br>");
 			
-			ReviewListVO reviewList = new ReviewListVO();
+			QnaListVO qnaWrite = new QnaListVO();
   	        
 		
-			reviewList.setReview_title(review_title);
-			reviewList.setReview_contents(review_contents_result);
-			reviewList.setFk_user_no(fk_user_no);
-			reviewList.setProd_no(prod_no);
+			qnaWrite.setQna_title(qna_title);
+			qnaWrite.setQna_contents(qna_contents_result);
+			qnaWrite.setFk_user_no(fk_user_no);
+			qnaWrite.setProd_no(prod_no);
 			
 						
 			try {
 		         
-		         int result = revdao.reviewWrite(reviewList);
+		         int result = qdao.qnaWrite(qnaWrite);
 		         
-		         if(result==1) {
-		        	
-		        	 request.setAttribute("reviewList", reviewList);
+		         if(result==1) {		        	
+		        	 request.setAttribute("qnaWrite", qnaWrite);
 		        
 		        	 
 		        	 super.setRedirect(false);
-		        	 super.setViewPage("/WEB-INF/review/reviewList.jsp");
+		        	 super.setViewPage("/WEB-INF/qna/qnaList.jsp");
+		        	 
 		         }
 	         
 	         } catch(SQLException e) {
@@ -94,25 +93,13 @@ public class ReviewWriteController extends AbstractController {
 		
 		else {
 			
-			List<ReviewListVO> rproductList = revdao.rproductFind();
-			
-			request.setAttribute("rproductList", rproductList);
-			
-			
-
-			super.setViewPage("/WEB-INF/review/reviewWrite.jsp");
+			List<QnaListVO> qproductList = qdao.qproductFind();			
+			request.setAttribute("qproductList", qproductList);
+			super.setViewPage("/WEB-INF/qna/qnaWrite.jsp");
 			
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/review/reviewWrite.jsp");
+
 
 	}
 

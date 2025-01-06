@@ -33,9 +33,7 @@ public class ReviewListController extends AbstractController {
 			
 			if (searchType == null || 
 			   (!"review_title".equals(searchType) &&
-				!"userid".equals(searchType) &&
-			   	!"review_contents".equals(searchType) &&
-			   	!"review_no".equals(searchType)) ){
+			   	!"review_contents".equals(searchType) ) ){
 				searchType = "";
 			}
 			
@@ -43,12 +41,17 @@ public class ReviewListController extends AbstractController {
 				searchWord = "";
 			}
 			
-			if (sizePerPage == null || 
-			   (!"10".equals(sizePerPage) &&
-				!"5".equals(sizePerPage)  && 
-				!"3".equals(sizePerPage))) {
-				sizePerPage = "10";
-			}
+			if (sizePerPage == null ) {
+						sizePerPage = "10";
+					}
+			
+			
+			
+			/*
+			 * if (sizePerPage == null || (!"10".equals(sizePerPage) &&
+			 * !"5".equals(sizePerPage) && !"3".equals(sizePerPage))) { sizePerPage = "10";
+			 * }
+			 */
 			
 			if (currentShowPageNo == null) {
 				currentShowPageNo = "1";
@@ -64,7 +67,6 @@ public class ReviewListController extends AbstractController {
 						
 			// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총페이지수 알아오기 //
 			int totalPage = revdao.getTotalPage(paraMap);
-			
 //			System.out.println("~~~ 확인용 totalPage => "+ totalPage);
 			
 			// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 totalPage 값 보다 더 큰값을 입력하여 장난친 경우
@@ -144,7 +146,7 @@ public class ReviewListController extends AbstractController {
 			
 			String pageBar = "";
 			
-			int blockSize = 10;
+			int blockSize = 5;
 	        // blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
 			
 			int loop = 1;
@@ -155,19 +157,19 @@ public class ReviewListController extends AbstractController {
 			// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 			
 			// *** [처음]&[이전] 만들기 *** //
-			pageBar += "<li class='page-item'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[처음]</a></li>";
+			pageBar += "<a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>&laquo;</a>";
 			
 			if (pageNo != 1) {
-				pageBar += "<li class='page-item'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>&lsaquo;</a>";
 			}
 			// 페이지가 변경 될 때마다 실행된다.
 			while (!(loop > blockSize || pageNo > totalPage)) {			
 				
 				if (Integer.parseInt(currentShowPageNo) == pageNo) {					
-					pageBar += "<li class='page-item active'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a></li>";
+					pageBar += "<a class='page-link text-light font-weight-bold active' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a>";
 				}
 				else {
-					pageBar += "<li class='page-item'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a></li>";
+					pageBar += "<a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+ pageNo +"</a>";
 				}
 				loop++;	
 				
@@ -179,9 +181,9 @@ public class ReviewListController extends AbstractController {
 			// *** [다음]&[마지막] 만들기 *** //
 			// pageNo ==> 11 21 31 ...
 			if (pageNo <= totalPage) {
-				pageBar += "<li class='page-item'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>&rsaquo;</a>";
 			}
-			pageBar += "<li class='page-item'><a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			pageBar += "<a class='page-link text-body font-weight-bold' href='reviewList.ddg?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>&raquo;</a>";
 			// *** === 페이지 바 만들기 끝 === *** //
 			
 			
