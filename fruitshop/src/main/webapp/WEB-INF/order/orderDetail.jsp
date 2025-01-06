@@ -53,7 +53,7 @@ function goCommit() {
 			alert("구매확정을 완료했습니다.");
 			
 			if (json.isComplete) {
-				location.href = `orderList.ddg`;				
+				location.href = `orderList.ddg`;
 			}
 			
 		},

@@ -60,9 +60,16 @@
             <a href="<%= request.getContextPath()%>/notice/noticeList.ddg">Community</a>
             <br>
             <a href="<%= request.getContextPath()%>/login/login.ddg">Login</a>
-            <a href="<%= request.getContextPath()%>/mypage.ddg">My Page</a>
+            <c:if test="${empty sessionScope.loginuser or sessionScope.loginuser.role == 1}">
+	            <a href="<%= request.getContextPath()%>/mypage/mypageIndex.ddg">My Page</a>
+            </c:if>
+            <c:if test="${sessionScope.loginuser.role == 2}">
+                <a href="<%= request.getContextPath()%>/admin/adminManagement.ddg">Admin Page</a>
+            </c:if>
             <a href="<%= request.getContextPath()%>/order/orderList.ddg">Order List</a>
-            <a href="<%= request.getContextPath()%>/cart/cartList.ddg">Cart</a>
+            <a href="<%= request.getContextPath()%>/cart/cartList.ddg">
+            	Cart<c:if test="${!empty sessionScope.loginuser}">(${sessionScope.loginuser.cart_cnt})</c:if>
+            </a>
         </div>
         <!-- 슬라이드 메뉴 끝 -->
         

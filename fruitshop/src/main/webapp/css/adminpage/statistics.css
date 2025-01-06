@@ -58,6 +58,21 @@ div#menu_filter div.active {
 /* 주문내역 메뉴바 끝 */
 
 
+/* 필터검색 메뉴 시작 */
+div#filterMenu select,
+div#filterMenu input {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+}
+
+span#bodyTitle {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+}
+/* 필터검색 메뉴 끝 */
+
 
 /* 기간설정구역 시작 */
 div#order_time {
