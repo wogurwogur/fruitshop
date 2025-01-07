@@ -15,7 +15,7 @@ import product.model.ProductDAO_imple;
 public class ProductDetail extends AbstractController {
 	
 	private ProductDAO prdao = new ProductDAO_imple();
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -40,6 +40,7 @@ public class ProductDetail extends AbstractController {
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
+		
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("prodNo", prodNo);

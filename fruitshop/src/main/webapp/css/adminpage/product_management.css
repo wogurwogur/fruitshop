@@ -21,12 +21,20 @@ table {
 
 
 /* table 행 */
-th, td {
+th {
+	text-align: center;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+td {
 	text-align: center;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 12pt;
 	font-weight: 400;
 }
+
 
 
 /* table thead */

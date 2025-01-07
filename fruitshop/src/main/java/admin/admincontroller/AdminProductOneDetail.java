@@ -62,7 +62,7 @@ public class AdminProductOneDetail extends AbstractController {
 				
 				String goBackURL = request.getParameter("goBackURL");
 				request.setAttribute("goBackURL", goBackURL);
-				
+			
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/admin_page/admin_product_onedetail.jsp");
