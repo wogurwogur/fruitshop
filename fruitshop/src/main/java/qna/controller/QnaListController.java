@@ -16,11 +16,6 @@ public class QnaListController extends AbstractController {
 
 	private QnaListDAO qdao = new QnaListDAO_imple();
 	
-	public QnaListController() {
-
-		
-	};
-
 			
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -38,8 +33,8 @@ public class QnaListController extends AbstractController {
 //		System.out.println("~~~~ 확인용 currentShowPageNo : "+ currentShowPageNo);
 		
 		if (searchType == null || 
-		   (!"review_title".equals(searchType) &&
-		   	!"review_contents".equals(searchType) ) ){
+		   (!"qna_title".equals(searchType) &&
+		   	!"qna_contents".equals(searchType) ) ){
 			searchType = "";
 		}
 		
@@ -200,9 +195,7 @@ public class QnaListController extends AbstractController {
          
 	    // System.out.println("currentURL : " + currentURL);
 		
-		
-		
-		
+	
 		
 		try {
 			
@@ -210,6 +203,7 @@ public class QnaListController extends AbstractController {
 			List<QnaListVO> qnaList = qdao.select_Member_paging(paraMap);
 			
 			if(qnaList.size() > 0) {
+				
 				request.setAttribute("qnaList", qnaList);
 				request.setAttribute("searchType", searchType);
 				request.setAttribute("searchWord", searchWord);

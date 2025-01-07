@@ -368,7 +368,7 @@ public class QnaListDAO_imple implements QnaListDAO {
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " and "+ colname +" = ? ";
+				sql += " AND "+ colname +" LIKE '%'||?||'%' ";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -413,7 +413,7 @@ public class QnaListDAO_imple implements QnaListDAO {
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " where "+ colname +" = ? ";
+				sql += " AND "+ colname +" LIKE '%'||?||'%' ";
 			}
 		
 			pstmt = conn.prepareStatement(sql);
@@ -445,55 +445,66 @@ public class QnaListDAO_imple implements QnaListDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT C.RNO, C.qna_status, C.qna_answer, C.qna_contents, C.qna_no, C.qna_title, C.qna_viewcount, C.qna_regidate, "
-					+ "       C.user_no, C.userid, C.prod_name "
-					+ " FROM "
-					+ " ( "
-					+ "    SELECT ROWNUM AS RNO, A.qna_status, A.qna_answer, A.qna_contents, A.qna_no, A.qna_title, "
-					+ "           A.qna_viewcount, A.qna_regidate, A.user_no, A.userid, A.prod_name "
-					+ "    FROM "
-					+ "    ( "
-					+ "        SELECT q.qna_status, q.qna_answer, q.qna_no, q.qna_title, q.qna_viewcount, q.qna_regidate, "
-					+ "               q.fk_user_no, q.qna_contents, "
-					+ "               m.user_no, func_userid_block(m.userid) AS userid, p.prod_name "
-					+ "        FROM tbl_qna q "
-					+ "        INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
-					+ "        INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
-					+ "        WHERE q.qna_status = 1 "
-					+ "        ORDER BY q.qna_no DESC "
-					+ "    ) A "
-					+ " ) C "
-					+ " WHERE RNO BETWEEN ? AND ? "
-					+ " ORDER BY RNO ASC " ;
-					
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
-			
-			if(!colname.isBlank() && !searchWord.isBlank()) {
-		
-				sql += " and "+ colname +" like '%'||?||'%' ";
-					
-			}
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));	// 조회하고자 하는 페이지 번호
-			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));				// 페이지당 보여줄 행의 개수
-			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo")); // 조회하고자 하는 페이지 번호
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); // 페이지당 보여줄 행의 개수
+
+			String sql;
+
 			if (!colname.isBlank() && !searchWord.isBlank()) {
-				// 검색이 있는 경우	
-				// 검색어
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
-				pstmt.setString(3, searchWord);// 페이지 내 끝번호			
+
+			    // 검색 조건이 있는 경우
+			    sql = " SELECT * "
+			    	    + " FROM ( "
+			    	    + "    SELECT ROW_NUMBER() OVER (ORDER BY A.qna_no DESC) AS RNO, "
+			    	    + "           A.qna_answer, A.qna_status, A.qna_contents, A.qna_no, A.qna_title, "
+			    	    + "           A.qna_viewcount, A.qna_regidate, A.user_no, A.userid, "
+			    	    + "           A.prod_name "
+			    	    + "    FROM ( "
+			    	    + "        SELECT q.qna_answer, q.qna_status, q.qna_no, q.qna_title, q.qna_viewcount, "
+			    	    + "               q.qna_regidate, q.fk_user_no, q.qna_contents, "
+			    	    + "               m.user_no, func_userid_block(m.userid) AS userid, "
+			    	    + "               p.prod_name "
+			    	    + "        FROM tbl_qna q "
+			    	    + "        INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
+			    	    + "        INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
+			    	    + "        WHERE q.qna_status = 1 "
+			    	    + "          AND q." + colname + " LIKE '%' || ? || '%' "
+			    	    + "    ) A "
+			    	    + " ) C "
+			    	    + " WHERE C.RNO BETWEEN ? AND ? ";
+			    	} else {
+			    	    // 검색 조건이 없는 경우
+			    	    sql = " SELECT * "
+			    	        + " FROM ( "
+			    	        + "    SELECT ROWNUM AS RNO, A.qna_status, A.qna_contents, A.qna_no, A.qna_title, "
+			    	        + "           A.qna_answer, A.qna_viewcount, A.qna_regidate, A.user_no, A.userid, A.prod_name "
+			    	        + "    FROM ( "
+			    	        + "        SELECT q.qna_answer, q.qna_status, q.qna_no, q.qna_title, q.qna_viewcount, q.qna_regidate, "
+			    	        + "               q.fk_user_no, q.qna_contents, m.user_no, func_userid_block(m.userid) AS userid, p.prod_name "
+			    	        + "        FROM tbl_qna q "
+			    	        + "        INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
+			    	        + "        INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
+			    	        + "        WHERE q.qna_status = 1 "
+			    	        + "        ORDER BY q.qna_no DESC "
+			    	        + "    ) A "
+			    	        + " ) C "
+			    	        + " WHERE C.RNO BETWEEN ? AND ? ";
 			}
-			else {				
-				// 검색이 없는 경우
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호
+
+			pstmt = conn.prepareStatement(sql);
+
+			// 파라미터 바인딩
+			if (!colname.isBlank() && !searchWord.isBlank()) {
+			    pstmt.setString(1, searchWord);
+			    pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			    pstmt.setInt(3, currentShowPageNo * sizePerPage);
+			} else {
+			    pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			    pstmt.setInt(2, currentShowPageNo * sizePerPage);
 			}
-			
-			
+
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

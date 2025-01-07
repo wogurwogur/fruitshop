@@ -58,6 +58,9 @@ public interface ReviewListDAO {
 	
 	// 구매후기 글 봤을때 조회수 올려주는 메소드 
 	int setViewCount(String review_no) throws SQLException;
+	
+	// 타페이지에서 후기글 작성시 상품정보 가져오는 메소드
+	ReviewListVO ProductCarrier(String prod_no) throws SQLException;
 
 
 		
