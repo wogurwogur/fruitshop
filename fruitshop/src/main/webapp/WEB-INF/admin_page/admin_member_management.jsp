@@ -12,13 +12,42 @@
 <script src="<%=ctxPath %>/js/admin/admin_member_detail.js"></script>
 <script type="text/javascript">
 
+$(document).ready(function(){
+	
+	const searchWord = '${requestScope.searchWord}';
+	
+	const searchType = '${requestScope.searchType}';
+	
+	if(searchWord != ""){
+		$("input:text[name='searchWord']").text(searchWord);
+	}
+	
+	if(searchType != ""){
+		$("select[name='searchType']")
+	}
+	
+	$("input:text[name='searchWord']").bind("keydown", function(e){
+		
+		if(e.keyCode == 13){
+			memberSearch();
+		}
+		
+	});
+	
+});
+
 function memberDetail(user_no, currentShowPageNo){
 	
 	const memberfrm = document.member_management_frm;
 	
+	const searchWord = $("input:text[name='searchWord']").val();
+	
+	const searchType = $("select[name='searchType']").val();
 	
 	memberfrm.detail_user_no.value = user_no;
 	memberfrm.currentShowPageNo.value = currentShowPageNo;
+	memberfrm.searchType.value = searchType;
+	memberfrm.searchWord.value = searchWord;
 	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
 	memberfrm.method = "post";
 	
@@ -29,7 +58,7 @@ function memberDetail(user_no, currentShowPageNo){
 
 function memberSearch(){
 	
-	const searchType = $("select[name='searchType']");
+	const searchType = $("select[name='searchType']").val();
 	
 	if(searchType == ""){
 		alert("검색대상을 선택하세요!!");
@@ -43,8 +72,16 @@ function memberSearch(){
 		return;
 	}
 	
+	
+	
 	const memberfrm = document.member_management_frm;
 	
+	
+	memberfrm.searchType.value = searchType;
+	memberfrm.searchWord.value = searchWord;
+	memberfrm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
+	memberfrm.action = "<%=ctxPath%>/admin/adminManagement.ddg";
+	memberfrm.method = "post";
 	memberfrm.submit();
 	
 }

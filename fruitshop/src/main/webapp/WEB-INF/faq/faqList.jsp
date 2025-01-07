@@ -14,6 +14,17 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	$("input:text[name='searchWord']").bind("keydown", function(e){
+		
+		if(e.keyCode == 13){
+			faqSearch();
+		}
+		
+	});
+	
+});
+
 function faqWrite(){
 	
 	const frm = document.faqForm;
@@ -30,8 +41,40 @@ function faqDetail(faq_no){
 	
 	frm.action = "<%=ctxPath%>/faq/faqDetail.ddg";
 	
+	frm.searchType.value = searchType;
+	frm.searchWord.value = searchWord;
+	frm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
 	frm.faq_no_detail.value = faq_no;
 	
+	frm.submit();
+	
+}
+
+function faqSearch(){
+	
+	const searchType = $("select[name='searchType']").val();
+	
+	if(searchType == ""){
+		alert("검색대상을 선택하세요!!");
+		return;
+	}
+	
+	const searchWord = $("input:text[name='searchWord']").val();
+	
+	if(searchWord.trim() == ""){
+		alert("검색어를 입력하세요!!");
+		return;
+	}
+	
+	
+	
+	const frm = document.faqForm;
+	
+	
+	frm.searchType.value = searchType;
+	frm.searchWord.value = searchWord;
+	frm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
+	frm.action = "<%=ctxPath%>/faq/faqList.ddg";
 	frm.submit();
 	
 }
@@ -40,6 +83,47 @@ function faqDetail(faq_no){
 
 <style type="text/css">
 
+select#searchType{
+	height: 36px;
+	vertical-align: middle;
+}
+
+#searchTypeWord{
+	vertical-align: middle;
+	height: 36px;
+	padding: 0px;
+}
+#searchButton{
+	vertical-align: middle;
+	height: 36px;
+	width: 35px;
+	border: 0px;
+}
+
+/* 페이징 숫자 처리 시작 */
+div.pagination {
+	border:solid 0px red;
+	display: inline-block;
+	margin: 0 auto;
+}
+
+div.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border-radius: 5px;
+}
+
+div.pagination a.active {
+  /*background-color: #4CAF50;*/
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+div.pagination a:hover:not(.active) {background-color: #ddd;}
 
 
 </style>
@@ -73,17 +157,25 @@ function faqDetail(faq_no){
 		
 <div>		
 <div class="container mt-4">
-		<div style="float: right;">
-				<select class = "text-center" style="height:4%">
-					<option>제목</option>
-					<option>내용</option>
-					<option>작성자</option>
-					<option>글번호</option>				
-				</select>
-				<input type="text" style="height:4%"></input>
-				<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%; margin-right: auto;">검색</button>
-		</div>
 <form name="faqForm">
+<input type="text" name="currentShowPageNo" style="display:none;"/>
+		<div style="float: right;">
+			<div style="float: right; display:flex;">
+			<div>
+				<select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
+				    <option value="">검색대상</option>
+				    <option value="faq_title">제목</option>
+				    <option value="faq_contents">내용</option> 
+				</select>
+			</div>
+			<div>
+			  <input type="text" placeholder="입력란" name="searchWord" id="searchTypeWord">
+			  <button type="button" onclick="faqSearch()" id="searchButton"><i class="fa fa-search"></i></button>
+			  <input type="hidden" name="detail_user_no">
+			</div>
+		</div>
+		</div>
+
 			<div class="table-responsive">
 			    <!-- .table-responsive 반응형 테이블(테이블의 원래 크기를 보존해주기 위한 것으로써, 디바이스의 width가 작아지면 테이블 하단에 스크롤이 생김) -->
 			 
@@ -97,8 +189,8 @@ function faqDetail(faq_no){
 					</tr>
 					<%-- 글 리스트 --%>	
 			<tbody id="notice_list">
-			<c:if test="${not empty requestScope.faqList}">
-				<c:forEach var="fvo" items="${requestScope.faqList}">
+			<c:if test="${not empty requestScope.faq_allList}">
+				<c:forEach var="fvo" items="${requestScope.faq_allList}">
 					<tr onclick="faqDetail('${fvo.faq_no}')" style="cursor:pointer;">						
 						<td>${fvo.faq_no}</td>						
 						<td>${fvo.faq_title}</td>						
@@ -108,7 +200,7 @@ function faqDetail(faq_no){
 				</c:forEach>			
 			</c:if>																	
 			</tbody>
-			<c:if test="${empty requestScope.faqList}">
+			<c:if test="${empty requestScope.faq_allList}">
 				<tr>
 					<td colspan="5">존재하는 글이 없습니다.</td>
 				</tr>
@@ -129,17 +221,11 @@ function faqDetail(faq_no){
 		</div>
 								
 			<!-- 페이지네이션 -->
-			<nav>
-			  <ul class="pagination justify-content-center text-center pagination-sm mt-3">
-			    <li class="page-item"><a class="page-link text-body" href="#">이전</a></li>
-			    <li class="page-item"><a class="page-link text-body font-weight-bold" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">4</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">5</a></li>
-			    <li class="page-item"><a class="page-link text-body" href="#">다음</a></li>
-			  </ul>
-			</nav>
+		<div style="margin-top: 5%; display: flex;">
+		<div class='pagination'>
+			${requestScope.pageBar}
+		</div>
+		</div>
 		</div>
 		</form>
 	</div>

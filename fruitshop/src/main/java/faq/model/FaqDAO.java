@@ -26,5 +26,11 @@ public interface FaqDAO {
 
 	// 자주하는 질문 수정 메소드
 	int updateFaq(Map<String, String> map) throws SQLException;
+	
+	// 페이징을 위해 총 페이지 수를 계산하는 메소드
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 페이징처리한 리스트를 가져오는 메소드
+	List<FaqVO> select_Faq_paging(Map<String, String> paraMap) throws SQLException;
 
 }

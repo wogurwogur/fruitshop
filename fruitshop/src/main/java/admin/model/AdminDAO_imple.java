@@ -291,7 +291,7 @@ public class AdminDAO_imple implements AdminDAO {
 			conn = ds.getConnection();
 			
 			
-			String sql = "SELECT RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
+			String sql = " SELECT RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
 					+ "  FROM "
 					+ "  ( "
 					+ "      SELECT rownum AS RNO, userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
@@ -315,10 +315,12 @@ public class AdminDAO_imple implements AdminDAO {
 			if(!colname.isBlank() && !searchWord.isBlank()) {	// jdk 11 이상
 				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
 	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
-				sql += " and " +colname+ " like '%'|| ? ||'%' ";
+				sql += " and " +colname+ " like '%'|| ? ||'%' "
+						+ " order by registerday desc ";
 			}
 			
-			sql += " ) V "
+			sql += " order by registerday desc "
+					+ " ) V "
 					+ "  ) T "
 					+ " WHERE T.RNO BETWEEN ? AND ? "
 					+ " order by registerday desc ";
