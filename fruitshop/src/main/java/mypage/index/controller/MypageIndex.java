@@ -36,7 +36,7 @@ public class MypageIndex extends AbstractController {
 			
 			request.setAttribute("couponList", couponList);
 			request.setAttribute("couponList_cnt", couponList.size());
-			
+			request.setAttribute("mypage_val", "mypageIndex");
 			
 			List<Map<String, Integer>> shipStatus_count = mpidao.shipStatus(user_no);
 			

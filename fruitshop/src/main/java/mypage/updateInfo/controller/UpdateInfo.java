@@ -26,6 +26,7 @@ public class UpdateInfo extends AbstractController {
 			
 			if("get".equalsIgnoreCase(request.getMethod())) {
 				
+				request.setAttribute("mypage_val", "updateInfo");
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/mypage/updateInfo.jsp");
 				
