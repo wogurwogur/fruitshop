@@ -86,7 +86,7 @@
 		}
         else{   // 로그인 안했을때 
            
-           alert("로그인 후에 상품을 관심상품에 넣을 수 있습니다 !!");
+           alert("로그인 후 이용가능합니다!");
            location.href=`${pageContext.request.contextPath}/login/login.ddg`;
         }
 	          
