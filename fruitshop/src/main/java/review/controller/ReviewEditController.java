@@ -56,7 +56,7 @@ public class ReviewEditController extends AbstractController {
 		        
 		        	 
 		        	 super.setRedirect(false);
-		        	 super.setViewPage("/WEB-INF/review/reviewEdit.jsp");
+		        	 super.setViewPage("/WEB-INF/review/reviewList.jsp");
 		         }
 	         
 	         } catch(SQLException e) {

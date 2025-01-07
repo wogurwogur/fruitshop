@@ -313,8 +313,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 					</tr>									
 				</c:forEach>
 				<input type="hidden" name="review_noo"/>
-			</form>
-				
+			</form>				
 			</c:if>
 						
 			

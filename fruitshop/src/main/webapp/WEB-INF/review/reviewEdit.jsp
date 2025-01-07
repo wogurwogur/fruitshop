@@ -95,15 +95,14 @@ function productSelect(prod_no){
 };
 
 
-function rvRegister(review_no){
+function rvRegister(prod_no, review_no){
 	
 	const frm = document.reviewWriteFrm;
 
-	// console.log(prod_no);
+	console.log(prod_no);
 	console.log(review_no);
-	
-	
-	// frm.prodNo.value = prod_no;
+		
+	frm.prodNo.value = prod_no;
 	frm.reviewNo.value = review_no;
 
 	frm.method = "post";
@@ -114,7 +113,7 @@ function rvRegister(review_no){
 	
 	setTimeout(() => {
 	    location.href = "<%= ctxPath %>/review/reviewList.ddg";
-	}, 100);
+	}, 300);
 	
 }
 
@@ -289,7 +288,7 @@ function rvRegister(review_no){
 			<button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg'">목록</button>	
 				
 			<div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;" >
-				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister('<%= reviewNo%>')">수정</button>
+				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister('${rvo.prod_no}' ,'<%= reviewNo%>')">수정</button>
 				<button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
 			</div>					
 		</div>	

@@ -28,6 +28,8 @@ $(document).ready(function(){
 	writeModalClose.addEventListener('click', () => {
 	  modal.classList.add('hidden');
 	});	
+	
+	console.log(prodNo);
 		
 });
 
@@ -105,7 +107,7 @@ function rvRegister(prod_no, qna_no){
 	
 	setTimeout(() => {
 	    location.href = "<%= ctxPath %>/qna/qnaList.ddg";
-	}, 100);
+	}, 300);
 	
 }
 

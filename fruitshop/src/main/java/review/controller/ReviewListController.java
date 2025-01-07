@@ -20,6 +20,7 @@ public class ReviewListController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		super.goBackURL(request);
 			
 			String searchType = request.getParameter("searchType");					// 검색유형
 			String searchWord = request.getParameter("searchWord");					// 검색어

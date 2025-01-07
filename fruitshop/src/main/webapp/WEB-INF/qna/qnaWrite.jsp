@@ -102,7 +102,7 @@ function qaRegister(){
 	    
 	    setTimeout(() => {
 	    location.href="<%= ctxPath%>/qna/qnaList.ddg"
-	    }, 100);
+	    }, 300);
 };
 
 

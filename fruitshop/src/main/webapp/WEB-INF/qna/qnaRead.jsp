@@ -49,7 +49,7 @@ const frm = document.readProductFrm;
 	
 	setTimeout(() => {
 	    location.href = "<%= ctxPath %>/qna/qnaList.ddg";
-	}, 100);
+	}, 200);
 
 	
 	
@@ -73,10 +73,7 @@ function qnaEdit(prod_no, qna_no) {
 	
 	frm.submit();
 
-	
-	setTimeout(() => {
-	    location.href = "<%= ctxPath %>/qna/qnaList.ddg";
-	}, 100);
+
 	
 }
 

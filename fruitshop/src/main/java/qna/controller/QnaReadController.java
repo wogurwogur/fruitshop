@@ -16,6 +16,8 @@ public class QnaReadController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 				
+		super.goBackURL(request);
+		
 		String userid = request.getParameter("userid");
 		HttpSession session  = request.getSession();
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");

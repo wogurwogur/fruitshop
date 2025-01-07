@@ -22,6 +22,8 @@ public class ReviewReadController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// System.out.println("ReviewReadController 실행됨");
 		
+		super.goBackURL(request);
+		
 		String userid = request.getParameter("userid");
 		HttpSession session  = request.getSession();
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
