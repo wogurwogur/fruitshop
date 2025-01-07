@@ -30,6 +30,7 @@ public class ShipManagement extends AbstractController {
 				shipList = sdao.shipSelectAll(loginuser.getUser_no());
 				
 				request.setAttribute("shipList", shipList);
+				request.setAttribute("mypage_val", "shipList");
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/mypage/shipInfo.jsp");
