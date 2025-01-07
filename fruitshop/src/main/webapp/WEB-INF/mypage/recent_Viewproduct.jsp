@@ -28,7 +28,7 @@ $(document).ready(function(){
     if (arr_product.length === 0) {  // 최근본상품이 없다면
     
     	$("div.info").hide();
-        html = `<p style="font-size: 14pt; font-weight: 300; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc; ">최근본 상품 내역이 없습니다.</p>`;
+        html = `<p style="font-size: 14pt; font-weight: 400; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc; ">최근본 상품 내역이 없습니다.</p>`;
     
     }
     else { // 최근 본 상품이 있다면
@@ -42,7 +42,7 @@ $(document).ready(function(){
 	    	
 	        html += `
 	        
-	        <div class="recent_product" style="display: flex; align-items: center; padding: 3%; border-bottom: 1px solid #ccc; font-weight: 300;">
+	        <div class="recent_product" style="display: flex; align-items: center; padding: 3%; border-bottom: 1px solid #ccc; font-weight: 400;">
 	        
 	        <%-- 상품 번호 숨기기 --%>
             <input type="hidden" name="prodno" value="\${item.prod_no}" />

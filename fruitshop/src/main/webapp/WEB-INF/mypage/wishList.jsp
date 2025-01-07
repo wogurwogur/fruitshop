@@ -88,12 +88,12 @@ function WishDeleteAll() {
                     
                     <%-- 상품 이름 --%>
                     <div class="name" style="flex: 1;">
-                        <p style="  font-weight: 300; font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                        <p style="  font-weight: 400; font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
                     </div>
                     
                     <%-- 상품 가격 --%>
                     <div class="price" style="flex: 0.5;">
-                        <p style="font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif; font-weight: 300;">
+                        <p style="font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;">
                             <fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원
                         </p>
                     </div>
