@@ -34,6 +34,7 @@ public class Recent_Viewproduct extends AbstractController {
     		super.setRedirect(false);
     		super.setViewPage("/WEB-INF/mypage/recent_Viewproduct.jsp");
     		
+    		request.setAttribute("mypage_val", "recent_view");
     	}
     	else {
     		//	로그인 상태가 아닌 경우

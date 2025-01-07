@@ -48,6 +48,7 @@ public class WishList extends AbstractController {
                 List<WishVO> wishList = wdao.wishListSelectAll(user_no);
                 
                 request.setAttribute("wishList", wishList);
+                request.setAttribute("mypage_val", "wishList");
     
                     
             } catch (Exception e) {

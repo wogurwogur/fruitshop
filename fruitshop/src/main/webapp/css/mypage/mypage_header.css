@@ -9,6 +9,7 @@ div.title {
 #mypage {
 	text-align: center;
 	margin-top: 3%;
+	
 }
 
 
@@ -28,4 +29,15 @@ div.jumbotron {
 	margin: 0 auto;
 }
 
+/* #mypage > a:active {
 
+	text-decoration:underline;
+
+}  */
+	
+	
+#mypage > a:visited {
+
+	text-decoration:underline;
+
+} 
