@@ -18,7 +18,11 @@
 </style>
 
 <script type="text/javascript">
+
+	let url = "";
+	
 	$(()=>{
+		
 		
 		$("button#btnRegister").click(()=>{
 			location.href="<%=request.getContextPath()%>/member/memberRegister.ddg";
@@ -40,6 +44,8 @@
 				$("input#loginPasswd").focus();
 			}
 		}
+		
+		
 		
 	});
 
@@ -98,6 +104,7 @@
 	
 </div>
 
+<input type="hidden" id="geturl" value="${sessionScope.goBackURL}">
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
     
