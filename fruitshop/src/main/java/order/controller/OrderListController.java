@@ -20,6 +20,8 @@ public class OrderListController extends AbstractController {
 		
 //		로그인을 한 유저만 주문목록 페이지로 진입할 수 있게 한다.
 		
+		request.setAttribute("mypage_val", "orderList");
+		
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
@@ -43,6 +45,7 @@ public class OrderListController extends AbstractController {
 		
 		// 첫 링크 접속 시
 		if (fromDate == null) {
+			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/order/orderlist.jsp");
 			
