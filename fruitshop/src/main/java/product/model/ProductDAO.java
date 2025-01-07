@@ -60,6 +60,10 @@ public interface ProductDAO {
 	int getReviewCount(Map<String, String> paraMap) throws SQLException;
 	
 	
+	// 로그인 유저가 제품 구매이력이 있는 지 조회한다.
+	boolean isOrder(Map<String, String> paraMap) throws SQLException;
+	
+	
 	// 페이징 처리 한 후기 테이블에서 입력받은 상품번호에 대한 페이징 처리한 후기 리스트를 조회해온다.
 	List<ProductVO> prd_reviewList(Map<String, String> paraMap) throws SQLException;
 	
@@ -74,6 +78,8 @@ public interface ProductDAO {
 	
 	// 상품 상세페이지 내 입력받은 상품번호에 후기 수량 표시를 위해 후기 개수를 조회해온다.
 	int review_cnt(String prodNo) throws SQLException;
+
+
 
 
 
