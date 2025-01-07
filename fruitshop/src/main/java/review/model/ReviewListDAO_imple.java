@@ -252,7 +252,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			conn=ds.getConnection();
 		
 		
-		String sql = " select r.review_no, r.review_title, r.fk_user_no, r.review_contents, "
+		String sql = " select r.review_regidate , r.review_no, r.review_title, r.fk_user_no, r.review_contents, "
 				+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_no, p.prod_name, p.prod_price, p.prod_thumnail "
 				+ " from tbl_reviews r "
 				+ " INNER JOIN tbl_member m "
@@ -275,6 +275,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 				reviewRead.setReview_no(rs.getInt("review_no"));
 				reviewRead.setReview_title(rs.getString("review_title"));
 				reviewRead.setReview_contents(rs.getString("review_contents"));
+				reviewRead.setReview_regidate(rs.getString("review_regidate"));
 				reviewRead.setUserid(rs.getString("userid"));
 				reviewRead.setProd_no(rs.getInt("prod_no"));
 				reviewRead.setProd_thumnail(rs.getString("prod_thumnail"));
@@ -354,7 +355,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select CEIL(COUNT(*)/?) "
-						+ " from tbl_reviews ";
+					+ " from tbl_reviews "
+					+ " where review_status = 1 ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");	
@@ -362,7 +364,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " where "+ colname +" = ? ";
+				sql += " and "+ colname +" = ? ";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -401,15 +403,16 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			String sql = " select C.review_status, C.review_contents, C.RNO, C.review_no, C.review_title, C.review_viewcount, C.review_regidate, C.user_no, C.userid , C.prod_name, C.comment_count "
 					+ " FROM "
 					+ " ( "
-					+ " select A.RNO, A.review_status, A.review_contents, A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
+					+ " select ROWNUM AS RNO, A.review_status, A.review_contents, A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
 					+ " FROM  "
 					+ " ( "
-					+ " select ROWNUM AS RNO, r.review_status, r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, r.review_contents, "
+					+ " select r.review_status, r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, r.review_contents, "
 					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
 					+ " from tbl_reviews r INNER JOIN tbl_member m "
 					+ " on r.fk_user_no = m.user_no "
 					+ " INNER JOIN tbl_products p "
-					+ " on r.fk_prod_no = p.prod_no "
+					+ " on r.fk_prod_no = p.prod_no"
+					+ " WHERE r.review_status = 1 "
 					+ " order by review_no desc "
 					+ " ) A "
 					+ " LEFT OUTER JOIN "
@@ -419,10 +422,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 					+ " group by fk_review_no "
 					+ " ) B "
 					+ " ON A.review_no = B.fk_review_no "
-					+ " order by review_no desc "
 					+ " ) C "
-					+ " WHERE RNO between ? and ? "
-					+ " and review_status like 1 " ;
+					+ " WHERE RNO between ? and ? " ;
 					
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -457,6 +458,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			while(rs.next()) {
 				
 				ReviewListVO revvo = new ReviewListVO();
+				
 				revvo.setReview_no(rs.getInt("review_no"));
 				revvo.setReview_title(rs.getString("review_title"));
 				revvo.setReview_viewcount(rs.getString("review_viewcount"));
@@ -489,10 +491,12 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		int totalMemberCount = 0;
 		
 		try {
+			
 			conn = ds.getConnection();
 			
 			String sql 	= " SELECT COUNT(*) "
-						+ " FROM tbl_reviews ";
+						+ " FROM tbl_reviews "
+						+ " where review_status = 1 ";
 			
 			String colname 	  = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -500,7 +504,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " where "+ colname +" = ? ";
+				sql += " and " + colname + " like = '%'||?||'%' ";
 			}
 		
 			pstmt = conn.prepareStatement(sql);
@@ -511,9 +515,10 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			rs = pstmt.executeQuery();
 			
+			
 			rs.next();
 			
-			totalMemberCount = rs.getInt(1);		// select 된 것들 중 첫 번째 컬럼
+			totalMemberCount = rs.getInt(1); // select 된 것들 중 첫 번째 컬럼
 			
 		} finally {
 			close();
@@ -523,42 +528,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	}
 	
 	
-	// 구매후기 글 댓글 작성하는 메소드
-	@Override
-	public int commentWrite(ReviewListVO cmw) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			
-			conn = ds.getConnection();
-			
-			String sql  = " insert into tbl_comments(comment_no, fk_user_no, fk_review_no, comment_contents, comment_pwd, comment_regidate) "
-						+ " values ((comment_seq.nextval), ?, ?, ?, ?, sysdate) ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			
-			pstmt.setInt(1, cmw.getFk_user_no());
-			pstmt.setInt(2, cmw.getReview_no());
-			pstmt.setString(3, cmw.getComment_contents());
-			pstmt.setString(4, cmw.getComment_pwd());
 	
-			
-			result = pstmt.executeUpdate();
-			
-		
-		} finally {
-			close();
-		}
-					
-		return result;
-				
-} // end of public int commentWrite(ReviewListVO cmw) throws SQLException {
-	
-	
-	
-	// 상품 등록하기 상품 보여주기 시작 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+	// 구매후기글 상품 등록하기 상품 리스트 보여주기
 	@Override
 	public List<ReviewListVO> rproductFind() throws SQLException {
 			
@@ -600,40 +571,10 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	}
 
 	
-	
-	
-	
 	// 상품 등록하기 상품 보여주기 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
 	
-	
 
 	
-	
-	
-	// 구매후기 글 제목, 내용 등록버튼 눌러 테이블에 인서트하기
-	@Override
-	public int reviewWrite(ReviewListVO reviewList) throws SQLException {
-		
-		int result = 0;
-		
-		conn = ds.getConnection();
-		
-		String sql = " insert into tbl_reviews(review_no, review_title, review_contents, fk_user_no, fk_prod_no) "
-					+ " values (review_seq.nextval, ?, ?, ?, ?) ";
-		
-		pstmt = conn.prepareStatement(sql);
-
-		pstmt.setString(1 , reviewList.getReview_title());
-		pstmt.setString(2 , reviewList.getReview_contents());
-		pstmt.setInt(3 , reviewList.getFk_user_no());
-		pstmt.setInt(4 , reviewList.getProd_no());
-		
-		result = pstmt.executeUpdate();		
-		
-		return result;
-	}	// end of public int reviewWrite(ReviewListVO reviewList) throws SQLException {
-
-
 	// 구매후기 글 상품등록 클릭했을때 reviewWrite로 보내주기
 	@Override
 	public ReviewListVO productSelect(String prod_no) throws SQLException {
@@ -671,8 +612,38 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 
 		return rvo;
 	}
+	
+	
 
-	// 구매후기 글 삭제하기
+	
+	
+	
+	// 구매후기 글 제목, 내용 등록버튼 눌러 테이블에 인서트하기
+	@Override
+	public int reviewWrite(ReviewListVO reviewList) throws SQLException {
+		
+		int result = 0;
+		
+		conn = ds.getConnection();
+		
+		String sql = " insert into tbl_reviews(review_no, review_title, review_contents, fk_user_no, fk_prod_no) "
+					+ " values (review_seq.nextval, ?, ?, ?, ?) ";
+		
+		pstmt = conn.prepareStatement(sql);
+
+		pstmt.setString(1 , reviewList.getReview_title());
+		pstmt.setString(2 , reviewList.getReview_contents());
+		pstmt.setInt(3 , reviewList.getFk_user_no());
+		pstmt.setInt(4 , reviewList.getProd_no());
+		
+		result = pstmt.executeUpdate();		
+		
+		return result;
+	}	// end of public int reviewWrite(ReviewListVO reviewList) throws SQLException {
+
+
+
+	// 구매후기 글 삭제하기(상태 0으로 업데이트)
 	@Override
 	public int reviewDelete(String review_no) throws SQLException {
 		
@@ -721,19 +692,61 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		pstmt.setString(2 , reviewList.getReview_contents());
 		pstmt.setInt(3 , reviewList.getFk_user_no());
 		pstmt.setInt(4 , reviewList.getProd_no());
+		pstmt.setInt(5, reviewList.getReview_no());
 		
 		result = pstmt.executeUpdate();		
 		
 		return result;
 	}
 
+	
+	// 구매후기 글 댓글 작성하는 메소드
+		@Override
+		public int commentWrite(ReviewListVO cmw) throws SQLException {
+			
+			int result = 0;
+			
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql  = " insert into tbl_comments(comment_no, fk_user_no, fk_review_no, comment_contents, comment_pwd, comment_regidate) "
+							+ " values ((comment_seq.nextval), ?, ?, ?, ?, sysdate) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				
+				pstmt.setInt(1, cmw.getFk_user_no());
+				pstmt.setInt(2, cmw.getReview_no());
+				pstmt.setString(3, cmw.getComment_contents());
+				pstmt.setString(4, cmw.getComment_pwd());
+		
+				
+				result = pstmt.executeUpdate();
+				
+			
+			} finally {
+				close();
+			}
+						
+			return result;
+					
+	} // end of public int commentWrite(ReviewListVO cmw) throws SQLException {
+		
+		
+		
+	
+	
+	
+	
 	// 구매후기 글 댓글 삭제하는 메소드
 	@Override
-	public int commentDelete(String comment_no, String fk_review_no, String comment_pwd) throws SQLException {
+	public int commentDelete(String comment_no, String fk_review_no, String comment_PwdD) throws SQLException {
 		
 		int n = 0;
 		
-		String sql = " delete from tbl_comments where comment_no = ? and fk_review_no = ? and comment_pwd = ? ";
+		String sql = " delete from tbl_comments "
+				+ " where comment_no = ? and fk_review_no = ? and comment_pwd = ? ";
 		
 		try {
 			
@@ -743,7 +756,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			pstmt.setString(1, comment_no);
 			pstmt.setString(2, fk_review_no);
-			pstmt.setString(3, comment_pwd);
+			pstmt.setString(3, comment_PwdD);
 			
 			n = pstmt.executeUpdate();
 			
@@ -753,6 +766,72 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 		return n;
 	}
+
+	
+	// 구매후기 글 댓글 수정하는 메소드
+	@Override
+	public int commentEdit(ReviewListVO cmw) throws SQLException {
+		
+		
+		int result = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql  = " update tbl_comments "
+						+ " set fk_user_no = ?, fk_review_no =?, comment_contents = ?, comment_pwd = ? "
+						+ " where comment_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			pstmt.setInt(1, cmw.getFk_user_no());
+			pstmt.setInt(2, cmw.getReview_no());
+			pstmt.setString(3, cmw.getComment_contents());
+			pstmt.setString(4, cmw.getComment_pwd());
+			pstmt.setInt(5, cmw.getComment_no());
+	
+			
+			result = pstmt.executeUpdate();
+			
+		
+		} finally {
+			close();
+		}
+					
+		return result;
+	}
+
+
+	// 구매후기 글 봤을때 조회수 올려주는 메소드
+	@Override
+	public int setViewCount(String review_no) throws SQLException {
+		
+		int n = 0;
+		
+		String spl = " update tbl_reviews set review_viewcount =  review_viewcount+1 "
+					+ " where review_no = ? ";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			pstmt = conn.prepareStatement(spl);
+			
+			pstmt.setString(1, review_no);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+	
+
+
 
 
 

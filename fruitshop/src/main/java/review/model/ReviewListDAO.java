@@ -53,6 +53,12 @@ public interface ReviewListDAO {
 	// 구매후기 글 댓글 삭제하는 메소드
 	int commentDelete(String comment_no, String fk_review_no, String comment_pwd) throws SQLException;
 
+	// 구매후기 글 댓글 수정하는 메소드
+	int commentEdit(ReviewListVO cmw) throws SQLException;
+	
+	// 구매후기 글 봤을때 조회수 올려주는 메소드 
+	int setViewCount(String review_no) throws SQLException;
+
 
 		
 

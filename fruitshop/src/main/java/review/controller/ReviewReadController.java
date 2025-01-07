@@ -49,6 +49,15 @@ public class ReviewReadController extends AbstractController {
 								
 			}else {
 				
+				
+				if(loginuser != null && loginuser.getRole() == 1) {
+					
+					int n = revdao.setViewCount(review_no);
+					
+					rvo.setReview_viewcount(rvo.getReview_viewcount()+1);
+					
+				}
+				
 				request.setAttribute("rvo", rvo);
 				request.setAttribute("commentList", commentList);
 			}
