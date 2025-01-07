@@ -42,6 +42,8 @@ public class Login extends AbstractController {
 	
 				String clientip = request.getRemoteAddr();
 	
+				String goBackURL= "";
+				
 				Map<String, String> paraMap = new HashMap<>();
 				paraMap.put("userid", userid);
 				paraMap.put("passwd", passwd);
@@ -79,7 +81,10 @@ public class Login extends AbstractController {
 	
 					} 
 				
+					goBackURL = (String)session.getAttribute("goBackURL");
+					
 					jsonObj.put("isExists", isExists);
+					jsonObj.put("goBackURL", goBackURL);
 					
 					String json = jsonObj.toString(); 
 					

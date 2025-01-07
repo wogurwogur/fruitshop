@@ -67,12 +67,8 @@ function goLogin() {
 					}
 					else { 		
 						
-						const url = $("input#geturl").val();
-						
-						console.log(url);
-						
-						if(url != "" || url != null) {
-							location.href="/fruitshop"+url;
+						if(json.goBackURL != "") {
+							location.href="/fruitshop"+json.goBackURL;
 						}
 						else {
 							location.href="/fruitshop/index.ddg";

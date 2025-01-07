@@ -104,7 +104,6 @@
 	
 </div>
 
-<input type="hidden" id="geturl" value="${sessionScope.goBackURL}">
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
     
