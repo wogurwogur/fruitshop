@@ -18,7 +18,11 @@
 </style>
 
 <script type="text/javascript">
+
+	let url = "";
+	
 	$(()=>{
+		
 		
 		$("button#btnRegister").click(()=>{
 			location.href="<%=request.getContextPath()%>/member/memberRegister.ddg";
@@ -40,6 +44,8 @@
 				$("input#loginPasswd").focus();
 			}
 		}
+		
+		
 		
 	});
 

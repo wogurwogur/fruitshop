@@ -142,7 +142,7 @@ public class AdminProductController extends AbstractController {
 				request.setAttribute("pageBar", pageBar);
 				request.setAttribute("currentShowPageNo", currentShowPageNo);
 				request.setAttribute("currentURL", currentURL);
-				
+			
 				
 				
 				// 뷰단(admin_product_management.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 //

@@ -16,18 +16,22 @@
 
 $(document).ready(function(){
 	
-	$("select[name='searchType']").val("${requestScope.searchType}");		
-	$("input:text[name='searchWord']").val("${requestScope.searchWord}");	
+$("select[name='searchType']").val("${requestScope.searchType}");
 	
+	$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+	
+	$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");
 	
 	// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** // 
 	$("select[name='sizePerPage']").bind("change", function(){
-		const frm = document.review_search_frm;
-		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
-		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+		const frm = document.qna_search_frm;
+
 		frm.submit();
 		
-	});
+});
+
+
+
 	
 	$("table#qnaReadTbl tr.qnaRead").click( e=> {
 		
@@ -49,9 +53,9 @@ $(document).ready(function(){
 		
 		if(searchType == ""){
 			alert("검색 대상을 선택하세요 !! ");
-			return; // goSearch()함수를 종료한다.
+			return; 
 		}
-		const frm = document.review_search_frm;
+		const frm = document.qna_search_frm;
 		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
 		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
 		frm.submit();
@@ -126,10 +130,11 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 				<div id ="Listsearch" style="float:right;">
 					<select name="searchType" class = "text-center" style="height:4%">
 						<option value="">검색기준</option>
-						<option value="review_title">제목</option>
-						<option value="review_contents">내용</option>				
+						<option value="qna_title">제목</option>
+						<option value="qna_contents">내용</option>				
 					</select>
 					<input type="text" name="searchWord" style="height:4%"></input>
+					<input type="text" style="display: none;" />
 					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()">검색</button>				
 				</div>
 			</form>

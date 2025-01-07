@@ -74,6 +74,10 @@ function qnaEdit(prod_no, qna_no) {
 	frm.submit();
 
 	
+	setTimeout(() => {
+	    location.href = "<%= ctxPath %>/qna/qnaList.ddg";
+	}, 100);
+	
 }
 
 // admin 답글달기 누르면
@@ -84,7 +88,7 @@ function qnaReply(prod_no, qna_no) {
 	
 	const frm = document.readProductFrm;
 	
-	frm.qnaNo.value = qna_no;
+	frm.qna_no.value = qna_no;
 	frm.prodNo.value = prod_no;
 	frm.method = "get";
 	frm.action = "<%=ctxPath%>/qna/qnaReply.ddg";
@@ -132,7 +136,7 @@ function qnaReply(prod_no, qna_no) {
 			</div>		
 
 			<input type="text" name="qna_no" style="display: none"/>		
-			
+			<input type="text" name="prodNo" style="display: none"/>
 	</form>
 		
 		

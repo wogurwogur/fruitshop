@@ -19,12 +19,18 @@
 <script type="text/javascript">
 
 
+
+
 $(document).ready(function(){
+	
+	
+	const isClick = false;
 		
 	$("select[name='searchType']").val("${requestScope.searchType}");
 	
-	$("input:text[name='searchWord']").val("${requestScope.searchWord}");	
+	$("input:text[name='searchWord']").val("${requestScope.searchWord}");
 	
+	$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");
 	
 	// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** // 
 	$("select[name='sizePerPage']").bind("change", function(){
@@ -32,19 +38,52 @@ $(document).ready(function(){
 		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
 		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
 		frm.submit();
+
+	});
 		
+	<%--
+	$("table#reviewReadTbl td.etcRead").click( e=> {
 		
+		return false;
+	)};
+			
+		const review_no = $(e.target).parent().children(".review_no").text();
+
 		
+		const frm = document.reviewRead_frm;
+		frm.review_no.value = review_no;
+		frm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
 		
+		frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
+		frm.method = "get"
+		frm.submit(); 
 		
 	});
-	
+ 		
+		const review_no = $(e.target).parent().parent().children(".review_no").text();
 		
-	
-	$("table#reviewReadTbl tr.reviewRead").click( e=> {
+		alert(review_no)
+		
+		const frm = document.reviewEtcRead_frm;
+		frm.review_no.value = review_no;
+		frm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
+		
+		frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
+		frm.method = "get"
+		frm.submit();
+		}
+
+		
+	});
+--%>	
+
+
+/* 	$("table#reviewReadTbl tr.reviewRead").click( e=> {
+		
+		event.stopPropagation();
 		
 		const review_no = $(e.target).parent().children(".review_no").text();
-		// alert(review_no);
+
 		
 		const frm = document.reviewRead_frm;
 		frm.review_no.value = review_no;
@@ -54,9 +93,56 @@ $(document).ready(function(){
 		frm.method = "get"
 		frm.submit();
 		
+	
 	});
+		 */
+	
+
+	
+	
 	
 });
+	
+function trclick1(review_no){
+		
+	const frm = document.tr_frm1;
+	frm.review_noo.value = review_no;
+	frm.currentShowPageNo.value = '${requestScope.currentShowPageNo}';
+	
+	frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
+	frm.method = "get"
+	frm.submit();
+	
+		
+}	
+
+function trclick2(review_no){
+	
+	const frm = document.tr_frm2;
+	frm.review_noo.value = review_no;
+	frm.currentShowPageNo.value = '${requestScope.currentShowPageNo}';
+	
+	frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
+	frm.method = "get"
+	frm.submit();
+	
+		
+}	
+
+function trclick3(review_no){
+	
+	const frm = document.tr_frm3;
+	frm.review_noo.value = review_no;
+	frm.currentShowPageNo.value = '${requestScope.currentShowPageNo}';
+	
+	frm.action = "${pageContext.request.contextPath}/review/reviewRead.ddg";
+	frm.method = "get"
+	frm.submit();
+	
+		
+}	
+	
+	
 	
 	
 function listSearch(){
@@ -142,6 +228,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<option value="review_contents">내용</option>				
 					</select>
 					<input type="text" name="searchWord" style="height:4%"></input>
+					<input type="text" style="display: none;" />
 					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()">검색</button>				
 				</div>
 			</form>
@@ -159,13 +246,18 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 					</tr>
 					<%-- 글 리스트 --%>
 			<c:if test="${not empty requestScope.reviewList}">
-			
+			<form name="tr_frm1">                
+				<input type="text" name="currentShowPageNo" style="display:none" />
+				<input type="text" style="display:none"  />			
 				<c:forEach var="brevvo" items="${requestScope.brevList}" varStatus="status">
 					<c:if test="${brevvo.review_viewcount > 0}">
-						<tr class ="reviewRead">						
+						<tr class ="reviewRead" onclick="trclick1('${brevvo.review_no}')">											
 							<td class="review_no" style="border-top: none">${brevvo.review_no}</td>	 				
 							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
-							<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;<span style="font-weight:bold;">[${brevvo.prod_name}]</span>
+							<td style="border-top: none">
+							<input type="hidden" name="review_noo"/>	
+								<span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;
+								<span style="font-weight:bold;">[${brevvo.prod_name}]</span>
 								&nbsp;${brevvo.review_title}
 								<c:if test="${brevvo.comment_count ne '0'}"><span class="text-danger">[${brevvo.comment_count}]</span></c:if>							
 							</td>						
@@ -175,16 +267,22 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						</tr>
 					</c:if>						
 				</c:forEach>
-					
+				
+			</form>	
 			
 				
-				
+			<form name="tr_frm2">                
+				<input type="text" name="currentShowPageNo" style="display:none" />
+				<input type="text" style="display:none"  />
 				<c:forEach var="crevvo" items="${requestScope.crevList}" varStatus="status">
 					<c:if test="${crevvo.comment_count > 0}">
-						<tr class ="reviewRead">
+						<tr class ="reviewRead" onclick="trclick2('${crevvo.review_no}')">
 							<td class="review_no" style="border-top: none">${crevvo.review_no}</td>	 				
 							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
-							<td style="border-top: none"><span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;<span style="font-weight:bold;">[${crevvo.prod_name}]</span>
+							<td style="border-top: none">
+							<input type="hidden" name="review_noo"/>
+								<span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;
+								<span style="font-weight:bold;">[${crevvo.prod_name}]</span>
 								&nbsp;${crevvo.review_title}
 								<c:if test="${crevvo.comment_count ne '0'}"><span class="text-danger">[${crevvo.comment_count}]</span></c:if>							
 							</td>						
@@ -194,17 +292,18 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						</tr>
 					</c:if>
 				</c:forEach>
-			
+			</form>
 					
 				
-				
-				
+			<form name="tr_frm3">                
+				<input type="text" name="currentShowPageNo" style="display:none" />
+				<input type="text" style="display:none"  />				
 				<c:forEach var="revvo" items="${requestScope.reviewList}" varStatus="status">						
-					<tr class="reviewRead">
-					<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
-                   	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />   										
+					<tr class="reviewRead" onclick="trclick3('${revvo.review_no}')">										
 						<td class="review_no" style="border-top: none">${revvo.review_no}</td>	 				
-						<td style="border-top: none"><span style="font-weight:bold;">[${revvo.prod_name}]</span>
+						<td style="border-top: none">
+						
+						<span style="font-weight:bold;">[${revvo.prod_name}]</span>
 							${revvo.review_title}
 							&nbsp;<c:if test="${revvo.comment_count ne '0'}"><span class="text-danger">[${revvo.comment_count}]</span></c:if>							
 						</td>						
@@ -213,6 +312,8 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<td style="border-top: none">${revvo.review_viewcount}</td>
 					</tr>									
 				</c:forEach>
+				<input type="hidden" name="review_noo"/>
+			</form>
 				
 			</c:if>
 						
@@ -243,6 +344,13 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 </div>
 </div>
 
+
+
+<form name = "reviewEtcRead_frm">
+	<input type="text" name="currentShowPageNo" style="display:none;"/>
+	<input type="hidden" name="review_no" />
+	<input type="text" style="display:none" />
+</form>
 
 <form name = "reviewRead_frm">
 	<input type="text" name="currentShowPageNo" style="display:none;"/>

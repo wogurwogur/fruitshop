@@ -35,6 +35,7 @@ public class ProductVO {
 	
 	private int season_no; 			// 계절 번호
 	private String season_name;		// 계절명
+	private String season_image;	// 계절 이미지
 	
 	
 	
@@ -220,6 +221,14 @@ public class ProductVO {
 
 	public void setSeason_name(String season_name) {
 		this.season_name = season_name;
+	}
+
+	public String getSeason_image() {
+		return season_image;
+	}
+
+	public void setSeason_image(String season_image) {
+		this.season_image = season_image;
 	}
 
 

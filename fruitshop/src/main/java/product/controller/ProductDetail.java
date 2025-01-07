@@ -8,6 +8,8 @@ import java.util.Map;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import my.util.MyUtil;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
@@ -18,6 +20,10 @@ public class ProductDetail extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		
+		// 로그인 및 로그아웃 시 방금 보았던 페이지로 이동한다.
+		super.goBackURL(request);
 		
 		String prodNo = request.getParameter("prodNo"); // 상품 번호
 		String currentShowPageNo = request.getParameter("currentShowPageNo"); // 현재 페이지 번호
@@ -40,6 +46,7 @@ public class ProductDetail extends AbstractController {
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
+		
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("prodNo", prodNo);

@@ -668,6 +668,39 @@ public class ProductDAO_imple implements ProductDAO {
 	
 	
 	
+	// 로그인 유저가 제품 구매이력이 있는 지 조회한다.
+	@Override
+	public boolean isOrder(Map<String, String> paraMap) throws SQLException {
+		
+		boolean bool = false;
+	      
+	    try {
+	       conn = ds.getConnection();
+	        
+	       String sql = " select D.ordetail_no " + 
+	                    " from tbl_orderdetail D JOIN tbl_order O " + 
+	                    " on D.fk_order_no = O.order_no " + 
+	                    " where D.fk_prod_no = ? and O.fk_user_no = ? ";
+	         
+	       pstmt = conn.prepareStatement(sql);
+	       pstmt.setString(1, paraMap.get("fk_prod_no"));
+	       pstmt.setString(2, paraMap.get("fk_user_no"));
+	         
+	       rs = pstmt.executeQuery();
+	         
+	       bool = rs.next();
+	         
+	    } finally {
+	       close();
+	    }
+	      
+	    return bool;
+	} // end of public boolean isOrder(int user_no)
+	
+	
+	
+
+	
 	// 후기 테이블에서 입력받은 상품번호에 대한 페이징 처리한 후기 리스트를 조회해온다.
 	@Override
 	public List<ProductVO> prd_reviewList(Map<String, String> paraMap) throws SQLException {
@@ -860,6 +893,8 @@ public class ProductDAO_imple implements ProductDAO {
 		return review_cnt;
 	} // end of public int review_cnt(String prodNo)
 	
+	
+
 	
 
 	

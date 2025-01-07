@@ -9,7 +9,6 @@ import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import member.domain.MemberVO;
 import my.util.MyUtil;
 import mypage.wish.domain.WishVO;
 import product.domain.ProductVO;
@@ -24,7 +23,10 @@ public class ProductListController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-
+		
+		// 로그인 및 로그아웃 시 방금 보았던 페이지로 이동한다.
+		super.goBackURL(request);
+		
 		//*** 페이징 처리한 모든 과일 목록 , 검색되어진 과일목록 또는 계절 카테고리 클릭 시 과일 목록 보여주기 ***//
 	
 		String searchFruit = request.getParameter("searchFruit"); 			  // 과일 검색명

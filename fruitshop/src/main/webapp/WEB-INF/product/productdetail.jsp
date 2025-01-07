@@ -14,6 +14,11 @@
 
 <script type="text/javascript">
 
+
+
+
+let isOrderOK = false; // 로그인한 유저가 상품을 구매했는지 확인하기 위한 용도
+
 $(document).ready(function(){
 	
 /* 		//위치 이동을 위한 스크롤 확인
@@ -100,7 +105,7 @@ $(document).ready(function(){
               });
          }
          else{
-            alert("로그인 후에 상품을 장바구니에 넣을 수 있습니다 !!");
+        	alert("로그인 후 이용가능합니다!");
             location.href=`${pageContext.request.contextPath}/login/login.ddg`;
          }
                
@@ -115,23 +120,53 @@ $(document).ready(function(){
 		});
 		
 	    
+       
+        // 로그인 한 유저가 상품을 구매한 이력이 있는지 확인하기
+        $.ajax({
+      	    url:`${pageContext.request.contextPath}/product/isOrder.ddg`,
+            type:"get",
+            data:{"fk_prod_no":"${requestScope.prdvo.prod_no}"
+          	     ,"fk_user_no":"${sessionScope.loginuser.user_no}"},
+            dataType:"json",
+            
+            //async:true, 	// 비동기 처리(기본값)
+            async:false,	// 동기 처리   
+            success:function(json){
+					
+            	   console.log("~~ 확인용 : " + JSON.stringify(json));
+
+                   isOrderOK = json.isOrder;
+                   // json.isOrder 값이 true  이면 로그인한 사용자가 해당 상품을 구매한 경우이고
+                   // json.isOrder 값이 false 이면 로그인한 사용자가 해당 상품을 구매하지 않은 경우이다.
+            },
+            error: function(request, status, error){
+            		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }              
+        }); // end of $.ajax 로그인 한 유저가 상품을 구매한 이력이 있는지 확인하기
+       
+       
 		
 		// 상품후기 쓰기 클릭
 		$("div.reveiwBtn").click(function() {
 			
 			if (${not empty sessionScope.loginuser.user_no}) {
-			
-				const prod_no = ${requestScope.prdvo.prod_no};
 				
-				location.href=`${pageContext.request.contextPath}/review/reviewWrite.ddg?prod_no=${prod_no}&user_no=${sessionScope.loginuser.user_no}`;
+				if (!isOrderOK) {
+					alert("제품을 구매한 후에 후기를 작성하실 수 있습니다.")
+				}
+				else {
+					location.href=`${pageContext.request.contextPath}/community/productCarrier.ddg?prod_no=${requestScope.prdvo.prod_no}&user_no=${sessionScope.loginuser.user_no}`;
+				}
 			}
 			else {
-				alert ("로그인 후에 상품 후기를 작성하실 수 있습니다.")
+				alert("로그인 후 이용가능합니다!");
 				location.href=`${pageContext.request.contextPath}/login/login.ddg`;	
 			}
 		});
-		
 	
+		
+		
+		
 		// 상품후기 모두보기 클릭
 		$("div.reveiwAllsee").click(function(){
 			// alert("후기 모두보기 클릭")
@@ -145,12 +180,12 @@ $(document).ready(function(){
 		$("div.inquireBtn").click(function() {
 			
 			if (${not empty sessionScope.loginuser.user_no}) {
-				const prod_no = ${requestScope.prdvo.prod_no};
+
+				location.href=`${pageContext.request.contextPath}/community/productCarrier.ddg?prod_no=${requestScope.prdvo.prod_no}&user_no=${sessionScope.loginuser.user_no}`;
 				
-				location.href=`${pageContext.request.contextPath}/qna/주소알려주세요~~.ddg?prod_no=${prod_no}&user_no=${sessionScope.loginuser.user_no}`;
 			}
 			else {
-				alert ("로그인 후에 상품 문의를 작성하실 수 있습니다.")
+				alert("로그인 후 이용가능합니다!");
 				location.href=`${pageContext.request.contextPath}/login/login.ddg`;	
 			}
 		});
@@ -234,7 +269,7 @@ function goReview(click_review_no) {
 // 상품 문의 글 클릭 시 문의 페이지로 넘어가기
 function goQna(click_qna_no) {
 	const qna_no = click_qna_no;
-	location.href =`${pageContext.request.contextPath}/qna/주소알려주세요~~.ddg?qna_no=`+qna_no;
+	location.href =`${pageContext.request.contextPath}/qna/qnaRead.ddg?qna_no=`+qna_no;
 }
 
 	

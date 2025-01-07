@@ -252,7 +252,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			conn=ds.getConnection();
 		
 		
-		String sql = " select r.review_regidate , r.review_no, r.review_title, r.fk_user_no, r.review_contents, "
+		String sql = " select r.review_regidate , r.review_no, r.review_title, r.fk_user_no, r.review_contents, r.review_viewcount, "
 				+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_no, p.prod_name, p.prod_price, p.prod_thumnail "
 				+ " from tbl_reviews r "
 				+ " INNER JOIN tbl_member m "
@@ -276,6 +276,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 				reviewRead.setReview_title(rs.getString("review_title"));
 				reviewRead.setReview_contents(rs.getString("review_contents"));
 				reviewRead.setReview_regidate(rs.getString("review_regidate"));
+				reviewRead.setReview_viewcount(rs.getString("review_viewcount"));
 				reviewRead.setUserid(rs.getString("userid"));
 				reviewRead.setProd_no(rs.getInt("prod_no"));
 				reviewRead.setProd_thumnail(rs.getString("prod_thumnail"));
@@ -349,7 +350,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		
-		int totalPage=0;
+		int totalPage = 0;
 		
 		try {
 			conn = ds.getConnection();
@@ -358,13 +359,13 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 					+ " from tbl_reviews "
 					+ " where review_status = 1 ";
 			
-			String colname = paraMap.get("searchType");
+			String colname 	  = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");	
 			
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " and "+ colname +" = ? ";
+				sql += " AND "+ colname +" LIKE '%'||?||'%' ";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -400,59 +401,76 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select C.review_status, C.review_contents, C.RNO, C.review_no, C.review_title, C.review_viewcount, C.review_regidate, C.user_no, C.userid , C.prod_name, C.comment_count "
-					+ " FROM "
-					+ " ( "
-					+ " select ROWNUM AS RNO, A.review_status, A.review_contents, A.review_no, A.review_title, A.review_viewcount, A.review_regidate, A.user_no, A.userid , A.prod_name, nvl(B.com_count, 0) as comment_count "
-					+ " FROM  "
-					+ " ( "
-					+ " select r.review_status, r.review_no, r.review_title, r.review_viewcount, r.review_regidate, r.fk_user_no, r.review_contents, "
-					+ " m.user_no, func_userid_block(m.userid) as userid , p.prod_name "
-					+ " from tbl_reviews r INNER JOIN tbl_member m "
-					+ " on r.fk_user_no = m.user_no "
-					+ " INNER JOIN tbl_products p "
-					+ " on r.fk_prod_no = p.prod_no"
-					+ " WHERE r.review_status = 1 "
-					+ " order by review_no desc "
-					+ " ) A "
-					+ " LEFT OUTER JOIN "
-					+ " ( "
-					+ " select count(comment_no) as com_count, fk_review_no "
-					+ " from tbl_comments "
-					+ " group by fk_review_no "
-					+ " ) B "
-					+ " ON A.review_no = B.fk_review_no "
-					+ " ) C "
-					+ " WHERE RNO between ? and ? " ;
-					
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
-			
-			if(!colname.isBlank() && !searchWord.isBlank()) {
-		
-				sql += " and "+ colname +" like '%'||?||'%' ";
-					
-			}
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));	// 조회하고자 하는 페이지 번호
-			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));				// 페이지당 보여줄 행의 개수
-			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo")); // 조회하고자 하는 페이지 번호
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); // 페이지당 보여줄 행의 개수
+
+			String sql;
+
 			if (!colname.isBlank() && !searchWord.isBlank()) {
-				// 검색이 있는 경우	
-				// 검색어
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
-				pstmt.setString(3, searchWord);// 페이지 내 끝번호			
+
+			    // 검색 조건이 있는 경우
+			    sql = " SELECT * "
+			            + " FROM ( "
+			            + "    SELECT ROW_NUMBER() OVER (ORDER BY A.review_no DESC) AS RNO, "
+			            + "           A.review_status, A.review_contents, A.review_no, A.review_title, "
+			            + "           A.review_viewcount, A.review_regidate, A.user_no, A.userid, "
+			            + "           A.prod_name, NVL(B.com_count, 0) AS comment_count "
+			            + "    FROM ( "
+			            + "        SELECT r.review_status, r.review_no, r.review_title, r.review_viewcount, "
+			            + "               r.review_regidate, r.fk_user_no, r.review_contents, "
+			            + "               m.user_no, func_userid_block(m.userid) AS userid, "
+			            + "               p.prod_name "
+			            + "        FROM tbl_reviews r "
+			            + "        INNER JOIN tbl_member m ON r.fk_user_no = m.user_no "
+			            + "        INNER JOIN tbl_products p ON r.fk_prod_no = p.prod_no "
+			            + "        WHERE r.review_status = 1 "
+			            + "          AND r." + colname + " LIKE '%' || ? || '%' "
+			            + "    ) A "
+			            + "    LEFT OUTER JOIN ( "
+			            + "        SELECT COUNT(comment_no) AS com_count, fk_review_no "
+			            + "        FROM tbl_comments "
+			            + "        GROUP BY fk_review_no "
+			            + "    ) B ON A.review_no = B.fk_review_no "
+			            + " ) C "
+			            + " WHERE C.RNO BETWEEN ? AND ?";
+			} else {
+			    // 검색 조건이 없는 경우
+			    sql = " SELECT * "
+			        + " FROM ( "
+			        + "    SELECT ROWNUM AS RNO, A.review_status, A.review_contents, A.review_no, A.review_title, "
+			        + "           A.review_viewcount, A.review_regidate, A.user_no, A.userid, A.prod_name, NVL(B.com_count, 0) AS comment_count "
+			        + "    FROM ( "
+			        + "        SELECT r.review_status, r.review_no, r.review_title, r.review_viewcount, r.review_regidate, "
+			        + "               r.fk_user_no, r.review_contents, m.user_no, func_userid_block(m.userid) AS userid, p.prod_name "
+			        + "        FROM tbl_reviews r "
+			        + "        INNER JOIN tbl_member m ON r.fk_user_no = m.user_no "
+			        + "        INNER JOIN tbl_products p ON r.fk_prod_no = p.prod_no "
+			        + "        WHERE r.review_status = 1 "
+			        + "        ORDER BY r.review_no DESC "
+			        + "    ) A "
+			        + "    LEFT OUTER JOIN ( "
+			        + "        SELECT COUNT(comment_no) AS com_count, fk_review_no "
+			        + "        FROM tbl_comments "
+			        + "        GROUP BY fk_review_no "
+			        + "    ) B ON A.review_no = B.fk_review_no "
+			        + " ) C "
+			        + " WHERE C.RNO BETWEEN ? AND ? ";
 			}
-			else {				
-				// 검색이 없는 경우
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));		// 페이지 내 시작번호
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));							// 페이지 내 끝번호
+
+			pstmt = conn.prepareStatement(sql);
+
+			// 파라미터 바인딩
+			if (!colname.isBlank() && !searchWord.isBlank()) {
+			    pstmt.setString(1, searchWord);
+			    pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			    pstmt.setInt(3, currentShowPageNo * sizePerPage);
+			} else {
+			    pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			    pstmt.setInt(2, currentShowPageNo * sizePerPage);
 			}
-			
-			
+
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -504,7 +522,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			if (!colname.isBlank() && !searchWord.isBlank()) {
 				// 검색이 있는 경우
-				sql += " and " + colname + " like = '%'||?||'%' ";
+				sql += " AND "+ colname +" LIKE '%'||?||'%' ";
 			}
 		
 			pstmt = conn.prepareStatement(sql);
@@ -828,6 +846,45 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		}
 		
 		return n;
+	}
+
+
+	@Override
+	public ReviewListVO ProductCarrier(String prod_no) throws SQLException {
+		
+		ReviewListVO pcarrier = new ReviewListVO();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select prod_no, prod_name, prod_price, prod_thumnail "
+						+ " from tbl_products "
+						+ " where prod_no = ? ";
+			
+						
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, prod_no);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				pcarrier = new ReviewListVO();
+				
+				pcarrier.setProd_no(rs.getInt("prod_no"));
+				pcarrier.setProd_name(rs.getString("prod_name"));
+				pcarrier.setProd_price(rs.getInt("prod_price"));
+				pcarrier.setProd_thumnail(rs.getString("prod_thumnail"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+
+		return pcarrier;
 	}
 	
 

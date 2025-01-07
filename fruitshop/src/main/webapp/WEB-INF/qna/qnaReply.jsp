@@ -13,31 +13,27 @@
 
 
 <% 
-    String qnaNo = request.getParameter("qnaNo");
+    String qnaNo = request.getParameter("qna_no");
 %>
  
 <script type="text/javascript">
 
 	function rvRegister(prod_no, qna_no){
 	
-	const frm = document.qnaWriteFrm;
-		
-	console.log(prod_no);
-	
+	const frm = document.qnaWriteFrm;	
 	const qna_answer = $("textarea[name='qna_answer']").val();
 	
 	//const qna_no = $("input:text[name='qnaNo']").val();
 	
 	frm.prodNo.value = prod_no;	
-	frm.qnaNo.value = qna_no;	
+	frm.qna_no.value = qna_no;	
 	frm.qna_answer.value = qna_answer;
 	
-	console.log(qna_answer);
 	
 	frm.action = "<%=ctxPath%>/qna/qnaReply.ddg";
 	frm.method = "post";
 	   
-	frm.submit();
+	frm.submit(); 
 	
 };
 
@@ -86,7 +82,7 @@
 		</div>	
 	</div>
 	<input type="hidden" name="prodNo"/>
-	<input type="hidden" name="qnaNo"/>
+	<input type="hidden" name="qna_no"/>
 </form>
 	<div id="buttons">
 		<div class="d-flex" style="margin-left:25%;">

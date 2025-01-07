@@ -66,7 +66,14 @@ function goLogin() {
 						location.href="/fruitshop/login/passwdUpdateEnd.ddg?userid="+json.userid;
 					}
 					else { 		
-						location.href="/fruitshop/index.ddg";
+						
+						if(json.goBackURL != "") {
+							location.href="/fruitshop"+json.goBackURL;
+						}
+						else {
+							location.href="/fruitshop/index.ddg";
+						}
+	
 					}
 				}		
 			}
