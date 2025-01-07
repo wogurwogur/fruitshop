@@ -90,7 +90,7 @@
            location.href=`${pageContext.request.contextPath}/login/login.ddg`;
         }
 	          
-     }// end of if( ${not empty sessionScope.loginuser} ) {}-----------------------------------------------------
+     }// function wishToggle(e, prodNo, userNo) {}-----------------------------------------------------
 	     
 	
 	
@@ -184,7 +184,7 @@
                         
                         <%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 시작 --%>
                         <c:if test="${prdvo.prod_inventory == 0}">   
-                            <img src="<%=request.getContextPath()%>/images/product/soldout.png" style="position: absolute; top: 0; left: 0; width: 37px; height: 20px; opacity: 1.0;">
+                            <img src="<%=request.getContextPath()%>/images/product/soldout.png" style="position: absolute; top: 0; left: 0; width: 37px; height: 20px; opacity: 1.0; cursor: pointer;" onclick="goDetail(${prdvo.prod_no})">
                         </c:if>
                         <%-- 재고 수량이 0이라면, 이미지 상단에 품절 이미지 표시 끝 --%>
 

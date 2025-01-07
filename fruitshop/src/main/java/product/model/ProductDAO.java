@@ -79,6 +79,14 @@ public interface ProductDAO {
 	// 상품 상세페이지 내 입력받은 상품번호에 후기 수량 표시를 위해 후기 개수를 조회해온다.
 	int review_cnt(String prodNo) throws SQLException;
 
+	
+	
+	//----------------- 메인 페이지 관련 메소드 ----------------- //
+	
+	// 메인 출력을 위해 상품 테이블을 조회한다.
+	List<ProductVO> mainProduct() throws SQLException;
+
+
 
 
 

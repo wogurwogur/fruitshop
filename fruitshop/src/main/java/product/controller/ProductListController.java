@@ -9,7 +9,6 @@ import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import my.util.MyUtil;
 import mypage.wish.domain.WishVO;
 import product.domain.ProductVO;
 import product.model.ProductDAO;

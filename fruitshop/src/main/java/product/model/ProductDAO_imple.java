@@ -245,7 +245,7 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			conn = ds.getConnection();
 	          
-	        String sql = " select season_no, season_name "
+	        String sql = " select season_no, season_name, season_image "
 	                   + " from tbl_seasons ";
 	        pstmt =conn.prepareStatement(sql);
 	        
@@ -257,6 +257,7 @@ public class ProductDAO_imple implements ProductDAO {
 				
 				prdvo.setSeason_no(rs.getInt("season_no"));
 				prdvo.setSeason_name(rs.getString("season_name"));
+				prdvo.setSeason_image(rs.getString("season_image"));
 		
 				seasonInfo.add(prdvo);	
 			}
@@ -892,13 +893,55 @@ public class ProductDAO_imple implements ProductDAO {
 		
 		return review_cnt;
 	} // end of public int review_cnt(String prodNo)
-	
-	
-
-	
-
-	
 
 	
 	
+	
+
+
+	
+	// -------------- 메인 페이지 관련 메소드 -------------- //
+	
+	// 메인 출력을 위해 상품 테이블을 조회한다.
+	@Override
+	public List<ProductVO> mainProduct() throws SQLException {
+		
+		List<ProductVO> prdList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
+						+ " FROM tbl_products " 			
+						+ " ORDER BY prod_regidate DESC ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductVO prdvo = new ProductVO();
+				
+				prdvo.setProd_no(rs.getInt("prod_no"));
+				prdvo.setProd_name(rs.getString("prod_name"));
+				prdvo.setProd_cost(rs.getInt("prod_cost"));
+				prdvo.setProd_price(rs.getInt("prod_price"));
+				prdvo.setProd_thumnail(rs.getString("prod_thumnail"));
+				prdvo.setProd_descript(rs.getString("prod_descript"));
+				prdvo.setProd_inventory(rs.getInt("prod_inventory"));
+				prdvo.setFk_season_no(rs.getInt("fk_season_no"));
+				prdvo.setProd_regidate(rs.getString("prod_regidate"));
+				
+				prdList.add(prdvo);
+			}
+					
+		} finally {
+			close();
+		}	
+		
+		return prdList;
+	} // end of public List<ProductVO> mainProduct()
+	
+
 }

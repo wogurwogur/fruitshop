@@ -8,8 +8,6 @@ import java.util.Map;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import my.util.MyUtil;
 import product.domain.ProductVO;
 import product.model.ProductDAO;
 import product.model.ProductDAO_imple;
