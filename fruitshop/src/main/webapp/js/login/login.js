@@ -66,7 +66,18 @@ function goLogin() {
 						location.href="/fruitshop/login/passwdUpdateEnd.ddg?userid="+json.userid;
 					}
 					else { 		
-						location.href="/fruitshop/index.ddg";
+						
+						const url = $("input#geturl").val();
+						
+						console.log(url);
+						
+						if(url != "" || url != null) {
+							location.href="/fruitshop"+url;
+						}
+						else {
+							location.href="/fruitshop/index.ddg";
+						}
+	
 					}
 				}		
 			}
