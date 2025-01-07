@@ -95,7 +95,7 @@ public class CartInsert extends AbstractController {
     	
 	    	else {
 	    		//	로그인 상태가 아닌 경우
-				message = "로그인 후에 상품을 장바구니에 넣을 수 있습니다 !!";
+				message = "로그인 후 이용가능합니다!";
 				loc = request.getContextPath()+"/login/login.ddg";
 				
 				request.setAttribute("message", message);
