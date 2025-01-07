@@ -367,14 +367,14 @@ const frm = document.commentWriteFrm;
 					</tbody>
 				
 				</table>				
-				<%-- <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg'" style="float: right; ">돌아가기</button>--%>
-				<c:if test="${sessionScope.loginuser.role == 2}">
+				<%-- <button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/notice/noticeList.ddg'" style="float: right; ">돌아가기</button>
+			<c:if test="${sessionScope.loginuser.role == 2}">
 				<button type="button" class="btn btn-outline-danger" onclick="deleteNotice()" style="float: right; margin-right:0.8%">글삭제</button>
 				<button type="button" class="btn btn-outline-success" style="float: right; margin-right:0.8%" id="NoticeModalUpdateOpen">글수정</button>
 				</c:if>
 				<form name="noticeDetailForm">
 					<input type="hidden" name="notice_no">				
-				</form>
+			</form>--%>
 				
 			<!-- 페이지네이션 -->
 			 

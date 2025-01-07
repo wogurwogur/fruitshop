@@ -72,6 +72,7 @@ function productSelect(prod_no){
 			
 			frm.prodNo.value = json.prod_no;
 			 
+
 			
 			
 				
@@ -88,19 +89,31 @@ function productSelect(prod_no){
 };
 
 
-function rvRegister(){
+function qaRegister(){
 	
 	const frm = document.qnaWriteFrm;
+	
 	    frm.action = "<%=ctxPath%>/qna/qnaWrite.ddg";
 	    frm.method = "post";
+	    
 	    alert("QnA 작성 완료 !!")
 	  	    
 	    frm.submit();
 	    
+	    setTimeout(() => {
 	    location.href="<%= ctxPath%>/qna/qnaList.ddg"
-	
+	    }, 100);
 };
 
+
+function getUrlParameter(name) {
+    var url = window.location.href; // 현재 페이지 URL
+    var regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i'); // 파라미터 추출을 위한 정규식
+    var result = regex.exec(url); // 정규식 실행
+    return result ? decodeURIComponent(result[1]) : null; // 파라미터 값 반환   
+    
+}
+	var prod_no = getUrlParameter('prod_no');
 
 </script>
 
@@ -184,7 +197,25 @@ function rvRegister(){
 			
 			<%-- 상품 썸네일 --%>
 			
-			
+			<c:if test="${not empty prod_no} ">
+				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+					<div class="d-flex justify-content-center" id="productSelectEnd">					
+							<i class="fa-regular fa-image" style=""></i>					
+					</div>				
+				</div>
+				<%-- 상품 이름 --%>
+				<div class="" style="width:50%; height:80%;">
+					<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+						<span style="font-size:17pt;"></span>			
+					</div>
+				
+					<%-- 상품 가격 --%>
+					<div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
+						<span style="font-size:17pt;"></span>
+					</div>
+				</div>
+						
+			</c:if>
 			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
 						<i class="fa-regular fa-image" style=""></i>					
@@ -197,7 +228,7 @@ function rvRegister(){
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
+				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
 					<span style="font-size:17pt;"></span>
 				</div>
 			</div>
@@ -248,7 +279,7 @@ function rvRegister(){
 	<div id="title">	
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
-			<textarea name="qna_title" cols="80" rows="1" style="resize:none;"></textarea>
+				<textarea name="qna_title" cols="80" rows="1" style="resize:none;"></textarea>
 			<span class="ml-5 mt-1" style="font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
 		</div>	
 	</div>
@@ -264,13 +295,14 @@ function rvRegister(){
 		</div>	
 	</div>
 	<input type="hidden" name="prodNo"/>
+	<%-- <input type="hidden" name=""/>--%>
 </form>
 	<div id="buttons">
 		<div class="d-flex" style="margin-left:25%;">
 			<button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg'">목록</button>	
 				
 			<div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;" >
-				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister()">등록</button>
+				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="qaRegister()">등록</button>
 				<button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
 			</div>					
 		</div>	

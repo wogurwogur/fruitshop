@@ -195,6 +195,8 @@ public class ReviewListController extends AbstractController {
 		    // System.out.println("currentURL : " + currentURL);
 			
 			try {
+				
+				
 				List<ReviewListVO> reviewList = revdao.select_Member_paging(paraMap);
 				List<ReviewListVO> brevList = revdao.breviewListall();
 				List<ReviewListVO> crevList = revdao.creviewListall();

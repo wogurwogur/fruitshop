@@ -34,7 +34,13 @@ $(document).ready(function(){
 	writeModalClose.addEventListener('click', () => {
 	  modal.classList.add('hidden');
 	});	
-		
+	
+	
+
+	
+	
+	
+	
 });
 
 function productSelect(prod_no){
@@ -106,7 +112,7 @@ function rvRegister(){
 	
 	setTimeout(() => {
 	    location.href = "<%= ctxPath %>/review/reviewList.ddg";
-	}, 100);
+	}, 200);
 	
 }
 
@@ -194,11 +200,31 @@ function rvRegister(){
 		<div class="" style="display:flex; width:70%; height:250px;">
 			
 			
+		
+		
+					<%-- 상품 썸네일 --%>		
+			<c:if test="${not empty pcarrier.prod_no}">
+				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+				<div class="d-flex justify-content-center" id="productSelectEnd">					
+						<img src="<%= ctxPath%>/images/product/thumnail/${(requestScope.pcarrier).prod_thumnail}" width="200" height="200"/>					
+				</div>				
+			</div>
+			<%-- 상품 이름 --%>
+			<div class="" style="width:50%; height:80%;">
+				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+					<span style="font-size:17pt;">${(requestScope.pcarrier).prod_name}</span>			
+				</div>
 			
+				<%-- 상품 가격 --%>
+				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
+					<span style="font-size:17pt;">${(requestScope.pcarrier).prod_price}</span>
+				</div>
+			</div>
+				
+			</c:if>
 			
-			
-			<%-- 상품 썸네일 --%>						
-			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+			<c:if test="${empty pcarrier.prod_no}">	
+				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
 						<i class="fa-regular fa-image" style=""></i>					
 				</div>				
@@ -214,6 +240,11 @@ function rvRegister(){
 					<span style="font-size:17pt;"></span>
 				</div>
 			</div>
+				
+			</c:if>
+			
+					
+
 			
 			
 			

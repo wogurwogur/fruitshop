@@ -38,18 +38,18 @@ public class QnaReplyController extends AbstractController {
 			
 			if(!"GET".equalsIgnoreCase(method)) {
 					
-				int qna_no = Integer.parseInt(request.getParameter("qnaNo"));
+				int qna_no = Integer.parseInt(request.getParameter("qna_no"));
 				int fk_user_no = loginuser.getUser_no();
 				int prod_no = Integer.parseInt(request.getParameter("prodNo"));
 				String qna_answer  = request.getParameter("qna_answer");
 				
 				System.out.println(qna_answer + " qna_answer");
 				
-				// String qna_contents_result = qna_contents.replaceAll("\r\n", "<br>");
+				String qna_answer_result = qna_answer.replaceAll("\r\n", "<br>");
 				
 				QnaListVO qnaReply = new QnaListVO();
 	  	        
-				qnaReply.setQna_answer(qna_answer);
+				qnaReply.setQna_answer(qna_answer_result);
 				qnaReply.setQna_no(qna_no);
 				qnaReply.setFk_user_no(fk_user_no);
 				qnaReply.setProd_no(prod_no);
@@ -88,12 +88,12 @@ public class QnaReplyController extends AbstractController {
 
 			}
 			
-			int qna_no = Integer.parseInt(request.getParameter("qnaNo"));
+			int qna_no = Integer.parseInt(request.getParameter("qna_no"));
 			int fk_user_no = loginuser.getUser_no();
 			int prod_no = Integer.parseInt(request.getParameter("prodNo"));
 			String qna_answer  = request.getParameter("qna_answer");
 			
-			request.setAttribute("qnaNo", qna_no);
+			request.setAttribute("qna_no", qna_no);
 			request.setAttribute("fk_user_no", fk_user_no);
 			request.setAttribute("prodNo", prod_no);
 			request.setAttribute("qna_answer", qna_answer);

@@ -65,11 +65,11 @@ public class ReviewWriteController extends AbstractController {
 		         
 		         int result = revdao.reviewWrite(reviewList);
 		         
+		         
 		         if(result==1) {
 		        	
 		        	 request.setAttribute("reviewList", reviewList);
-		        
-		        	 
+		        		        	 
 		        	 super.setRedirect(false);
 		        	 super.setViewPage("/WEB-INF/review/reviewList.jsp");
 		         }
@@ -100,7 +100,7 @@ public class ReviewWriteController extends AbstractController {
 			
 			
 
-			super.setViewPage("/WEB-INF/review/reviewWrite.jsp");
+			super.setViewPage("/WEB-INF/review/reviewList.jsp");
 			
 		}
 		

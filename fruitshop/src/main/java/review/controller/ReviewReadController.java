@@ -16,10 +16,6 @@ public class ReviewReadController extends AbstractController {
 
 	private ReviewListDAO revdao = new ReviewListDAO_imple();
 	
-	public ReviewReadController() {
-
-		
-	}
 
 			
 	@Override
@@ -36,7 +32,8 @@ public class ReviewReadController extends AbstractController {
 			
 			//GET 방식일때			
 			
-			String review_no = request.getParameter("review_no");
+			String review_no = request.getParameter("review_noo"); 
+			
 			
 			// System.out.println("확인용"+review_no);
 			
@@ -45,6 +42,14 @@ public class ReviewReadController extends AbstractController {
 			
 			if(commentList==null) {
 				
+				if(loginuser != null && loginuser.getRole() == 1) {
+				
+				int n = revdao.setViewCount(review_no);
+				
+				rvo.setReview_viewcount(rvo.getReview_viewcount( )+1);
+				
+				}
+				
 				request.setAttribute("rvo", rvo);
 								
 			}else {
@@ -52,9 +57,9 @@ public class ReviewReadController extends AbstractController {
 				
 				if(loginuser != null && loginuser.getRole() == 1) {
 					
-					int n = revdao.setViewCount(review_no);
+				int n = revdao.setViewCount(review_no);
 					
-					rvo.setReview_viewcount(rvo.getReview_viewcount()+1);
+				rvo.setReview_viewcount(rvo.getReview_viewcount( )+1);
 					
 				}
 				
