@@ -40,7 +40,7 @@ $(document).ready(()=> {
 	});// end of $("button.btn-outline-dark").on("click", e => {}) ---------------------
 	// === 기간 필터 버튼 이벤트 처리 끝 === //
 	
-	
+	/*
 	// === 주문정보 클릭 시 주문상세정보로 넘기는 이벤트 시작 === //
 	$(document).on("click", "table#orderList > tbody td", e => {
 		//alert("테이블 버튼 몇번? :"+ $(e.target).parent().index());
@@ -52,9 +52,7 @@ $(document).ready(()=> {
 		
 	});
 	// === 주문정보 클릭 시 주문상세정보로 넘기는 이벤트 끝 === //
-
-	
-	
+	*/
 	
 	// === 필터 버튼 조회 시 이벤트 처리 시작 === //
 	$("button.btn-secondary").on("click", () => {
@@ -91,9 +89,10 @@ $(document).ready(()=> {
 	
 	// === 주문목록 각 행을 클릭 했을 때 이벤트 시작 === //
 	$(document).on("click", "tr.orderItem", e => {
-		const order_no = $(e.target).parent().find(".order_no").text();
+		let order_no = $(e.target).parent().find(".order_no").text();
 		const ctxPath  = document.querySelector("input#contextPath").value;
 		// alert("주문번호:"+ order_no);
+				
 		goOrderDetail(order_no, ctxPath);
 	});// end of $(document).on("click", "tr.orderItem", e => {}) ---------------------
 
@@ -366,9 +365,9 @@ function getOrderList(start) {
 
 					html += `
 						<tr class="orderItem" style="cursor: pointer;">
-							<td class="order_no">${item.order_no}</td>
+							<td class="order_no">${item.order_no}<input type="hidden" id="order_no${index}" value="${item.order_no}" /></td>
 							<td>${item.order_date}</td>
-							<td><img src='${ctxPath}/images/product/thumnail/${item.prod_thumnail}' style="width: 80px; height: 50px;" /></td>
+							<td><a href='${ctxPath}/order/orderDetail.ddg?order_no=${item.order_no}'><img src='${ctxPath}/images/product/thumnail/${item.prod_thumnail}' style="width: 80px; height: 50px;" /></a></td>
 							<td>${item.prod_name}</td>
 							<td>${item.order_tprice.toLocaleString('en')} 원</td>
 							<td>${order_status}</td>
@@ -407,7 +406,7 @@ function getOrderList(start) {
 		error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 				// alert("경로를 어디로 가야함???");
-			}
+		}
 	});
 	
 }// end of function getOrderList() -------------------

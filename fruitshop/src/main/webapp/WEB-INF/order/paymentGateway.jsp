@@ -95,7 +95,7 @@ $(document).ready(function() {
 					console.log("확인용 json", json);
 					
 					if (json.isComplete == 1) {
-						alert("주문을 성공했습니다. "+ json);
+						alert("주문을 성공했습니다.");
 						location.href = "${pageContext.request.contextPath}/order/orderList.ddg";
 					}
 				},

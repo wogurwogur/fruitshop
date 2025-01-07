@@ -47,9 +47,9 @@ public class OrderCheckout extends AbstractController {
 //		for (int i=0; i<)
 		
 //		System.out.println("확인용 userno :"+ user_no);
-		System.out.println("확인용 selectedItems :"+ selectedItems);
-		System.out.println("확인용 cartTotal :"+ cartTotal);
-		System.out.println("확인용 prod_no :"+ prod_no);
+//		System.out.println("확인용 selectedItems :"+ selectedItems);
+//		System.out.println("확인용 cartTotal :"+ cartTotal);
+//		System.out.println("확인용 prod_no :"+ prod_no);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
@@ -241,9 +241,9 @@ public class OrderCheckout extends AbstractController {
 //			System.out.println("확인용 order_request => "+ order_request);
 //			System.out.println("확인용 ship_default => "+ ship_default);
 //			System.out.println("확인용 user_no => "+ user_no);
-			System.out.println("확인용 coupon_no => "+ coupon_no);			
-			System.out.println("확인용 coupon_discount => "+ coupon_discount);			
-			System.out.println("확인용 coupon_name => "+ coupon_name);			
+//			System.out.println("확인용 coupon_no => "+ coupon_no);			
+//			System.out.println("확인용 coupon_discount => "+ coupon_discount);			
+//			System.out.println("확인용 coupon_name => "+ coupon_name);			
 //			System.out.println("확인용 order_tprice => "+ order_tprice);			
 //			System.out.println("확인용 point => "+ point);			
 //			System.out.println("확인용 arr_prodNo => "+ String.join(",", arr_prodNo));			

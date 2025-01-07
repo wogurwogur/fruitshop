@@ -49,24 +49,24 @@ public class AdminStatisticsController extends AbstractController {
 		}
 		
 		
-//		String searchType = request.getParameter("searchType");					// 메뉴필터(방문횟수, 가입자수, 주문횟수, 주문금액)
-//		String searchRange = request.getParameter("searchRange");				// 정렬기준 (오름차순, 내림차순)
-//		String currentShowPageNo = request.getParameter("currentShowPageNo");	// 페이지 번호
-//		String fromDate = request.getParameter("fromDate");						// 시작일
-//		String toDate = request.getParameter("toDate");							// 마지막일
-
-		
 		// 최근 일주일 가입자수 통계
-		Map<String, Integer> visitUserWeek = sdao.getvisitUserWeek();
+		Map<String, Integer> regiUserWeek = sdao.getregiUserWeek();
 		
 		// 2주전 가입자 수 통계
-		Map<String, Integer> visitUser2Week = sdao.getvisitUser2Week();
-//		Map<String, Integer> visitUserMonth = sdao.getvisitUserMonth();
+		Map<String, Integer> regiUser2Week = sdao.getregiUser2Week();
+		
+		// 최근 6개월 가입자 수 통계
+		Map<String, Integer> regiUserMonth = sdao.getregiUserMonth();
+		
+		// 전년 동월 가입자수 통계
+		Map<String, Integer> regiUserMonthAgo = sdao.getregiUserMonthAgo();
 		
 		
 		request.setAttribute("adminpage_val", "admin_statistics");
-		request.setAttribute("visitUserWeek", visitUserWeek);
-		request.setAttribute("visitUser2Week", visitUser2Week);
+		request.setAttribute("regiUserWeek", regiUserWeek);
+		request.setAttribute("regiUser2Week", regiUser2Week);
+		request.setAttribute("regiUserMonth", regiUserMonth);
+		request.setAttribute("regiUserMonthAgo", regiUserMonthAgo);
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
