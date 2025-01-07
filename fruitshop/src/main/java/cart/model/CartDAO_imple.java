@@ -286,5 +286,38 @@ public class CartDAO_imple implements CartDAO {
 	}
 	
 	
+	// 장바구니 수량 업데이트 //
+	@Override
+	public boolean updateCartQuantity(Map<String, String> paraMap) throws SQLException {
+		boolean isUpdated = false;
+
+	    try {
+	        conn = ds.getConnection();
+	        String sql = " UPDATE tbl_cart SET cart_prodcount = ?"
+	        		   + " WHERE cart_no = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, paraMap.get("cart_prodcount"));
+	        pstmt.setString(2, paraMap.get("cart_no"));
+
+	        int n = pstmt.executeUpdate();
+	        isUpdated = (n > 0);
+
+	    } finally {
+	        close();
+	    }
+
+	    return isUpdated;
+	}// end of public boolean updateCartQuantity(Map<String, String> paraMap) throws SQLException {}-----------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

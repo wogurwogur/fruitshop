@@ -13,53 +13,91 @@
 
 <script type="text/javascript">
 
+function Orderpick() {
+	
+	const check = $("input:checkbox[name='selectedItems']:checked").length;
+	//console.log(check);
 	
 	
-	function Orderpick() {
+	if(check == 0){
 		
-		const check = $("input:checkbox[name='selectedItems']:checked").length;
-		//console.log(check);
+		alert("선택된 상품이 없습니다.");
+	}
+	else{
 		
-		
-		if(check == 0){
+	 	if(confirm("선택한 상품을 주문하시겠습니까?")){
+	 		
+	 		const arr_cart_no = [];
 			
-			alert("선택된 상품이 없습니다.");
-		}
-		else{
+			$("input:checkbox[name='selectedItems']:checked").each(function (index, elmt) {
+				console.log("체크박스 값 : ", $(elmt).val());
+				arr_cart_no.push($(elmt).val());
+			});
+	 		
+	 		const cart_no = arr_cart_no.join(",");
 			
-		 	if(confirm("선택한 상품을 주문하시겠습니까?")){
-		 		
-		 		const arr_cart_no = [];
-				
-				$("input:checkbox[name='selectedItems']:checked").each(function (index, elmt) {
-					console.log("체크박스 값 : ", $(elmt).val());
-					arr_cart_no.push($(elmt).val());
-				});
-		 		
-		 		const cart_no = arr_cart_no.join(",");
-				
-				$("input#selectedItem").val(cart_no);
-		 		
-		 		const frm = document.getElementById("checked");
-		 		
-		 		frm.action = `${pageContext.request.contextPath}/order/orderCheckout.ddg`;
-		 		frm.method = "get";
-		 		frm.submit();
-		 	}
-		}
+			$("input#selectedItem").val(cart_no);
+	 		
+	 		const frm = document.getElementById("checked");
+	 		
+	 		frm.action = `${pageContext.request.contextPath}/order/orderCheckout.ddg`;
+	 		frm.method = "get";
+	 		frm.submit();
+	 	}
+	}
+	
+}// end of function goCartList() {}-----------------------------
+
+<%--  전체상품 주문하기 누를때 --%>
+function OrderAll() {
+	
+	
+	if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
 		
-	}// end of function goCartList() {}-----------------------------
+		location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
+	}
+	
+}// end of function Orderpick() {}-----------------------------
 
 	<%--  전체상품 주문하기 누를때 --%>
 	function OrderAll() {
 		
+		let soldout = false; 
+		let soldOutItems = [];
 		
-		if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
-			
-			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
-		}
+		    $(".cart_item").each(function () {
+		        const cartItem = $(this);
+		        // console.log(cartItem);
+		        const prod_su = parseInt(cartItem.find("input[name='prodinventory']").val(), 10); // 상품 재고
+        		// console.log(prod_su);
+        		const prod_name = cartItem.find(".prod_name").text().trim(); // 상품 이름
+        		console.log("상품이름 : ", prod_name);
+        		
+		        if (prod_su === 0) {
+		           soldout = true;
+		           soldOutItems.push(prod_name);
+		        }
+		        	
+		    });
+		    
+		    if (soldout) {
+		        // 품절된 상품 목록 알림
+		        alert(`장바구니에 품절된 상품이 있습니다:\${soldOutItems.join(", ")}\n 품절상품을 제외하고 주문하시길 바랍니다.`);
+		        return; // 품절된 상품이 있으면 주문 진행 중단
+		    }
+		    
+		    if (!soldout) {
+			    if(confirm("장바구니에 있는 전체상품을 주문하시겠습니까?")){
+	    			
+	    			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?cartTotal=Y&userNo=${sessionScope.loginuser.user_no}`;
+	    		}
+		    }
+        
+		 
 		
-	}
+		
+		
+	}// end of function OrderAll() {}---------------------------------------
 	
 	
 	 <%-- 장바구니 비우기 누를때 --%> 
@@ -114,18 +152,17 @@
                         
                         <%-- 상품 정보 --%>
                         <div style="flex: 1;">
-                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
+                        <p  class="prod_name"  style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
                        <p style="font-size: 15pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;" 
 					   class="price" data-price="${item.product.prod_price}">
-					   <fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원
-					</p>
+					   <fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원 </p>
 
                         </div>
 
                         <%-- 수량 조절 --%>
                          <div style="flex: 2.9; display: flex; align-items: center; justify-content: center;">
                             <button class="minus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">-</button>
-                            <input type='text' min='1' value='${item.cart_prodcount}' class="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
+                            <input type='text' min='0' value='${item.cart_prodcount}' class="prodcount" style=" width: 10%; border:solid 1px #ccc;" />
                             <button class="plus" style="width: 8%; font-size: 25pt; background-color: white; border: white;">+</button>
                         </div>
 

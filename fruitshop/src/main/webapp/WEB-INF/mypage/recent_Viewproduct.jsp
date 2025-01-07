@@ -19,6 +19,8 @@ $(document).ready(function(){
 	
     let html = ``;
     
+    $("div.info").hide();
+    
     const arr_product = JSON.parse(sessionStorage.getItem("arr_product"));
     
     console.log(arr_product.length);
@@ -44,9 +46,9 @@ $(document).ready(function(){
 	        
 	        <%-- 상품 번호 숨기기 --%>
             <input type="hidden" name="prodno" value="\${item.prod_no}" />
-            	
+	        
 	            <%-- 상품 번호 --%>
-	            <div class="number" style="flex: 0.4; text-align: center ; font-weight: 300">
+	            <div class="number" style="flex: 0.4; text-align: center;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.prod_no}</p>
 	            </div>
 	
@@ -56,19 +58,19 @@ $(document).ready(function(){
 	            </div>
 	
 	            <%-- 상품 이름 --%>
-	            <div class="name" style="flex: 2; text-align: center; font-weight: 300">
+	            <div class="name" style="flex: 2; text-align: center;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.name}</p>
 	            </div>
 	
 	            <%-- 상품 가격 --%>
-	            <div class="price" style="flex: 1.8; text-align: center; font-weight: 300">
+	            <div class="price" style="flex: 1.8; text-align: center;">
 	            	<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${price}원</p>
 	            </div>
 	
 	            <%-- 삭제 버튼 --%>
-	            <div style="flex: 0.4; text-align: center; ">
+	            <div style="flex: 0.4; text-align: center;">
 	                <form method="post" action="<%= request.getContextPath() %>/mypage/recent_Viewproduct.ddg" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-	                    <button class="delete-btn" style="background-color: white; color: black; font-size: 20pt; color: gray; margin-right:20%;">X</button>
+	                    <button class="delete-btn" style="background-color: white; color: black; font-size: 20pt; border: solid 0px gray; color: black; margin-right:20%;">X</button>
 	                </form>
 	            </div>
 	        </div>`;
