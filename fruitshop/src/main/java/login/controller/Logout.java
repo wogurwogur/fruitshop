@@ -14,7 +14,6 @@ public class Logout extends AbstractController {
 	    HttpSession session = request.getSession();
 
 	    // -------------------------------------------------------------------------------- //
-	    // 로그아웃을 하면 시작페이지로 가는 것이 아니라 방금 보았던 그 페이지로 그대로 가기 위한 것임.
 	    String goBackURL = (String) session.getAttribute("goBackURL");
 
 	    if(goBackURL != null ) {
@@ -27,7 +26,7 @@ public class Logout extends AbstractController {
 	    
 	    // -------------------------------------------------------------------------------- //
 	    
-	    session.removeAttribute("loginuser");
+	    session.invalidate();
 	    
 	    super.setRedirect(true);
 	    

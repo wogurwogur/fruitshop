@@ -67,8 +67,10 @@ function goLogin() {
 					}
 					else { 		
 						
-						if(json.goBackURL != "") {
-							location.href="/fruitshop"+json.goBackURL;
+						const goBackURL = json.goBackURL
+						
+						if(goBackURL != "") {
+							location.href="/fruitshop"+goBackURL;
 						}
 						else {
 							location.href="/fruitshop/index.ddg";

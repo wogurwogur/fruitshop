@@ -38,6 +38,8 @@ function faqWrite(){
 function faqDetail(faq_no){
 	
 	const frm = document.faqForm;
+	const searchWord = $("input:text[name='searchWord']").val();
+	const searchType = $("select[name='searchType']").val();
 	
 	frm.action = "<%=ctxPath%>/faq/faqDetail.ddg";
 	
