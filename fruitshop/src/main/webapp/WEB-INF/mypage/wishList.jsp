@@ -82,17 +82,17 @@ function WishDeleteAll() {
                     <input type="hidden" name="prodno" value="${item.product.prod_no}" />
                     
                     <%-- 썸네일 --%>
-                    <div class="thumnail" style="flex: 1; text-align: center;">
+                    <div class="thumnail" style="flex: 1; text-align: center; cursor: pointer;">
                         <img src="<%= request.getContextPath()%>/images/product/thumnail/${item.product.prod_thumnail}" style="width: 60%; height: auto;">
                     </div>
                     
                     <%-- 상품 이름 --%>
-                    <div class="name" style="flex: 1;">
+                    <div class="name" style="flex: 1; cursor: pointer;">
                         <p style="  font-weight: 400; font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif;">${item.product.prod_name}</p>
                     </div>
                     
                     <%-- 상품 가격 --%>
-                    <div class="price" style="flex: 0.5;">
+                    <div class="price" style="flex: 0.5; cursor: pointer;">
                         <p style="font-size: 14pt; margin-left: 3%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;">
                             <fmt:formatNumber value="${item.product.prod_price}" pattern="###,###" />원
                         </p>

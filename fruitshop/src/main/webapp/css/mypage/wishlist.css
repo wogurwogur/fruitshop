@@ -37,11 +37,6 @@ div.container > div.ec-base-button.gColumn{
     display: flex;
     justify-content: center;
 }
-div.wish-items > div:nth-child(1) > div.thumnail,
-div.wish-items > div:nth-child(1) > div.name,
-div.wish-items > div:nth-child(1) > div.price{
-	cursor: pointer;
-}
 
 div.container > div.ec-base-button.gColumn > a.btnremove{
 	border: 1px solid #000;
