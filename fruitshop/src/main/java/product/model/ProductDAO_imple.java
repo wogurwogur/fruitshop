@@ -912,7 +912,8 @@ public class ProductDAO_imple implements ProductDAO {
 			conn = ds.getConnection();
 			
 			String sql  = " SELECT prod_no, prod_name, prod_cost, prod_price, prod_thumnail, prod_descript, prod_inventory, fk_season_no, prod_regidate "
-						+ " FROM tbl_products " 			
+						+ " FROM tbl_products "
+						+ " WHERE prod_status = 1 " 			
 						+ " ORDER BY prod_regidate DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
