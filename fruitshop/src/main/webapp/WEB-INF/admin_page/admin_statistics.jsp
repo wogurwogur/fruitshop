@@ -8,12 +8,13 @@
 	Calendar time = Calendar.getInstance();
 	int year = time.get(Calendar.YEAR);
 %>
+<%-- chart.js --%>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/adminpage/statistics.css">
 <script type="text/javascript" src="<%= request.getContextPath()%>/js/admin/statistics.js"></script>
 
-<%-- chart.js --%>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(() => {
@@ -22,6 +23,7 @@
 		$("input#toDate").val("${requestScope.toDate}");
 		
 		visitStatistics();
+		visitRankStatistics();
 		
 		// === 전체 datepicker 옵션 일괄 설정하기 ===  
 	    //     한번의 설정으로 $("input#fromDate"), $('input#toDate')의 옵션을 모두 설정할 수 있다.
@@ -100,6 +102,7 @@
 			
 		});// end of $("div.menu_title").click(e => {}) ------------------------ 
 		
+		// === 회원관련 버튼 클릭 시 이벤트 시작 === //
 		$(document).on("click", "button.member", function() {
 			
 			const index = $("button.member").index($(this));
@@ -108,6 +111,7 @@
 				case 0 :	// 방문자수
 					$("div#memberInfoTable").show();
 					visitStatistics();
+					visitRankStatistics();
 					break;
 				case 1 :	// 가입자수
 					$("div#memberInfoTable").hide();
@@ -116,43 +120,70 @@
 			}// end of switch -----------------
 			
 		});// end of $("button.btn-outline-dark").on("click", function() => {}) ------------------------- 
+		// === 회원관련 버튼 클릭 시 이벤트 끝 === //
 		
-		$("select[name='searchType']").on("change", function(e) {
-			// 선택되어진 항목의 값에 따라 분기한다.
-			const type = $(e.target).val();
-
-			if (type == "1") {
-				// 방문횟수 통계
-				visitStatistics();
-			}
+		// === 상품관련 버튼 클릭 시 이벤트 시작 === //
+		$(document).on("click", "button.order", function() {
 			
-			else if (type == "2") {
-				// 가입자수 통계
-				regiStatistics();
-			}
-		});// end of $("select#searchRange").on("change", function() {}) -----------------------
+			const index = $("button.order").index($(this));
+			
+			switch (index) {
+				case 0 :	// 전체주문건
+					$("div#memberInfoTable").hide();
+					orderCntStatistics();
+					break;
+				case 1 :	// 계절별상품 주문건
+					$("div#memberInfoTable").hide();
+					seasonProdStatistics();
+					break;
+			}// end of switch -----------------
+			
+		});// end of $("button.btn-outline-dark").on("click", function() => {}) ------------------------- 
+		// === 상품관련 버튼 클릭 시 이벤트 끝 === //
 		
+		// === 매출/이익 관련 버튼 클릭시 이벤트 시작 === //
+		$(document).on("click", "button.revenue", function() {
+			const index = $("button.revenue").index($(this));
+			
+			switch (index) {
+				case 0 :	// 매출
+					revenueStatistics();
+					break;
+				case 1 :	// 영업이익
+					incomeStatistics();
+					break;
+			}// end of switch -----------------
+		});// end of $(document).on("click", "button.revenue", function() {}) -------------------
+		// === 매출/이익 관련 버튼 클릭시 이벤트 끝 === //
+		
+		
+		// === 방문자 랭킹 회원을 클릭 했을 시 회원의 상세정보로 이동 이벤트 시작 === //
+		$(document).on("click", "tr.userInfo", function() {
+			
+			const user_no = $(this).find(".user_no").text().trim();
+			console.log("확인용 user_no : "+ user_no);
+			
+			
+			//alert(user_no);
+		});// end of $(document).on("click", "tr.userInfo", function() {}) ------------------ 
+		
+		// === 방문자 랭킹 회원을 클릭 했을 시 회원의 상세정보로 이동 이벤트 끝 === //
+		
+		
+		// === 정렬 기준 변화에 따라 이달의 방문자 오름차순/내림차순 정렬 시작 === //
+		$("select[name='searchRange']").on("change", () => {
+			visitRankStatistics();
+		});
+		// === 정렬 기준 변화에 따라 이달의 방문자 오름차순/내림차순 정렬 끝 === //
+		
+		// === 날짜 기준 변화에 따라 이달의 방문자 오름차순/내림차순 정렬 시작 === //
+		$("select[name='searchMonth']").on("change", () => {
+			visitRankStatistics();
+		});
+		// === 날짜 기준 변화에 따라 이달의 방문자 오름차순/내림차순 정렬 끝 === //
 	});// end of $(document).ready(() => {}) -------------------------
 	
 	//Function Declaration 
-	function goSearch() {
-		
-		const fromDate = document.querySelector("input#fromDate").value;
-		const toDate = document.querySelector("input#toDate").value;
-		
-		// alert("시작일: "+ fromDate+"\n마지막일: "+toDate);
-		
-		document.querySelector("input[name='fromDate']").value 	= fromDate;
-		document.querySelector("input[name='toDate']").value 	= toDate;
-		
-		const frm  = document.order_searchFrm;
-		// frm.action = "memberList.up";	// form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
-		// frm.method = "GET";				// form 태그에 method 를 명기하지 않으면 "get" 방식이다.
-		frm.submit();
-			
-	}// end of function goSearch() -------------------
-	
-	
 	// == 날짜를 입력받아 오늘로부터 며칠 이전 날짜를 리턴해주는 함수. == //
 	function getWeek(day) {
 		
@@ -202,10 +233,64 @@
 		return `\${year}.\${month}`;
 	}// end of function getDate(index) ----------------------
 	
+	// === 방문횟수 유저 랭킹을 출력해주는 함수 === //
+	function visitRankStatistics() {
+		
+		if(${empty sessionScope.loginuser}) {
+			alert("로그인이 필요합니다.");
+			location.href = "${pageContext.request.contextPath}/login/login.ddg";
+            return; // 종료
+	   	}
+		
+		const searchRange = $("select[name='searchRange']").val();
+		const searchMonth = $("select[name='searchMonth']").val();
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/admin/statistics/visitMemberRank.ddg",
+			type: "GET",
+			data: {"viewType": 1, "searchRange": searchRange, "searchMonth": searchMonth},
+			dataType: "JSON",
+			success: function(json) {
+				//console.log (json);
+				let html = ``;
+				
+				if (json.length == 0) {
+					html = `
+						<tr>
+							<td colspan="5">방문한 회원이 존재하지 않습니다.</td>
+						</tr>
+					`;
+				}
+				
+				$.each(json, function(index, item) {
+					
+					const mobile = item.tel.substring(0,3) +"-"+ item.tel.substring(3,7) +"-"+ item.tel.substring(7,11);
+					
+					html += `
+						<tr class="userInfo">
+							<td class="user_no">\${item.user_no}<input type="hidden"  value="\${item.user_no}"</td>
+							<td>\${item.name}</td>
+							<td>\${mobile}</td>
+							<td>\${item.email}</td>
+							<td>\${item.visit_cnt}</td>
+						</tr>
+					`;
+				});// end of $.each(json, function(index, item) {}) ----------------------
+			  	
+				$("table#visitUserRank > tbody").html(html);				
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				// alert("경로를 어디로 가야함???");
+			}
+		});
+		
+	}// end of function visitStatistics() ------------------- 
+	// === 방문횟수 유저 랭킹을 출력해주는 함수 === //
+	
 	
 	// === 방문횟수 통계 정보를 출력해주는 함수 === //
 	function visitStatistics() {
-		
 		$.ajax({
 			url: "${pageContext.request.contextPath}/admin/statistics/visitMember.ddg",
 			type: "GET",
@@ -233,8 +318,20 @@
 			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
 			        	`\${json.today}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+					borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '2주전 방문자수 추이',
+					        data: [
+					        	`\${json.before_13days}`, `\${json.before_12days}`, `\${json.before_11days}`,
+					        	`\${json.before_10days}`, `\${json.before_9days}`, `\${json.before_8days}`,
+					        	`\${json.before_7days}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -304,8 +401,20 @@
 			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
 			        	`\${json.this_month}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '전년도 방문자수 추이',
+					        data: [
+					        	`\${json.before_18months}`, `\${json.before_17months}`, `\${json.before_16months}`,
+					        	`\${json.before_15months}`, `\${json.before_14months}`, `\${json.before_13months}`,
+					        	`\${json.before_12months}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -367,8 +476,6 @@
 	// === 방문횟수 통계 정보를 출력해주는 함수 === //
 	
 	
-	
-	
 	// === 가입자수 통계 정보를 출력해주는 함수 === //
 	function regiStatistics() {
 		$.ajax({
@@ -398,8 +505,20 @@
 			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
 			        	`\${json.today}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '2주전 가입자수 추이',
+					        data: [
+					        	`\${json.before_13days}`, `\${json.before_12days}`, `\${json.before_11days}`,
+					        	`\${json.before_10days}`, `\${json.before_9days}`, `\${json.before_8days}`,
+					        	`\${json.before_7days}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -469,8 +588,20 @@
 			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
 			        	`\${json.this_month}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '전년도 가입자수 추이',
+					        data: [
+					        	`\${json.before_18months}`, `\${json.before_17months}`, `\${json.before_16months}`,
+					        	`\${json.before_15months}`, `\${json.before_14months}`, `\${json.before_13months}`,
+					        	`\${json.before_12months}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -529,10 +660,12 @@
 		});
 	}// end of function regiStatistics() ---------------- 
 	// === 가입자수 통계 정보를 출력해주는 함수 === //
-	
+
+	//////////////////////////////////////////////////////////////////
 	
 	// === 주간 주문건수 통계 정보를 출력해주는 함수 === //
 	function orderCntStatistics() {
+
 		$.ajax({
 			url: "${pageContext.request.contextPath}/admin/statistics/orderCount.ddg",
 			type: "GET",
@@ -560,8 +693,20 @@
 			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
 			        	`\${json.today}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '2주전 주문건수 추이',
+					        data: [
+					        	`\${json.before_13days}`, `\${json.before_12days}`, `\${json.before_11days}`,
+					        	`\${json.before_10days}`, `\${json.before_9days}`, `\${json.before_8days}`,
+					        	`\${json.before_7days}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -631,8 +776,20 @@
 			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
 			        	`\${json.this_month}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '전년도 주문건수 추이',
+					        data: [
+					        	`\${json.before_18months}`, `\${json.before_17months}`, `\${json.before_16months}`,
+					        	`\${json.before_15months}`, `\${json.before_14months}`, `\${json.before_13months}`,
+					        	`\${json.before_12months}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -690,20 +847,21 @@
 			}
 		});
 	}// end of function regiStatistics() ---------------- 
-	// === 계절별과일 주문건수 통계 정보를 출력해주는 함수 === //
+	// === 주문건수 통계 정보를 출력해주는 함수 === //
 	
 	
-	// === 상품별 주문건수 랭킹 정보를 출력해주는 함수 === //
-	function prodOrderRankStatistics() {
+	// === 계절별상품 주문건수 통계 정보를 출력해주는 함수 === //
+	function seasonProdStatistics() {
+		
 		$.ajax({
-			url: "${pageContext.request.contextPath}/admin/statistics/prodOrderRank.ddg",
+			url: "${pageContext.request.contextPath}/admin/statistics/groupBySeason.ddg",
 			type: "GET",
 			data: {"viewType": 1},
 			dataType: "JSON",
 			success: function(json) {
 				//console.log (json);
 				
-				<%-- 주간 주문건수 추이 차트 그리기 시작 --%>
+				<%-- 계절별상품 주문건수 추이 차트 그리기 시작 --%>
 				const ctx1 = document.getElementById('userWeek');
 
 				// 차트가 그려져 있다면 삭제
@@ -715,27 +873,66 @@
 			    	type: 'line',
 			    	data: {
 			      	labels: [getWeek(6), getWeek(5), getWeek(4), getWeek(3), getWeek(2), getWeek(1), getWeek(0)],
-			      	datasets: [{
-			        label: '주간 주문건수 추이',
-			        data: [
-			        	`\${json.before_6days}`, `\${json.before_5days}`, `\${json.before_4days}`,
-			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
-			        	`\${json.today}`
-			        ],
-			        borderWidth: 1
-			      	}]
+			      	datasets: [
+			      		{
+					        label: '봄',
+					        data: [
+					        	`\${json.spring_before_6days}`, `\${json.spring_before_5days}`, `\${json.spring_before_4days}`,
+					        	`\${json.spring_before_3days}`, `\${json.spring_before_2days}`, `\${json.spring_before_1days}`,
+					        	`\${json.spring_today}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 153, 0)'
+			      		},
+			      		{
+					        label: '여름',
+					        data: [
+					        	`\${json.summer_before_6days}`, `\${json.summer_before_5days}`, `\${json.summer_before_4days}`,
+					        	`\${json.summer_before_3days}`, `\${json.summer_before_2days}`, `\${json.summer_before_1days}`,
+					        	`\${json.summer_today}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 138, 230)'
+				      	},
+				      	{
+					        label: '가을',
+					        data: [
+					        	`\${json.autumn_before_6days}`, `\${json.autumn_before_5days}`, `\${json.autumn_before_4days}`,
+					        	`\${json.autumn_before_3days}`, `\${json.autumn_before_2days}`, `\${json.autumn_before_1days}`,
+					        	`\${json.autumn_today}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(204, 102, 0)'
+				      	},
+				      	{
+					        label: '겨울',
+					        data: [
+					        	`\${json.winter_before_6days}`, `\${json.winter_before_5days}`, `\${json.winter_before_4days}`,
+					        	`\${json.winter_before_3days}`, `\${json.winter_before_2days}`, `\${json.winter_before_1days}`,
+					        	`\${json.winter_today}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(204, 153, 255)'
+				      	},
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
 				        	y: {
 				          		beginAtZero: false
 				        	}
-			      		}
+			      		},
+			      		plugins: {
+			                title: {
+			                    display: true,
+			                    text: '계절별 상품 주문건수'
+			                }
+			            }
 			    	}
 			  	});// end of new Chart(ctx, {}) ---------------------------
-			  	<%-- 주간 주문건수 추이 차트 그리기 끝 --%>
+			  	<%-- 계절별상품 주문건수 추이 차트 그리기 끝 --%>
 			  	
-			  	<%-- 주간 주문건수 비교 차트 그리기 시작 --%>
+			  	<%-- 계절별상품 주문건수 비교 차트 그리기 시작 --%>
 				const ctx2 = document.getElementById('userWeekcompare');
 
 				// 차트가 그려져 있다면 삭제
@@ -748,7 +945,7 @@
 			      	labels: [getWeek(6), getWeek(5), getWeek(4), getWeek(3), getWeek(2), getWeek(1), getWeek(0)],
 			      	datasets: [
 				      	{
-					        label: '전 주 대비 주문건수 증감',
+					        label: '전주 대비 방문자수 증감',
 					        data: [
 					        	Number(`\${json.before_6days}`) - Number(`\${json.before_13days}`),
 					        	Number(`\${json.before_5days}`) - Number(`\${json.before_12days}`),
@@ -773,9 +970,9 @@
 			      		}
 			    	}
 			  	});// end of new Chart(ctx, {}) ---------------------------
-			  	<%-- 주간 주문건수 비교 차트 그리기 끝 --%>
+			  	<%-- 계절별상품 주문건수 비교 차트 그리기 끝 --%>
 				
-			  	<%-- 월간 주문건수 추이 차트 그리기 시작 --%>
+			  	<%-- 월간 계절별상품 주문건수 추이 차트 그리기 시작 --%>
 				const ctx3 = document.getElementById('userMonth');
 				// 차트가 그려져 있다면 삭제
 				if (Chart.getChart(ctx3)) {
@@ -787,7 +984,7 @@
 			    	data: {
 			      	labels: [getMonth(6), getMonth(5), getMonth(4), getMonth(3), getMonth(2), getMonth(1), getMonth(0)],
 			      	datasets: [{
-			        label: '월간 주문건수 추이',
+			        label: '월간 방문자수 추이',
 			        data: [
 			        	`\${json.before_6months}`, `\${json.before_5months}`, `\${json.before_4months}`,
 			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
@@ -804,9 +1001,9 @@
 			      		}
 			    	}
 			  	});// end of new Chart(ctx, {}) ---------------------------
-			  	<%-- 월간 주문건수 추이 차트 그리기 끝 --%>
+			  	<%-- 월간 계절별상품 주문건수 추이 차트 그리기 끝 --%>
 			  	
-			  	<%-- 월간 주문건수 비교 차트 그리기 시작 --%>
+			  	<%-- 월간 계절별상품 주문건수 비교 차트 그리기 시작 --%>
 				const ctx4 = document.getElementById('userMonthcompare');
 				// 차트가 그려져 있다면 삭제
 				if (Chart.getChart(ctx4)) {
@@ -819,7 +1016,7 @@
 			      	labels: [getMonth(6), getMonth(5), getMonth(4), getMonth(3), getMonth(2), getMonth(1), getMonth(0)],
 			      	datasets: [
 				      	{
-					        label: '전년 동월 대비 주문건수 증감',
+					        label: '전년 동월 대비 방문자 수 증감',
 					        data: [
 					        	Number(`\${json.before_6months}`) - Number(`\${json.before_18months}`),
 					        	Number(`\${json.before_5months}`) - Number(`\${json.before_17months}`),
@@ -843,7 +1040,7 @@
 			      		}
 			    	}
 			  	});// end of new Chart(ctx, {}) ---------------------------
-			  	<%-- 월간 계절별과일 주문건수 비교 차트 그리기 끝 --%>
+			  	<%-- 월간 계절별상품 주문건수 비교 차트 그리기 끝 --%>
 			  	
 			},
 			error: function(request, status, error){
@@ -851,13 +1048,16 @@
 				// alert("경로를 어디로 가야함???");
 			}
 		});
-	}// end of function regiStatistics() ---------------- 
-	// === 상품별 주문건수 통계 정보를 출력해주는 함수 === //
+		
+	}// end of function visitStatistics() ------------------- 
+	// === 계절별상품 주문건수 통계 정보를 출력해주는 함수 === //
 	
 	
 	
+	//////////////////////////////////////////////////////////////////
 	// === 매출 통계 정보를 출력해주는 함수 === //
 	function revenueStatistics() {
+
 		$.ajax({
 			url: "${pageContext.request.contextPath}/admin/statistics/getRevenue.ddg",
 			type: "GET",
@@ -885,8 +1085,20 @@
 			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
 			        	`\${json.today}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '2주전 매출액 추이',
+					        data: [
+					        	`\${json.before_13days}`, `\${json.before_12days}`, `\${json.before_11days}`,
+					        	`\${json.before_10days}`, `\${json.before_9days}`, `\${json.before_8days}`,
+					        	`\${json.before_7days}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -956,8 +1168,20 @@
 			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
 			        	`\${json.this_month}`
 			        ],
-			        borderWidth: 1
-			      	}]
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '전년도 매출액 추이',
+					        data: [
+					        	`\${json.before_18months}`, `\${json.before_17months}`, `\${json.before_16months}`,
+					        	`\${json.before_15months}`, `\${json.before_14months}`, `\${json.before_13months}`,
+					        	`\${json.before_12months}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
 			    	},
 			    	options: {
 			      		scales: {
@@ -1016,6 +1240,192 @@
 		});
 	}// end of function regiStatistics() ---------------- 
 	// === 매출 통계 정보를 출력해주는 함수 === //
+	
+	
+	// === 영업이익 통계 정보를 출력해주는 함수 === //
+	function incomeStatistics() {
+
+		$.ajax({
+			url: "${pageContext.request.contextPath}/admin/statistics/getIncome.ddg",
+			type: "GET",
+			data: {"viewType": 1},
+			dataType: "JSON",
+			success: function(json) {
+				//console.log (json);
+				
+				<%-- 주간 영업이익 추이 차트 그리기 시작 --%>
+				const ctx1 = document.getElementById('userWeek');
+
+				// 차트가 그려져 있다면 삭제
+				if (Chart.getChart(ctx1)) {
+				    Chart.getChart(ctx1)?.destroy();
+				}
+				
+			  	new Chart(ctx1, {
+			    	type: 'line',
+			    	data: {
+			      	labels: [getWeek(6), getWeek(5), getWeek(4), getWeek(3), getWeek(2), getWeek(1), getWeek(0)],
+			      	datasets: [{
+			        label: '주간 영업이익 추이',
+			        data: [
+			        	`\${json.before_6days}`, `\${json.before_5days}`, `\${json.before_4days}`,
+			        	`\${json.before_3days}`, `\${json.before_2days}`, `\${json.before_1days}`,
+			        	`\${json.today}`
+			        ],
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '2주전 영업이익 추이',
+					        data: [
+					        	`\${json.before_13days}`, `\${json.before_12days}`, `\${json.before_11days}`,
+					        	`\${json.before_10days}`, `\${json.before_9days}`, `\${json.before_8days}`,
+					        	`\${json.before_7days}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
+			    	},
+			    	options: {
+			      		scales: {
+				        	y: {
+				          		beginAtZero: false
+				        	}
+			      		}
+			    	}
+			  	});// end of new Chart(ctx, {}) ---------------------------
+			  	<%-- 주간 영업이익 추이 차트 그리기 끝 --%>
+			  	
+			  	<%-- 주간 영업이익 비교 차트 그리기 시작 --%>
+				const ctx2 = document.getElementById('userWeekcompare');
+
+				// 차트가 그려져 있다면 삭제
+				if (Chart.getChart(ctx2)) {
+				    Chart.getChart(ctx2)?.destroy();
+				}
+			  	new Chart(ctx2, {
+			    	type: 'bar',
+			    	data: {
+			      	labels: [getWeek(6), getWeek(5), getWeek(4), getWeek(3), getWeek(2), getWeek(1), getWeek(0)],
+			      	datasets: [
+				      	{
+					        label: '전 주 대비 영업이익 증감',
+					        data: [
+					        	Number(`\${json.before_6days}`) - Number(`\${json.before_13days}`),
+					        	Number(`\${json.before_5days}`) - Number(`\${json.before_12days}`),
+					        	Number(`\${json.before_4days}`) - Number(`\${json.before_11days}`),
+					        	Number(`\${json.before_3days}`) - Number(`\${json.before_10days}`),
+					        	Number(`\${json.before_2days}`) - Number(`\${json.before_9days}`),
+					        	Number(`\${json.before_1days}`) - Number(`\${json.before_8days}`),
+					        	Number(`\${json.today}`) - Number(`\${json.before_7days}`)
+					        ],
+					        borderWidth: 1,
+					        borderColor: '#FF6384',
+					        backgroundColor: '#FFB1C1',
+				      	}
+			      	]
+			    	},
+			    	options: {
+			      		scales: {
+				        	y: {
+				          		beginAtZero: true
+				        	}
+			      		}
+			    	}
+			  	});// end of new Chart(ctx, {}) ---------------------------
+			  	<%-- 주간 영업이익 비교 차트 그리기 끝 --%>
+				
+			  	<%-- 월간 영업이익 추이 차트 그리기 시작 --%>
+				const ctx3 = document.getElementById('userMonth');
+				// 차트가 그려져 있다면 삭제
+				if (Chart.getChart(ctx3)) {
+				    Chart.getChart(ctx3)?.destroy();
+				}
+				
+			  	new Chart(ctx3, {
+			    	type: 'line',
+			    	data: {
+			      	labels: [getMonth(6), getMonth(5), getMonth(4), getMonth(3), getMonth(2), getMonth(1), getMonth(0)],
+			      	datasets: [{
+			        label: '월간 영업이익 추이',
+			        data: [
+			        	`\${json.before_6months}`, `\${json.before_5months}`, `\${json.before_4months}`,
+			        	`\${json.before_3months}`, `\${json.before_2months}`, `\${json.before_1months}`,
+			        	`\${json.this_month}`
+			        ],
+			        borderWidth: 1,
+			        borderColor:'rgb(0, 102, 255)'
+			      	},	
+			      		{
+					        label: '전년도 영업이익 추이',
+					        data: [
+					        	`\${json.before_18months}`, `\${json.before_17months}`, `\${json.before_16months}`,
+					        	`\${json.before_15months}`, `\${json.before_14months}`, `\${json.before_13months}`,
+					        	`\${json.before_12months}`
+					        ],
+					        borderWidth: 1,
+					        borderColor:'rgb(0, 102, 0)'
+				        }
+			      	]
+			    	},
+			    	options: {
+			      		scales: {
+				        	y: {
+				          		beginAtZero: true
+				        	}
+			      		}
+			    	}
+			  	});// end of new Chart(ctx, {}) ---------------------------
+			  	<%-- 월간 영업이익 추이 차트 그리기 끝 --%>
+			  	
+			  	<%-- 월간 영업이익 비교 차트 그리기 시작 --%>
+				const ctx4 = document.getElementById('userMonthcompare');
+				// 차트가 그려져 있다면 삭제
+				if (Chart.getChart(ctx4)) {
+				    Chart.getChart(ctx4)?.destroy();
+				}
+				
+			  	new Chart(ctx4, {
+			    	type: 'bar',
+			    	data: {
+			      	labels: [getMonth(6), getMonth(5), getMonth(4), getMonth(3), getMonth(2), getMonth(1), getMonth(0)],
+			      	datasets: [
+				      	{
+					        label: '전년 동월 대비 영업이익 증감',
+					        data: [
+					        	Number(`\${json.before_6months}`) - Number(`\${json.before_18months}`),
+					        	Number(`\${json.before_5months}`) - Number(`\${json.before_17months}`),
+					        	Number(`\${json.before_4months}`) - Number(`\${json.before_16months}`),
+					        	Number(`\${json.before_3months}`) - Number(`\${json.before_15months}`),
+					        	Number(`\${json.before_2months}`) - Number(`\${json.before_14months}`),
+					        	Number(`\${json.before_1months}`) - Number(`\${json.before_13months}`),
+					        	Number(`\${json.this_month}`) - Number(`\${json.before_12months}`)
+					        ],
+					        borderWidth: 1,
+					        borderColor: '#FF6384',
+					        backgroundColor: '#FFB1C1',
+				      	}
+			      	]
+			    	},
+			    	options: {
+			      		scales: {
+				        	y: {
+				          		beginAtZero: true
+				        	}
+			      		}
+			    	}
+			  	});// end of new Chart(ctx, {}) ---------------------------
+			  	<%-- 월간 영업이익 비교 차트 그리기 끝 --%>
+			  	
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				// alert("경로를 어디로 가야함???");
+			}
+		});
+	}// end of function regiStatistics() ---------------- 
+	// === 영업이익 통계 정보를 출력해주는 함수 === //
 	
 </script>
 
@@ -1114,32 +1524,38 @@
 	
 	<%-- 회원정보 테이블 보여주기 시작 --%>
 	<div id="memberInfoTable">
+	
 		<div style="margin-left: 1%;" class="h6 mt-5">
 			<form name="statistics_searchFrm">
-				<span id="bodyTitle">최근 일주일 방문자 랭킹</span>
+				<span id="bodyTitle">방문자 Top 10</span>
 				
 				<select style="float: right; height: 30px;" name="searchRange">
 					<option value="">정렬기준</option>			
 					<option value="desc">높은순</option>			
 					<option value="asc">낮은순</option>			
 				</select>
-				<%--
-				<select style="margin-right: 0.5%; float: right; height: 30px;" name="searchType">
-					<option value="">메뉴필터</option>
-					<option value="1">방문횟수</option>
-					<option value="2">가입자수</option>
-				</select>
-				--%>
 				
-				<input type="hidden" name="fromDate" />
-				<input type="hidden" name="toDate" />
+				<select style="margin-right: 0.5%; float: right; height: 30px;" name="searchMonth">
+					<option value="">월별필터</option>
+					<option value="0">이번달</option>
+					<option value="1">1개월전</option>
+					<option value="2">2개월전</option>
+					<option value="3">3개월전</option>
+				</select>
 			</form>
 		</div>
 		
 		<hr style="border: solid 1px black;">
+		<div id="filter_desc">
+			<ul>
+				<li>기본적으로 이번달의 자료가 조회됩니다.</li>
+				<li>날짜 필터를 통해 최대 3개월이전 데이터를 월별로 조회할 수 있으며 그외 자료 필요시 개발팀으로 요청하시기 바랍니다.</li>
+				<li>행을 클릭하면 해당 회원의 상세정보를 볼 수 있습니다.</li>
+			</ul>
+		</div>
 		
 		<div style="margin-top: 3%;">
-			<table class="table text-center table-hover">
+			<table id="visitUserRank" class="table text-center table-hover">
 				<thead>
 					<tr>
 						<th>회원번호</th>
@@ -1149,6 +1565,8 @@
 						<th>방문횟수</th>
 					</tr>
 				</thead>
+				<tbody>
+				</tbody>
 			</table>
 		</div>
 	</div>

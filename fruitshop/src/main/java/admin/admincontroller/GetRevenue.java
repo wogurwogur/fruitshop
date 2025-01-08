@@ -75,10 +75,10 @@ public class GetRevenue extends AbstractController {
 		// 2주전 매출액 통계
 		Map<String, Integer> revenue2Week = sdao.getRevenue2Week();
 		
-		// 최근 6개월 주문건수 통계
+		// 최근 6개월 매출액 통계
 		Map<String, Integer> revenueMonth = sdao.getRevenueMonth();
 		
-		// 전년 동월 주문건수 통계
+		// 전년 동월 매출액 통계
 		Map<String, Integer> revenueMonthAgo = sdao.getRevenueMonthAgo();
 	
 		JSONObject jsonObj = new JSONObject();
