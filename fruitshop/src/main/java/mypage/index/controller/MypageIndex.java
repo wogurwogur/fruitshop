@@ -27,9 +27,9 @@ public class MypageIndex extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
-		super.goBackURL(request);
-		
-		if(loginuser != null ) {
+		if(loginuser != null && loginuser.getRole() == 1 ) {
+			
+			super.goBackURL(request);
 
 			int user_no = loginuser.getUser_no();
 			

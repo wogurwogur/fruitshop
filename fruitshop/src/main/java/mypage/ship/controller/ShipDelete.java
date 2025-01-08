@@ -22,8 +22,7 @@ public class ShipDelete extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 
-		
-		if(loginuser != null) {
+		if(loginuser != null && loginuser.getRole() == 1) {
 			
 			if("get".equalsIgnoreCase(request.getMethod())) {
 				

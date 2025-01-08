@@ -22,20 +22,21 @@ public class ShipManagement extends AbstractController {
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-	
-		super.goBackURL(request);
+
 		
-		if(loginuser != null) {
-	
-				List<ShipVO> shipList = new ArrayList<>();
+		if(loginuser != null && loginuser.getRole() == 1) {
+			
+			super.goBackURL(request);
+
+			List<ShipVO> shipList = new ArrayList<>();
 				
-				shipList = sdao.shipSelectAll(loginuser.getUser_no());
+			shipList = sdao.shipSelectAll(loginuser.getUser_no());
 				
-				request.setAttribute("shipList", shipList);
-				request.setAttribute("mypage_val", "shipList");
+			request.setAttribute("shipList", shipList);
+			request.setAttribute("mypage_val", "shipList");
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/mypage/shipInfo.jsp");
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/mypage/shipInfo.jsp");
 		
 			
 		}
