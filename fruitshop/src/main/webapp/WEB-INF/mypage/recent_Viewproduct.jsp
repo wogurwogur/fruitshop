@@ -42,28 +42,28 @@ $(document).ready(function(){
 	    	
 	        html += `
 	        
-	        <div class="recent_product" style="display: flex; align-items: center; padding: 3%; border-bottom: 1px solid #ccc; font-weight: 400;">
+	        <div class="recent_product" style="display: flex; align-items: center; padding: 3%; border-bottom: 1px solid #ccc; font-weight: 400; ">
 	        
 	        <%-- 상품 번호 숨기기 --%>
             <input type="hidden" name="prodno" value="\${item.prod_no}" />
 	        
 	            <%-- 상품 번호 --%>
-	            <div class="number" style="flex: 0.4; text-align: center;">
+	            <div class="number" style="flex: 0.4; text-align: center; cursor:pointer;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.prod_no}</p>
 	            </div>
 	
 	            <%-- 상품 이미지 --%>
-	            <div class="thumnail" style="flex: 1.8; text-align: center;">
+	            <div class="thumnail" style="flex: 1.8; text-align: center; cursor:pointer;">
 	            	<img src="<%= request.getContextPath() %>/images/product/thumnail/\${item.thumbnail}" style="width: 70%; height: auto; margin-left:3%;">
 	            </div>
 	
 	            <%-- 상품 이름 --%>
-	            <div class="name" style="flex: 2; text-align: center;">
+	            <div class="name" style="flex: 2; text-align: center; cursor:pointer;">
 	                <p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${item.name}</p>
 	            </div>
 	
 	            <%-- 상품 가격 --%>
-	            <div class="price" style="flex: 1.8; text-align: center;">
+	            <div class="price" style="flex: 1.8; text-align: center; cursor:pointer;">
 	            	<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif;">\${price}원</p>
 	            </div>
 	
