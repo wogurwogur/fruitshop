@@ -24,7 +24,6 @@ public class MainPageDelete extends AbstractController {
 		
 		ServletContext svlCtx = session.getServletContext();
 		String uploadFileDir = svlCtx.getRealPath("/images/index");
-		String currentDir = System.getProperty("user.dir");
 		System.out.println("현재 디렉터리: " + uploadFileDir);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
@@ -35,37 +34,29 @@ public class MainPageDelete extends AbstractController {
 			String imgfilename = request.getParameter("imgfilename");
 			
 			int n = 0;
-			int u = 0;
+			
+			File imgfile = new File(uploadFileDir+"/"+imgfilename);
 			
 			
-			
-			File imgfile1 = new File(request.getContextPath()+"/images/index/"+imgfilename);
-			File imgfile2 = new File(uploadFileDir+"/"+imgfilename);
-			
-			if(imgfile1.exists()) {
+			if(imgfile.exists()) {
 				
-				if(imgfile1.delete()) {
-						
-					n = adao.mainPageDelete(imgno);										
-				}
-				
-			}
-			
-			if(imgfile2.exists()) {
-				
-				if(imgfile2.delete()) {
+				if(imgfile.delete()) {
 					
-					u = adao.mainPageDelete(imgno);
+					n = adao.mainPageDelete(imgno);
 									
 				}
 				
+			}else {
+				
+				adao.mainPageDelete(imgno);
+				
 			}
 			
-			if(n+u != 1) {
+			if(n != 1) {
 				
 				
 				request.setAttribute("loc", request.getContextPath()+"/admin/pageManagement.ddg");
-				request.setAttribute("message","알수 없는 이유로 삭제에 실패하였습니다.");
+				request.setAttribute("message","경로에 이미지 파일이 존재하지 않습니다.");
 				
 				super.setRedirect(true);
 				super.setViewPage("/WEB-INF/common/msg.jsp");

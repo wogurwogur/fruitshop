@@ -333,12 +333,16 @@ div#admin_top_nav_center{
 	</table> 
 	</c:if>
 	<c:if test="${empty requestScope.imgList}">	
-		존재하는 메인페이지가 없습니다.
+		<table class="table" style="text-align: center; ">
+			<tr>
+				<th style="height:200px; vertical-align: middle;">존재하는 메인페이지 사진이 없습니다.</th>
+			</tr>
+		</table>
 	</c:if>
 		<table style="width:100%;" id="button_posi">
 		<tbody>
 			<tr>
-				<td colspan="2" style="float: right; margin-right:3%;"><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
+				<td colspan="2" style="float: right;"><button class="btn btn-outline-success" id="mainImgModalOpen" >등록하기</button></td>
 			</tr>
 		</tbody>
 	</table>

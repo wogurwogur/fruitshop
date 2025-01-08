@@ -163,7 +163,10 @@ public class AdminPageRegister extends AbstractController {
 	                          // 서버에 저장할 새로운 파일명이 동일한 파일명이 되지 않고 고유한 파일명이 되도록 하기 위해
 	                          // 현재의 년월일시분초에다가 현재 나노세컨즈nanoseconds 값을 결합하여 확장자를 붙여서 만든다.
 	            			  
-	                             newFilename = "main_"+fileName; // 확장자를 뺀 파일명 알아오기
+
+	 							newFilename += String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+	 							newFilename += System.nanoTime();
+	 							newFilename += fileName.substring(fileName.lastIndexOf(".")); // 확장자 붙이기
 	                             
 	                             
 	                         //  System.out.println("==== 확인용 실제 업로드 되어질 newFilename : " + newFilename);
@@ -234,7 +237,7 @@ public class AdminPageRegister extends AbstractController {
 	              MainVO mvo = new MainVO();
 	              
 	              mvo.setImgfilename(newFilename);
-	              mvo.setImgname(fileName);
+	              mvo.setImgname(fileName.substring(0,fileName.lastIndexOf(".")));
 
 	              
 	              // tbl_product 테이블에 제품정보 insert 하기 
