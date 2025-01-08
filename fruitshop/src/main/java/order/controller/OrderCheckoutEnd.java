@@ -1,7 +1,9 @@
 package order.controller;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import login.controller.GoogleMail;
 import member.domain.MemberVO;
 import order.model.*;
 import cart.model.*;
@@ -49,7 +52,7 @@ public class OrderCheckoutEnd extends AbstractController {
 			
 			String order_no 		= request.getParameter("order_no");			// 주문번호(결제, DB) DB 컬럼용
 			String order_tprice 	= request.getParameter("order_tprice");		// 주문금액(DB)
-//			String email 			= request.getParameter("email");			// 이메일(결제)
+			String email 			= request.getParameter("email");			// 이메일(결제)
 //			String name 			= request.getParameter("name");				// 주문자이름(결제)
 			String mobile 			= request.getParameter("mobile");			// 연락처(결제,배송지DB)
 			String postcode 		= request.getParameter("postcode");			// 우편번호(주문DB)
@@ -103,27 +106,140 @@ public class OrderCheckoutEnd extends AbstractController {
 			paraMap.put("mobile", mobile);			
 			paraMap.put("coupon_name", coupon_name);			
 			paraMap.put("coupon_discount", coupon_discount);			
+			paraMap.put("user_no", user_no);			
 			
 			
 			try {
 				// 각 테이블에 insert
-				int result = odao.insertOrder(paraMap);
+				int n = odao.insertOrder(paraMap);
 				
 				// 쿠폰을 사용한 경우
 				if (!"".equalsIgnoreCase(coupon_no)) {
-					result = 0;
+					n = 0;
 					
-					result = odao.isUseCoupon(paraMap);
+					n = odao.isUseCoupon(paraMap);
 				}
 				
-				if (result == 1) {
+				int result = 0;
+				if (n == 1) {
 					// 모든 테이블에 정보가 정상적으로 입력 됐을 경우
 					
 					// 장바구니 개수 변경
 					HttpSession session = request.getSession();
 					MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 					loginuser.setCart_cnt(cdao.getcartCount(Integer.parseInt(user_no)));
+
+					
+					////////// === 주문이 완료되었다는 email 보내기 시작 === ///////////
+					GoogleMail mail = new GoogleMail();
+					
+					// 주문한 제품에 대해 email 보내기시 email 내용에 넣을 주문한 제품번호들에 대한 제품정보를 얻어오는 것.
+					List<Map<String, String>> orderDetailList =  odao.getOrderDetailList(paraMap);
+					Map<String, String> orderDetail =  odao.getOrderDetail(paraMap);
+					
+					String hp1 = orderDetail.get("order_receivertel").substring(0, 3);
+					String hp2 = orderDetail.get("order_receivertel").substring(3, 7);
+					String hp3 = orderDetail.get("order_receivertel").substring(7, 11);
+					
+					String omobile = hp1 + "-" + hp2 + "-" + hp3;
+					
+					String oaddress = orderDetail.get("order_address") +" "+ orderDetail.get("order_extraadress") +" "+ orderDetail.get("order_detailaddress") +" ("+ orderDetail.get("order_postcode") +")";
+					
+					StringBuilder sb = new StringBuilder();
+					
+					sb.append("<div style=\"margin-bottom: 5%;\"> "
+							+ "        <span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 16px; font-weight: 500;\">안녕하세요 <span style=\"color:blue; font-family: 'Noto Sans KR', sans-serif; font-size: 18px; font-weight: 500;\">"+orderDetail.get("name")+"</span>님 싱싱한 과일을 전하는 과일 쇼핑몰 싱싱입니다.</span><br> "
+							+ "        <span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 16px; font-weight: 500;\">고객님의 소중한 주문에 감사드리며 아래의 주문내역을 확인해 주시기 바랍니다.</span> "
+							+ "    </div>");
+					
+					sb.append("<div style=\"width: 45%; border: solid 0.5px #c0c0c0;\">");
+					sb.append("<div style=\"background-color: black; color: white; text-align: center;\" >");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 22px; font-weight: 500;\">"+orderDetail.get("name")+"님의 주문 내역</span></div>");
+					
+					
+					// 주문번호 시작
+					sb.append("<div style=\"border-top: solid 0.5px #c0c0c0; border-bottom: solid 0.5px #c0c0c0; margin-top: 2%;\">");
+					sb.append("<div><div style=\"color: #555555; padding: 15px; text-decoration: none; font-size: 12pt; font-family: 'Noto Sans KR', sans-serif;\">");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 500; color: black;\">주문일시</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 300; color: black;\">"+ orderDetail.get("order_date") +"</span></div>");
+					
+					sb.append("<div style=\"color: #555555; padding: 15px; text-decoration: none; font-size: 12pt; font-family: 'Noto Sans KR', sans-serif;\">");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 500; color: black;\">주문번호</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 300; color: black;\">"+ orderDetail.get("order_no") +"</span> </div></div></div>");
+					// 주문번호 끝
+
+					
+					// 주문 상품 정보 시작
+					sb.append("<div style=\"margin-top: 5%;\">");
+					sb.append("<div style=\"margin-left: 1%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">주문 상품 정보</div>");
+					sb.append("<hr style=\"border: solid 1px black;\">");
+					sb.append("<div style=\"margin-top: 2%;\">");
+					
+					sb.append("<table style=\"text-align: center; border-collapse: collapse; width: 100%;\"><thead>");
+					sb.append("<tr style=\"background-color: #eee; border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">");
+					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">이미지</th>");
+					sb.append("<th style=\"width: 50%; border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">상품명</th>");
+					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">수량</th>");
+					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">가격</th> </tr></thead><tbody>");
+					
+					
+					DecimalFormat df = new DecimalFormat("###,###");
+					
+					int price_sum = 0;
+					// 상품정보
+					for (Map<String, String> map :orderDetailList) {
+						sb.append("<tr style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 300;\">");
+						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\"><img src='http://127.0.0.1:9090/fruitshop/images/"+map.get("prod_thumnail")+"' /></td>");
+						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ map.get("prod_name") +"</td>");
+						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(map.get("ordetail_count"))) +"</td>");
+						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(map.get("ordetail_price"))) +"</td></tr>");
+						price_sum +=  Integer.parseInt(map.get("ordetail_price"));
+					}// end of for() -----------------------
+					sb.append("</tbody></table></div>");
+					// 주문 상품 정보 끝
+					
+					// 배송지정보 시작
+					sb.append("<div style=\"margin-top:5%; margin-left: 1%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">받으실 분</div>");
+					sb.append("<hr style=\"border: solid 1px black;\">");
+					sb.append("<div style=\"width: 90%; margin: 0 auto;\">");
+					sb.append("<span style=\"display: block; font-family: 'Noto Sans KR', sans-serif; font-weight: 600; font-size: 18px; margin:1.5% 0 1.5% 0;\">"+orderDetail.get("order_receiver")+"</span>");
+					sb.append("<span style=\"display: block; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px; color: #555555; margin-bottom: 1.5%;\">"+ omobile +"</span>");
+					sb.append("<span style=\"display: block; font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size: 16px; color: #555555;\">"+ oaddress +"</span></div>");
+					// 배송지정보 끝
+					
+					
+					// 결제 정보 확인 시작
+					sb.append("<div style=\"margin-top:5%; margin-left: 1%; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">결제 정보</div>");
+					sb.append("<hr style=\"border: solid 1px black;\">");
+					sb.append("<div style=\"width: 90%; margin: 0 auto;\">");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">주문상품</span><span style=\"float: right; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+df.format(price_sum)+" 원</span><br><br>");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">배송비</span><span style=\"float: right; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">2,500 원</span><br><br>");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">할인액</span><span style=\"float: right; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(orderDetail.get("order_dicount"))) + " 원</span><br></div><hr>");
+					// 결제 정보 확인 끝
+					
+					
+					sb.append("<div style=\"width: 90%; margin: 0 auto;\">");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">총 결제액</span><span style=\"float: right; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(orderDetail.get("order_tprice"))) +" 원</span><br><br>");
+					sb.append("<span style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">적립금</span><span style=\"float: right; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format((price_sum-2500)*0.01) +" 원</span>");
+					sb.append("</div><div style=\"margin-top: 2%; background-color: black; color: white;\">");
+					
+					sb.append("<div style=\"padding-top: 1.5%; margin-left: 7.5%; margin-bottom: 1.5%;\">");
+					sb.append("<img style=\"top:20px;\" id=\"footer_img\" src=\"http://127.0.0.1:9090/fruitshop/images/logo_footer.png\"></div>");
+					sb.append("<hr style=\"border: solid 1px white;\"><br>");
+					sb.append("<div style=\"text-align: center; padding-bottom: 3%;\">");
+					sb.append("<p style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\"><span style=\"font-weight: bold;\">Copyright</span> &copy; 싱싱 과일쇼핑몰. All right reserved.</p>");
+					sb.append("</div></div></div></div>");
+					
+					sb.append("<br><br>이용해 주셔서 감사합니다.");
+					
+					String emailContents = sb.toString();
+		            mail.sendmail_OrderFinish(email, loginuser.getName(), emailContents);
+		            
+		            result = 1;
 				}
+				
+				
+				
 				
 				JSONObject jsonObj = new JSONObject();
 				

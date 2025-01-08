@@ -101,11 +101,11 @@ function goCancel() {
 	<div id="orderNumberInfo">
 		<div id="orderNumber">
 			<div>
-				<span style="font-wieght: 500; color: black;">주문일시</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span style="font-weight: 500; color: black;">주문일시</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<span>${requestScope.orderDetail.order_date}</span>
 			</div>
 			<div>
-				<span style="font-wieght: 500; color: black;">주문번호</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span style="font-weight: 500; color: black;">주문번호</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<span>${requestScope.orderDetail.order_no}</span>
 			</div>
 		</div>
@@ -177,10 +177,16 @@ function goCancel() {
             <div style="width: 90%; margin: 0 auto;">
             	<fmt:parseNumber var="orderPrice" type="number" value="${requestScope.orderDetail.order_tprice}" />
             	<fmt:parseNumber var="shipPirce" type="number" value="2500" />
-            	<span>주문상품</span><span id="total_oprice" style="float: right"><fmt:formatNumber value="${orderPrice - shipPirce}" pattern="#,###" />원</span><br><br>
-            	<span>배송비</span><span style="float: right">2,500원</span><br>
+            	
+            	<span>주문상품</span><span id="total_oprice" style="float: right">
+            	<c:if test="${(orderPrice - shipPirce) < 0}">0</c:if>
+            	<c:if test="${(orderPrice - shipPirce) > 0}"><fmt:formatNumber value="${orderPrice - shipPirce}" pattern="#,###" /></c:if>
+            	 원</span><br><br>
+            	
+            	
+            	<span>배송비</span><span style="float: right">2,500 원</span><br>
             	<c:if test="${requestScope.orderDetail.order_dicount != 0}">
-            		<br><span>할인액</span><span id="discount" style="float: right">${requestScope.orderDetail.order_dicount}원</span><br>
+            		<br><span>할인액</span><span id="discount" style="float: right"><fmt:formatNumber value="${requestScope.orderDetail.order_dicount}" pattern="#,###" /> 원</span><br>
             	</c:if>
             	
             </div>
@@ -190,8 +196,10 @@ function goCancel() {
             
             
             <div style="width: 90%; margin: 0 auto;">
-            	<span>총결제액</span><span class="total_price" style="float: right"><fmt:formatNumber value="${requestScope.orderDetail.order_tprice}" pattern="#,###" />원</span><br><br>
-            	<span>적립금</span><span id="point" style="float: right"><fmt:formatNumber value="${(orderPrice - shipPirce)*0.01}" pattern="#,###" />원</span>
+            	<span>총결제액</span><span class="total_price" style="float: right"><fmt:formatNumber value="${requestScope.orderDetail.order_tprice}" pattern="#,###" /> 원</span><br><br>
+            	<span>적립금</span><span id="point" style="float: right">
+            	<c:if test="${(orderPrice - shipPirce) < 0}">0</c:if>
+            	<c:if test="${(orderPrice - shipPirce) > 0}"><fmt:formatNumber value="${(orderPrice - shipPirce)*0.01}" pattern="#,###" /></c:if> 원</span>
             </div>
             
             <c:choose>
@@ -216,7 +224,7 @@ function goCancel() {
 	  
 	    		<!-- Modal header -->
 				<div class="modal-header">
-	  				<h4 class="modal-title text-center">구매확정</h4>
+	  				<h4 class="modal-title text-center"></h4>
 	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
 				</div>
 	
@@ -244,11 +252,11 @@ function goCancel() {
 		<div class="modal-dialog modal-dialog-centered modal-sm">
 	  		<div class="modal-content">
 	  
-	    		<!-- Modal header -->
+	    		<!-- Modal header 
 				<div class="modal-header">
 	  				<h4 class="modal-title text-center">교환 / 반품 신청</h4>
 	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
-				</div>
+				</div>-->
 	
 				<!-- Modal body -->
 				<div class="modal-body">

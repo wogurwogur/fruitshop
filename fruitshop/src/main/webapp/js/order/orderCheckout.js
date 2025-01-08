@@ -269,9 +269,9 @@ $(document).ready(() => {
 			
 			console.log("쿠폰번호 : ", $("input:hidden[name='coupon_no']").val());
 			// == 상품정보 객체배열을 문자열 타입으로 변환 끝 == //
-			
+
 			const frm = document.shipInfo;
-						
+					
 			frm.method = "POST";
 			frm.action = $("input#contextPath").val()+ "/order/orderCheckout.ddg";
 			frm.submit();
