@@ -154,8 +154,15 @@ public class AdminProductController extends AbstractController {
 				
 				// request.setAttribute("currentURL", currentURL);	
 				
+				request.setAttribute("adminpage_val","admin_product_management");
+				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/admin_page/admin_product_management.jsp");
+				super.setViewPage("/WEB-INF/admin_page/admin_page.jsp");
+				
+				/*
+				 * super.setRedirect(false);
+				 * super.setViewPage("/WEB-INF/admin_page/admin_product_management.jsp");
+				 */
 				
 				
 			} catch (SQLException e) {	// 쿼리문 오류 발생 시
