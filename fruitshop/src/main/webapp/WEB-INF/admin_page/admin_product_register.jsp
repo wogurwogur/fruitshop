@@ -319,7 +319,7 @@
 					<tr>
 		                <td class="tdTitle">상세이미지 미리보기</td>
 		                <td class="tdContents">
-			            	<img id="previewdescript" width="300" height="300" />
+			            	<img id="previewdescript" width="300" height="300" style="object-fit: contain;" />
 		                </td>
 	          		</tr>			
 					
