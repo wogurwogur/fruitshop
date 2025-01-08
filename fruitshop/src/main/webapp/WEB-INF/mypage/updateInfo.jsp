@@ -5,7 +5,7 @@
 
 <jsp:include page="mypage_list.jsp"></jsp:include>
 
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/member/memberRegister.css" />
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/mypage/updateInfo.css" />
 
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/mypage/updateInfo.js"></script>
 
