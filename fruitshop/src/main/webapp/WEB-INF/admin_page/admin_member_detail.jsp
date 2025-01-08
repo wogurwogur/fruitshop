@@ -84,14 +84,14 @@ $(document).ready(function(){
 		
 		
 		const coupon_name = $("input:text[name='coupon_name']").val();
-		const couponname_Reg = /^[가-힣]{2,8}$/;
+		const couponname_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,10}$/;
 		
 		if(coupon_name == ""){
 			alert("쿠폰명을 입력해주세요.");
 			return;
 		}
 		if(!couponname_Reg.test(coupon_name)){
-			alert("쿠폰명은 한글로 2글자 이상 8 글자 이하로 입력해주세요.");
+			alert("쿠폰명은 한글로 2글자 이상 10 글자 이하로 입력해주세요.");
 			return;
 		}
 		
@@ -129,6 +129,10 @@ $(document).ready(function(){
 		
 		if(coupon_discount_ck == false){
 			alert("쿠폰금액을 다시입력해주세요.");
+			return;
+		}
+		
+		if(!confirm("정말 쿠폰을 증정하시겠습니까?")){
 			return;
 		}
 		

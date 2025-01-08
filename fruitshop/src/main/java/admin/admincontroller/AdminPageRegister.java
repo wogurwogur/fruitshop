@@ -55,7 +55,7 @@ public class AdminPageRegister extends AbstractController {
 	          //   === 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir 
 	          //   ==> C:\NCS\workspace_jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MyMVC\images 
 	             
-	          //  String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyMVC\\src\\main\\webapp\\images";
+	          //  String uploadFileDir = "C:\\NCS\\workspace_jsp\\MyM	VC\\src\\main\\webapp\\images";
 	          //  위와 같이 하면 파일 업로드 후에 어떤분들은 이클립스에서 새로고침을 해주어야 된다.
 	             
 	             // ==== >>> 파일을 업로드 해준다. <<< ==== //
@@ -248,7 +248,6 @@ public class AdminPageRegister extends AbstractController {
 	              String json = jsonObj.toString(); // 문자열로 변환 
 	              request.setAttribute("json", json);
 	              
-	              System.out.println("끝지점"+n);
 	              
 	              super.setRedirect(false);
 	              super.setViewPage("/WEB-INF/common/jsonview.jsp");
