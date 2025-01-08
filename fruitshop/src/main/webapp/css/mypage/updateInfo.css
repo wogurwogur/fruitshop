@@ -9,6 +9,10 @@
 	font-weight: 400;
 }
 
+.container {
+	font-size:14pt;
+}
+
 table#tblMemberRegister > tbody > tr > td:nth-child(1) {
 	width:8px;
 	vertical-align:top;
