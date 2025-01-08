@@ -157,7 +157,7 @@ public class OrderDAO_imple implements OrderDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql	= " SELECT ship_name, ship_postcode, ship_address, ship_detailaddress, ship_extraadress, ship_default, ship_receiver, ship_receivertel "
+			String sql	= " SELECT ship_name, ship_postcode, ship_address, nvl(ship_detailaddress, '전체') as ship_detailaddress, ship_extraadress, ship_default, ship_receiver, ship_receivertel "
 						+ "   FROM tbl_ship "
 						+ "  WHERE fk_user_no = ? ";
 			
@@ -576,7 +576,7 @@ public class OrderDAO_imple implements OrderDAO {
 	    	conn = ds.getConnection();
 	         
 	        String sql 	= " SELECT C.RNO, C.order_no, C.fk_user_no, C.order_date, C.order_tprice, C.order_status, C.prod_no "
-		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver "
+		        		+ "	 	 , C.order_postcode, C.order_address, nvl(C.order_detailaddress, '전체') AS order_detailaddress, C.order_extraadress, C.order_receiver "
 		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status "
 		        		+ "   FROM  "
 		        		+ "		( "
@@ -899,7 +899,7 @@ public class OrderDAO_imple implements OrderDAO {
 			conn = ds.getConnection();
 			
 			String sql 	= " SELECT o.order_no, o.fk_user_no, o.order_request, to_char(o.order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date "
-						+ "	 	 , o.order_postcode, o.order_address, o.order_detailaddress, o.order_extraadress "
+						+ "	 	 , o.order_postcode, o.order_address, nvl(o.order_detailaddress, '전체') AS order_detailaddress, o.order_extraadress "
 						+ "	 	 , o.order_receiver, o.order_receivertel, od.fk_prod_no, od.ordetail_count, od.ordetail_price "
 						+ "	 	 , od.ship_status, p.pay_refund, pd.prod_name, pd.prod_thumnail "
 						+ "   FROM tbl_order o "
@@ -966,7 +966,7 @@ public class OrderDAO_imple implements OrderDAO {
 			conn = ds.getConnection();
 			
 			String sql 	= " SELECT order_no, to_char(order_date, 'yyyy-mm-dd hh24:mi:ss') AS order_date, order_request, order_tprice, order_status, order_postcode "
-						+ "		 , order_address, order_detailaddress, order_extraadress, order_receiver, order_receivertel, name, order_usecpname, order_dicount, user_no "
+						+ "		 , order_address, nvl(order_detailaddress, '전체') AS order_detailaddress, order_extraadress, order_receiver, order_receivertel, name, order_usecpname, order_dicount, user_no "
 						+ "   FROM tbl_order o JOIN tbl_member m "
 						+ "	    ON o.fk_user_no = m.user_no "
 						+ "  WHERE order_no = ? AND fk_user_no = ? ";
@@ -1198,7 +1198,7 @@ public class OrderDAO_imple implements OrderDAO {
 	    	conn = ds.getConnection();
 	         
 	        String sql 	= " SELECT C.RNO, C.order_no, C.fk_user_no, C.order_date, C.order_tprice, C.order_status, C.prod_no "
-		        		+ "	 	 , C.order_postcode, C.order_address, C.order_detailaddress, C.order_extraadress, C.order_receiver, C.delivery_date "
+		        		+ "	 	 , C.order_postcode, C.order_address, nvl(C.order_detailaddress, '전체') AS order_detailaddress, C.order_extraadress, C.order_receiver, C.delivery_date "
 		        		+ "	 	 , C.ordetail_count, C.ordetail_price, C.prod_name, C.prod_thumnail, C.order_receivertel, C.ship_status, C.name, C.order_changedate "
 		        		+ "   FROM  "
 		        		+ "		( "

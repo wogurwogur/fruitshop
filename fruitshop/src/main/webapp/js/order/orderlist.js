@@ -89,7 +89,7 @@ $(document).ready(()=> {
 	
 	// === 주문목록 각 행을 클릭 했을 때 이벤트 시작 === //
 	$(document).on("click", "tr.orderItem", e => {
-		let order_no = $(e.target).parent().find(".order_no").text();
+		let order_no = $(e.target).parent().find(".order_no").text().trim();
 		const ctxPath  = document.querySelector("input#contextPath").value;
 		// alert("주문번호:"+ order_no);
 				

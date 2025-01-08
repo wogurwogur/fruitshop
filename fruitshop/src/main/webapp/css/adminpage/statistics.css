@@ -139,6 +139,14 @@ div.statistics {
 }
 
 
+/* 이달의 방문자 테이블 시작*/
+table#visitUserRank tr.userInfo{
+	cursor: pointer;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+}
 
+/* 이달의 방문자 테이블 끝*/
 
 

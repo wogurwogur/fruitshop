@@ -66,6 +66,7 @@ public class VisitMember extends AbstractController {
 		
 		//String viewType = request.getParameter("viewType");
 		
+		
 		// 방문횟수 통계를 필터링 했을 경우
 		//System.out.println("확인용 viewType : "+ viewType);
 		// 최근 일주일 방문자수 통계
@@ -73,7 +74,8 @@ public class VisitMember extends AbstractController {
 		Map<String, Integer> visitUser2Week = sdao.getvisitUser2Week();
 		Map<String, Integer> visitUserMonth = sdao.getvisitUserMonth();
 		Map<String, Integer> visitUser2Month = sdao.getvisitUser2Month();
-
+ 
+		
 		JSONObject jsonObj = new JSONObject();
 		
 		jsonObj.put("before_6days", visitUserWeek.get("before_6days"));
