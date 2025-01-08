@@ -115,7 +115,7 @@ function qnaReply(prod_no, qna_no) {
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black; border-bottom: solid black 2px;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
-		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
+		    <a class="nav-link" href="<%= ctxPath%>/faq/faqList.ddg" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
 		  </li>
 		</ul>
 		

@@ -48,19 +48,22 @@ public interface ReviewListDAO {
 	int reviewEdit(ReviewListVO reviewList) throws SQLException;
 		
 	// 구매후기 글 댓글 작성하는 메소드
-	int commentWrite(ReviewListVO cmw) throws SQLException;
+	int commentWrite(ReviewListVO commentvo) throws SQLException;
 	
 	// 구매후기 글 댓글 삭제하는 메소드
-	int commentDelete(String comment_no, String fk_review_no, String comment_pwd) throws SQLException;
+	int commentDelete(String comment_no) throws SQLException;
 
 	// 구매후기 글 댓글 수정하는 메소드
-	int commentEdit(ReviewListVO cmw) throws SQLException;
+	int commentEdit(Map<String, String> paraMap)throws SQLException;
 	
 	// 구매후기 글 봤을때 조회수 올려주는 메소드 
 	int setViewCount(String review_no) throws SQLException;
 	
 	// 타페이지에서 후기글 작성시 상품정보 가져오는 메소드
 	ReviewListVO ProductCarrier(String prod_no) throws SQLException;
+
+
+
 
 
 		

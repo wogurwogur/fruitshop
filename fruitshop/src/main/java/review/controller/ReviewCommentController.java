@@ -1,12 +1,15 @@
 package review.controller;
 
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import member.domain.MemberVO;
+
 import review.domain.ReviewListVO;
 import review.model.ReviewListDAO;
 import review.model.ReviewListDAO_imple;
@@ -19,60 +22,42 @@ public class ReviewCommentController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		String method = request.getMethod();
 		
-		if(!"POST".equalsIgnoreCase(method)) {
+		String review_no = request.getParameter("review_no"); // 제품번호
+		
+		List<ReviewListVO> commentList = revdao.commentListAll(review_no);
+		
+		// System.out.println(commentList);
+		
+		JSONArray jsArr = new JSONArray(); // []
+		
+		if(commentList.size() > 0) {
+			
+			for (ReviewListVO commentvo :commentList) {
 				
-			System.out.println("겟방식입니다 꺼지쇼");
-			 
-			super.setRedirect(true);
-			super.setViewPage("/WEB-INF/review/reviewList.jsp");
-			
-			return;
-		
-		} else {                 
-			
-			
-			HttpSession session = request.getSession();
-			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-			String cuserid = loginuser.getUserid();
-		
-			
-			String review_no = request.getParameter("review_no");
-			String comment_Contents = request.getParameter("comment_Contents");
-			String commentPwd = request.getParameter("commentPwd");
-			int user_no = loginuser.getUser_no();
-			
-	        		        
-	        ReviewListVO cmw = new ReviewListVO();
-	        
-	        cmw.setUserid(cuserid);
-	        cmw.setFk_user_no(user_no);
-	        cmw.setReview_no(Integer.parseInt(review_no));
-	        cmw.setComment_contents(comment_Contents);
-	        cmw.setComment_pwd(commentPwd);
-	       	             
-	        
-	        int result = revdao.commentWrite(cmw);
-	        
-	  
-	        request.setAttribute("review_no", review_no);
-	        request.setAttribute("comment_Contents", comment_Contents);
-	        request.setAttribute("commentPwd", commentPwd);
-                
-	        JSONObject jsonObj = new JSONObject();
-	        jsonObj.put("result", result);
-
-	        String json = jsonObj.toString();
-	        
-	        request.setAttribute("json", json);
-					
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/common/jsonview.jsp");
-					
+				JSONObject jsobj = new JSONObject();
 				
-			
+				jsobj.put("comment_contents", commentvo.getComment_contents());
+				jsobj.put("comment_regidate", commentvo.getComment_regidate());
+				jsobj.put("userid", commentvo.getCuserid());
+				jsobj.put("user_no", commentvo.getFk_user_no());
+				jsobj.put("comment_no", commentvo.getComment_no());
+				
+				jsArr.put(jsobj); // [{"contents:"옷이 너무너무 좋아요", "name":"김성곤","writeDate":"2025-01-07 09-40:50", "review_seq":1, "userid":"ksg6423"}]
+				
+				
+				
+			} // end of for
 		}
+		
+		String json = jsArr.toString();  // 문자열 형태로 변환해줌.
+	     
+		
+		
+	    request.setAttribute("json", json);
+	    // System.out.println(json);
+	    //super.setRedirect(false);
+	    super.setViewPage("/WEB-INF/common/jsonview.jsp");
 		
 		
  

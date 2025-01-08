@@ -25,16 +25,14 @@ public class QnaWriteController extends AbstractController {
 		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));	
 		
 		// === 로그인 유무 검사하기 === //
-	      /*if( loginuser == null) {	         	    	  
+	      if( loginuser == null) {	         	    	  
 	    	  
-	    	 request.setAttribute("message", "로그인이 필요합니다 !!");
-	         request.setAttribute("loc", "javascript:history.back()");
 	         
-	         super.setRedirect(false);
-	         super.setViewPage("/WEB-INF/login/login.jsp");
+	         super.setRedirect(true);
+	         super.setViewPage("/fruitshop/login/login.ddg");
 	         
 	         return;
-	      }*/
+	      }
 
 		
 		String method = request.getMethod(); // "GET" 또는 "POST"

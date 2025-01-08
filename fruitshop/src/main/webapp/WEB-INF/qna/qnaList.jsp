@@ -32,7 +32,7 @@ $("select[name='searchType']").val("${requestScope.searchType}");
 
 
 
-	
+	/*
 	$("table#qnaReadTbl tr.qnaRead").click( e=> {
 		
 		const qna_no = $(e.target).parent().children(".qna_no").text();
@@ -45,24 +45,41 @@ $("select[name='searchType']").val("${requestScope.searchType}");
 		frm.method = "get"
 		frm.submit();
 		
-	});
+});*/
 	
-	function listSearch(){
-		
-		const searchType = $("select[name='searchType']").val();				
-		
-		if(searchType == ""){
-			alert("검색 대상을 선택하세요 !! ");
-			return; 
-		}
-		const frm = document.qna_search_frm;
-		// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
-		// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
-		frm.submit();
-		
-	} // end of function goSearch(){ 
+ 
+	 
+}); // end of $(document).ready(function(){
+
+
+function listSearch(){
 	
-});
+	const searchType = $("select[name='searchType']").val();				
+	
+	if(searchType == ""){
+		alert("검색 대상을 선택하세요 !! ");
+		return; 
+	}
+	const frm = document.qna_search_frm;
+	// frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.
+	// frm.method = "get"; // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
+	frm.submit();
+	
+} // end of function goSearch(){
+	
+	
+function trclick1(qna_no){
+	
+	const frm = document.tr_frm1;
+	frm.qna_noo.value = qna_no;
+	frm.currentShowPageNo.value = '${requestScope.currentShowPageNo}';
+	
+	frm.action = "${pageContext.request.contextPath}/qna/qnaRead.ddg";
+	frm.method = "get"
+	frm.submit();
+	
+		
+}
 	
 
 
@@ -115,7 +132,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 		    <a class="nav-link mx-5" href="<%= ctxPath%>/qna/qnaList.ddg" style="color: black; border-bottom: solid black 2px;">QnA</a>
 		  </li>
 		  <li class="nav-item ml-5">	
-		    <a class="nav-link" href="#" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
+		    <a class="nav-link" href="<%= ctxPath%>/faq/faqList.ddg" style="color: black;" tabindex="-1" aria-disabled="true">자주하는 질문</a>
 		  </li>
 		</ul>		
 	</div>
@@ -151,24 +168,29 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<th>조회수</th>
 					</tr>
 					<%-- 글 리스트 --%>	
-
-				<c:forEach var="qvo" items="${requestScope.qnaList}" varStatus="status">
-					<tr class="qnaRead">
-					<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
-                   	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />						
-						<td class="qna_no">${qvo.qna_no}</td>						
-						<td><span class="text-body font-weight-bold">[${qvo.prod_name}]</span>&nbsp;&nbsp;${qvo.qna_title}
-						<c:if test="${qvo.qna_answer != null}">
-							<span class="text-danger font-weight-bold">[답변 완료]</span>						
-						</c:if>
-						
-						
-						</td>						
-						<td>${qvo.userid}</td>
-						<td>${qvo.qna_regidate}</td>
-						<td>${qvo.qna_viewcount}</td>						
-					</tr>		
-				</c:forEach>			
+				<c:if test="${not empty requestScope.qnaList}">
+					<form name="tr_frm1">
+						<input type="text" name="currentShowPageNo" style="display:none" />
+						<input type="text" style="display:none"  />
+							<c:forEach var="qvo" items="${requestScope.qnaList}" varStatus="status">
+								<c:if test="${qvo.qna_viewcount > 0}">
+								<tr class="qnaRead" onclick="trclick1('${qvo.qna_no}')">					
+									<td class="qna_no">${qvo.qna_no}</td>														
+									<td><span class="text-body font-weight-bold">[${qvo.prod_name}]</span>&nbsp;&nbsp;${qvo.qna_title}
+									<c:if test="${qvo.qna_answer != null}">
+										<span class="text-danger font-weight-bold">[답변 완료]</span>						
+									</c:if>		
+									</td>						
+									<td>${qvo.userid}</td>
+									<td>${qvo.qna_regidate}</td>
+									<td>${qvo.qna_viewcount}</td>						
+								</tr>
+								</c:if>							
+							</c:forEach>
+							<input type="hidden" id="qna_noo" name="qna_noo"/>
+					</form>
+				</c:if>
+							
 					<c:if test="${empty requestScope.qnaList }">
 			      		<tr>
 			                <td colspan="6">데이터가 존재하지 않습니다.</td>

@@ -28,11 +28,10 @@ public class ReviewWriteController extends AbstractController {
 		// === 로그인 유무 검사하기 === //
 	      if( loginuser == null) {	         	    	  
 	    	  
-	    	 request.setAttribute("message", "로그인이 필요합니다 !!");
-	         request.setAttribute("loc", "javascript:history.back()");
+	    	  request.setAttribute("message", "돌아가");
 	         
-	         super.setRedirect(false);
-	         super.setViewPage("/WEB-INF/login/login.jsp");
+	         super.setRedirect(true);
+	         super.setViewPage("/fruitshop/login/login.ddg");
 	         
 	         return;
 	      }

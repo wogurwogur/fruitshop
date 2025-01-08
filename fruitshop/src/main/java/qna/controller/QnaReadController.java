@@ -29,7 +29,7 @@ public class QnaReadController extends AbstractController {
 			
 			//GET 방식일때			
 			
-			String qna_no = request.getParameter("qna_no");
+			String qna_no = request.getParameter("qna_noo");
 			
 			// System.out.println("확인용"+qna_no);
 			
