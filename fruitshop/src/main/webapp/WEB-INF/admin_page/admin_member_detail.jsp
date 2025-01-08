@@ -158,7 +158,50 @@ $(document).ready(function(){
 
 <style>
 
-v
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#modalContent {
+  position: absolute;
+  background-color: #ffffff;
+  width: 500px;
+  height: 480px;
+  padding: 15px;
+  border-radius: 20%;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+#modalContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#couponAllReceiptOpen{
+	height: 36px;
+}
+
+#modalContainer.hidden {
+  display: none;
+}
+
 input[type="number"]{
 	width: 5em;
 }
@@ -294,7 +337,7 @@ input[type="number"]{
 	    				<td><input type="text" name="coupon_discount" min="500" step="500"></td>
 	    			</tr>
 	    			<tr>
-	    				<td><button class="btn btn-outline-success" type="button" id="couponModalSubmit">쿠폰수령하기</button></td>
+	    				<td><button class="btn btn-outline-success" type="button" id="couponModalSubmit"">쿠폰증정하기</button></td>
 	    				<td><button class="btn btn-outline-secondary" type="button" id="couponModalClose">나가기</button></td>
 	    			</tr>
 	    		</tbody>

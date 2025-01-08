@@ -21,7 +21,7 @@ public class AdminMemberDetail extends AbstractController {
 		
 		String method = request.getMethod();
 		
-		if(loginuser != null && ("POST".equals(method) && loginuser.getRole() == 2)) {
+		if(loginuser != null && (loginuser.getRole() == 2)) {
 			
 			String currentShowPageNo = request.getParameter("currentShowPageNo");
 			
