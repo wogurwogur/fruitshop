@@ -5,8 +5,8 @@
 
     
        
-<jsp:include page="../common/header.jsp"></jsp:include>
-<jsp:include page="adminpage_header.jsp"></jsp:include>
+<%-- <jsp:include page="../common/header.jsp"></jsp:include>
+<jsp:include page="adminpage_header.jsp"></jsp:include> --%>
 
 
 <%-- Custom CSS --%>
@@ -180,4 +180,4 @@
 	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}" />
 </form>
 
-<jsp:include page="../common/footer.jsp"></jsp:include>
+<%-- <jsp:include page="../common/footer.jsp"></jsp:include> --%>
