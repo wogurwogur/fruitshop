@@ -95,7 +95,7 @@
 	                    <a class="nav-link menu" href="<%= request.getContextPath()%>/product/productList.ddg">Fruit shop</a>
 	                </li>
 	                <li class="nav-item active ml-3">
-	                    <a class="nav-link menu" href="#">Team Story</a>
+	                    <a class="nav-link menu" href="<%= request.getContextPath()%>/team/teamStory.ddg">Team Story</a>
 	                </li>
 	                <li class="nav-item active ml-3">
 	                    <a class="nav-link menu" href="<%= request.getContextPath()%>/notice/noticeList.ddg">Community</a>
