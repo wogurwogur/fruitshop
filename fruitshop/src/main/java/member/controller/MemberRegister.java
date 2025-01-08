@@ -44,11 +44,11 @@ public class MemberRegister extends AbstractController {
 		        String postcode = request.getParameter("postcode");
 		        String address = request.getParameter("address");
 		        String extraaddress = request.getParameter("extraaddress");
-		        if(extraaddress == null) {
+		        if(extraaddress.isBlank()) {
 		        	extraaddress = " ";
 		        }
 		        String detailaddress = request.getParameter("detailaddress");
-		        if(detailaddress == null) {
+		        if(detailaddress.isBlank()) {
 		        	detailaddress = " ";
 		        }
 		        String gender = request.getParameter("gender");

@@ -47,11 +47,11 @@ public class ShipAdd extends AbstractController {
 		        String ship_postcode = request.getParameter("ship_postcode");
 		        String ship_address = request.getParameter("ship_address");
 		        String ship_extraAddress = request.getParameter("ship_extraAddress");
-		        if(ship_extraAddress == null) {
+		        if(ship_extraAddress.isBlank()) {
 		        	ship_extraAddress = " ";
 		        }
 		        String ship_detailAddress = request.getParameter("ship_detailAddress");
-		        if(ship_detailAddress == null) {
+		        if(ship_detailAddress.isBlank()) {
 		        	ship_detailAddress = " ";
 		        }
 		        
