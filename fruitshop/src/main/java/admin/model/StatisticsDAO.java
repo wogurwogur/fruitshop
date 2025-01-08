@@ -72,10 +72,12 @@ public interface StatisticsDAO {
 	// 주간 계절별 주문건수
 	Map<String, Integer> getSeasonOrderWeek() throws SQLException;
 
-	
-	
-	// 최근 일주일 상품별 주문건수 랭킹
-//	List<Map<String, String>> getorderRankWeek() throws SQLException;
+	// 월간 계절별 주문건수
+	Map<String, Integer> getSeasonOrderMonth() throws SQLException;
+
+	// 상품의 판매량 랭킹 정보를 가져온다.
+	List<Map<String, String>> getProdListRank(Map<String, String> paraMap) throws SQLException;
+
 
 	
 }

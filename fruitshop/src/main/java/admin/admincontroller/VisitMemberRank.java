@@ -71,12 +71,12 @@ public class VisitMemberRank extends AbstractController {
 		String searchRange = request.getParameter("searchRange");		// 오름차순 내림차순
 		String searchMonth = request.getParameter("searchMonth");		// 개월필터
 		
-		if (searchRange == "" || searchRange == null) {
+		if ("".equals(searchRange) || searchRange == null) {
 			// 입력을 하지 않으면 오름차순 정렬
 			searchRange = "DESC";
 		}
 		
-		if (searchMonth == "" || searchMonth == null) {
+		if ("".equals(searchMonth) || searchMonth == null) {
 			// 입력을 하지 않으면 오름차순 정렬
 			searchMonth = "0";
 		}

@@ -67,6 +67,9 @@ public class GroupBySeason extends AbstractController {
 		// 주간 계절별 주문건수 
 		Map<String, Integer> seasonOrderWeek = sdao.getSeasonOrderWeek();
 		
+		// 월간 계절별 주문건수
+		Map<String, Integer> seasonOrderMonth = sdao.getSeasonOrderMonth();
+		
 //		Map<String, Integer> visitUser2Week = sdao.getvisitUser2Week();
 //		Map<String, Integer> visitUserMonth = sdao.getvisitUserMonth();
 //		Map<String, Integer> visitUser2Month = sdao.getvisitUser2Month();
@@ -106,6 +109,111 @@ public class GroupBySeason extends AbstractController {
 		jsonObj.put("winter_before_2days", seasonOrderWeek.get("winter_before_2days"));
 		jsonObj.put("winter_before_1days", seasonOrderWeek.get("winter_before_1days"));
 		jsonObj.put("winter_today", seasonOrderWeek.get("winter_today"));
+		
+		
+		// 2주전 계절별 주문건수
+		jsonObj.put("spring_before_13days", seasonOrderWeek.get("spring_before_13days"));
+		jsonObj.put("spring_before_12days", seasonOrderWeek.get("spring_before_12days"));
+		jsonObj.put("spring_before_11days", seasonOrderWeek.get("spring_before_11days"));
+		jsonObj.put("spring_before_10days", seasonOrderWeek.get("spring_before_10days"));
+		jsonObj.put("spring_before_9days", seasonOrderWeek.get("spring_before_9days"));
+		jsonObj.put("spring_before_8days", seasonOrderWeek.get("spring_before_8days"));
+		jsonObj.put("spring_before_7days", seasonOrderWeek.get("spring_before_7days"));
+		
+		jsonObj.put("summer_before_13days", seasonOrderWeek.get("summer_before_13days"));
+		jsonObj.put("summer_before_12days", seasonOrderWeek.get("summer_before_12days"));
+		jsonObj.put("summer_before_11days", seasonOrderWeek.get("summer_before_11days"));
+		jsonObj.put("summer_before_10days", seasonOrderWeek.get("summer_before_10days"));
+		jsonObj.put("summer_before_9days", seasonOrderWeek.get("summer_before_9days"));
+		jsonObj.put("summer_before_8days", seasonOrderWeek.get("summer_before_8days"));
+		jsonObj.put("summer_before_7days", seasonOrderWeek.get("summer_before_7days"));
+
+		jsonObj.put("autumn_before_13days", seasonOrderWeek.get("autumn_before_13days"));
+		jsonObj.put("autumn_before_12days", seasonOrderWeek.get("autumn_before_12days"));
+		jsonObj.put("autumn_before_11days", seasonOrderWeek.get("autumn_before_11days"));
+		jsonObj.put("autumn_before_10days", seasonOrderWeek.get("autumn_before_10days"));
+		jsonObj.put("autumn_before_9days", seasonOrderWeek.get("autumn_before_9days"));
+		jsonObj.put("autumn_before_8days", seasonOrderWeek.get("autumn_before_8days"));
+		jsonObj.put("autumn_before_7days", seasonOrderWeek.get("autumn_before_7days"));
+		
+		jsonObj.put("winter_before_13days", seasonOrderWeek.get("winter_before_13days"));
+		jsonObj.put("winter_before_12days", seasonOrderWeek.get("winter_before_12days"));
+		jsonObj.put("winter_before_11days", seasonOrderWeek.get("winter_before_11days"));
+		jsonObj.put("winter_before_10days", seasonOrderWeek.get("winter_before_10days"));
+		jsonObj.put("winter_before_9days", seasonOrderWeek.get("winter_before_9days"));
+		jsonObj.put("winter_before_8days", seasonOrderWeek.get("winter_before_8days"));
+		jsonObj.put("winter_before_7days", seasonOrderWeek.get("winter_before_7days"));
+		
+		////////////////////////////////////////////////////////////////////////////////
+		
+		// 월간 계절별 주문건수
+		jsonObj.put("spring_before_6months", seasonOrderMonth.get("spring_before_6months"));
+		jsonObj.put("spring_before_5months", seasonOrderMonth.get("spring_before_5months"));
+		jsonObj.put("spring_before_4months", seasonOrderMonth.get("spring_before_4months"));
+		jsonObj.put("spring_before_3months", seasonOrderMonth.get("spring_before_3months"));
+		jsonObj.put("spring_before_2months", seasonOrderMonth.get("spring_before_2months"));
+		jsonObj.put("spring_before_1months", seasonOrderMonth.get("spring_before_1months"));
+		jsonObj.put("spring_this_month", seasonOrderMonth.get("spring_this_month"));
+		
+		jsonObj.put("summer_before_6months", seasonOrderMonth.get("summer_before_6months"));
+		jsonObj.put("summer_before_5months", seasonOrderMonth.get("summer_before_5months"));
+		jsonObj.put("summer_before_4months", seasonOrderMonth.get("summer_before_4months"));
+		jsonObj.put("summer_before_3months", seasonOrderMonth.get("summer_before_3months"));
+		jsonObj.put("summer_before_2months", seasonOrderMonth.get("summer_before_2months"));
+		jsonObj.put("summer_before_1months", seasonOrderMonth.get("summer_before_1months"));
+		jsonObj.put("summer_this_month", seasonOrderMonth.get("summer_this_month"));
+		
+		jsonObj.put("autumn_before_6months", seasonOrderMonth.get("autumn_before_6months"));
+		jsonObj.put("autumn_before_5months", seasonOrderMonth.get("autumn_before_5months"));
+		jsonObj.put("autumn_before_4months", seasonOrderMonth.get("autumn_before_4months"));
+		jsonObj.put("autumn_before_3months", seasonOrderMonth.get("autumn_before_3months"));
+		jsonObj.put("autumn_before_2months", seasonOrderMonth.get("autumn_before_2months"));
+		jsonObj.put("autumn_before_1months", seasonOrderMonth.get("autumn_before_1months"));
+		jsonObj.put("autumn_this_month", seasonOrderMonth.get("autumn_this_month"));
+		
+		
+		jsonObj.put("winter_before_6months", seasonOrderMonth.get("winter_before_6months"));
+		jsonObj.put("winter_before_5months", seasonOrderMonth.get("winter_before_5months"));
+		jsonObj.put("winter_before_4months", seasonOrderMonth.get("winter_before_4months"));
+		jsonObj.put("winter_before_3months", seasonOrderMonth.get("winter_before_3months"));
+		jsonObj.put("winter_before_2months", seasonOrderMonth.get("winter_before_2months"));
+		jsonObj.put("winter_before_1months", seasonOrderMonth.get("winter_before_1months"));
+		jsonObj.put("winter_this_month", seasonOrderMonth.get("winter_this_month"));
+		
+		
+		// 전년도 월간 계절별 주문건수
+		jsonObj.put("spring_before_18months", seasonOrderMonth.get("spring_before_18months"));
+		jsonObj.put("spring_before_17months", seasonOrderMonth.get("spring_before_17months"));
+		jsonObj.put("spring_before_16months", seasonOrderMonth.get("spring_before_16months"));
+		jsonObj.put("spring_before_15months", seasonOrderMonth.get("spring_before_15months"));
+		jsonObj.put("spring_before_14months", seasonOrderMonth.get("spring_before_14months"));
+		jsonObj.put("spring_before_13months", seasonOrderMonth.get("spring_before_13months"));
+		jsonObj.put("spring_before_12months", seasonOrderMonth.get("spring_before_12months"));
+		
+		jsonObj.put("summer_before_18months", seasonOrderMonth.get("summer_before_18months"));
+		jsonObj.put("summer_before_17months", seasonOrderMonth.get("summer_before_17months"));
+		jsonObj.put("summer_before_16months", seasonOrderMonth.get("summer_before_16months"));
+		jsonObj.put("summer_before_15months", seasonOrderMonth.get("summer_before_15months"));
+		jsonObj.put("summer_before_14months", seasonOrderMonth.get("summer_before_14months"));
+		jsonObj.put("summer_before_13months", seasonOrderMonth.get("summer_before_13months"));
+		jsonObj.put("summer_before_12months", seasonOrderMonth.get("summer_before_12months"));
+
+		jsonObj.put("autumn_before_18months", seasonOrderMonth.get("autumn_before_18months"));
+		jsonObj.put("autumn_before_17months", seasonOrderMonth.get("autumn_before_17months"));
+		jsonObj.put("autumn_before_16months", seasonOrderMonth.get("autumn_before_16months"));
+		jsonObj.put("autumn_before_15months", seasonOrderMonth.get("autumn_before_15months"));
+		jsonObj.put("autumn_before_14months", seasonOrderMonth.get("autumn_before_14months"));
+		jsonObj.put("autumn_before_13months", seasonOrderMonth.get("autumn_before_13months"));
+		jsonObj.put("autumn_before_12months", seasonOrderMonth.get("autumn_before_12months"));
+		
+		jsonObj.put("winter_before_18months", seasonOrderMonth.get("winter_before_18months"));
+		jsonObj.put("winter_before_17months", seasonOrderMonth.get("winter_before_17months"));
+		jsonObj.put("winter_before_16months", seasonOrderMonth.get("winter_before_16months"));
+		jsonObj.put("winter_before_15months", seasonOrderMonth.get("winter_before_15months"));
+		jsonObj.put("winter_before_14months", seasonOrderMonth.get("winter_before_14months"));
+		jsonObj.put("winter_before_13months", seasonOrderMonth.get("winter_before_13months"));
+		jsonObj.put("winter_before_12months", seasonOrderMonth.get("winter_before_12months"));
+		
 		
 		String json = jsonObj.toString();
 		
