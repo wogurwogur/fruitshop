@@ -113,69 +113,6 @@
 		$("input:text[name='email']").val('${sessionScope.loginuser.email}');
 	}// end of function useUserInfo() ----------------------
 	
-	
-	// 등록한 배송지 중 선택
-	/*function useUserShipInfo() {
-		$.ajax({
-			url: "orderShipPick.ddg",
-			data: {"user_no": "${sessionScope.loginuser.user_no}"},
-			dataType: "JSON",
-			success: function(json) {
-				console.log(json);
-				let html = ``;
-				
-				if (json.length == 0) {
-					html = `
-						<tr>
-							<td colspan="9">등록된 배송지가 존재하지 않습니다.</td>
-						</tr>
-					`;
-					
-					$("table#shipInfo > tbody").html(html);
-				}
-				else if (json.length > 0) {
-					
-					$.each(json, function(index, item){
-						console.log(item.ship_name);
-						
-						let ship_default = "";
-						
-						if (item.ship_default == 0) {
-							ship_default = "N";
-						}
-						else {
-							ship_default = "Y";
-						}
-						
-						html += `
-							<tr style="cursor: pointer">
-								<td>2</td>
-								<td class="ship_name">${item.ship_name}</td>
-								<td class="receiver">${item.ship_receiver}</td>
-								<td class="receivertel">${item.ship_receivertel}</td>
-								<td class="postcode">${item.ship_postcode}</td>
-	     			 			<td class="address">${item.ship_address}</td>
-	     			 			<td class="detailaddress">${item.ship_detailaddress}</td>
-	     			 			<td class="extraaddress">${item.ship_extraadress}</td>
-	     			 			<td class="ship_default">${ship_default}</td>
-							</tr>
-						`;
-						
-						html += `${item.ship_receiver}`;
-						
-					});// end of $.each(json, function(index, item){}) ---------------
-					
-					$("table#shipInfo > tbody").html(html);
-					
-				}// end of else if (json.length > 0) ------------------
-			},
-			error: function(request, status, error){
-	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }
-		});
-	}// end of function useUserShipInfo() --------------
-	*/
-	
 	// 배송지 직접입력
 	function useUserInput() {
 		$("input:text[name='name']").val("");

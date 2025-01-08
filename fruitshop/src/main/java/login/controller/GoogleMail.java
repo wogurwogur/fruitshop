@@ -118,7 +118,7 @@ public class GoogleMail {
     	MimeMessage msg = new MimeMessage(ses);
 
     	// 제목 설정
-    	String subject = "localhost:9090/fruitshop/mallHome1.ddg "+name+"님의 주문이 성공했습니다.";
+    	String subject = "[싱싱] "+name+" 님의 주문내역을 확인하세요.";
     	msg.setSubject(subject);
     	        
     	// 보내는 사람의 메일주소
@@ -131,7 +131,7 @@ public class GoogleMail {
     	msg.addRecipient(Message.RecipientType.TO, toAddr);
     	        
     	// 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-    	msg.setContent("<div style='font-size:14pt; color:red;'>"+emailContents+"</div>", "text/html;charset=UTF-8");  
+    	msg.setContent(emailContents, "text/html;charset=UTF-8");  
     	        
     	// 메일 발송하기
     	Transport.send(msg);		
