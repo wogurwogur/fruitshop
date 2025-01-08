@@ -24,6 +24,8 @@ public class ShipAdd extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
+		super.goBackURL(request);
+		
 		if(loginuser != null) {
 			
 			if("get".equalsIgnoreCase(request.getMethod())) {
