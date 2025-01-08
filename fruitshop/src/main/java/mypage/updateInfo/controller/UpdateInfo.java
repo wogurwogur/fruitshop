@@ -48,11 +48,11 @@ public class UpdateInfo extends AbstractController {
 		        String postcode = request.getParameter("postcode");
 		        String address = request.getParameter("address");
 		        String extraaddress = request.getParameter("extraaddress");
-		        if(extraaddress == null || "".equals(extraaddress.trim())) {
+		        if(extraaddress.isBlank()) {
 		        	extraaddress = " ";
 		        }
 		        String detailaddress = request.getParameter("detailaddress");
-		        if(detailaddress == null || "".equals(detailaddress.trim())) {
+		        if(detailaddress.isBlank()) {
 		        	detailaddress = " ";
 		        }
 
