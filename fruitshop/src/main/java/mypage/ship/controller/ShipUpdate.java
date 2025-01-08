@@ -22,6 +22,7 @@ public class ShipUpdate extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
+		super.goBackURL(request);
 
 		if(loginuser != null) {
 			
