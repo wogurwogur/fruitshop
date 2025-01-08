@@ -23,6 +23,8 @@ public class ShipManagement extends AbstractController {
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 	
+		super.goBackURL(request);
+		
 		if(loginuser != null) {
 	
 				List<ShipVO> shipList = new ArrayList<>();
