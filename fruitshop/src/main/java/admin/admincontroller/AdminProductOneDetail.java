@@ -96,8 +96,22 @@ public class AdminProductOneDetail extends AbstractController {
 
 							if ("prod_thumnail".equals(part.getName())) { // 썸네일 이미지
 								
-								// 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다.
+								
+								// 기존 등록된 썸네일 이미지가 있다면 기존 이미지를 삭제 하기 //
 								ServletContext svlCtx = session.getServletContext();
+						        String originThumnailFilename = request.getParameter("org_prod_thumnail");
+						        String originUploadThumFileName = svlCtx.getRealPath("/images/product/thumnail") +"/"+ originThumnailFilename;
+						 
+						        File uploadOriginFile = new File (originUploadThumFileName);
+						        if ( uploadOriginFile.exists()&& uploadOriginFile.isFile() )
+						        {
+						        	uploadOriginFile.delete();       // 파일 삭제
+						        }
+						        // 기존 등록된 썸네일 이미지가 있다면 기존 이미지를 삭제 하기  끝 //
+						        
+								
+								// 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다.
+								svlCtx = session.getServletContext();
 								String uploadFileDir = svlCtx.getRealPath("/images/product/thumnail");
 								
 								// 파일을 지정된 디스크 경로에 저장해준다. 이것이 파일을 업로드 해주는 작업이다.
@@ -109,8 +123,23 @@ public class AdminProductOneDetail extends AbstractController {
 								
 							} else if ("prod_descript".equals(part.getName())) { // 상세 이미지
 								
-								// 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다.
+								
+								// 기존 등록된 상세 이미지가 있다면 기존 이미지를 삭제 하기 //
 								ServletContext svlCtx = session.getServletContext();
+						        String originDescriptFilename = request.getParameter("org_prod_descript");
+						        String originUploadDesFileName = svlCtx.getRealPath("/images/product/description") +"/"+ originDescriptFilename;
+						 
+						        File uploadOriginFile = new File (originUploadDesFileName);
+						        if ( uploadOriginFile.exists()&& uploadOriginFile.isFile() )
+						        {
+						        	uploadOriginFile.delete();       // 파일 삭제
+						        }
+						        // 기존 등록된 상세 이미지가 있다면 기존 이미지를 삭제 하기  끝 //
+								
+								
+								
+								// 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다.
+								svlCtx = session.getServletContext();
 								String uploadFileDir = svlCtx.getRealPath("/images/product/description");
 								
 								// 파일을 지정된 디스크 경로에 저장해준다. 이것이 파일을 업로드 해주는 작업이다.
