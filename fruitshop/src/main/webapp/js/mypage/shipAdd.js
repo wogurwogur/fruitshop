@@ -185,7 +185,7 @@ function goAdd() {
 	const ship_receiverReg = /^[가-힣]{2,6}$/;
 	regbool = ship_receiverReg.test(ship_receiver);
 	if(!regbool) {
-		$("input#ship_name").parent().find("span.error").html("올바른 이름이 아닙니다.").addClass("red");
+		$("input#ship_receiver").parent().find("span.error").html("올바른 이름이 아닙니다.").addClass("red");
 		bool = false;
 	}
 	
