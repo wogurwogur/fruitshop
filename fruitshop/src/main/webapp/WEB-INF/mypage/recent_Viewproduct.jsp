@@ -16,6 +16,12 @@
 
 $(document).ready(function(){
 	
+	const loginusr = localStorage.getItem('saveid');
+	console.log(loginusr);
+	
+	const loginuser = '${sessionScope.loginuser.userid}';
+	
+	console.log(loginuser);
 	
     let html = ``;
     
@@ -25,7 +31,7 @@ $(document).ready(function(){
     
     console.log(arr_product.length);
     
-    if (arr_product.length === 0) {  // 최근본상품이 없다면
+    if (arr_product.length == 0) {  // 최근본상품이 없다면
     
     	$("div.info").hide();
         html = `<p style="font-size: 14pt; font-weight: 400; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc; ">최근본 상품 내역이 없습니다.</p>`;
@@ -126,12 +132,13 @@ $(document).ready(function(){
         alert("상품을 삭제했습니다.");
         location.href="javascript:history.go(0)";
         
-        if (arr_product.length === 0) {	// 상품이 없다면
+        if (arr_product.length == 0) {	// 상품이 없다면
         	$("div.info").hide();
             $("div.recent_view").html(`<p style="font-size: 14pt; font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 15%; border: 1px solid #ccc;">최근본 상품 내역이 없습니다.</p>`);
         }
         
     });
+ 	
  	
  	
  	if(arr_product.length > 5) {  // 최근본 상품안에 상품이 5개가 넘는다면 
