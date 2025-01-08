@@ -132,7 +132,7 @@ $(document).ready(function(){
 		
 		
 		const coupon_name = $("input:text[name='coupon_name']").val();
-		const couponname_Reg = /^[가-힣]{2,8}$/;
+		const couponname_Reg = /^[가-힣\s~!@#$%^&*()-_`=+?><;:]{2,10}$/;
 		
 		if(coupon_name == ""){
 			alert("쿠폰명을 입력해주세요.");

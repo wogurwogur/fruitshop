@@ -5,6 +5,7 @@ import java.io.File;
 import admin.model.AdminDAO;
 import admin.model.AdminDAO_imple;
 import common.controller.AbstractController;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +22,11 @@ public class MainPageDelete extends AbstractController {
 		
 		HttpSession session = request.getSession();
 		
+		ServletContext svlCtx = session.getServletContext();
+		String uploadFileDir = svlCtx.getRealPath("/images/index");
+		String currentDir = System.getProperty("user.dir");
+		System.out.println("현재 디렉터리: " + uploadFileDir);
+		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
 		if("POST".equals(method) && loginuser.getRole() == 2) {
@@ -31,8 +37,10 @@ public class MainPageDelete extends AbstractController {
 			int n = 0;
 			int u = 0;
 			
+			
+			
 			File imgfile1 = new File(request.getContextPath()+"/images/index/"+imgfilename);
-			File imgfile2 = new File("C:/NCS/workspace_jsp/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/fruitshop/images/index/"+imgfilename);
+			File imgfile2 = new File(uploadFileDir+"/"+imgfilename);
 			
 			if(imgfile1.exists()) {
 				

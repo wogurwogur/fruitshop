@@ -317,10 +317,11 @@ public class AdminDAO_imple implements AdminDAO {
 	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
 				sql += " and " +colname+ " like '%'|| ? ||'%' "
 						+ " order by registerday desc ";
+			}else {
+				sql += " order by registerday desc ";
 			}
 			
-			sql += " order by registerday desc "
-					+ " ) V "
+			sql +=  " ) V "
 					+ "  ) T "
 					+ " WHERE T.RNO BETWEEN ? AND ? "
 					+ " order by registerday desc ";
