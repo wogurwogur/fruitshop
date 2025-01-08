@@ -1,6 +1,8 @@
 package review.controller;
 
 
+import java.sql.SQLException;
+
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
@@ -21,45 +23,47 @@ public class ReviewCommentDeleteController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		
-		HttpSession session = request.getSession();		
-		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));	
-		
 		String method = request.getMethod();
-		
-		if("POST".equalsIgnoreCase(method) ) {
-			
-			String comment_no = request.getParameter("comment_no");
-			String review_no = request.getParameter("review_no");			
-			String comment_PwdD = request.getParameter("comment_PwdD");
-						
-			
-			
-			int n = revdao.commentDelete(comment_no, review_no, comment_PwdD);
-			
-			
-			if(n == 1) {
 				
-												
-				super.setRedirect(false);
-				super.setViewPage("/review/reviewRead.ddg");
-						
-			}
-			else {
-				
+				if("POST".equalsIgnoreCase(method)) {
+					// **** POST 방식으로 넘어온 것이라면 **** //
+					
+					String comment_no = request.getParameter("comment_no");
 								
-				String message = "수정실패";
-		        String loc = request.getContextPath()+"/review/reviewLRead.ddg";
-		        
-		        request.setAttribute("message", message);
-		        request.setAttribute("loc", loc);
-		        
-		        super.setRedirect(false);
-		        super.setViewPage("/WEB-INF/common/msg.jsp");
-				
-			}
+					int n = 0;
+					try {
+						 n = revdao.commentDelete(comment_no);
+						 
+					} catch(SQLException e) {
+						
+					}
+					
+					JSONObject jsobj = new JSONObject(); // {} 
+					jsobj.put("n", n); // {"n":1} 또는 {"n":0}
+					
+					String json = jsobj.toString(); // 문자열 형태로 변환해줌.
+					// "{"n":1}" 또는 "{"n":0}"
+					
+					request.setAttribute("json", json);
+					
+					System.out.println(json);
+					
+				//	super.setRedirect(false);
+					super.setViewPage("/WEB-INF/common/jsonview.jsp");
+					
+				}
+				else {
+					// **** POST 방식으로 넘어온 것이 아니라면 **** //
+					
+					String message = "비정상적인 경로를 통해 들어왔습니다.!!";
+					String loc = "javascript:history.back()";
+					
+					request.setAttribute("message", message);
+					request.setAttribute("loc", loc);
+					
+					super.setViewPage("/WEB-INF/msg.jsp");
+				}
 			
-		}
-	
   
 }
 	

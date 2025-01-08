@@ -91,7 +91,7 @@ public class QnaEditController extends AbstractController {
 				
 				request.setAttribute("qproductList", qproductList);			
 				
-	
+				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/qna/qnaEdit.jsp");
 				
 			}

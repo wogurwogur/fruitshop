@@ -19,9 +19,13 @@ public class ReviewDeleteController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpSession session = request.getSession();
 		
-		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
+		
+		
+		
+		HttpSession session = request.getSession();		
+		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));		
+		
 		
 		String method = request.getMethod();
 		
@@ -41,7 +45,8 @@ public class ReviewDeleteController extends AbstractController {
 				super.setRedirect(false);
 				super.setViewPage("/review/reviewList.ddg");
 						
-				}
+			}
+
 		
 		}else {
 			

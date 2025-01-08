@@ -16,6 +16,8 @@ public class QnaReadController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 				
+		super.goBackURL(request);
+		
 		String userid = request.getParameter("userid");
 		HttpSession session  = request.getSession();
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
@@ -27,7 +29,7 @@ public class QnaReadController extends AbstractController {
 			
 			//GET 방식일때			
 			
-			String qna_no = request.getParameter("qna_no");
+			String qna_no = request.getParameter("qna_noo");
 			
 			// System.out.println("확인용"+qna_no);
 			
