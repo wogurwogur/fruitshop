@@ -2,6 +2,7 @@
 
 
 div.title {
+	font-family: 'Noto Sans KR', sans-serif;
 	text-align: center;
 	margin-top: 1.5%;
 }
@@ -29,15 +30,8 @@ div.jumbotron {
 	margin: 0 auto;
 }
 
-/* #mypage > a:active {
 
-	text-decoration:underline;
-
-}  */
 	
-	
-#mypage > a:visited {
 
-	text-decoration:underline;
 
-} 
+

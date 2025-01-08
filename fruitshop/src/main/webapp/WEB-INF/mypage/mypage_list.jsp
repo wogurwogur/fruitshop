@@ -16,7 +16,7 @@
 
 
 <div class="title container" style="margin-top: 3.5%;">
-        <h2>My page</h2> 
+        <h2>My page</h2>
     </div>
     
     <div class="container" style="margin-top: 2.5%;">
