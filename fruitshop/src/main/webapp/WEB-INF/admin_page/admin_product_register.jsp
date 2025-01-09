@@ -220,7 +220,7 @@
 	                    dataType: "json",
 	                    success: function(json){
 	                    	if(json.result == 1) {
-	                         	location.href="${pageContext.request.contextPath}/product/productList.ddg"; 
+	                         	location.href="${pageContext.request.contextPath}${requestScope.goBackURL}"; 
 	                       }
 	                    },
 		 				error: function(request, status, error){
