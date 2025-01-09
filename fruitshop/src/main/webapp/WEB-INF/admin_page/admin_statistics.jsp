@@ -252,6 +252,8 @@
 			console.log("확인용 user_no : "+ user_no);
 			
 			//alert(user_no);
+			
+			location.href="${pageContext.request.contextPath}/admin/adminMemberDetail.ddg?detail_user_no="+user_no;
 		});// end of $(document).on("click", "tr.userInfo", function() {}) ------------------ 
 		
 		// === 방문자 랭킹 회원을 클릭 했을 시 회원의 상세정보로 이동 이벤트 끝 === //
