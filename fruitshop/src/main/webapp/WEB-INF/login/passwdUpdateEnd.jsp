@@ -21,34 +21,20 @@
 
    	   	$("button#passwdUpdate").click(function(){
       	   
-        	const passwd  = $("input:password[name='passwd']").val();
-         	const passwd2 = $("input:password[id='passwd2']").val();
-         
-         	const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-]).*$/g);  
-         	const bool = regExp_passwd.test(passwd);   
-            
-         	if(!bool) {
-        	 	$("div#error").html("올바른 비밀번호가 아닙니다.");
-             	$("input:password[name='passwd']").val("");
-             	$("input:password[id='passwd2']").val("");
-             	return; 
-         	}
-         	else {
-         		if(passwd != passwd2) {
-         	   		$("div#error").html("비밀번호가 일치하지 않습니다.");
-                	$("input:password[name='passwd']").val("").focus();
-                	$("input:password[id='passwd2']").val("");
-                	return; 
-            }
-            const frm = document.pwdUpdateEndFrm;
-            frm.action = "<%=request.getContextPath()%>/login/passwdUpdateEnd.ddg";
-            frm.method = "post";
-            frm.submit();
-        	}
+   	   		passwdUpdate();
 		
          
 		});// end of $("button.btn-success").click(function(){})----
 
+		$("input#passwd2").bind("keyup", function(e){
+			if(e.keyCode == 13) {
+				passwdUpdate();
+		 	}
+		});
+		
+		
+		
+		
 		
 		
 		// 비밀번호 변경 완료시 5초뒤 자동으로 로그인페이지로 이동시킴
@@ -60,6 +46,45 @@
 	
 	
 });// end of $(document).ready(function(){})--------------------
+
+
+function passwdUpdate() {
+	
+	
+	const passwd  = $("input:password[name='passwd']").val();
+ 	const passwd2 = $("input:password[id='passwd2']").val();
+ 
+ 	const regExp_passwd = new RegExp(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-]).*$/g);  
+ 	const bool = regExp_passwd.test(passwd);   
+    
+ 	if(!bool) {
+	 	$("div#error").html("올바른 비밀번호가 아닙니다.");
+     	$("input:password[name='passwd']").val("");
+     	$("input:password[id='passwd2']").val("");
+     	return; 
+ 	}
+ 	else {
+ 		if(passwd != passwd2) {
+ 	   		$("div#error").html("비밀번호가 일치하지 않습니다.");
+        	$("input:password[name='passwd']").val("").focus();
+        	$("input:password[id='passwd2']").val("");
+        	return; 
+    }
+    const frm = document.pwdUpdateEndFrm;
+    frm.action = "<%=request.getContextPath()%>/login/passwdUpdateEnd.ddg";
+    frm.method = "post";
+    frm.submit();
+	}
+ 	
+ 	
+ 	
+}
+
+
+
+
+
+
 </script>
 
 <div style="width:450px; margin: 10px auto;">

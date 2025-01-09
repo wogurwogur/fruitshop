@@ -41,10 +41,6 @@ public class PasswdUpdateEnd extends AbstractController {
 
 	    	    session.removeAttribute("verifyCertification"); // 복구되면 인증기록 지우기
 	    	    
-	    	    
-	    	    super.setRedirect(false);
-	    		super.setViewPage("/WEB-INF/login/login.jsp");
-	    	    
 	    	}
 	    	catch (SQLException e) {
 	    		e.printStackTrace();

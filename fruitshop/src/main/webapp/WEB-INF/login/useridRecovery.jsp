@@ -39,6 +39,10 @@ $(()=>{
         }
      }
 
+    
+    
+    
+    
 	$("button#emailAuthentication").click(function(){
 		goFind(); 
 	});
@@ -50,8 +54,39 @@ $(()=>{
 	});
 
 	     
-	     
-	     
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$("input:text[name='input_confirmCode']").bind("keyup", function(e){
+		if(e.keyCode == 13) {
+			
+			const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
+	    	 
+			if(input_confirmCode =="") {
+				$("span#error").html("인증코드를 입력하세요.");
+				return;
+		    }	 
+			
+			
+			const frm =document.verifyCertificationFrm;
+			frm.userCertificationCode.value = input_confirmCode;
+			frm.userid.value = $("input:text[name='userid']").val();
+			frm.page.value = "계정복구";
+				    	 
+			frm.action = "<%=request.getContextPath()%>/login/verifyCertification.ddg";
+			frm.method = "post";
+			frm.submit();
+		
+	 	}    
+	});     
+		
+		
 	$("button#verifyCertification").click( ()=>{
 	    	 
 		const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
@@ -60,6 +95,7 @@ $(()=>{
 			$("span#error").html("인증코드를 입력하세요.");
 			return;
 	    }	 
+		
 		const frm =document.verifyCertificationFrm;
 		frm.userCertificationCode.value = input_confirmCode;
 		frm.userid.value = $("input:text[name='userid']").val();
@@ -70,6 +106,10 @@ $(()=>{
 		frm.submit();
 
 	});
+	
+	
+	
+	
 	
 	$("button#back").click( e=>{
 		location.href="<%=request.getContextPath() %>/login/login.ddg";
@@ -84,6 +124,7 @@ $(()=>{
 function goFind() {
 	    
     const userid = $("input:text[name='userid']").val().trim();
+    
     if(userid == "") {
     	$("span#error").html("아이디를 입력하세요.");
         return;
