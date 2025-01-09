@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>독독고 과일판매</title>
-
+<link rel="shortcut icon" type="image⁄x-icon" href="/fruitshop/images/index/title_logo.png">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/bootstrap-4.6.2-dist/css/bootstrap.min.css" > 
 
