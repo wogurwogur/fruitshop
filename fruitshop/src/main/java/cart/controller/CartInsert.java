@@ -24,6 +24,7 @@ public class CartInsert extends AbstractController {
     	String message = "";
     	String loc = "";
     	
+    	super.goBackURL(request);
     	
     	if(loginuser != null) {
     		// 로그인을 했을때 

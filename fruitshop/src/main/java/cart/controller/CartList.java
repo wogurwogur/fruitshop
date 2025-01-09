@@ -19,6 +19,7 @@ public class CartList extends AbstractController {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
+    	
     	HttpSession session = request.getSession();
     	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
     	
@@ -26,6 +27,8 @@ public class CartList extends AbstractController {
     	String message = "";
     	
     	if(loginuser != null) {
+    		
+    		super.goBackURL(request);
     		
     		try {
                 // DAO에서 장바구니 데이터 가져오기
