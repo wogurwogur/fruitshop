@@ -92,8 +92,10 @@ public class QnaWriteController extends AbstractController {
 		
 		else {
 			
-			List<QnaListVO> qproductList = qdao.qproductFind();			
+			List<QnaListVO> qproductList = qdao.qproductFind();		
+			
 			request.setAttribute("qproductList", qproductList);
+			
 			super.setViewPage("/WEB-INF/qna/qnaWrite.jsp");
 			
 		}

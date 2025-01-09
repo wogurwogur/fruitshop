@@ -57,6 +57,8 @@ $(document).ready(function () {
     	
        if(${empty sessionScope.loginuser}) {
             alert("제품사용 후기를 작성 하시려면 먼저 로그인 하셔야 합니다.");
+            location.href ="<%= ctxPath %>/login/login.ddg"
+            
             return; // 종료
        }       
                
@@ -548,23 +550,24 @@ li {margin-bottom: 10px;}
 			<!-- 페이지네이션 -->
 			 
 		</div>
+		<div style ="display:flex; justify-content: flex-end; margin-left:20.5%;">
+			<tr>
+				<td class=""><button class="btn btn-outline-dark" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg?searchType=&sizePerPage=10&searchWord=&currentShowPageNo=<%= currentShowPageNo%>'">목록</button></td>
+				<td class=""><button class="btn btn-outline-dark ml-2" onclick="reviewEdit('${rvo.prod_no}', '${rvo.review_no }')">후기 수정</button></td>
+				<td class=""><button class="btn btn-outline-dark ml-2" onclick="reviewDelete()">후기 삭제</button></td>
+			</tr>						
+		</div>
 	</div>
 	
 	
-		<div style ="margin-left:20.5%;">
-			<tr>
-				<td class=""><button class="btn btn-outline-dark" onclick="location.href='<%=ctxPath%>/review/reviewList.ddg?searchType=&sizePerPage=10&searchWord=&currentShowPageNo=<%= currentShowPageNo%> '">목록</button></td>
-				<td class=""><button class="btn btn-outline-dark" onclick="reviewEdit('${rvo.prod_no}', '${rvo.review_no }')">후기 수정</button></td>
-				<td class=""><button class="btn btn-outline-dark" onclick="reviewDelete()">후기 삭제</button></td>
-			</tr>						
-		</div>	
+			
 		
-		<hr style="width:69%; margin-left:15.5%;">
+		<hr style="width:60%; margin-left:20%;">
 
 
 
 <div class="text-center">
-	    <p class="h5 text-dark">${requestScope.rvo.prod_name} 댓글 목록</p><hr style="width:69%; margin-left:15.5%;">
+	    <p class="h5 text-dark">${requestScope.rvo.prod_name} 댓글 목록</p><hr style="width:60%; margin-left:20%;">
 	    
 	    <div id="viewComments">
 	    	<%-- 여기가 제품사용 후기 내용이 들어오는 곳이다. --%>
@@ -572,17 +575,18 @@ li {margin-bottom: 10px;}
 </div>
      
     <div class="">
-        <div class="" style="width: 54%; margin-left:20%;">
+        <div class="" style="width: 60%; margin-left:20%; margin-top: 1%;">
     		<form name="commentFrm" style="width: 100%;">
     		    <textarea name="comment_contents" style="font-size: 12pt; width: 100%; height: 100px; resize:none;"></textarea>
     		    <input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />
     		    <input type="hidden" name="user_no" value="${sessionScope.loginuser.user_no}" />
    	            <input type="hidden" name="review_no" value="${requestScope.rvo.review_no}" />
     		</form>
+    		<div class="" style="display: flex; text-float:right; margin-left:20%; justify-content: flex-end">
+	    		<button type="button" class="btn btn-outline-dark" id="btnCommentOK" style="height:40px;"><span>댓글 쓰기</span></button>
+	    	</div>
 	    </div>
-	    <div class="" style="display: flex; margin-left:20%;">
-	    	<button type="button" class="btn btn-outline-dark" id="btnCommentOK" style="height:40px;"><span>후기쓰기</span></button>
-	    </div>
+	    
     </div>
 							
 	

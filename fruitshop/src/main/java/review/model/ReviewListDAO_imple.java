@@ -567,7 +567,8 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			conn=ds.getConnection();
 		
 			String sql = " select prod_no, prod_name, prod_price, prod_thumnail "
-						+ " from tbl_products ";
+						+ " from tbl_products "
+						+ " where prod_status = 1 ";
 		
 				pstmt = conn.prepareStatement(sql);
 				

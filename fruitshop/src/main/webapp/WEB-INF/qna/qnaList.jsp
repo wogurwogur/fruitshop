@@ -150,9 +150,9 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<option value="qna_title">제목</option>
 						<option value="qna_contents">내용</option>				
 					</select>
-					<input type="text" name="searchWord" style="height:4%"></input>
+					<input type="text" placeholder="입력란" name="searchWord" style="height:4%"></input>
 					<input type="text" style="display: none;" />
-					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()">검색</button>				
+					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()"><i class="fa fa-search"></i></button>				
 				</div>
 			</form>
 			<div class="table-responsive">
