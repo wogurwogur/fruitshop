@@ -188,6 +188,18 @@ div.pagination a.active {
 
 div.pagination a:hover:not(.active) {background-color: #ddd;}
 
+
+@keyframes blink {
+0% {color:red;}
+50% {color:orange;}
+100% {color:red;}
+}
+
+.blinking-text {
+  animation: blink 1.0s infinite; /* ~초 간격으로 무한 반복 */
+}
+
+
 </style>
 
 
@@ -227,9 +239,9 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<option value="review_title">제목</option>
 						<option value="review_contents">내용</option>				
 					</select>
-					<input type="text" name="searchWord" style="height:4%"></input>
+					<input type="text" placeholder="입력란" name="searchWord" style="height:4%"></input>
 					<input type="text" style="display: none;" />
-					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()">검색</button>				
+					<button type="button" class="mb-1 btn btn-outline-dark" style="height:4.1%" onclick="listSearch()"><i class="fa fa-search"></i></button>				
 				</div>
 			</form>
 			<div class="table-responsive">
@@ -256,7 +268,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
 							<td style="border-top: none">
 							<input type="hidden" name="review_noo"/>	
-								<span class="text-danger font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;
+								<span class="blinking-text font-weight-bold">[이달 가장 많은 조회수]</span>&nbsp;&nbsp;
 								<span style="font-weight:bold;">[${brevvo.prod_name}]</span>
 								&nbsp;${brevvo.review_title}
 								<c:if test="${brevvo.comment_count ne '0'}"><span class="text-danger">[${brevvo.comment_count}]</span></c:if>							
@@ -281,7 +293,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 							<%-- <td><a href="#"><span class="text-body font-weight-bold">[${revvo.prod_name}]</span></a>--%>						
 							<td style="border-top: none">
 							<input type="hidden" name="review_noo"/>
-								<span class="text-danger font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;
+								<span class="blinking-text font-weight-bold">[이달 가장 많은 댓글]</span>&nbsp;&nbsp;
 								<span style="font-weight:bold;">[${crevvo.prod_name}]</span>
 								&nbsp;${crevvo.review_title}
 								<c:if test="${crevvo.comment_count ne '0'}"><span class="text-danger">[${crevvo.comment_count}]</span></c:if>							

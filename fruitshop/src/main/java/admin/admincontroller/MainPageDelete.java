@@ -24,7 +24,6 @@ public class MainPageDelete extends AbstractController {
 		
 		ServletContext svlCtx = session.getServletContext();
 		String uploadFileDir = svlCtx.getRealPath("/images/index");
-		System.out.println("현재 디렉터리: " + uploadFileDir);
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		

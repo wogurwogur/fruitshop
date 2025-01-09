@@ -360,28 +360,33 @@
 				     			<%--<iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="<%= request.getContextPath()%>/login/idFind.up"> 
 				     			</iframe>
 				     			 --%>
-				     			 <table id="couponInfo" class="table text-center table-hover">
-				     			 	<thead>
-				     			 		<tr>
-				     			 			<th>쿠폰명</th>
-											<th style="width: 50%">만료일자</th>
-											<th>할인액</th>
-				     			 		</tr>
-				     			 	</thead>
-				     			 	<tbody>
-				     			 	<%-- 쿠폰리스트 반복문 --%>
-				     			 	<%-- 쿠폰 번호 가져와야? --%>
-									<c:forEach var="couponItem" items="${requestScope.couponList}" varStatus="status">
-										<tr style="cursor: pointer;">
-											<td class="coupon_name">${couponItem.coupon_name}<input type="hidden" class="coupon_no" value="${couponItem.coupon_no}"></td>
-											<td class="coupon_expdate">${couponItem.coupon_expire}</td>											
-											<fmt:parseNumber var="discount" type="number" value="${couponItem.coupon_discount}" />
-											<td class="coupon_discount"><fmt:formatNumber value="${discount}" pattern="#,###" /></td>
-										</tr>							
-									</c:forEach>
-									<%-- 쿠폰리스트 반복문 --%>
-				     			 	</tbody>
-				     			 </table>
+				     			 <c:if test="${empty requestScope.couponList}">
+				     			 	<div class="text-center">보유중인 쿠폰이 없습니다.</div>
+				     			 </c:if>
+				     			 <c:if test="${!empty requestScope.couponList}">
+				     			 	<table id="couponInfo" class="table text-center table-hover">
+					     			 	<thead>
+					     			 		<tr>
+					     			 			<th>쿠폰명</th>
+												<th style="width: 50%">만료일자</th>
+												<th>할인액</th>
+					     			 		</tr>
+					     			 	</thead>
+					     			 	<tbody>
+					     			 	<%-- 쿠폰리스트 반복문 --%>
+					     			 	<%-- 쿠폰 번호 가져와야? --%>
+										<c:forEach var="couponItem" items="${requestScope.couponList}" varStatus="status">
+											<tr style="cursor: pointer;">
+												<td class="coupon_name">${couponItem.coupon_name}<input type="hidden" class="coupon_no" value="${couponItem.coupon_no}"></td>
+												<td class="coupon_expdate">${couponItem.coupon_expire}</td>											
+												<fmt:parseNumber var="discount" type="number" value="${couponItem.coupon_discount}" />
+												<td class="coupon_discount"><fmt:formatNumber value="${discount}" pattern="#,###" /></td>
+											</tr>							
+										</c:forEach>
+										<%-- 쿠폰리스트 반복문 --%>
+					     			 	</tbody>
+				     			 	</table>
+				     			 </c:if>
 			  				</div>
 						</div>
 			

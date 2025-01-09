@@ -64,6 +64,9 @@ function productSelect(prod_no){
 			let p2_html = ``;
 			let p3_html = ``;
 			
+			const prod_price = (json.prod_price).toLocaleString('ko-KR');
+			
+			// console.log(prod_price);
 			
 			p1_html = "<img src = <%= ctxPath%>/images/product/thumnail/" + json.prod_thumnail + " width='200' height='200'/>";
 			
@@ -73,7 +76,7 @@ function productSelect(prod_no){
 			
 			$("div#productSelectEnd2").html(p2_html);
 			
-			p3_html = "<span style='font-size:17pt;'>"+ json.prod_price +"원</span>";
+			p3_html = "<span style='font-size:17pt;'>"+ prod_price +"원</span>";
 			
 			$("div#productSelectEnd3").html(p3_html);
 			
@@ -195,19 +198,18 @@ function rvRegister(){
 <hr style="width:63%; margin-left:15.5%;">
 
 
-	<div id="product" class="d-flex justify-content-center mt-5"> 
+	<div id="product" class="d-flex justify-content-center mt-3"> 
 	
-		<div class="" style="display:flex; width:70%; height:250px;">
+		<div class="" style="display:flex; width:58%; height:250px; background-color:#F7F7F7">
 			
 			
-		
-		
-					<%-- 상품 썸네일 --%>		
-			<c:if test="${not empty pcarrier.prod_no}">
-				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
-				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<img src="<%= ctxPath%>/images/product/thumnail/${(requestScope.pcarrier).prod_thumnail}" width="200" height="200"/>					
-				</div>				
+	 	<%-- 타페이지에서 값 받아올때 --%>		
+		<%-- 상품 썸네일 --%>		
+		<c:if test="${not empty pcarrier.prod_no}">
+			<div class="border ml-4 mt-4 d-flex" style="width:15%; height:80%;">		
+			<div class="d-flex justify-content-center" id="productSelectEnd">					
+					<img src="<%= ctxPath%>/images/product/thumnail/${(requestScope.pcarrier).prod_thumnail}" width="200" height="200"/>					
+			</div>				
 			</div>
 			<%-- 상품 이름 --%>
 			<div class="" style="width:50%; height:80%;">
@@ -217,29 +219,36 @@ function rvRegister(){
 			
 				<%-- 상품 가격 --%>
 				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
-					<span style="font-size:17pt;">${(requestScope.pcarrier).prod_price}</span>
+					<span style="font-size:17pt;"><fmt:formatNumber value="${(requestScope.pcarrier).prod_price}" pattern="#,###"/>원</span>
 				</div>
 			</div>
-				
-			</c:if>
+		</c:if>
 			
+			
+			<%-- 그냥 볼때 --%>
 			<c:if test="${empty pcarrier.prod_no}">	
-				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
-				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<i class="fa-regular fa-image" style=""></i>					
-				</div>				
-			</div>
+				<div class="ml-4 mt-4 d-flex" style="width:15%; height:80%;">		
+					<div class="d-flex justify-content-center" id="productSelectEnd">					
+							<img src="<%= ctxPath%>/images/review/singsingbw.png" style="width:202px; height:202px;"/>					
+					</div>				
+				</div>
 			<%-- 상품 이름 --%>
-			<div class="" style="width:50%; height:80%;">
-				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+			<div class="" style="width:50%; height:80%; margin-top:3%;">
+				<div id="productSelectEnd2" style="margin-left:8%; margin-top:7%;" >
 					<span style="font-size:17pt;"></span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
+				<div id="productSelectEnd3" style="margin-left:8%; margin-top:5%;">
 					<span style="font-size:17pt;"></span>
 				</div>
 			</div>
+				<%-- 상품정보선택 버튼 , 상품 상세페이지 버튼 --%>			
+			<div class="ml-auto d-flex align-items-center" style="margin-right:10%;">
+				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
+				
+			</div>	
+				
 				
 			</c:if>
 			
@@ -248,11 +257,7 @@ function rvRegister(){
 			
 			
 			
-			<%-- 상품정보선택 버튼 , 상품 상세페이지 버튼 --%>			
-			<div class="ml-auto d-flex align-items-center" style="margin-right:10%;">
-				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
-				
-			</div>	
+			
 		</div>
 	</div>
 	
@@ -272,7 +277,7 @@ function rvRegister(){
 		    			<tr onclick="productSelect('${rpl.prod_no}')">
 							<td><img src="<%= ctxPath%>/images/product/thumnail/${rpl.prod_thumnail}" width="50" height="50"/></td>
 							<td>${rpl.prod_name}</td>	
-							<td><fmt:formatNumber pattern="###,###">${rpl.prod_price}</fmt:formatNumber>원</td>
+							<td><fmt:formatNumber pattern="#,###">${rpl.prod_price}</fmt:formatNumber>원</td>
 						</tr>
 					</c:forEach>	
 					<tr>
@@ -293,7 +298,7 @@ function rvRegister(){
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
 			<textarea name="review_title" cols="80" rows="1" style="resize:none;"></textarea>
-			<span class="ml-5 mt-1" style="font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
+			<span class="ml-5 mt-1" style="font-weight:bold; font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
 		</div>	
 	</div>
 

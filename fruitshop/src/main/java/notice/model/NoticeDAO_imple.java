@@ -323,6 +323,8 @@ public class NoticeDAO_imple implements NoticeDAO {
 	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
 				sql += " and  " +colname+ " like '%'|| ? ||'%' "
 						+ " order by notice_regidate desc ";
+			}else {
+				sql += " order by notice_regidate desc ";
 			}
 			
 			sql += " ) V "
