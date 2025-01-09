@@ -115,8 +115,14 @@ $(document).ready(function(){
 		   
 		// 구매하기 클릭
 		$("div.purchase").click(function() {
-			const prodCnt = $("input.qty").val();
-			location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prodCnt=`+ prodCnt;
+			if( ${not empty sessionScope.loginuser} ) {
+				const prodCnt = $("input.qty").val();
+				location.href=`${pageContext.request.contextPath}/order/orderCheckout.ddg?prodNo=${requestScope.prdvo.prod_no}&userNo=${sessionScope.loginuser.user_no}&prodCnt=`+ prodCnt;
+			}
+	        else{
+	         	alert("로그인 후 이용가능합니다!");
+	            location.href=`${pageContext.request.contextPath}/login/login.ddg`;
+	        }
 		});
 		
 	    
