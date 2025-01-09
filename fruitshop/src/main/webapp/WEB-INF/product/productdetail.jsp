@@ -262,14 +262,14 @@ $(document).ready(function(){
 // 상품 후기 글 클릭 시 리뷰 페이지로 넘어가기
 function goReview(click_review_no) {
 	const review_no = click_review_no;
-	location.href =`${pageContext.request.contextPath}/review/reviewRead.ddg?review_no=`+review_no;
+	location.href =`${pageContext.request.contextPath}/review/reviewRead.ddg?review_noo=`+review_no;
 }
 
 
 // 상품 문의 글 클릭 시 문의 페이지로 넘어가기
 function goQna(click_qna_no) {
 	const qna_no = click_qna_no;
-	location.href =`${pageContext.request.contextPath}/qna/qnaRead.ddg?qna_no=`+qna_no;
+	location.href =`${pageContext.request.contextPath}/qna/qnaRead.ddg?qna_noo=`+qna_no;
 }
 
 	
