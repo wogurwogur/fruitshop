@@ -53,6 +53,7 @@ function productSelect(prod_no){
 			let p2_html = ``;
 			let p3_html = ``;
 			
+			const prod_price = (json.prod_price).toLocaleString('ko-KR');
 			
 			p1_html = "<img src = <%= ctxPath%>/images/product/thumnail/" + json.prod_thumnail + " width='200' height='200'/>";
 			
@@ -62,7 +63,7 @@ function productSelect(prod_no){
 			
 			$("div#productSelectEnd2").html(p2_html);
 			
-			p3_html = "<span style='font-size:17pt;'>"+ json.prod_price +"원</span>";
+			p3_html = "<span style='font-size:17pt;'>"+ prod_price +"원</span>";
 			
 			$("div#productSelectEnd3").html(p3_html);
 			
@@ -200,7 +201,7 @@ function getUrlParameter(name) {
 			<c:if test="${not empty prod_no} ">
 				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
 					<div class="d-flex justify-content-center" id="productSelectEnd">					
-							<i class="fa-regular fa-image" style=""></i>					
+							<i class="fas fa-image fa-3x" style=""></i>					
 					</div>				
 				</div>
 				<%-- 상품 이름 --%>
@@ -210,15 +211,17 @@ function getUrlParameter(name) {
 					</div>
 				
 					<%-- 상품 가격 --%>
-					<div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
+					    <div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
 						<span style="font-size:17pt;"></span>
 					</div>
 				</div>
 						
 			</c:if>
-			<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+			
+			<%-- 상품 썸네일 --%>
+			<div class="ml-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<i class="fa-regular fa-image" style=""></i>					
+						<img src="<%= ctxPath%>/images/review/singsingw.jpg" style="width:202px; height:202px;"/>				
 				</div>				
 			</div>
 			<%-- 상품 이름 --%>
@@ -234,7 +237,7 @@ function getUrlParameter(name) {
 			</div>
 			
 			
-			
+			<c:if test="${empty prod_no}"></c:if> 
 			<%-- 상품정보선택 버튼 , 상품 상세페이지 버튼 --%>			
 			<div class="ml-auto d-flex align-items-center" style="margin-right:10%;">
 				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
@@ -280,7 +283,7 @@ function getUrlParameter(name) {
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
 				<textarea name="qna_title" cols="80" rows="1" style="resize:none;"></textarea>
-			<span class="ml-5 mt-1" style="font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
+			<span class="ml-5 mt-1" style="font-weight:bold; font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
 		</div>	
 	</div>
 
