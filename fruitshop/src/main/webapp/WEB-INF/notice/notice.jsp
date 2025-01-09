@@ -98,13 +98,11 @@ select#searchType{
 #searchTypeWord{
 	vertical-align: middle;
 	height: 36px;
-	padding: 0px;
 }
 #searchButton{
 	vertical-align: middle;
 	height: 36px;
-	width: 35px;
-	border: 0px;
+	
 }
 
 
@@ -169,7 +167,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 <input type="text" name="currentShowPageNo" style="display:none;"/>
 		<div style="float: right; display:flex;">
 			<div>
-				<select name="searchType" class="form -select form-select-lg mb-3" aria-label=".form-select-lg example" id ="searchType">
+				<select name="searchType" class="form -select form-select-lg mb-3 mr-1" aria-label=".form-select-lg example" id ="searchType">
 				    <option value="">검색대상</option>
 				    <option value="notice_title">제목</option>
 				    <option value="notice_contents">내용</option> 
@@ -177,7 +175,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 			</div>
 			<div>
 			  <input type="text" placeholder="입력란" name="searchWord" id="searchTypeWord">
-			  <button type="button" onclick="noticeSearch()" id="searchButton"><i class="fa fa-search"></i></button>
+			  <button type="button" onclick="noticeSearch()" id="searchButton"  class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
 			  <input type="hidden" name="detail_user_no">
 			</div>
 		</div>

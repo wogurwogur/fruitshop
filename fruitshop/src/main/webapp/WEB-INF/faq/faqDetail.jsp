@@ -215,7 +215,7 @@ $(document).ready(function(){
 					</tbody>
 				
 				</table>				
-				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/faq/faqList.ddg'" style="float: right; ">돌아가기</button>
+				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<%=ctxPath%>/faq/faqList.ddg?searchType=${requestScope.searchType}&sizePerPage=10&searchWord=${requestScope.searchWord}&currentShowPageNo=${requestScope.currentShowPageNo}'" style="float: right; ">돌아가기</button>
 				<c:if test="${sessionScope.loginuser.role == 2}">
 				<button type="button" class="btn btn-outline-danger" onclick="deletefaq()" style="float: right; margin-right:0.8%">글삭제</button>
 				<button type="button" class="btn btn-outline-success" style="float: right; margin-right:0.8%" id="FaqModalUpdateOpen">글수정</button>
