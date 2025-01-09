@@ -26,7 +26,7 @@ public class FaqList extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpSession session = request.getSession();
+		super.goBackURL(request);
 		
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");

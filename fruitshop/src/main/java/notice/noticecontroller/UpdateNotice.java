@@ -21,6 +21,8 @@ public class UpdateNotice extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		super.goBackURL(request);
+		
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");

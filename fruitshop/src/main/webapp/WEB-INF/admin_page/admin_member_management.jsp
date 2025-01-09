@@ -18,6 +18,13 @@ $(document).ready(function(){
 	
 	const searchType = '${requestScope.searchType}';
 	
+	
+	const memberfrm = document.member_management_frm;
+	
+	if(${empty requestScope.currentShowPageNo}){
+		memberfrm.currentShowPageNo.value = 1;
+	}
+	
 	if(searchWord != ""){
 		$("input:text[name='searchWord']").val(searchWord);
 	}

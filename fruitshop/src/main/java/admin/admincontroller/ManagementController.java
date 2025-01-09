@@ -54,7 +54,7 @@ public class ManagementController extends AbstractController {
 			String userid = loginuser.getUserid();
 			String sizePerPage = "10";
 			
-			if(currentShowPageNo == null) {
+			if(currentShowPageNo == null || currentShowPageNo == "") {
 				currentShowPageNo = "1";
 			}
 			
