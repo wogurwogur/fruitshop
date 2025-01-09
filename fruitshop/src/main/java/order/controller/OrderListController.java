@@ -18,6 +18,8 @@ public class OrderListController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		super.goBackURL(request);
+		
 //		로그인을 한 유저만 주문목록 페이지로 진입할 수 있게 한다.
 		
 		request.setAttribute("mypage_val", "orderList");

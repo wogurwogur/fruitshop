@@ -177,7 +177,7 @@ public class OrderCheckoutEnd extends AbstractController {
 					
 					sb.append("<table style=\"text-align: center; border-collapse: collapse; width: 100%;\"><thead>");
 					sb.append("<tr style=\"background-color: #eee; border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">");
-					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">이미지</th>");
+					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\"></th>");
 					sb.append("<th style=\"width: 50%; border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">상품명</th>");
 					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">수량</th>");
 					sb.append("<th style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-size: 15px;\">가격</th> </tr></thead><tbody>");
@@ -188,8 +188,8 @@ public class OrderCheckoutEnd extends AbstractController {
 					int price_sum = 0;
 					// 상품정보
 					for (Map<String, String> map :orderDetailList) {
-						sb.append("<tr style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 300;\">");
-						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\"><img src='http://127.0.0.1:9090/fruitshop/images/"+map.get("prod_thumnail")+"' /></td>");
+						sb.append("<tr style=\"border: solid 1px black;\">");
+						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\"><a href='http://127.0.0.1:9090/fruitshop/product/productDetail.ddg?prodNo="+map.get("fk_prod_no")+"'><img style= \"padding-top: 3px; width: 50px; height: 40px;\" src='http://127.0.0.1:9090/fruitshop/images/product/thumnail/"+map.get("prod_thumnail")+"' /></a></td>");
 						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ map.get("prod_name") +"</td>");
 						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(map.get("ordetail_count"))) +"</td>");
 						sb.append("<td style=\"border: solid 1px black; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 14px;\">"+ df.format(Integer.parseInt(map.get("ordetail_price"))) +"</td></tr>");
@@ -224,9 +224,15 @@ public class OrderCheckoutEnd extends AbstractController {
 					sb.append("</div><div style=\"margin-top: 2%; background-color: black; color: white;\">");
 					
 					sb.append("<div style=\"padding-top: 1.5%; margin-left: 7.5%; margin-bottom: 1.5%;\">");
-					sb.append("<img style=\"top:20px;\" id=\"footer_img\" src=\"http://127.0.0.1:9090/fruitshop/images/logo_footer.png\"></div>");
-					sb.append("<hr style=\"border: solid 1px white;\"><br>");
-					sb.append("<div style=\"text-align: center; padding-bottom: 3%;\">");
+					sb.append("<a href='http://127.0.0.1:9090/fruitshop/'><img style=\"top:20px;\" id=\"footer_img\" src=\"http://127.0.0.1:9090/fruitshop/images/index/logo_footer.png\" /></a></div>");
+					sb.append("<hr style=\"border: solid 1px white;\">");
+					
+					sb.append("<div style=\"width: 100%; margin:0 auto; margin-bottom:2.3%;\">");
+					sb.append("<p style=\" text-align: center; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">고객센터 2222-2222&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;09:00 ~ 18:00</p>");
+					sb.append("<p style=\" text-align: center; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\">서울 마포구 월드컵북로 21 풍성빌딩 쌍용강북교육센터 3층 G강의실</p>");
+					sb.append("</div><hr style=\"border: solid 1px white;\">");
+					
+					sb.append("<div style=\"text-align: center; padding: 0.1% 0 1% 0;\">");
 					sb.append("<p style=\"font-family: 'Noto Sans KR', sans-serif; font-weight: 400;\"><span style=\"font-weight: bold;\">Copyright</span> &copy; 싱싱 과일쇼핑몰. All right reserved.</p>");
 					sb.append("</div></div></div></div>");
 					

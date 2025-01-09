@@ -10,6 +10,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
+
+.loader {
+  border: 12px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 12px solid #3498db;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  top: 340px;
+  left: 850px;
+  position: absolute;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
@@ -95,7 +121,7 @@ $(document).ready(function() {
 					console.log("확인용 json", json);
 					
 					if (json.isComplete == 1) {
-						alert("주문을 성공했습니다.");
+						alert("주문이 완료되었습니다.");
 						location.href = "${pageContext.request.contextPath}/order/orderList.ddg";
 					}
 				},
@@ -137,7 +163,7 @@ $(document).ready(function() {
 
 </script>
 </head>	
-
 <body>
+	<div class="loader"></div>
 </body>
 </html>
