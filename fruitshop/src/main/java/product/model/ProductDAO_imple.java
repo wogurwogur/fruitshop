@@ -646,7 +646,7 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			String sql = " select count(*) "
 					   + " from tbl_reviews "
-					   + " where fk_prod_no = ? ";
+					   + " where fk_prod_no = ? and review_status = 1 ";
 			
 			
 			pstmt = conn.prepareStatement(sql);
@@ -720,7 +720,7 @@ public class ProductDAO_imple implements ProductDAO {
 					   + "    select review_no, review_title, review_contents, M.userid, review_regidate "
 					   + "    from tbl_reviews R "
 					   + "    join tbl_member M on R.fk_user_no = M.user_no "
-					   + "    where R.fk_prod_no = ? "
+					   + "    where R.fk_prod_no = ? and review_status = 1 "
 					   + "    order by review_regidate desc "
 					   + "    ) V "
 					   + " ) T "
@@ -786,7 +786,7 @@ public class ProductDAO_imple implements ProductDAO {
 					   + "   from tbl_qna Q "
 					   + "   join tbl_member M "
 				 	   + "   on Q.fk_user_no = M.user_no "
-					   + "   where Q.fk_prod_no = ? "
+					   + "   where Q.fk_prod_no = ? and qna_status = 1 "
 					   + "   order by qna_regidate desc "
 					   + "   ) V "
 					   + " ) T "
@@ -842,7 +842,7 @@ public class ProductDAO_imple implements ProductDAO {
 			
 			String sql = " select count(*) "
 					   + " from tbl_qna "
-					   + " where fk_prod_no = ? ";
+					   + " where fk_prod_no = ? and qna_status = 1 ";
 			
 			
 			pstmt = conn.prepareStatement(sql);
@@ -878,7 +878,7 @@ public class ProductDAO_imple implements ProductDAO {
 	          
 	        String sql = " select count(*) "
 	                   + " from tbl_reviews "
-	                   + " where fk_prod_no = ? ";	
+	                   + " where fk_prod_no = ? and review_status = 1 ";	
 	        pstmt =conn.prepareCall(sql);
 	        pstmt.setString(1, prodNo);
 	        
