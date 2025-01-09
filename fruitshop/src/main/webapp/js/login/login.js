@@ -69,7 +69,7 @@ function goLogin() {
 						
 						const goBackURL = json.goBackURL
 						
-						if(goBackURL != "") {
+						if(goBackURL != null) {
 							location.href="/fruitshop"+goBackURL;
 						}
 						else {
