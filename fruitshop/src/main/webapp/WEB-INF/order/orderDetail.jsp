@@ -224,7 +224,6 @@ function goCancel() {
 	  
 	    		<!-- Modal header -->
 				<div class="modal-header">
-	  				<h4 class="modal-title text-center"></h4>
 	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
 				</div>
 	
@@ -252,11 +251,10 @@ function goCancel() {
 		<div class="modal-dialog modal-dialog-centered modal-sm">
 	  		<div class="modal-content">
 	  
-	    		<!-- Modal header 
+	    		<!-- Modal header --> 
 				<div class="modal-header">
-	  				<h4 class="modal-title text-center">교환 / 반품 신청</h4>
 	  				<button type="button" class="close #updateConfirm" data-dismiss="modal">&times;</button>
-				</div>-->
+				</div>
 	
 				<!-- Modal body -->
 				<div class="modal-body">
