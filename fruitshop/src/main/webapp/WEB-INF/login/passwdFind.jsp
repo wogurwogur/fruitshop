@@ -51,7 +51,32 @@ $(()=>{
 
 	     
 	     
-	     
+	$("input:text[name='input_confirmCode']").bind("keyup", function(e){
+		if(e.keyCode == 13) {
+			
+			const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
+	    	 
+			if(input_confirmCode =="") {
+				$("span#error").html("인증코드를 입력하세요.");
+				return;
+		    }	 
+			const frm =document.verifyCertificationFrm;
+			frm.userCertificationCode.value = input_confirmCode;
+			frm.userid.value = $("input:text[name='userid']").val();
+			frm.page.value = "비밀번호찾기";
+				    	 
+			frm.action = "<%=request.getContextPath()%>/login/verifyCertification.ddg";
+			frm.method = "post";
+			frm.submit();
+			
+			
+			
+	 	}
+	});
+	
+	
+	
+	
 	$("button#verifyCertification").click( ()=>{
 	    	 
 		const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
@@ -70,6 +95,10 @@ $(()=>{
 		frm.submit();
 
 	});
+	
+	
+	
+	
 	
 	$("button#back").click( e=>{
 		location.href="<%=request.getContextPath() %>/login/login.ddg";

@@ -7,6 +7,7 @@ import java.util.Map;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import member.model.MemberDAO;
 import member.model.MemberDAO_imple;
 
@@ -32,33 +33,16 @@ public class UseridRecoveryEnd extends AbstractController {
 	    	
 	    	int n = mdao.useridRecovery(paraMap);
 	    	
-	    	System.out.println("n : " + n);
+	    	HttpSession session = request.getSession();
+
+    	    session.removeAttribute("verifyCertification"); 
 	    	
-	    	if(n==1) {
-	    		
-	    		String message = "휴면계정을 복구하였습니다.";
-				String loc = request.getContextPath() + "/login/login.ddg";
-	    		request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
-				super.setRedirect(false); 
-				super.setViewPage("/WEB-INF/common/msg.jsp");
-				
-				return;
-	    	}
-	    	else {
-	    		String message = "휴면계정 복구 실패.";
-				String loc = request.getContextPath() + "index.ddg";
-	    		request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
-				super.setRedirect(false); 
-				super.setViewPage("/WEB-INF/common/msg.jsp");
-				
-				return;
-	    	}
-	    	
+    	    request.setAttribute("n", n);
+
 	    }
-			
+	    
 	    request.setAttribute("userid", userid);
+	    request.setAttribute("method", method);
 	    
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/login/useridRecoveryEnd.jsp");
