@@ -317,7 +317,7 @@ int n = 0;
 				sql += " and  " +colname+ " like '%'|| ? ||'%' "
 						+ " order by faq_regidate desc ";
 			}else {
-				sql += " order by notice_regidate desc ";
+				sql += " order by faq_regidate desc ";
 			}
 			
 			sql += " ) V "
