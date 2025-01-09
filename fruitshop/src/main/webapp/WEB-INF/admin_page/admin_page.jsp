@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>독독고 과일판매</title>
+<link rel="shortcut icon" type="image⁄x-icon" href="/fruitshop/images/index/title_logo.png">
 </head>
 <body>
 
