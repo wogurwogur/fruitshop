@@ -19,11 +19,11 @@ $(document).ready(function(){
 	const searchType = '${requestScope.searchType}';
 	
 	if(searchWord != ""){
-		$("input:text[name='searchWord']").text(searchWord);
+		$("input:text[name='searchWord']").val(searchWord);
 	}
 	
 	if(searchType != ""){
-		$("select[name='searchType']")
+		$("select[name='searchType']").val(searchType);
 	}
 	
 	$("input:text[name='searchWord']").bind("keydown", function(e){
@@ -49,7 +49,6 @@ function memberDetail(user_no, currentShowPageNo){
 	memberfrm.searchType.value = searchType;
 	memberfrm.searchWord.value = searchWord;
 	memberfrm.action = "<%=ctxPath%>/admin/adminMemberDetail.ddg";
-	memberfrm.method = "post";
 	
 	
 	memberfrm.submit();
@@ -73,7 +72,6 @@ function memberSearch(){
 	}
 	
 	
-	
 	const memberfrm = document.member_management_frm;
 	
 	
@@ -81,7 +79,6 @@ function memberSearch(){
 	memberfrm.searchWord.value = searchWord;
 	memberfrm.currentShowPageNo.value = ${requestScope.currentShowPageNo};
 	memberfrm.action = "<%=ctxPath%>/admin/adminManagement.ddg";
-	memberfrm.method = "post";
 	memberfrm.submit();
 	
 }

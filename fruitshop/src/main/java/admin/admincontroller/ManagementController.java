@@ -74,7 +74,7 @@ public class ManagementController extends AbstractController {
 			paraMap.put("searchWord", searchWord);			
 			paraMap.put("currentShowPageNo", currentShowPageNo);
 			paraMap.put("userid", userid);
-			List<MemberVO> member_allList = null;
+			
 			
 			int totalPage = adao.getTotalPage(paraMap);
 			
@@ -140,7 +140,9 @@ public class ManagementController extends AbstractController {
 	        
 	        
 			try {
-				member_allList = adao.select_Member_paging(paraMap);
+				List<MemberVO> member_allList = adao.select_Member_paging(paraMap);
+				
+				request.setAttribute("member_allList", member_allList);
 			}catch(SQLException e) {
 				e.printStackTrace();
 				
@@ -151,7 +153,7 @@ public class ManagementController extends AbstractController {
 			
 			request.setAttribute("pageBar", pageBar);
 			
-			request.setAttribute("member_allList", member_allList);
+			
 			
 			request.setAttribute("searchType", searchType);
 			

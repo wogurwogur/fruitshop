@@ -15,6 +15,19 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	const searchWord = '${requestScope.searchWord}';
+	
+	const searchType = '${requestScope.searchType}';
+	
+	if(searchWord != ""){
+		$("input:text[name='searchWord']").val(searchWord);
+	}
+	
+	if(searchType != ""){
+		$("select[name='searchType']").val(searchType);
+	}
+	
 	$("input:text[name='searchWord']").bind("keydown", function(e){
 		
 		if(e.keyCode == 13){

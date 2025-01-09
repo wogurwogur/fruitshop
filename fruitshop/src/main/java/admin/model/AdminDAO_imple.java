@@ -299,7 +299,7 @@ public class AdminDAO_imple implements AdminDAO {
 					+ "      ( "
 					+ "        select userid, name, email, gender, user_no, address, detailaddress, extraaddress, tel, registerday "
 					+ "        from tbl_member "
-					+ "        where userid != ? ";
+					+ "        where userid != 'admin' ";
 
 			
 			String colname = paraMap.get("searchType");
@@ -336,15 +336,13 @@ public class AdminDAO_imple implements AdminDAO {
 		    //         ( searchWord != null && !searchWord.trim().isEmpty() ) ) {
 			// 검색이 있는경우
 			if(!colname.isBlank() && !searchWord.isBlank()) {
-				pstmt.setString(1, paraMap.get("userid"));
-				pstmt.setString(2, searchWord);
-				pstmt.setInt(3, (currentShowPageNo*sizePerPage) - (sizePerPage-1));	//  공
-				pstmt.setInt(4, (currentShowPageNo*sizePerPage));
-				
-			}else {
-				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setString(1, searchWord);
 				pstmt.setInt(2, (currentShowPageNo*sizePerPage) - (sizePerPage-1));	//  공
 				pstmt.setInt(3, (currentShowPageNo*sizePerPage));
+				
+			}else {
+				pstmt.setInt(1, (currentShowPageNo*sizePerPage) - (sizePerPage-1));	//  공
+				pstmt.setInt(2, (currentShowPageNo*sizePerPage));
 			}
 			
 			// 검색이 없는경우
@@ -394,7 +392,7 @@ public class AdminDAO_imple implements AdminDAO {
 		
 		String sql = " select  count(coupon_no) "
 				+ " from tbl_coupons "
-				+ " where fk_user_no = ? ";
+				+ " where fk_user_no = ? and  coupon_expire > sysdate ";
 		
 		pstmt = conn.prepareStatement(sql);
 		

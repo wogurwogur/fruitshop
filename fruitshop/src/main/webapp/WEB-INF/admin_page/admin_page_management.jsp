@@ -70,15 +70,31 @@ $(document).ready(function(){
 	        
 	        console.log(total_fileSize);
 	        
-	 }
+	 	}
 		
 	   // 제품등록하기
 
 	});
 	
     $("button#mainImgModalSubmit").click(function(){
- 	   
     	
+    	const input_file = $("input[name='mainImg_file']").get(0);
+    	
+		reader.onload = (e) => {
+	        let img_src = reader.result;
+	        
+	        document.getElementById('uploadPreview').src = img_src;
+	        
+	        total_fileSize = input_file.files[0].size;
+	        
+	        console.log(total_fileSize);
+	        
+	 	}
+        
+        if(total_fileSize == 0){
+        	alert("사진을 등록해주세요.");
+        	return;
+        }
     	
  	    let is_infoData_OK = true;
  		   
@@ -322,8 +338,8 @@ div#admin_top_nav_center{
 			<c:forEach items="${requestScope.imgList}" var="imgs" varStatus="index">
 				<tr style="cursor:pointer;" onclick="mainImgDetail('${imgs.imgno}','${index.count}')">
 				
-					<td>${imgs.imgname}</td>
-					<td>${imgs.imgfilename}</td>
+					<td style="vertical-align: middle;">${imgs.imgname}</td>
+					<td style="vertical-align: middle;">${imgs.imgfilename}</td>
 					<td><img class="" alt="" src="<%=ctxPath %>/images/index/${imgs.imgfilename}" width="100" height="100" style="border-radius: 10%"></td>
 				</tr>
 				
