@@ -80,8 +80,15 @@ public class UpdateInfo extends AbstractController {
 			        	loginuser.setDetailaddress(member.getDetailaddress());
 			        	loginuser.setExtraaddress(member.getExtraaddress());
 			     
-						super.setRedirect(false);
-						super.setViewPage("/WEB-INF/mypage/updateInfo.jsp");
+			        	String message = "정보 수정 완료";
+						String loc = request.getContextPath()+"/mypage/mypageIndex.ddg";
+						
+						request.setAttribute("message", message);
+					    request.setAttribute("loc", loc);
+					        
+					    super.setRedirect(false);
+					    super.setViewPage("/WEB-INF/common/msg.jsp");
+						
 			        }
 			        
 				} catch (SQLException e) {
