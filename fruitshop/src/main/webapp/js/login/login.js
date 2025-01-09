@@ -48,7 +48,7 @@ function goLogin() {
 		url: "login.ddg",
 		data: { "userid": $("input#loginUserid").val(), "passwd": $("input#loginPasswd").val() },
 		type: "post",
-		async: true,
+		async: false,
 		dataType: "JSON",
 		success: function(json) {
 			
