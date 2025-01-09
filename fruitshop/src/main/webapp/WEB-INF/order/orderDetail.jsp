@@ -35,7 +35,7 @@ $(document).ready(()=> {
 
 // 구매후기로 가는 함수
 function goReview(prod_no) {
-	alert("주문번호:"+ prod_no);
+	//alert("주문번호:"+ prod_no);
 	location.href=`${pageContext.request.contextPath}/community/productCarrier.ddg?prod_no=\${prod_no}`;
 }// end of function goReview() ------------------- 
 
