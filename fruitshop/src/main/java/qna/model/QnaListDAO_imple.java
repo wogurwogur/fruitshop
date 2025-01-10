@@ -211,33 +211,39 @@ public class QnaListDAO_imple implements QnaListDAO {
 	
 	// qna 게시판 글쓰기 상품 등록하기 리스트 보여주기
 	@Override
-	public List<QnaListVO> qproductFind() throws SQLException {
+	public List<QnaListVO> oqproductFind(int fk_user_no) throws SQLException {
 		
-		List<QnaListVO> qproductList = new ArrayList<>();
+		List<QnaListVO> oqproductList = new ArrayList<>();
 		
 		try {
 			
 			conn=ds.getConnection();
 		
-			String sql = " select prod_no, prod_name, prod_price, prod_thumnail "
-						+ " from tbl_products "
-						+ " where prod_status = 1 ";
+			String sql = " select D.ordetail_no, P.prod_no, P.prod_name, P.prod_thumnail, P.prod_price "
+					+ " from tbl_orderdetail D "
+					+ " JOIN tbl_order O "
+					+ " on D.fk_order_no = O.order_no "
+					+ " JOIN tbl_products P "
+					+ " on D.fk_prod_no = P.prod_no "
+					+ " where O.fk_user_no = ? and prod_status = 1 ";
 		
 				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, fk_user_no);
 				
 				rs = pstmt.executeQuery();
 				
 				while (rs.next()) {
 				
-					QnaListVO qpl = new QnaListVO();
+					QnaListVO oqpl = new QnaListVO();
 				
-				qpl.setProd_no(rs.getInt("prod_no"));
-				qpl.setProd_name(rs.getString("prod_name"));
-				qpl.setProd_price(rs.getInt("prod_price"));
-				qpl.setProd_thumnail(rs.getString("prod_thumnail"));
+				oqpl.setProd_no(rs.getInt("prod_no"));
+				oqpl.setProd_name(rs.getString("prod_name"));
+				oqpl.setProd_price(rs.getInt("prod_price"));
+				oqpl.setProd_thumnail(rs.getString("prod_thumnail"));
 				
 								
-				qproductList.add(qpl);
+				oqproductList.add(oqpl);
 				
 				}
 				
@@ -247,7 +253,7 @@ public class QnaListDAO_imple implements QnaListDAO {
 		
 		
 			
-		return qproductList;
+		return oqproductList;
 	}
 
 	
@@ -470,28 +476,28 @@ public class QnaListDAO_imple implements QnaListDAO {
 			    	    + "        FROM tbl_qna q "
 			    	    + "        INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
 			    	    + "        INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
-			    	    + "        WHERE q.qna_status = 1 "
 			    	    + "          AND q." + colname + " LIKE '%' || ? || '%' "
+			    	    + "        WHERE q.qna_status = 1 "			    	    
 			    	    + "    ) A "
 			    	    + " ) C "
 			    	    + " WHERE C.RNO BETWEEN ? AND ? ";
 			    	} else {
 			    	    // 검색 조건이 없는 경우
 			    	    sql = " SELECT * "
-			    	        + " FROM ( "
-			    	        + "    SELECT ROWNUM AS RNO, A.qna_status, A.qna_contents, A.qna_no, A.qna_title, "
-			    	        + "           A.qna_answer, A.qna_viewcount, A.qna_regidate, A.user_no, A.userid, A.prod_name "
-			    	        + "    FROM ( "
-			    	        + "        SELECT q.qna_answer, q.qna_status, q.qna_no, q.qna_title, q.qna_viewcount, q.qna_regidate, "
-			    	        + "               q.fk_user_no, q.qna_contents, m.user_no, func_userid_block(m.userid) AS userid, p.prod_name "
-			    	        + "        FROM tbl_qna q "
-			    	        + "        INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
-			    	        + "        INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
-			    	        + "        WHERE q.qna_status = 1 "
-			    	        + "        ORDER BY q.qna_no DESC "
-			    	        + "    ) A "
-			    	        + " ) C "
-			    	        + " WHERE C.RNO BETWEEN ? AND ? ";
+			    	    		+ " FROM ( "
+			    	    		+ " SELECT ROWNUM AS RNO, A.qna_status, A.qna_contents, A.qna_no, A.qna_title, "
+			    	    		+ " A.qna_answer, A.qna_viewcount, A.qna_regidate, A.user_no, A.userid, A.prod_name "
+			    	    		+ " FROM ( "
+			    	    		+ " SELECT q.qna_answer, q.qna_status, q.qna_no, q.qna_title, q.qna_viewcount, q.qna_regidate, "
+			    	    		+ " q.fk_user_no, q.qna_contents, m.user_no, func_userid_block(m.userid) AS userid, p.prod_name "
+			    	    		+ " FROM tbl_qna q "
+			    	    		+ " INNER JOIN tbl_member m ON q.fk_user_no = m.user_no "
+			    	    		+ " INNER JOIN tbl_products p ON q.fk_prod_no = p.prod_no "
+			    	    		+ " WHERE q.qna_status = 1 "
+			    	    		+ " ORDER BY q.qna_no DESC "
+			    	    		+ " ) A "
+			    	    		+ " ) C "
+			    	    		+ " WHERE C.RNO BETWEEN ? AND ? ";
 			}
 
 			pstmt = conn.prepareStatement(sql);
@@ -507,7 +513,6 @@ public class QnaListDAO_imple implements QnaListDAO {
 			}
 
 			rs = pstmt.executeQuery();
-			
 			while(rs.next()) {
 				
 				QnaListVO qvo = new QnaListVO();
@@ -524,10 +529,7 @@ public class QnaListDAO_imple implements QnaListDAO {
 				
 				qnaList.add(qvo);
 				
-				
-				
 			}
-			
 			
 		} finally {
 			close();

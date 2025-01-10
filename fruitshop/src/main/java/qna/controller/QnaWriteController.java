@@ -68,7 +68,7 @@ public class QnaWriteController extends AbstractController {
 		        
 		        	 
 		        	 super.setRedirect(false);
-		        	 super.setViewPage("/WEB-INF/qna/qnaList.jsp");
+		        	 super.setViewPage("/qna/qnaList.ddg");
 		        	 
 		         }
 	         
@@ -92,10 +92,12 @@ public class QnaWriteController extends AbstractController {
 		
 		else {
 			
-			List<QnaListVO> qproductList = qdao.qproductFind();		
+			int fk_user_no = loginuser.getUser_no();
+			List<QnaListVO> oqproductList = qdao.oqproductFind(fk_user_no);		
 			
-			request.setAttribute("qproductList", qproductList);
+			request.setAttribute("oqproductList", oqproductList);
 			
+			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/qna/qnaWrite.jsp");
 			
 		}

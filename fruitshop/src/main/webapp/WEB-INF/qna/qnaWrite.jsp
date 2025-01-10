@@ -7,13 +7,19 @@
     String ctxPath = request.getContextPath();
 %> 
 
-
+<% 
+    String prod_no = request.getParameter("prod_no");
+%> 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 <script type="text/javascript">
 
 
 $(document).ready(function(){
+	
+	// 다른데서 넘어온지 확인(모달 버튼 유무)
+	if(<%= prod_no%> == null){
+	
 	const writeModalOpen = document.getElementById('writeModalOpen');
 	const writeModalClose = document.getElementById('writeModalClose');
 	const modal = document.getElementById('modalContainer');
@@ -26,6 +32,14 @@ $(document).ready(function(){
 	writeModalClose.addEventListener('click', () => {
 	  modal.classList.add('hidden');
 	});	
+	
+	}
+	else{
+		
+		$('input[name="prodNo"]').val(<%= prod_no%>);
+		console.log('prodNo의 값:', $('input[name="prodNo"]').val());
+		
+	}
 		
 });
 
@@ -171,7 +185,7 @@ function getUrlParameter(name) {
 		<div class="text-center" style="margin-top: 4%; font-size:40pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">여러분의 이야기를 들려주세요</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -189,66 +203,66 @@ function getUrlParameter(name) {
 		
 	</div>
 	
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 
-	<div id="product" class="d-flex justify-content-center mt-5"> 
+	<div id="product" class="d-flex justify-content-center mt-3"> 
 	
-		<div class="" style="display:flex; width:70%; height:250px;">
+		<div class="" style="display:flex; width:60%; height:250px; margin-right:6%; background-color:#F7F7F7">
 			
-			<%-- 상품 썸네일 --%>
-			
-			<c:if test="${not empty prod_no} ">
-				<div class="border ml-4 d-flex" style="width:15%; height:80%;">		
+			<%-- 타페이지에서 값 받아올때 --%>		
+			<%-- 상품 썸네일 --%>		
+			<c:if test="${not empty qpcarrier.prod_no}">
+				<div class="border ml-4 mt-4 d-flex" style="width:15%; height:80%;">		
 					<div class="d-flex justify-content-center" id="productSelectEnd">					
-							<i class="fas fa-image fa-3x" style=""></i>					
+							<img src="<%= ctxPath%>/images/product/thumnail/${(requestScope.qpcarrier).prod_thumnail}" width="200" height="200"/>					
 					</div>				
 				</div>
 				<%-- 상품 이름 --%>
-				<div class="" style="width:50%; height:80%;">
-					<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
-						<span style="font-size:17pt;"></span>			
+				<div class="" style="width:50%; height:80%; margin-top:3%;">
+					<div id="productSelectEnd2" style="margin-left:8%; margin-top:7%;" >
+						<span style="font-size:17pt;">${(requestScope.qpcarrier).prod_name}</span>			
 					</div>
 				
-					<%-- 상품 가격 --%>
-					    <div id="8tEnd3" style="margin-left:5%; margin-top:5%;">
-						<span style="font-size:17pt;"></span>
+				<%-- 상품 가격 --%>
+					<div id="productSelectEnd3" style="margin-left:8%; margin-top:5%;">
+						<span style="font-size:17pt;"><fmt:formatNumber value="${(requestScope.qpcarrier).prod_price}" pattern="#,###"/>원</span>
 					</div>
-				</div>
-						
+				</div>						
 			</c:if>
 			
+			
+			<%-- 그냥 볼때 --%>
+			<c:if test="${empty qpcarrier.prod_no}">
 			<%-- 상품 썸네일 --%>
-			<div class="ml-4 d-flex" style="width:15%; height:80%;">		
+			<div class="ml-4 mt-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
-						<img src="<%= ctxPath%>/images/review/singsingw.jpg" style="width:202px; height:202px;"/>				
+						<img src="<%= ctxPath%>/images/review/singsingbw.png" style="width:202px; height:202px;"/>				
 				</div>				
 			</div>
 			<%-- 상품 이름 --%>
-			<div class="" style="width:50%; height:80%;">
-				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+			<div class="" style="width:50%; height:80%; margin-top:3%;">
+				<div id="productSelectEnd2" style="margin-left:8%; margin-top:7%;" >
 					<span style="font-size:17pt;"></span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
+				<div id="productSelectEnd3" style="margin-left:8%; margin-top:5%;">
 					<span style="font-size:17pt;"></span>
 				</div>
-			</div>
-			
-			
-			<c:if test="${empty prod_no}"></c:if> 
+			</div>					
 			<%-- 상품정보선택 버튼 , 상품 상세페이지 버튼 --%>			
 			<div class="ml-auto d-flex align-items-center" style="margin-right:10%;">
-				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
-				
-			</div>	
+				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>									
+			</div>
+			</c:if>	
 		</div>
 	</div>
 	
 	<div id="modalContainer" class="hidden" >
 	  <div id="modalContent">
-	    <div class="container mt-5" style="overflow: auto; width:440px; height:380px; margin: auto;">
+	  	<div style="text-align:center; margin-top:2%;"><h5>내가 구매한 상품</h5></div>
+	    <div class="container" style="overflow: auto; width:440px; height:380px; margin: auto;">	    
 	    	<table class="table" style="text-align:center;">
 	    		<thead>
 	    			<tr>
@@ -258,15 +272,15 @@ function getUrlParameter(name) {
 					</tr>
 	    		</thead>
 	    		<tbody style="text-align:center;">
-	    			<c:forEach var="qpl" items="${requestScope.qproductList}">
-		    			<tr onclick="productSelect('${qpl.prod_no}')">
-							<td><img src="<%= ctxPath%>/images/product/thumnail/${qpl.prod_thumnail}" width="50" height="50"/></td>
-							<td>${qpl.prod_name}</td>	
-							<td><fmt:formatNumber pattern="###,###">${qpl.prod_price}</fmt:formatNumber>원</td>
+	    			<c:forEach var="oqpl" items="${requestScope.oqproductList}">
+		    			<tr onclick="productSelect('${oqpl.prod_no}')">
+							<td><img src="<%= ctxPath%>/images/product/thumnail/${oqpl.prod_thumnail}" width="50" height="50"/></td>
+							<td>${oqpl.prod_name}</td>	
+							<td style=""><fmt:formatNumber pattern="###,###">${oqpl.prod_price}</fmt:formatNumber>원</td>
 						</tr>
 					</c:forEach>	
 					<tr>
-	    				<td><button class="btn btn-outline-secondary" type="button" id="writeModalClose">나가기</button></td>
+	    				<td style="border-top:none"><button class="btn btn-outline-dark" type="button" id="writeModalClose">나가기</button></td>
 	    			</tr>
 	    		</tbody>
 	    	</table>
@@ -274,7 +288,7 @@ function getUrlParameter(name) {
 	  </div>
 	</div> 
 	
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 
 <%-- 제목 --%>
@@ -287,7 +301,7 @@ function getUrlParameter(name) {
 		</div>	
 	</div>
 
-<hr class="mt-5" style="width:63%; margin-left:15.5%;">
+<hr class="mt-5" style="width:60%; margin-left:17.1%;">
 
 <%-- 내용 --%>
 

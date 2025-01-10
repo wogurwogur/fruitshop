@@ -117,10 +117,10 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 <div class="container-fluid">
 
 	<div>
-		<div class="text-center" style="margin-top: 4%; font-size:30pt">Community</div>
-	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">우리함께 나누는 싱싱한 이야기</div>
+		<h1 class="text-center" style="margin-top: 4%;">Community</h1>
+		<div class="font-weight-lighter text-center my-3">우리함께 나누는 싱싱한 이야기</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -173,7 +173,6 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 						<input type="text" name="currentShowPageNo" style="display:none" />
 						<input type="text" style="display:none"  />
 							<c:forEach var="qvo" items="${requestScope.qnaList}" varStatus="status">
-								<c:if test="${qvo.qna_viewcount > 0}">
 								<tr class="qnaRead" onclick="trclick1('${qvo.qna_no}')">					
 									<td class="qna_no">${qvo.qna_no}</td>														
 									<td><span class="text-body font-weight-bold">[${qvo.prod_name}]</span>&nbsp;&nbsp;${qvo.qna_title}
@@ -184,8 +183,7 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 									<td>${qvo.userid}</td>
 									<td>${qvo.qna_regidate}</td>
 									<td>${qvo.qna_viewcount}</td>						
-								</tr>
-								</c:if>							
+								</tr>						
 							</c:forEach>
 							<input type="hidden" id="qna_noo" name="qna_noo"/>
 					</form>

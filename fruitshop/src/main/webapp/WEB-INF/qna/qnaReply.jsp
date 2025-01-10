@@ -35,6 +35,8 @@
 	   
 	frm.submit(); 
 	
+	alert("답글 작성 완료 !!")
+	
 };
 
 
@@ -52,7 +54,7 @@
 		<div class="text-center" style="margin-top: 4%; font-size:40pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">여러분의 이야기를 들려주세요</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navb ar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>

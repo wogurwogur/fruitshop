@@ -21,7 +21,7 @@ public interface QnaListDAO {
 	int qnaWrite(QnaListVO qnaWrite) throws SQLException;
 	
 	// qna 게시판 글쓰기 상품 등록하기 리스트 보여주기
-	List<QnaListVO> qproductFind() throws SQLException;
+	List<QnaListVO> oqproductFind(int fk_user_no) throws SQLException;
 	
 	// qna 게시판 글 삭제하는 메소드
 	int qnaDelete(String qna_no) throws SQLException;
@@ -44,5 +44,10 @@ public interface QnaListDAO {
 	
 	// 관리자 qna 글 답글 달기
 	int qnaReply(QnaListVO qnaReply) throws SQLException;
+
+	
+
+
+	
 
 }

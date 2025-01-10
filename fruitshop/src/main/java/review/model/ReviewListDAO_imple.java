@@ -555,6 +555,11 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 	
 	
 	
+	
+	
+	
+	
+	
 	// 구매후기글 상품 등록하기 상품 리스트 보여주기
 	@Override
 	public List<ReviewListVO> rproductFind() throws SQLException {
@@ -614,7 +619,7 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 			
 			String sql = " select prod_no, prod_name, prod_price, prod_thumnail "
 						+ " from tbl_products "
-						+ " where prod_no = ? ";
+						+ " where prod_no = ? and prod_status = 1 ";
 			
 						
 			pstmt = conn.prepareStatement(sql);
@@ -883,6 +888,99 @@ public class ReviewListDAO_imple implements ReviewListDAO {
 		
 
 		return pcarrier;
+	}
+
+	
+	
+	// 구매후기글 상품등록할때 구매한 상품리스트만 뜨기
+	@Override
+	public List<ReviewListVO> orproductList(int fk_user_no) throws SQLException {
+		
+		
+		List<ReviewListVO> orproductList = new ArrayList<>();
+		
+		try {
+			
+			conn=ds.getConnection();
+		
+			String sql = " select D.ordetail_no, P.prod_no, P.prod_name, P.prod_thumnail, P.prod_price "
+					+ " from tbl_orderdetail D "
+					+ " JOIN tbl_order O "
+					+ " on D.fk_order_no = O.order_no "
+					+ " JOIN tbl_products P "
+					+ " on D.fk_prod_no = P.prod_no "
+					+ " where O.fk_user_no = ? and prod_status = 1 ";
+		
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, fk_user_no);
+
+				
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+				
+				ReviewListVO orpl = new ReviewListVO();
+				
+				
+				orpl.setProd_no(rs.getInt("prod_no"));
+				orpl.setProd_name(rs.getString("prod_name"));
+				orpl.setProd_price(rs.getInt("prod_price"));
+				orpl.setProd_thumnail(rs.getString("prod_thumnail"));
+				
+								
+				orproductList.add(orpl);
+				
+				}
+				
+		} finally {
+			close();
+		}
+		
+		
+			
+		return orproductList;
+		
+		
+	}
+
+	// 타페이지에서 QnA 작성시 상품정보 가져오는 메소드
+	@Override
+	public ReviewListVO qProductCarrier(String prod_no) throws SQLException {
+		
+		ReviewListVO qpcarrier = new ReviewListVO();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select prod_no, prod_name, prod_price, prod_thumnail "
+						+ " from tbl_products "
+						+ " where prod_no = ? ";
+			
+						
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, prod_no);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				qpcarrier = new ReviewListVO();
+				
+				qpcarrier.setProd_no(rs.getInt("prod_no"));
+				qpcarrier.setProd_name(rs.getString("prod_name"));
+				qpcarrier.setProd_price(rs.getInt("prod_price"));
+				qpcarrier.setProd_thumnail(rs.getString("prod_thumnail"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+
+		return qpcarrier;
 	}
 	
 

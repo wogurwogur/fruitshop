@@ -16,7 +16,7 @@ public class ProductCarrierController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 			
-		
+		// 구매후기로 옮겨주는 캐리어임 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		
 		String method = request.getMethod();
 		

@@ -11,11 +11,19 @@
     String qnaNo = request.getParameter("qna_no");
 %>
 
+<% 
+    String prodNo = request.getParameter("prodNo");
+%>
+
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	$('input[name="prodNo"]').val(<%= prodNo%>);
+	console.log('prodNo의 값:', $('input[name="prodNo"]').val());
+	
 	const writeModalOpen = document.getElementById('writeModalOpen');
 	const writeModalClose = document.getElementById('writeModalClose');
 	const modal = document.getElementById('modalContainer');
@@ -23,13 +31,16 @@ $(document).ready(function(){
 
 	writeModalOpen.addEventListener('click', () => {
 	  modal.classList.remove('hidden');
+	  
+	  $('input[name="prodNo"]').val(null);
 	});
 
 	writeModalClose.addEventListener('click', () => {
 	  modal.classList.add('hidden');
+	  
+	  $('input[name="prodNo"]').val(null);
 	});	
 	
-	console.log(prodNo);
 		
 });
 
@@ -54,6 +65,7 @@ function productSelect(prod_no){
 			let p2_html = ``;
 			let p3_html = ``;
 			
+			const prod_price = (json.prod_price).toLocaleString('ko-KR');
 			
 			p1_html = "<img src = <%= ctxPath%>/images/product/thumnail/" + json.prod_thumnail + " width='200' height='200'/>";
 			
@@ -63,7 +75,7 @@ function productSelect(prod_no){
 			
 			$("div#productSelectEnd2").html(p2_html);
 			
-			p3_html = "<span style='font-size:17pt;'>"+ json.prod_price +"원</span>";
+			p3_html = "<span style='font-size:17pt;'>"+ prod_price +"원</span>";
 			
 			$("div#productSelectEnd3").html(p3_html);
 			
@@ -73,7 +85,7 @@ function productSelect(prod_no){
 			
 			frm.prodNo.value = json.prod_no;
 			 
-			
+			console.log(frm.prodNo.value);
 			
 				
 		},
@@ -89,14 +101,14 @@ function productSelect(prod_no){
 };
 
 
-function rvRegister(prod_no, qna_no){
+function rvRegister(qna_no){
 	
 	const frm = document.qnaWriteFrm;
 
-	console.log(prod_no);
+
 	console.log(qna_no);
 	
-	frm.prodNo.value = prod_no;
+
 	frm.qnaNo.value = qna_no;
 	
 	frm.method = "post";
@@ -105,9 +117,7 @@ function rvRegister(prod_no, qna_no){
 	
 	alert("QnA 수정 완료 !!")
 	
-	setTimeout(() => {
-	    location.href = "<%= ctxPath %>/qna/qnaList.ddg";
-	}, 300);
+
 	
 }
 
@@ -160,13 +170,15 @@ function rvRegister(prod_no, qna_no){
 }
 </style>
 
+
+
 <div class="container-fluid">
 
 	<div>
 		<div class="text-center" style="margin-top: 4%; font-size:40pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">여러분의 이야기를 들려주세요</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -185,39 +197,38 @@ function rvRegister(prod_no, qna_no){
 	</div>
 
 
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 
-	<div id="product" class="d-flex justify-content-center mt-5"> 
+	<div id="product" class="d-flex justify-content-center mt-3"> 
 	
-		<div class="" style="display:flex; width:70%; height:250px;">
+		<div class="" style="display:flex; width:60%; height:250px; margin-right:6%; background-color:#F7F7F7">
 			
-			<c:if test="${not empty requestScope.qproductList }">
+			<c:if test="${not empty requestScope.oqproductList }">
 			<%-- 상품 썸네일 --%>
-			<div class=" ml-4 d-flex" style="width:15%; height:80%;">		
+			<div class=" ml-4 mt-4 d-flex" style="width:15%; height:80%;">		
 				<div class="d-flex justify-content-center" id="productSelectEnd">					
 						<img src = "<%= ctxPath%>/images/product/thumnail/${qvo.prod_thumnail}" width="200px" height="200px";"/>					
 				</div>				
 			</div>
 			<%-- 상품 이름 --%>
-			<div class="" style="width:50%; height:80%;">
-				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+			<div class="" style="width:50%; height:80%; margin-top:3%;">
+				<div id="productSelectEnd2" style="margin-left:8%; margin-top:7%;" >
 					<span style="font-size:17pt;">${qvo.prod_name }</span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
-					<span style="font-size:17pt;">${qvo.prod_price }</span>
+				<div id="productSelectEnd3" style="margin-left:8%; margin-top:5%;">
+					<span style="font-size:17pt;"><fmt:formatNumber pattern="###,###">${qvo.prod_price}</fmt:formatNumber>원</span>
 				</div>
 			</div>
-			</c:if>
-			
-			
+							
 			<%-- 상품정보선택 버튼 , 상품 상세페이지 버튼 --%>			
 			<div class="ml-auto d-flex align-items-center" style="margin-right:10%;">
 				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
 				
 			</div>	
+			</c:if>	
 		</div>
 	</div>
 	
@@ -233,11 +244,11 @@ function rvRegister(prod_no, qna_no){
 					</tr>
 	    		</thead>
 	    		<tbody style="text-align:center;">
-	    			<c:forEach var="qpl" items="${requestScope.qproductList}">
-		    			<tr onclick="productSelect('${qpl.prod_no}')">
-							<td><img src="<%= ctxPath%>/images/product/thumnail/${qpl.prod_thumnail}" width="50" height="50"/></td>
-							<td>${qpl.prod_name}</td>	
-							<td><fmt:formatNumber pattern="###,###">${qpl.prod_price}</fmt:formatNumber>원</td>
+	    			<c:forEach var="oqpl" items="${requestScope.oqproductList}">
+		    			<tr onclick="productSelect('${oqpl.prod_no}')">
+							<td><img src="<%= ctxPath%>/images/product/thumnail/${oqpl.prod_thumnail}" width="50" height="50"/></td>
+							<td>${oqpl.prod_name}</td>	
+							<td><fmt:formatNumber pattern="###,###">${oqpl.prod_price}</fmt:formatNumber>원</td>
 						</tr>
 					</c:forEach>	
 					<tr>
@@ -249,7 +260,7 @@ function rvRegister(prod_no, qna_no){
 	  </div>
 	</div> 
 	
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 <%-- 제목 --%>
 <form name="qnaWriteFrm">
@@ -257,11 +268,11 @@ function rvRegister(prod_no, qna_no){
 		<div class="d-flex mt-5">
 			<span class="mr-5" style="margin-left:20%; font-size:17pt;">제목</span>
 			<textarea name="qna_title" cols="80" rows="1" style="resize:none;"></textarea>
-			<span class="ml-5 mt-1" style="font-size:12pt;">작성자 : ${sessionScope.loginuser.userid}</span>
+			<span class="ml-5 mt-1" style="font-size:12pt; font-weight:bold;">작성자 : ${sessionScope.loginuser.userid}</span>
 		</div>	
 	</div>
 
-<hr class="mt-5" style="width:63%; margin-left:15.5%;">
+<hr class="mt-5" style="width:60%; margin-left:17.1%;">
 
 <%-- 내용 --%>
 
@@ -280,7 +291,7 @@ function rvRegister(prod_no, qna_no){
 			<button type="button" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="location.href='<%=ctxPath%>/qna/qnaList.ddg'">목록</button>	
 				
 			<div class="ml-auto d-flex align-items-center" style="margin-right:21%; width:30%;" >
-				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister('${qvo.prod_no}','<%= qnaNo%>')">수정</button>
+				<button type="submit" class="btn btn-outline-dark mt-3" style="width:120px;" onclick="rvRegister('<%= qnaNo%>')">수정</button>
 				<button type="reset" class="btn btn-outline-dark ml-5 mt-3" style="width:120px;">취소</button>
 			</div>					
 		</div>	

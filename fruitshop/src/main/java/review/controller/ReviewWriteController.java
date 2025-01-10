@@ -49,70 +49,73 @@ public class ReviewWriteController extends AbstractController {
 			int prod_no = Integer.parseInt(request.getParameter("prodNo"));
 					
 			
+			
 			String review_contents_result = review_contents.replaceAll("\r\n", "<br>");
 			
 			ReviewListVO reviewList = new ReviewListVO();
-  	        
-		
+  	        			
 			reviewList.setReview_title(review_title);
 			reviewList.setReview_contents(review_contents_result);
 			reviewList.setFk_user_no(fk_user_no);
 			reviewList.setProd_no(prod_no);
 			
-						
-			try {
 		         
-		         int result = revdao.reviewWrite(reviewList);
+		    int result = revdao.reviewWrite(reviewList);
 		         
 		         
-		         if(result==1) {
-		        	
-		        	 request.setAttribute("reviewList", reviewList);
-		        		        	 
-		        	 super.setRedirect(false);
-		        	 super.setViewPage("/WEB-INF/review/reviewList.jsp");
-		         }
-	         
-	         } catch(SQLException e) {
-	        	 e.printStackTrace();
-	        	 
-       	 	 String message = "회원가입 실패";
-       	 	 String loc = "javascript:history.back()";// 자바스크립트를 이용한 이전페이지로 이동하는것"
-       	 	 
-       	 	request.setAttribute("message", message);
-       	 	request.setAttribute("loc", loc);
-  	         
-       	 	super.setRedirect(false);
-       	 	super.setViewPage("/WEB-INF/msg.jsp");
-	        	 	 		
+		    if(result==1) {
+		        
+		    	System.out.println(result);
+	        	 request.setAttribute("reviewList", reviewList);
+      	 
+	        	 super.setRedirect(false);
+	        	 super.setViewPage("/review/reviewList.ddg");	        	 	        	 
+		    }
+		
 
-	         }
-		
-		
-		}
-		
-		else {
-			
+
+		}else {
+			/*
 			List<ReviewListVO> rproductList = revdao.rproductFind();
-			
 			request.setAttribute("rproductList", rproductList);
+			*/
+			// String prod_no = request.getParameter("prodNo");	
+			int fk_user_no = loginuser.getUser_no();
+			// System.out.println("prod_no : "+ prod_no);
+			System.out.println("fk_user_no :"+ fk_user_no);
 			
 			
+			List<ReviewListVO> orproductList = revdao.orproductList(fk_user_no);
+			System.out.println(orproductList);
+			request.setAttribute("orproductList", orproductList);
+			
+			System.out.println("ㅇㄷ2");
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/review/reviewWrite.jsp");
 
-			super.setViewPage("/WEB-INF/review/reviewList.jsp");
-			
+		
 		}
 		
+		/*				
+		if(rproductList != null) {
+				
+			request.setAttribute("rproductList", rproductList);
+			super.setRedirect(true);
+			super.setViewPage("/WEB-INF/review/reviewList.jsp");
+			}
+		 */
+		/*
+		System.out.println("ㅇㄷ3");
 		
-		
-		
-		
-		
-		
-		
+		List<ReviewListVO> rproductList = revdao.rproductFind();
+		request.setAttribute("rproductList", rproductList);
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/review/reviewWrite.jsp");
+		*/
+		
+		
+		
 
+	
 	}
-
 }
