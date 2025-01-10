@@ -24,7 +24,7 @@ public class OrderCheckout extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		super.goBackURL(request);
+//		super.goBackURL(request);
 		
 		String referer = request.getHeader("referer");
 		// request.getHeader("referer"); 은 이전 페이지의 URL을 가져오는 것이다.

@@ -1541,12 +1541,16 @@ public class StatisticsDAO_imple implements StatisticsDAO {
 			String sql 	= " SELECT p.prod_no, p.prod_name, p.prod_price, A.sold_cnt, A.prod_revenue, A.revenue_pct "
 						+ "   FROM "
 						+ "		( "
-						+ "		SELECT p.prod_no, sum(od.ordetail_count) AS sold_cnt, sum(od.ordetail_price) AS prod_revenue, round(sum(od.ordetail_price) / ( SELECT sum(ordetail_price) FROM tbl_orderdetail) * 100, 2) AS revenue_pct "
+						+ "		SELECT p.prod_no, sum(od.ordetail_count) AS sold_cnt, sum(od.ordetail_price) AS prod_revenue"
+						+ "			 , round(sum(od.ordetail_price) / ( SELECT sum(ordetail_price) "
+						+ "		 									  	  FROM tbl_orderdetail od JOIN tbl_order o "
+						+ "		 									  		ON od.fk_order_no = o.order_no "
+						+ "		 									 	 WHERE TO_CHAR(order_date, 'yyyy-mm') = TO_CHAR(add_months(SYSDATE, -?), 'yyyy-mm')) * 100, 2) AS revenue_pct "
 						+ "	  	  FROM tbl_order o JOIN tbl_orderdetail od "
 						+ "	    	ON o.order_no = od.fk_order_no "
 						+ "	  	  JOIN tbl_products p "
 						+ "	    	ON od.fk_prod_no = p.prod_no "
-						+ "	 WHERE TO_CHAR(order_date, 'yyyy-mm') = TO_CHAR(add_months(SYSDATE, -?), 'yyyy-mm') AND rownum <= 10 "
+						+ "	 WHERE TO_CHAR(order_date, 'yyyy-mm') = TO_CHAR(add_months(SYSDATE, -?), 'yyyy-mm') "
 						+ "	GROUP BY p.prod_no "
 						+ "		) A JOIN tbl_products p "
 						+ "		ON A.prod_no = p.prod_no "
@@ -1554,6 +1558,7 @@ public class StatisticsDAO_imple implements StatisticsDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("ordersearchMonth"));
+			pstmt.setString(2, paraMap.get("ordersearchMonth"));
 //			pstmt.setString(2, paraMap.get("searchRange"));
 //			order by 절에 는 위치홀더 사용불가..
 			
