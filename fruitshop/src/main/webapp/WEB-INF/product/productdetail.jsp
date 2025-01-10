@@ -187,7 +187,7 @@ $(document).ready(function(){
 			
 			if (${not empty sessionScope.loginuser.user_no}) {
 
-				location.href=`${pageContext.request.contextPath}/community/productCarrier.ddg?prod_no=${requestScope.prdvo.prod_no}&user_no=${sessionScope.loginuser.user_no}`;
+				location.href=`${pageContext.request.contextPath}/community/productCarrier2.ddg?prod_no=${requestScope.prdvo.prod_no}&user_no=${sessionScope.loginuser.user_no}`;
 				
 			}
 			else {
@@ -208,7 +208,7 @@ $(document).ready(function(){
 		
 		
 		//---------------------------------------------------------------------------------------//
-		if( ${not empty sessionScope.loginuser} ) {  // 로그인했을때
+		if( ${not empty sessionScope.loginuser && loginuser.getRole() != 2} ) {  // 로그인했을때
       
       	// 세션스토리지안에 있는 arr_product를 가져왔는데 이게 null 일때
          if(sessionStorage.getItem("arr_product") == null){ 
