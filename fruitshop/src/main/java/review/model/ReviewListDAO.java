@@ -62,6 +62,13 @@ public interface ReviewListDAO {
 	// 타페이지에서 후기글 작성시 상품정보 가져오는 메소드
 	ReviewListVO ProductCarrier(String prod_no) throws SQLException;
 
+	// 구매후기글 상품등록할때 구매한 상품리스트만 뜨기
+	List<ReviewListVO> orproductList(int fk_user_no) throws SQLException;
+
+	// 타페이지에서 QnA 작성시 상품정보 가져오는 메소드
+	ReviewListVO qProductCarrier(String prod_no) throws SQLException;
+
+
 
 
 

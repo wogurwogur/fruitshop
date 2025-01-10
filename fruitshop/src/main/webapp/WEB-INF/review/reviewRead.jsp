@@ -48,6 +48,9 @@ $(document).ready(function () {
         }
     });
     
+
+    
+    
     
     goCommentListView();
     
@@ -162,6 +165,18 @@ function productDetail(prod_no){
 	// 댓글 보여주기 메소드
 	function goCommentListView(){
 	 	   
+		 // 아이디 별찍어 메소드
+	    function maskUserId(userId) {
+	        if (userId.length >= 10) {
+	            return userId.slice(0, -5) + "*****";
+	        } else if (userId.length >= 5) {
+	            return userId.slice(0, -3) + "***";
+	        } else {
+	            return userId;
+	        }
+	    }
+		
+		
    		$.ajax({
             url:"<%= ctxPath%>/review/reviewComment.ddg",
             type:"get",
@@ -181,11 +196,12 @@ function productDetail(prod_no){
             	if(json.length > 0 ){
             		$.each(json, function(index, item){
             			
+            			let maskedUserId = maskUserId(item.userid);
             			let writeuserid = item.userid;
                         let loginuserid = "${sessionScope.loginuser.userid}";            			
                         
-                        v_html += "<div id='comment"+index+"'><span class=''>▶</span>&nbsp;"+item.comment_contents+"</div>"
-                        		+ "<div class='customDisplay'>"+item.userid+"</div>"      
+                        v_html += "<div id='comment"+index+"'><span class=''>-</span>&nbsp;"+item.comment_contents+"</div>"
+                        		+ "<div class='customDisplay'>"+maskedUserId+"</div>"      
                         		+ "<div class='customDisplay'>"+item.comment_regidate+"</div>";
                         		
                         if( loginuserid == "") { 
@@ -198,8 +214,8 @@ function productDetail(prod_no){
                         }
                         else if( loginuserid != "" && writeuserid == loginuserid ) {
                             // 로그인을 했고 후기글이 로그인한 사용자 쓴 글 이라면
-                            v_html += "<div class='customDisplay spacediv commentDel' onclick='delMyComment("+item.comment_no+")'>삭제</div>"; 
-                            v_html += "<div class='customDisplay spacediv commentDel commentUpdate' onclick='updateMyReview("+index+","+item.comment_no+")'>수정</div>"; 
+                            v_html += "<div class='customDisplay spacediv commentDel' onclick='delMyComment("+item.comment_no+")'>[삭제]</div>"; 
+                            v_html += "<div class='customDisplay spacediv commentDel commentUpdate' onclick='updateMyReview("+index+","+item.comment_no+")'>[수정]</div>"; 
                         }
                         
                         
@@ -247,7 +263,7 @@ function productDetail(prod_no){
 	   $("div.commentUpdate").hide(); // "후기수정" 글자 감추기
 	  
 	// "후기수정" 을 위한 엘리먼트 만들기 
-	   let v_html = "<textarea id='edit_textarea' style='font-size: 12pt; width: 40%; height: 50px;'>"+comment_contents+"</textarea>";
+	   let v_html = "<textarea id='edit_textarea' style='font-size: 12pt; width: 40%; height: 60px; resize:none;'>"+comment_contents+"</textarea>";
 	   v_html += "<div style='display: inline-block; position: relative; top: -20px; left: 10px;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnReviewUpdate_OK'>수정완료</button></div>"; 
 	   v_html += "<div style='display: inline-block; position: relative; top: -20px; left: 20px;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnReviewUpdate_NO'>수정취소</button></div>";
 	   
@@ -277,7 +293,7 @@ function productDetail(prod_no){
 	                 goCommentListView(); // 특정 제품의 제품후기글들을 보여주는 함수 호출하기 
 	              } 
 	              else {
-	                 alert("제품후기 수정이 실패했습니다.");
+	                 alert("댓글 수정이 실패했습니다.");
 	                 goCommentListView(); // 특정 제품의 제품후기글들을 보여주는 함수 호출하기 
 	              }
 	           
@@ -304,7 +320,7 @@ function delMyComment(comment_no){
              dataType:"json",
              success:function(json){
              	
-            	alert(json.n) 
+            	 
             	 
                 if(json.n == 1) {
                    alert("댓글 삭제가 성공하였습니다.");
@@ -398,6 +414,8 @@ const frm = document.commentWriteFrm;
 
 
 
+
+
 </script>
 
 
@@ -477,7 +495,7 @@ li {margin-bottom: 10px;}
 	<h1 class="text-center" style="margin-top: 4%;">Community</h1>
 	<div class="font-weight-lighter text-center my-3">우리함께 나누는 싱싱한 이야기</div>
 	</div>
-	<div class="mb-4"; style="font-size:14pt; font-weight:500;">
+	<div class="mb-4"; style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -566,7 +584,7 @@ li {margin-bottom: 10px;}
 
 
 
-<div class="text-center">
+<div class="text-center ml-2">
 	    <p class="h5 text-dark">${requestScope.rvo.prod_name} 댓글 목록</p><hr style="width:60%; margin-left:20%;">
 	    
 	    <div id="viewComments">

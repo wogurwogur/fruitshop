@@ -20,12 +20,12 @@ public class QnaEditController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 			String method = request.getMethod(); // "GET" 또는 "POST"
 			
+			HttpSession session  = request.getSession();
+			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			
 			if(!"GET".equalsIgnoreCase(method)) {
 		
-				
-				HttpSession session  = request.getSession();
-				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-	
+
 				String qna_title = request.getParameter("qna_title");
 				String qna_contents = request.getParameter("qna_contents");
 				int fk_user_no = loginuser.getUser_no();
@@ -51,11 +51,11 @@ public class QnaEditController extends AbstractController {
 			         
 			         if(result==1) {
 			        	
-			        	 request.setAttribute("qvo", qvo);
-			        
+			        	 request.setAttribute("qvo", qvo);			        
 			        	 
-			        	 super.setRedirect(false);
-			        	 super.setViewPage("/WEB-INF/qna/qnaList.jsp");
+			        	 super.setRedirect(true);
+			        	 super.setViewPage(request.getContextPath()+ "/qna/qnaList.ddg");
+			        	 
 			         }
 		         
 		         } catch(SQLException e) {
@@ -86,17 +86,17 @@ public class QnaEditController extends AbstractController {
 				request.setAttribute("qvo", qvo);
 				
 				
+				int fk_user_no = loginuser.getUser_no();
+				List<QnaListVO> oqproductList = qdao.oqproductFind(fk_user_no);
 				
-				List<QnaListVO> qproductList = qdao.qproductFind();
-				
-				request.setAttribute("qproductList", qproductList);			
+				request.setAttribute("oqproductList", oqproductList);			
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/qna/qnaEdit.jsp");
 				
 			}
 		
-
+			
 	
 
 	}

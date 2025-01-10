@@ -60,12 +60,12 @@ public class QnaReplyController extends AbstractController {
 			         int result = qdao.qnaReply(qnaReply);
 			         
 			         if(result==1) {			        	 
-			        	
+			        	System.out.println(result);
 			        	request.setAttribute("qna_answer", qna_answer);			        
-
-			     		super.setRedirect(false);
-			     		super.setViewPage("/WEB-INF/qna/qnaList.jsp");
-			        	 
+			        	
+			     		super.setRedirect(true);
+			     		super.setViewPage(request.getContextPath()+"/qna/qnaList.ddg");
+			        	 //request.getContextPath()+"/qna/qnaList.ddg"
 			         }
 		         
 		         } catch(SQLException e) {
@@ -86,7 +86,7 @@ public class QnaReplyController extends AbstractController {
 			
 				
 
-			}
+			}else {
 			
 			int qna_no = Integer.parseInt(request.getParameter("qna_no"));
 			int fk_user_no = loginuser.getUser_no();
@@ -100,6 +100,7 @@ public class QnaReplyController extends AbstractController {
 			
      		super.setRedirect(false);
      		super.setViewPage("/WEB-INF/qna/qnaReply.jsp");
+			}
 
 
 	}

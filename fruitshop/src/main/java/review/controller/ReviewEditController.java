@@ -22,11 +22,13 @@ public class ReviewEditController extends AbstractController {
 		
 		String method = request.getMethod(); // "GET" 또는 "POST"
 		
+		HttpSession session = request.getSession();		
+		MemberVO loginuser = (MemberVO)(session.getAttribute("loginuser"));
+		
 		if(!"GET".equalsIgnoreCase(method)) {
 	
-			
-			HttpSession session  = request.getSession();
-			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			// System.out.println("포스트");
+
 						
 			String review_title = request.getParameter("review_title");
 			String review_contents = request.getParameter("review_contents");
@@ -51,12 +53,13 @@ public class ReviewEditController extends AbstractController {
 		         int result = revdao.reviewEdit(reviewList);
 		         
 		         if(result==1) {
-		        	
+		        	 
+		        	 System.out.println(result);
 		        	 request.setAttribute("reviewList", reviewList);
 		        
 		        	 
-		        	 super.setRedirect(false);
-		        	 super.setViewPage("/WEB-INF/review/reviewList.jsp");
+		        	 super.setRedirect(true);
+		        	 super.setViewPage(request.getContextPath()+"/review/reviewList.ddg");
 		         }
 	         
 	         } catch(SQLException e) {
@@ -79,25 +82,38 @@ public class ReviewEditController extends AbstractController {
 		
 		else {
 			
+
 			
-			String prod_no = request.getParameter("prodNo");			
-			
-			ReviewListVO rvo = revdao.productSelect(prod_no);
-			
+			String prod_no = request.getParameter("prodNo");						
+			ReviewListVO rvo = revdao.productSelect(prod_no);			
 			request.setAttribute("rvo", rvo);
 			
+			int fk_user_no = loginuser.getUser_no();
+			System.out.println("fk_user_no : "+fk_user_no);
 			
+			List<ReviewListVO> orproductList = revdao.orproductList(fk_user_no);			
+			request.setAttribute("orproductList", orproductList);
 			
-			List<ReviewListVO> rproductList = revdao.rproductFind();
-			
-			request.setAttribute("rproductList", rproductList);			
-			
-
+			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/review/reviewEdit.jsp");
+			
+			
+						
+			
+			
+			
+			
+			
+				
+			
+			
 			
 		}
 		
 		
+		/*
+		 * super.setRedirect(true); super.setViewPage("/WEB-INF/review/reviewEdit.jsp");
+		 */
 
 
 	}

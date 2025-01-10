@@ -209,10 +209,10 @@ div.pagination a:hover:not(.active) {background-color: #ddd;}
 <div class="container-fluid">
 
 	<div>
-		<div class="text-center" style="margin-top: 3.5%; font-size:30pt">Community</div>
-	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">우리함께 나누는 싱싱한 이야기</div>
+		<h1 class="text-center" style="margin-top: 4%;">Community</h1>
+		<div class="font-weight-lighter text-center my-3">우리함께 나누는 싱싱한 이야기</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>

@@ -103,7 +103,7 @@ function qnaReply(prod_no, qna_no) {
 		<div class="text-center" style="margin-top: 4%; font-size:30pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:12pt">우리함께 나누는 싱싱한 이야기</div>
 	</div>
-	<div class="mb-4"; style="font-size:14pt; font-weight:500;">
+	<div class="mb-4"; style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -165,19 +165,19 @@ function qnaReply(prod_no, qna_no) {
 			</table>	
 		
 		</div>
-	</div>
-		<div style ="margin-left:20.3%;">
+	
+		<div style ="display:flex; justify-content:flex-end; margin-left:20.3%;">
 			<tr>
 				<td class=""><button class="btn btn-outline-dark" onclick="location.href='<%=ctxPath%>/qna/qnaList.ddg'">목록</button></td>
-				<td class=""><button class="btn btn-outline-dark" onclick="qnaEdit('${qvo.prod_no}', '${qvo.qna_no}')">QnA 수정</button></td>
-				<td class=""><button class="btn btn-outline-dark" onclick="qnaDelete()">QnA 삭제</button></td>
+				<td class=""><button class="btn btn-outline-dark ml-2" onclick="qnaEdit('${qvo.prod_no}', '${qvo.qna_no}')">QnA 수정</button></td>
+				<td class=""><button class="btn btn-outline-dark ml-2" onclick="qnaDelete()">QnA 삭제</button></td>
 			<c:if test="${sessionScope.loginuser.role == 2}">
 
-				<td><button type="button" class="btn btn-outline-dark delShow" onclick="qnaReply('${qvo.prod_no}', '${qvo.qna_no }')">답글달기</button></td>						
+				<td><button type="button" class="btn btn-outline-dark delShow ml-2" onclick="qnaReply('${qvo.prod_no}', '${qvo.qna_no }')">답글달기</button></td>						
 			</c:if>
 			</tr>						
 		</div>
-		
+	</div>	
 		
 	<c:if test="${qvo.qna_answer != null }">
 		<div class="container mt-5">

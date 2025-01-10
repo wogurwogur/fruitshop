@@ -22,19 +22,30 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	// 다른데서 넘어온지 확인(모달 버튼 유무)
+	if(<%= prod_no%> == null){
+	
 	const writeModalOpen = document.getElementById('writeModalOpen');
 	const writeModalClose = document.getElementById('writeModalClose');
 	const modal = document.getElementById('modalContainer');
 
-
+	
 	writeModalOpen.addEventListener('click', () => {
 	  modal.classList.remove('hidden');
 	});
 
 	writeModalClose.addEventListener('click', () => {
 	  modal.classList.add('hidden');
-	});	
+	});
 	
+	}
+	else{
+		
+		$('input[name="prodNo"]').val(<%= prod_no%>);
+		console.log('prodNo의 값:', $('input[name="prodNo"]').val());
+		
+	}
 	
 
 	
@@ -113,9 +124,7 @@ function rvRegister(){
 	
 	alert("구매후기 작성 완료 !!")
 	
-	setTimeout(() => {
-	    location.href = "<%= ctxPath %>/review/reviewList.ddg";
-	}, 200);
+	
 	
 }
 
@@ -174,7 +183,7 @@ function rvRegister(){
 		<div class="text-center" style="margin-top: 4%; font-size:40pt">Community</div>
 	<div class="font-weight-lighter text-center my-3" style="font-size:13pt">여러분의 이야기를 들려주세요</div>
 	</div>
-	<div style="font-size:14pt; font-weight:500;">
+	<div style="">
 		<ul class="nav nav-pills navbar-light nav justify-content-center mt-4">
 		  <li class="nav-item">
 		    <a class="nav-link mr-5" href="<%= ctxPath%>/notice/noticeList.ddg" style="color: black;">공지사항</a>
@@ -195,12 +204,12 @@ function rvRegister(){
 
 
 
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 
 	<div id="product" class="d-flex justify-content-center mt-3"> 
 	
-		<div class="" style="display:flex; width:58%; height:250px; background-color:#F7F7F7">
+		<div class="" style="display:flex; width:60%; height:250px; margin-right:6%; background-color:#F7F7F7">
 			
 			
 	 	<%-- 타페이지에서 값 받아올때 --%>		
@@ -212,16 +221,17 @@ function rvRegister(){
 			</div>				
 			</div>
 			<%-- 상품 이름 --%>
-			<div class="" style="width:50%; height:80%;">
-				<div id="productSelectEnd2" style="margin-left:5%; margin-top:7%;" >
+			<div class="" style="width:50%; height:80%; margin-top:3%;">
+				<div id="productSelectEnd2" style="margin-left:8%; margin-top:7%;" >
 					<span style="font-size:17pt;">${(requestScope.pcarrier).prod_name}</span>			
 				</div>
 			
 				<%-- 상품 가격 --%>
-				<div id="productSelectEnd3" style="margin-left:5%; margin-top:5%;">
+				<div id="productSelectEnd3" style="margin-left:8%; margin-top:5%;">
 					<span style="font-size:17pt;"><fmt:formatNumber value="${(requestScope.pcarrier).prod_price}" pattern="#,###"/>원</span>
 				</div>
 			</div>
+			
 		</c:if>
 			
 			
@@ -248,22 +258,16 @@ function rvRegister(){
 				<a style="cursor: pointer;" data-toggle="modal" data-target="#productFind" data-dismiss="modal"><button type="button" class="btn btn-outline-dark" style="width:200px; height:50px;" id="writeModalOpen">상품 등록하기</button></a>					
 				
 			</div>	
-				
-				
+	
 			</c:if>
-			
-					
 
-			
-			
-			
-			
 		</div>
 	</div>
 	
 	<div id="modalContainer" class="hidden" >
 	  <div id="modalContent">
-	    <div class="container mt-5" style="overflow: auto; width:440px; height:380px; margin: auto;">
+	  	<div style="text-align:center; margin-top:2%;"><h5>내가 구매한 상품</h5></div>
+	    <div class="container" style="overflow: auto; width:440px; height:380px; margin: auto;">
 	    	<table class="table" style="text-align:center;">
 	    		<thead>
 	    			<tr>
@@ -273,11 +277,11 @@ function rvRegister(){
 					</tr>
 	    		</thead>
 	    		<tbody style="text-align:center;">
-	    			<c:forEach var="rpl" items="${requestScope.rproductList}">
-		    			<tr onclick="productSelect('${rpl.prod_no}')">
-							<td><img src="<%= ctxPath%>/images/product/thumnail/${rpl.prod_thumnail}" width="50" height="50"/></td>
-							<td>${rpl.prod_name}</td>	
-							<td><fmt:formatNumber pattern="#,###">${rpl.prod_price}</fmt:formatNumber>원</td>
+	    			<c:forEach var="orpl" items="${requestScope.orproductList}">
+		    			<tr onclick="productSelect('${orpl.prod_no}')">
+							<td><img src="<%= ctxPath%>/images/product/thumnail/${orpl.prod_thumnail}" width="50" height="50"/></td>
+							<td>${orpl.prod_name}</td>	
+							<td><fmt:formatNumber pattern="#,###">${orpl.prod_price}</fmt:formatNumber>원</td>
 						</tr>
 					</c:forEach>	
 					<tr>
@@ -289,7 +293,7 @@ function rvRegister(){
 	  </div>
 	</div> 
 	
-<hr style="width:63%; margin-left:15.5%;">
+<hr style="width:60%; margin-left:17.1%;">
 
 
 <%-- 제목 --%>
@@ -302,7 +306,7 @@ function rvRegister(){
 		</div>	
 	</div>
 
-<hr class="mt-5" style="width:63%; margin-left:15.5%;">
+<hr class="mt-5" style="width:60%; margin-left:17.1%;">
 
 <%-- 내용 --%>
 

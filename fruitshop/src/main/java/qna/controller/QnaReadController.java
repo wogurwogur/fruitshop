@@ -53,7 +53,8 @@ public class QnaReadController extends AbstractController {
 
 		
 		
-		
+		super.setRedirect(false);
+		super.setViewPage("/WEB-INF/qna/qnaRead.jsp");
 			
 
 	}
