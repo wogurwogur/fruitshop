@@ -33,7 +33,7 @@ public class FaqList extends AbstractController {
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		String sizePerPage = "10";
 		
-		if(currentShowPageNo == null) {
+		if(currentShowPageNo == null || currentShowPageNo == "") {
 			currentShowPageNo = "1";
 		}
 		
