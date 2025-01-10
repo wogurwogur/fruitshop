@@ -22,70 +22,75 @@ public class MypageIndex extends AbstractController {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		HttpSession session = request.getSession();
-		
-		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-		
-		if(loginuser != null && loginuser.getRole() == 1 ) {
-			
-			super.goBackURL(request);
 
-			int user_no = loginuser.getUser_no();
-			
-			List<CouponVO> couponList = new ArrayList<>();
-			couponList = mpidao.couponInfo(user_no);
-			
-			request.setAttribute("couponList", couponList);
-			request.setAttribute("couponList_cnt", couponList.size());
-			request.setAttribute("mypage_val", "mypageIndex");
-			
-			List<Map<String, Integer>> shipStatus_count = mpidao.shipStatus(user_no);
-			
-			int cnt_1 = 0;
-			int cnt_2 = 0;
-			int cnt_3 = 0;
-			
-			for(int i=0; i<shipStatus_count.size(); i++) {
-				
-				int ship_status = shipStatus_count.get(i).get("ship_status");
-				int ship_cnt = shipStatus_count.get(i).get("ship_cnt");
-				
-				switch (ship_status) {
-				case 1:
-					cnt_1=ship_cnt;
-					break;
-				case 2:
-					cnt_2=ship_cnt;
-					break;
-				case 3:
-					cnt_3=ship_cnt;
-					break;
+		HttpSession session = request.getSession();
+
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+
+		if (loginuser != null) {
+
+			if (loginuser.getRole() == 1) {
+
+				super.goBackURL(request);
+
+				int user_no = loginuser.getUser_no();
+
+				List<CouponVO> couponList = new ArrayList<>();
+				couponList = mpidao.couponInfo(user_no);
+
+				request.setAttribute("couponList", couponList);
+				request.setAttribute("couponList_cnt", couponList.size());
+				request.setAttribute("mypage_val", "mypageIndex");
+
+				List<Map<String, Integer>> shipStatus_count = mpidao.shipStatus(user_no);
+
+				int cnt_1 = 0;
+				int cnt_2 = 0;
+				int cnt_3 = 0;
+
+				for (int i = 0; i < shipStatus_count.size(); i++) {
+
+					int ship_status = shipStatus_count.get(i).get("ship_status");
+					int ship_cnt = shipStatus_count.get(i).get("ship_cnt");
+
+					switch (ship_status) {
+					case 1:
+						cnt_1 = ship_cnt;
+						break;
+					case 2:
+						cnt_2 = ship_cnt;
+						break;
+					case 3:
+						cnt_3 = ship_cnt;
+						break;
+					}
+
 				}
-				
+
+				request.setAttribute("cnt_1", cnt_1);
+				request.setAttribute("cnt_2", cnt_2);
+				request.setAttribute("cnt_3", cnt_3);
+
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/mypage/mypageIndex.jsp");
+
+			}
+			else {
+				super.setRedirect(true);
+				super.setViewPage(request.getContextPath()+"/login/login.ddg");
 			}
 
-			request.setAttribute("cnt_1", cnt_1);
-			request.setAttribute("cnt_2", cnt_2);
-			request.setAttribute("cnt_3", cnt_3);
-
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/mypage/mypageIndex.jsp");
-			
-		}
-		else {
+		} else {
 			String message = "로그인 후 이용가능합니다!";
-			String loc = request.getContextPath()+"/login/login.ddg";
-			
+			String loc = request.getContextPath() + "/login/login.ddg";
+
 			request.setAttribute("message", message);
 			request.setAttribute("loc", loc);
-			
+
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/common/msg.jsp");
 		}
-		
 
-		
 	}
 
 }
