@@ -137,7 +137,7 @@ function goCancel() {
 							<tr class="productRow">
 								<td>
 									<input type="hidden" id="prod_no" name="prod_no" value="${orderItem.fk_prod_no}" />
-									<img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${orderItem.prod_thumnail}">
+									<a href="${pageContext.request.contextPath}/product/productDetail.ddg?prodNo=${orderItem.fk_prod_no}"><img style= "width: 50px; heigth: 30px;" src="<%= request.getContextPath()%>/images/product/thumnail/${orderItem.prod_thumnail}"></a>
 								</td>
 								<td class="prod_name">${orderItem.prod_name}</td>
 								<td class="prod_count">${orderItem.ordetail_count}개</td>

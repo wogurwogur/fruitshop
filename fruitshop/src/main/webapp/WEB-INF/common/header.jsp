@@ -69,14 +69,15 @@
             
             <c:if test="${empty sessionScope.loginuser or sessionScope.loginuser.role == 1}">
 	            <a href="<%= request.getContextPath()%>/mypage/mypageIndex.ddg">My Page</a>
+	            <a href="<%= request.getContextPath()%>/order/orderList.ddg">Order List</a>
+	            <a href="<%= request.getContextPath()%>/cart/cartList.ddg">
+	            	Cart<c:if test="${!empty sessionScope.loginuser}">(${sessionScope.loginuser.cart_cnt})</c:if>
+	            </a>
             </c:if>
             <c:if test="${sessionScope.loginuser.role == 2}">
                 <a href="<%= request.getContextPath()%>/admin/adminManagement.ddg">Admin Page</a>
             </c:if>
-            <a href="<%= request.getContextPath()%>/order/orderList.ddg">Order List</a>
-            <a href="<%= request.getContextPath()%>/cart/cartList.ddg">
-            	Cart<c:if test="${!empty sessionScope.loginuser}">(${sessionScope.loginuser.cart_cnt})</c:if>
-            </a>
+            
         </div>
         <!-- 슬라이드 메뉴 끝 -->
         
@@ -129,27 +130,26 @@
 		                <li class="nav-item active mr-3">
 		                    <a class="nav-link menu" href="<%= request.getContextPath()%>/mypage/mypageIndex.ddg">My Page</a>
 		                </li>
+		                <li class="nav-item active mr-3">
+		                    <a class="nav-link menu" href="<%= request.getContextPath()%>/order/orderList.ddg">Order List</a>
+		                </li>
+		                <li class="nav-item active">
+		                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
+		                    	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
+		                    	<c:if test="${!empty sessionScope.loginuser}">
+		                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">${sessionScope.loginuser.cart_cnt}</span>
+		                        </c:if>
+		                        <c:if test="${empty sessionScope.loginuser}">
+		                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
+		                        </c:if>
+		                    </a>
+		                </li>
 	                </c:if>
 	                <c:if test="${sessionScope.loginuser.role == 2}">
 		                <li class="nav-item active mr-3">
 		                    <a class="nav-link menu" href="<%= request.getContextPath()%>/admin/adminManagement.ddg">Admin Page</a>
 		                </li>
 	                </c:if>
-	                
-	                <li class="nav-item active mr-3">
-	                    <a class="nav-link menu" href="<%= request.getContextPath()%>/order/orderList.ddg">Order List</a>
-	                </li>
-	                <li class="nav-item active">
-	                    <a style="margin-top: 2%;" class="navbar-brand notification" href="<%= request.getContextPath()%>/cart/cartList.ddg">
-	                    	<%-- 배지에 세션에 담긴 장바구니 개수 들어와야 함 --%>
-	                    	<c:if test="${!empty sessionScope.loginuser}">
-	                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">${sessionScope.loginuser.cart_cnt}</span>
-	                        </c:if>
-	                        <c:if test="${empty sessionScope.loginuser}">
-	                        	<i class="fa-solid fa-basket-shopping"></i><span class="badge">0</span>
-	                        </c:if>
-	                    </a>
-	                </li>
 	            </ul>
 	        </div>
         </div>

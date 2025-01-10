@@ -78,8 +78,6 @@ $(document).ready(function() {
 		if ( rsp.success ) { // PC 데스크탑용
 			// === 결제 성공 시 주문 테이블에 insert 완료 후 주문상세, 결제 테이블에 정보를 insert 한다 === //
 			
-			<%--
-			// 주문 테이블에 정보 등록
 			$.ajax({
 				url: "<%= ctxPath %>/order/orderCheckoutEnd.ddg",
 				data: {
@@ -87,23 +85,30 @@ $(document).ready(function() {
 					"order_tprice": "${requestScope.order_tprice}", "email": "${requestScope.email}", "mobile": "${requestScope.mobile}",
 					"postcode": "${requestScope.postcode}", "address": "${requestScope.address}", "detailaddress": "${requestScope.detailaddress}",
 					"extraaddress":"${requestScope.extraaddress}", "order_request": "${requestScope.order_request}", "ship_default": "${requestScope.ship_default}",
-					"point": "${requestScope.point}", "coupon_no": "${requestScope.coupon_no}", "order_receiver": "${requestScope.order_receiver}"
+					"point": "${requestScope.point}", "coupon_no": "${requestScope.coupon_no}", "order_receiver": "${requestScope.order_receiver}",
+					"productArr": '${requestScope.productArr}', "coupon_name": "${requestScope.coupon_name}", "coupon_discount": "${requestScope.coupon_discount}"
 				},
 				type: "POST",
 				dataType: "JSON",
+				async: false,
 				success: function(json) {
+					console.log("확인용 json", json);
 					
+					if (json.isComplete == 1) {
+						alert("주문이 완료되었습니다.");
+						location.href = "${pageContext.request.contextPath}/order/orderList.ddg";
+					}
 				},
 				error: function(request, status, error){
                		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+               		// alert("경로를 어디로 가야함???");
                	}
 			});
-			--%>
-			
 			
 			
         } else {
         	// 취소했을 경우
+        	<%--
         	$.ajax({
 				url: "<%= ctxPath %>/order/orderCheckoutEnd.ddg",
 				data: {
@@ -130,7 +135,7 @@ $(document).ready(function() {
                		// alert("경로를 어디로 가야함???");
                	}
 			});
-        	
+        	--%>
         	<%--
         	console.log("확인용 name => "+ "${requestScope.name}");
        	   	console.log("확인용 order_no => "+ "${requestScope.order_no}");
@@ -153,8 +158,8 @@ $(document).ready(function() {
        	   	console.log("확인용 order_receiver => "+ "${requestScope.order_receiver}");	
        	   	console.log("확인용 productArr => "+ "${requestScope.productArr}");	
 	       	 --%>
-            //location.href="/fruitshop";
-            //alert("결제에 실패하였습니다.");
+            location.href="/fruitshop";
+            alert("결제에 실패하였습니다.");
        }
 
    }); // end of IMP.request_pay()----------------------------
