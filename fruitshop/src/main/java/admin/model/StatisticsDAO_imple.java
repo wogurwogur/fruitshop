@@ -1550,8 +1550,8 @@ public class StatisticsDAO_imple implements StatisticsDAO {
 						+ "	    	ON o.order_no = od.fk_order_no "
 						+ "	  	  JOIN tbl_products p "
 						+ "	    	ON od.fk_prod_no = p.prod_no "
-						+ "	 WHERE TO_CHAR(order_date, 'yyyy-mm') = TO_CHAR(add_months(SYSDATE, -?), 'yyyy-mm') "
-						+ "	GROUP BY p.prod_no "
+						+ "	 	 WHERE TO_CHAR(order_date, 'yyyy-mm') = TO_CHAR(add_months(SYSDATE, -?), 'yyyy-mm') "
+						+ "		GROUP BY p.prod_no "
 						+ "		) A JOIN tbl_products p "
 						+ "		ON A.prod_no = p.prod_no "
 						+ " ORDER BY "+ paraMap.get("orderSearchType") + "   "+ paraMap.get("orderSearchRange");
